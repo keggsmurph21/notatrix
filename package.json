@@ -2,10 +2,10 @@
   "name": "ud-notation",
   "version": "1.0.0",
   "description": "experimental notational system for ud-annotatrix",
-  "main": "ud-notation.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha test/test.js",
-    "start": "node ud-notation.js"
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,16 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "conllu": "^0.1.2",
-    "mocha": "^5.2.0"
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "gulp": "^4.0.0",
+    "gulp-rename": "^1.2.3",
+    "gulp-uglify": "^3.0.0",
+    "mocha": "^5.2.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }

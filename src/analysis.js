@@ -40,7 +40,7 @@ class Analysis extends Object {
   // external formats
   get conllu() {
     return _.map(fields, field => {
-      return this[field];
+      return this[field] || '_';
     }).join('\t');
   }
   get cg3() {
@@ -49,55 +49,55 @@ class Analysis extends Object {
 
   // field getters and setters
   get form() {
-    return this._form || '_';
+    return this._form;
   }
   set form(form) {
     this._form = sanitize(form);
   }
   get lemma() {
-    return this._lemma || '_';
+    return this._lemma;
   }
   set lemma(lemma) {
     this._lemma = sanitize(lemma);
   }
   get upostag() {
-    return this._upostag || '_';
+    return this._upostag;
   }
   set upostag(upostag) {
     this._upostag = sanitize(upostag);
   }
   get xpostag() {
-    return this._xpostag || '_';
+    return this._xpostag;
   }
   set xpostag(xpostag) {
     this._xpostag = sanitize(xpostag);
   }
   get feats() {
-    return this._feats || '_';
+    return this._feats;
   }
   set feats(feats) {
     this._feats = sanitize(feats);
   }
   get head() {
-    return this._head || '_';
+    return this._head;
   }
   set head(head) {
     this._head = sanitize(head);
   }
   get deprel() {
-    return this._deprel || '_';
+    return this._deprel;
   }
   set deprel(deprel) {
     this._deprel = sanitize(deprel);
   }
   get deps() {
-    return this._deps || '_';
+    return this._deps;
   }
   set deps(deps) {
     this._deps = sanitize(deps);
   }
   get misc() {
-    return this._misc || '_';
+    return this._misc;
   }
   set misc(misc) {
     this._misc = sanitize(misc);

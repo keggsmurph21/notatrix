@@ -1,0 +1,38 @@
+const gulp = require('gulp');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const babelify = require('babelify');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify');
+
+gulp.task('js', () => {
+  return browserify('src/index.js')
+    .transform('babelify', {
+      presets: ['env']
+    })
+    .bundle()
+    .pipe(source('notatrix.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('uglify', () => {
+  return browserify('src/index.js')
+    .transform('babelify', {
+      presets: ['env']
+    })
+    .bundle()
+    .pipe(source('notatrix.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('build'))
+    .pipe(rename('notatrix.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('build'));
+})
+
+gulp.task('watch', () => {
+  gulp.watch('src/*.js', gulp.series('uglify', 'js'));
+});
+
+gulp.task('default', gulp.series('uglify', 'js', 'watch'));
