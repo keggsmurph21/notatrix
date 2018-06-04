@@ -75,20 +75,26 @@ describe('Sentence', () => {
               assert.equal(expected, actual);
             });
 
-            _.each(token.analysis.head.match(/[0-9]+/g), match => {
+            _.each(token.analysis.head.match(/[0-9]+/g), (match, j) => {
               match = parseInt(match);
               if (match) { // catch 0 and NaN
                 it(`should have found a real head`, () => {
                   assert.equal(true, s.getById(match) instanceof Analysis);
                 });
+                it(`should have found the right head`, () => {
+                  assert.equal(s.getById(match), token.analysis._heads[j].token);
+                });
               }
             });
 
-            _.each(token.analysis.deps.match(/[0-9]+/g), match => {
+            _.each(token.analysis.deps.match(/[0-9]+/g), (match, j) => {
               match = parseInt(match);
               if (match) {
                 it(`should have found a real dep`, () => {
                   assert.equal(true, s.getById(match) instanceof Analysis);
+                });
+                it(`should have found the right dep`, () => {
+                  assert.equal(s.getById(match), token.analysis._deps[j].token);
                 });
               }
             });

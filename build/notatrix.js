@@ -1780,7 +1780,12 @@ var Analysis = function (_Object) {
     value: function removeHead(head) {}
   }, {
     key: 'eachDep',
-    value: function eachDep(callback) {}
+    value: function eachDep(callback) {
+      _.each(this._deps, function (dep, i) {
+        callback(dep.token, dep.deprel, i);
+      });
+      return this;
+    }
   }, {
     key: 'addDep',
     value: function addDep(dep, deprel) {}
@@ -1885,7 +1890,7 @@ var Analysis = function (_Object) {
         });
         return heads.join('|');
       } else {
-        return this._heads.length ? this._heads[0].id || this._heads[0] : '';
+        return this._heads.length ? this._heads[0].id || this._heads[0] : null;
       }
     },
     set: function set(heads) {
@@ -1913,10 +1918,29 @@ var Analysis = function (_Object) {
   }, {
     key: 'deps',
     get: function get() {
-      return this._deps;
+      if (this.sentence.options.showEnhanced) {
+        var deps = [];
+        this.eachDep(function (token, deprel) {
+          deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+        });
+        return deps.join('|');
+      } else {
+        return this._deps.length ? this._deps[0].id || this._deps[0] : null;
+      }
     },
     set: function set(deps) {
-      this._deps = sanitize(deps);
+      var _this5 = this;
+
+      if (typeof deps === 'string') deps = parseEnhancedString(deps);
+
+      this._deps = deps.map(function (dep) {
+        return {
+          token: _this5.sentence.getById(dep.token) || dep.token,
+          deprel: dep.deprel
+        };
+      });
+
+      return this;
     }
   }, {
     key: 'misc',
@@ -2063,8 +2087,12 @@ var Sentence = function (_Object) {
     _this.cg3Loaded = false;
 
     _this.options = _.defaults(options, {
-      helpWithForm: true,
-      helpWithLemma: true,
+      help: {
+        form: true,
+        lemma: true,
+        head: true,
+        deps: true
+      },
       prettyOutput: true,
       showEnhanced: true
     });
@@ -2142,11 +2170,12 @@ var Sentence = function (_Object) {
       return this;
     }
   }, {
-    key: 'attachHeads',
-    value: function attachHeads() {
+    key: 'attach',
+    value: function attach() {
       this.index();
       this.forEach(function (token) {
         token.analysis.head = token.analysis.head;
+        token.analysis.deps = token.analysis.deps;
       });
       return this;
     }
@@ -2246,7 +2275,7 @@ var Sentence = function (_Object) {
       }
 
       this.conlluLoaded = true;
-      return this.attachHeads().conllu;
+      return this.attach().conllu;
     }
   }, {
     key: 'cg3',

@@ -111,7 +111,10 @@ class Analysis extends Object {
 
   }
   eachDep(callback) {
-
+    _.each(this._deps, (dep, i) => {
+      callback(dep.token, dep.deprel, i);
+    });
+    return this;
   }
   addDep(dep, deprel) {
 
@@ -166,7 +169,7 @@ class Analysis extends Object {
     } else {
       return this._heads.length 
         ? this._heads[0].id || this._heads[0]
-        : '';
+        : null;
     }
   }
   set head(heads) {
@@ -189,10 +192,31 @@ class Analysis extends Object {
     this._deprel = sanitize(deprel);
   }
   get deps() {
-    return this._deps;
+    if (this.sentence.options.showEnhanced) {
+      let deps = [];
+      this.eachDep((token, deprel) => {
+        deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+      });
+      return deps.join('|');
+
+    } else {
+      return this._deps.length
+        ? this._deps[0].id || this._deps[0]
+        : null;
+    }
   }
   set deps(deps) {
-    this._deps = sanitize(deps);
+    if (typeof deps === 'string')
+      deps = parseEnhancedString(deps);
+
+    this._deps = deps.map(dep => {
+      return {
+        token: this.sentence.getById(dep.token) || dep.token,
+        deprel: dep.deprel
+      };
+    });
+
+    return this;
   }
   get misc() {
     return this._misc;

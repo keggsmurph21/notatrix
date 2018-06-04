@@ -20,8 +20,12 @@ class Sentence extends Object {
     this.cg3Loaded = false;
 
     this.options = _.defaults(options, {
-      helpWithForm: true,
-      helpWithLemma: true,
+      help: {
+        form: true,
+        lemma: true,
+        head: true,
+        deps: true
+      },
       prettyOutput: true,
       showEnhanced: true
     });
@@ -174,7 +178,7 @@ class Sentence extends Object {
     }
 
     this.conlluLoaded = true;
-    return this.attachHeads().conllu;
+    return this.attach().conllu;
   }
   get cg3() {
 
@@ -225,10 +229,11 @@ class Sentence extends Object {
     });
     return this;
   }
-  attachHeads() {
+  attach() {
     this.index();
     this.forEach(token => {
       token.analysis.head = token.analysis.head;
+      token.analysis.deps = token.analysis.deps;
     });
     return this;
   }
