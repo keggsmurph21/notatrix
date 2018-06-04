@@ -53,6 +53,77 @@ class Token extends Object {
     return this.current;
   }
 
+  // getting indices for current analysis
+  getIndices() {
+    for (let i=0; i<this.sentence.tokens.length; i++) {
+
+      const ana = this.sentence.tokens[i].analysis;
+      if (ana === this.analysis)
+        return { super: i, sub: null };
+
+      for (let j=0; j<ana.subTokens.length; j++) {
+        const subAna = ana.subTokens[j].analysis;
+        if (subAna === this.analysis)
+          return { super: i, sub: j };
+      }
+    }
+
+    this.sentence.logger.warn('token not in current analysis');
+    return { super: null, sub: null };
+  }
+  getIndicesAfter() {
+    const current = this.getIndices();
+
+    if (current.super === null) {
+      // pass, can't find
+    } else if (current.sub === null) {
+      current.super++;
+    } else {
+      current.sub++;
+    }
+
+    return current;
+  }
+
+
+  // token insertion, removal, moving
+  insertBefore(token) {
+
+
+  }
+  insertAfter(token) {
+
+  }
+  insertSubTokenBefore(subToken) {
+
+  }
+  insertSubTokenAfter(subToken) {
+
+  }
+  remove() {
+
+  }
+  moveBefore(token) {
+
+  }
+  moveAfter(token) {
+
+  }
+  makeSubTokenOf(token) {
+
+  }
+
+  // token combining, merging, splitting
+  combineWith(token) {
+
+  }
+  mergeWith(token) {
+
+  }
+  split() {
+
+  }
+
   // internal format
   get analysis() {
     return this.analyses[this.current] || 'not set';
@@ -152,6 +223,9 @@ class Token extends Object {
   set params(params) {
     this.analysis = params;
     return this.params;
+  }
+  get eles() {
+
   }
 
   // bool stuff

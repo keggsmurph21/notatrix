@@ -96,6 +96,9 @@ class Analysis extends Object {
   get cg3() {
 
   }
+  get eles() {
+    
+  }
 
   // array-field (heads & deps) manipulators
   eachHead(callback) {

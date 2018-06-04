@@ -70,10 +70,29 @@ describe('Sentence', () => {
               assert.equal(expected, actual);
             });
 
+            it(`should get token by indices`, () => {
+              assert.equal(token, s.getByIndices(token.getIndices()));
+            })
+
             it(`should get token by string`, () => {
               const actual = clean(s.getById(index).conllu);
               assert.equal(expected, actual);
             });
+
+            if (/\-/.test(index)) {
+              it(`should be a superToken`, () => {
+                assert.equal(true, s.getById(index).isSuperToken);
+              });
+
+              let [ start, end ] = index.split('-');
+              start = parseInt(start);
+              end = parseInt(end);
+              for (let j=start; j<=end; j++) {
+                it(`should be a subToken`, () => {
+                  assert.equal(true, s.getById(j).isSubToken);
+                });
+              }
+            }
 
             _.each(token.analysis.head.match(/[0-9]+/g), (match, j) => {
               match = parseInt(match);

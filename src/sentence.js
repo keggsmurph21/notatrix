@@ -54,6 +54,7 @@ class Sentence extends Object {
     return this;
   }
 
+  // sub-object getters
   getComment(index) {
     return this.comments[index] || null;
   }
@@ -85,6 +86,30 @@ class Sentence extends Object {
       }
     }
     return null;
+  }
+  getByIndices(indices) {
+    console.log(indices);
+    if (indices.super === null)
+      return null;
+
+    if (indices.sub === null)
+      return this.tokens[indices.super];
+
+    if (!this.tokens[indices.super])
+      return null;
+
+    return this.tokens[indices.super].subTokens[indices.sub];
+  }
+
+  // manipulate token array
+  insertTokenAt(indices, token) {
+
+  }
+  removeTokenAt(indices, token) {
+
+  }
+  moveTokenAt(sourceIndices, targetIndices) {
+
   }
 
   // external formats
@@ -221,7 +246,13 @@ class Sentence extends Object {
     });
     return this.params;
   }
+  get eles() {
 
+  }
+
+  clean() {
+
+  }
   index() {
     let id = 1; // CoNLL-U indexes start at 1 (because 0 is root)
     _.each(this.tokens, token => {
