@@ -1807,10 +1807,13 @@ var Analysis = function (_Object) {
   }, {
     key: 'head',
     get: function get() {
-      return this._head;
+      return this._head; // ? this._head.id : this._head;
     },
     set: function set(head) {
-      this._head = sanitize(head);
+      head = sanitize(head);
+      var h = this.sentence.getTokenById(head);
+      //console.log('set', head, h);
+      this._head = head;
     }
   }, {
     key: 'deprel',
@@ -1904,6 +1907,21 @@ var Sentence = function (_Object) {
   }
 
   _createClass(Sentence, [{
+    key: 'forEach',
+    value: function forEach(callback) {
+      var t = 0;
+      for (var i = 0; i < this.tokens.length; i++) {
+        var token = this.tokens[i];
+        callback(token, t);
+        t++;
+        for (var j = 0; j < token.subTokens.length; j++) {
+          callback(token.subTokens[j], t);
+          t++;
+        }
+      }
+      return this;
+    }
+  }, {
     key: 'getComment',
     value: function getComment(index) {
       return this.comments[index] || null;
@@ -1912,17 +1930,13 @@ var Sentence = function (_Object) {
     key: 'getToken',
     value: function getToken(index) {
       // get the <index>th token or subtoken, assuming current analysis
-      var t = 0;
-      for (var i = 0; i < this.tokens.length; i++) {
-        var token = this.tokens[i];
-        if (t === index) return token;
+      var t = 0,
+          token = null;
+      this.forEach(function (tok) {
+        if (t === index) token = tok;
         t++;
-        for (var j = 0; j < token.subTokens.length; j++) {
-          if (t === index) return token.subTokens[j];
-          t++;
-        }
-      }
-      return null;
+      });
+      return token;
     }
   }, {
     key: 'getAnalysis',
@@ -1948,16 +1962,16 @@ var Sentence = function (_Object) {
       return null;
     }
   }, {
+    key: 'attachHeads',
+    value: function attachHeads() {}
+  }, {
     key: 'length',
     get: function get() {
       // total number of tokens/subtokens, use this.tokens.length for
       var acc = 0;
-      for (var i = 0; i < this.tokens.length; i++) {
+      this.forEach(function (token) {
         acc++;
-        for (var j = 0; j < this.tokens[i].analysis.length; j++) {
-          acc++;
-        }
-      }
+      });
       return acc;
     }
   }, {

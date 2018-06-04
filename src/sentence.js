@@ -10,6 +10,7 @@ const regex = {
 }
 
 class Sentence extends Object {
+
   constructor() {
     super();
 
@@ -21,32 +22,36 @@ class Sentence extends Object {
   }
   get length() { // total number of tokens/subtokens, use this.tokens.length for
     let acc = 0;
-    for (let i=0; i<this.tokens.length; i++) {
+    this.forEach(token => {
       acc++;
-      for (let j=0; j<this.tokens[i].analysis.length; j++) {
-        acc++;
+    });
+    return acc;
+  }
+  forEach(callback) {
+    let t = 0;
+    for (let i=0; i<this.tokens.length; i++) {
+      const token = this.tokens[i];
+      callback(token, t);
+      t++;
+      for (let j=0; j<token.subTokens.length; j++) {
+        callback(token.subTokens[j], t);
+        t++;
       }
     }
-    return acc;
+    return this;
   }
 
   getComment(index) {
     return this.comments[index] || null;
   }
   getToken(index) { // get the <index>th token or subtoken, assuming current analysis
-    let t=0;
-    for (let i=0; i<this.tokens.length; i++) {
-      const token = this.tokens[i];
+    let t = 0, token = null;
+    this.forEach(tok => {
       if (t === index)
-        return token;
+        token = tok;
       t++;
-      for (let j=0; j<token.subTokens.length; j++) {
-        if (t === index)
-          return token.subTokens[j];
-        t++;
-      }
-    }
-    return null;
+    });
+    return token;
   }
   getAnalysis(index) {
     const tok = this.getToken(index);
@@ -134,6 +139,10 @@ class Sentence extends Object {
 
   }
   set params(params) {
+
+  }
+
+  attachHeads() {
 
   }
 }
