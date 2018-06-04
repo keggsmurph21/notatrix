@@ -76,7 +76,7 @@ class Analysis extends Object {
   get conllu() {
     return `${this.id}\t${
       _.map(fields, field => {
-        return this[field] || fallbacks;
+        return this[field] || fallback;
       }).join('\t')
     }`;
   }

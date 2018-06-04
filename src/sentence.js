@@ -125,14 +125,14 @@ class Sentence extends Object {
         tokens.push(token.conllu);
       });
 
+      return comments.concat(tokens).join('\n');
+
     } catch (e) {
-      if (! e instanceof E.InvalidCoNLLUError)
+      if (!(e instanceof E.InvalidCoNLLUError))
         throw e;
 
       return null;
     }
-
-    return comments.concat(tokens).join('\n');
   }
   set conllu(conllu) {
 

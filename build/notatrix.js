@@ -1787,7 +1787,7 @@ var Analysis = function (_Object) {
       var _this3 = this;
 
       return this.id + '\t' + _.map(fields, function (field) {
-        return _this3[field] || fallbacks;
+        return _this3[field] || fallback;
       }).join('\t');
     }
   }, {
@@ -2159,13 +2159,13 @@ var Sentence = function (_Object) {
         this.forEach(function (token) {
           tokens.push(token.conllu);
         });
+
+        return comments.concat(tokens).join('\n');
       } catch (e) {
-        if (!e instanceof E.InvalidCoNLLUError) throw e;
+        if (!(e instanceof E.InvalidCoNLLUError)) throw e;
 
         return null;
       }
-
-      return comments.concat(tokens).join('\n');
     },
     set: function set(conllu) {
 
