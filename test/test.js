@@ -65,13 +65,13 @@ describe('Sentence', () => {
             const index = lines[i].split(/[ \t]/)[0];
             t++;
 
-            it(`should get token by index-number`, () => {
+            it(`should get token by number`, () => {
               const actual = clean(token.analysis.conllu);
               assert.equal(expected, actual);
             });
 
-            it(`should get token by index-string`, () => {
-              const actual = clean(s.getTokenById(index).conllu);
+            it(`should get token by string`, () => {
+              const actual = clean(s.getById(index).conllu);
               assert.equal(expected, actual);
             });
 
@@ -79,7 +79,16 @@ describe('Sentence', () => {
               match = parseInt(match);
               if (match) { // catch 0 and NaN
                 it(`should have found a real head`, () => {
-                  assert.equal(true, s.getTokenById(match) instanceof Analysis);
+                  assert.equal(true, s.getById(match) instanceof Analysis);
+                });
+              }
+            });
+
+            _.each(token.analysis.deps.match(/[0-9]+/g), match => {
+              match = parseInt(match);
+              if (match) {
+                it(`should have found a real dep`, () => {
+                  assert.equal(true, s.getById(match) instanceof Analysis);
                 });
               }
             });

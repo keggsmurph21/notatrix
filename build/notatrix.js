@@ -1714,9 +1714,20 @@ var fields = [
 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
 
 function sanitize(str) {
-  if (typeof str === 'string') // don't think this is necessary, but just in case
-    return (str || '').replace(/( |\t|\n)/g, '');
-  return str;
+  return (str || '').replace(/( |\t|\n)/g, '');
+}
+function parseEnhancedString(str) {
+  var heads = [];
+
+  str = sanitize(str);
+  _.each(str.split('|'), function (head) {
+    head = head.split(':');
+    heads.push({
+      token: head[0],
+      deprel: head[1]
+    });
+  });
+  return heads;
 }
 
 var Analysis = function (_Object) {
@@ -1727,6 +1738,7 @@ var Analysis = function (_Object) {
 
     var _this = _possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
+    _this.initializing = true;
     _this.token = token;
     _this.sentence = token.sentence;
     _this.params = params;
@@ -1737,6 +1749,7 @@ var Analysis = function (_Object) {
     _this.id = null; // see Sentence.index() and Token.index()
     _this.superToken = null;
     _this.subTokens = [];
+    _this.initializing = false;
     return _this;
   }
 
@@ -1747,6 +1760,35 @@ var Analysis = function (_Object) {
     }
 
     // external formats
+
+  }, {
+    key: 'eachHead',
+
+
+    // array-field (heads & deps) manipulators
+    value: function eachHead(callback) {
+      _.each(this._heads, function (head, i) {
+        callback(head.token, head.deprel, i);
+      });
+      return this;
+    }
+  }, {
+    key: 'addHead',
+    value: function addHead(head, deprel) {}
+  }, {
+    key: 'removeHead',
+    value: function removeHead(head) {}
+  }, {
+    key: 'eachDep',
+    value: function eachDep(callback) {}
+  }, {
+    key: 'addDep',
+    value: function addDep(dep, deprel) {}
+  }, {
+    key: 'removeDep',
+    value: function removeDep(dep) {}
+
+    // field getters and setters
 
   }, {
     key: 'length',
@@ -1793,9 +1835,6 @@ var Analysis = function (_Object) {
   }, {
     key: 'cg3',
     get: function get() {}
-
-    // field getters and setters
-
   }, {
     key: 'form',
     get: function get() {
@@ -1839,23 +1878,29 @@ var Analysis = function (_Object) {
   }, {
     key: 'head',
     get: function get() {
-      return _.map(this._heads, function (head) {
-        return (head.token.id || head.token) + (head.deprel ? ':' + head.deprel : '');
-      }).join('|');
+      if (this.sentence.options.showEnhanced) {
+        var heads = [];
+        this.eachHead(function (token, deprel) {
+          heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+        });
+        return heads.join('|');
+      } else {
+        return this._heads.length ? this._heads[0].id || this._heads[0] : '';
+      }
     },
     set: function set(heads) {
       var _this4 = this;
 
-      heads = sanitize(heads).split('|');
+      if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
-      this._heads = [];
-      _.each(heads, function (head) {
-        head = head.split(':');
-        _this4._heads.push({
-          token: _this4.sentence.getTokenById(head[0]) || head[0],
-          deprel: head[1]
-        });
+      this._heads = heads.map(function (head) {
+        return {
+          token: _this4.sentence.getById(head.token) || head.token,
+          deprel: head.deprel
+        };
       });
+
+      return this;
     }
   }, {
     key: 'deprel',
@@ -2020,7 +2065,8 @@ var Sentence = function (_Object) {
     _this.options = _.defaults(options, {
       helpWithForm: true,
       helpWithLemma: true,
-      prettyOutput: true
+      prettyOutput: true,
+      showEnhanced: true
     });
     _this.logger = console;
 
@@ -2067,8 +2113,8 @@ var Sentence = function (_Object) {
       return tok ? tok.analysis : null;
     }
   }, {
-    key: 'getTokenById',
-    value: function getTokenById(index) {
+    key: 'getById',
+    value: function getById(index) {
       // get the token or subtoken by the given CoNLL-U index, assume current analysis
       var t = 0;
       for (var i = 0; i < this.tokens.length; i++) {

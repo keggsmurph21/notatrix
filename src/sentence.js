@@ -22,7 +22,8 @@ class Sentence extends Object {
     this.options = _.defaults(options, {
       helpWithForm: true,
       helpWithLemma: true,
-      prettyOutput: true
+      prettyOutput: true,
+      showEnhanced: true
     });
     this.logger = console;
 
@@ -65,7 +66,7 @@ class Sentence extends Object {
     const tok = this.getToken(index);
     return tok ? tok.analysis : null;
   }
-  getTokenById(index) { // get the token or subtoken by the given CoNLL-U index, assume current analysis
+  getById(index) { // get the token or subtoken by the given CoNLL-U index, assume current analysis
     let t=0;
     for (let i=0; i<this.tokens.length; i++) {
       const token = this.tokens[i];

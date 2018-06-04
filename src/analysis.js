@@ -18,15 +18,27 @@ const fields = [
 ];
 
 function sanitize(str) {
-  if (typeof str === 'string') // don't think this is necessary, but just in case
-    return (str || '').replace(/( |\t|\n)/g, '');
-  return str;
+  return (str || '').replace(/( |\t|\n)/g, '');
+}
+function parseEnhancedString(str) {
+  let heads = [];
+
+  str = sanitize(str);
+  _.each(str.split('|'), head => {
+    head = head.split(':');
+    heads.push({
+      token: head[0],
+      deprel: head[1]
+    });
+  });
+  return heads;
 }
 
 class Analysis extends Object {
   constructor(token, params) {
     super();
 
+    this.initializing = true;
     this.token = token;
     this.sentence = token.sentence;
     this.params = params;
@@ -38,6 +50,7 @@ class Analysis extends Object {
     this.id = null; // see Sentence.index() and Token.index()
     this.superToken = null;
     this.subTokens = [];
+    this.initializing = false;
   }
   get length() {
     return this.subTokens.length;
@@ -84,6 +97,29 @@ class Analysis extends Object {
 
   }
 
+  // array-field (heads & deps) manipulators
+  eachHead(callback) {
+    _.each(this._heads, (head, i) => {
+      callback(head.token, head.deprel, i);
+    });
+    return this;
+  }
+  addHead(head, deprel) {
+
+  }
+  removeHead(head) {
+
+  }
+  eachDep(callback) {
+
+  }
+  addDep(dep, deprel) {
+
+  }
+  removeDep(dep) {
+
+  }
+
   // field getters and setters
   get form() {
     return this.sentence.options.helpWithForm
@@ -120,22 +156,31 @@ class Analysis extends Object {
     this._feats = sanitize(feats);
   }
   get head() {
-    return _.map(this._heads, head => {
-      return (head.token.id || head.token)
-        + (head.deprel ? `:${head.deprel}` : '');
-    }).join('|');
+    if (this.sentence.options.showEnhanced) {
+      let heads = [];
+      this.eachHead((token, deprel) => {
+        heads.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+      });
+      return heads.join('|');
+
+    } else {
+      return this._heads.length 
+        ? this._heads[0].id || this._heads[0]
+        : '';
+    }
   }
   set head(heads) {
-    heads = sanitize(heads).split('|');
+    if (typeof heads === 'string')
+      heads = parseEnhancedString(heads);
 
-    this._heads = [];
-    _.each(heads, head => {
-      head = head.split(':')
-      this._heads.push({
-        token: this.sentence.getTokenById(head[0]) || head[0],
-        deprel: head[1]
-      });
+    this._heads = heads.map(head => {
+      return {
+        token: this.sentence.getById(head.token) || head.token,
+        deprel: head.deprel
+      };
     });
+
+    return this;
   }
   get deprel() {
     return this._deprel;
