@@ -20,6 +20,11 @@ class Token extends Object {
   get length() {
     return this.analyses.length;
   }
+  forEach(callback) {
+    for (let i=0; i<this.length; i++) {
+      callback(this.analyses[i], i);
+    }
+  }
 
   // keeping track of ambiguous analyses
   prev() {
@@ -55,7 +60,6 @@ class Token extends Object {
   set analysis(params) {
     this.analyses[this.current] = new Analysis(this, params);
   }
-
 
   get subTokens() {
     return this.analysis.subTokens;
@@ -94,6 +98,18 @@ class Token extends Object {
     }
 
     return id;
+  }
+  get nx() {
+
+    let analyses = [];
+    this.forEach(analysis => {
+      analyses.push(analysis.nx);
+    });
+
+    return {
+      current: this._current,
+      analyses: analyses
+    };
   }
   get conllu() {
     if (this.isAmbiguous)
@@ -148,16 +164,3 @@ class Token extends Object {
 }
 
 module.exports = Token;
-
-/*
-id: undefined,
-form: '',
-lemma: undefined,
-upostag: undefined,
-xpostag: undefined,
-feats: undefined,
-head: undefined,
-deprel: undefined,
-deps: undefined,
-misc: undefined
-*/

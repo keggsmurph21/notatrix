@@ -4,7 +4,7 @@ const _ = require('underscore');
 const E = require('./errors');
 
 const fields = [
-  // NB: 'id' is not kept
+  // NB: 'id' is not kept here
   'form',
   'lemma',
   'upostag',
@@ -34,19 +34,35 @@ class Analysis extends Object {
         this[key] = value;
     });
 
-    this.id = null; // see Token.index()
+    this.id = null; // see Sentence.index() and Token.index()
     this.superToken = null;
     this.subTokens = [];
   }
   get length() {
     return this.subTokens.length;
   }
-
   getSubToken(index) {
     return this.subTokens[index] || null;
   }
 
   // external formats
+  get nx() {
+
+    let values = {};
+    _.each(fields, field => {
+      values[field] = this[field];
+    });
+
+    return {
+      id: this.id,
+      params: this.params,
+      values: values,
+      subTokens: this.subTokens.map(subToken => {
+        return subToken.id;
+      })
+    };
+    
+  }
   get conllu() {
     return `${this.id}\t${
       _.map(fields, field => {
@@ -60,13 +76,17 @@ class Analysis extends Object {
 
   // field getters and setters
   get form() {
-    return this._form;
+    return this.sentence.options.helpWithForm
+      ? this._form || this._lemma
+      : this._form;
   }
   set form(form) {
     this._form = sanitize(form);
   }
   get lemma() {
-    return this._lemma;
+    return this.sentence.options.helpWithLemma
+      ? this._lemma || this._form
+      : this._lemma;
   }
   set lemma(lemma) {
     this._lemma = sanitize(lemma);
@@ -94,13 +114,11 @@ class Analysis extends Object {
       return (head.token.id || head.token)
         + (head.deprel ? `:${head.deprel}` : '');
     }).join('|');
-    //console.log(this.id, this._head.id || this._head, 'heads', heads)//, this._heads);
-    //return this._head.id || this._head;
   }
   set head(heads) {
     heads = sanitize(heads).split('|');
+
     this._heads = [];
-    //console.log(heads);
     _.each(heads, head => {
       head = head.split(':')
       this._heads.push({
@@ -108,9 +126,6 @@ class Analysis extends Object {
         deprel: head[1]
       });
     });
-    //console.log(this._heads);
-    //console.log('');
-    //this._head = this.sentence.getTokenById(head) || head;
   }
   get deprel() {
     return this._deprel;

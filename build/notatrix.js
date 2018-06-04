@@ -1709,7 +1709,7 @@ var _ = require('underscore');
 var E = require('./errors');
 
 var fields = [
-// NB: 'id' is not kept
+// NB: 'id' is not kept here
 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
 
 function sanitize(str) {
@@ -1733,7 +1733,7 @@ var Analysis = function (_Object) {
       if (fields.indexOf(key) > -1) _this[key] = value;
     });
 
-    _this.id = null; // see Token.index()
+    _this.id = null; // see Sentence.index() and Token.index()
     _this.superToken = null;
     _this.subTokens = [];
     return _this;
@@ -1753,12 +1753,31 @@ var Analysis = function (_Object) {
       return this.subTokens.length;
     }
   }, {
-    key: 'conllu',
+    key: 'nx',
     get: function get() {
       var _this2 = this;
 
+      var values = {};
+      _.each(fields, function (field) {
+        values[field] = _this2[field];
+      });
+
+      return {
+        id: this.id,
+        params: this.params,
+        values: values,
+        subTokens: this.subTokens.map(function (subToken) {
+          return subToken.id;
+        })
+      };
+    }
+  }, {
+    key: 'conllu',
+    get: function get() {
+      var _this3 = this;
+
       return this.id + '\t' + _.map(fields, function (field) {
-        return _this2[field] || '_';
+        return _this3[field] || '_';
       }).join('\t');
     }
   }, {
@@ -1770,7 +1789,7 @@ var Analysis = function (_Object) {
   }, {
     key: 'form',
     get: function get() {
-      return this._form;
+      return this.sentence.options.helpWithForm ? this._form || this._lemma : this._form;
     },
     set: function set(form) {
       this._form = sanitize(form);
@@ -1778,7 +1797,7 @@ var Analysis = function (_Object) {
   }, {
     key: 'lemma',
     get: function get() {
-      return this._lemma;
+      return this.sentence.options.helpWithLemma ? this._lemma || this._form : this._lemma;
     },
     set: function set(lemma) {
       this._lemma = sanitize(lemma);
@@ -1813,25 +1832,20 @@ var Analysis = function (_Object) {
       return _.map(this._heads, function (head) {
         return (head.token.id || head.token) + (head.deprel ? ':' + head.deprel : '');
       }).join('|');
-      //console.log(this.id, this._head.id || this._head, 'heads', heads)//, this._heads);
-      //return this._head.id || this._head;
     },
     set: function set(heads) {
-      var _this3 = this;
+      var _this4 = this;
 
       heads = sanitize(heads).split('|');
+
       this._heads = [];
-      //console.log(heads);
       _.each(heads, function (head) {
         head = head.split(':');
-        _this3._heads.push({
-          token: _this3.sentence.getTokenById(head[0]) || head[0],
+        _this4._heads.push({
+          token: _this4.sentence.getTokenById(head[0]) || head[0],
           deprel: head[1]
         });
       });
-      //console.log(this._heads);
-      //console.log('');
-      //this._head = this.sentence.getTokenById(head) || head;
     }
   }, {
     key: 'deprel',
@@ -1984,7 +1998,7 @@ var regex = {
 var Sentence = function (_Object) {
   _inherits(Sentence, _Object);
 
-  function Sentence() {
+  function Sentence(options) {
     _classCallCheck(this, Sentence);
 
     var _this = _possibleConstructorReturn(this, (Sentence.__proto__ || Object.getPrototypeOf(Sentence)).call(this));
@@ -1992,6 +2006,12 @@ var Sentence = function (_Object) {
     _this.comments = [];
     _this.conlluLoaded = false;
     _this.cg3Loaded = false;
+
+    _this.options = _.defaults(options, {
+      helpWithForm: true,
+      helpWithLemma: true,
+      prettyOutput: true
+    });
 
     _this.tokens = [];
     return _this;
@@ -2052,6 +2072,9 @@ var Sentence = function (_Object) {
       }
       return null;
     }
+
+    // external formats
+
   }, {
     key: 'index',
     value: function index() {
@@ -2081,8 +2104,28 @@ var Sentence = function (_Object) {
       return acc;
     }
   }, {
+    key: 'nx',
+    get: function get() {
+      this.index();
+
+      var tokens = [];
+      this.forEach(function (token) {
+        tokens.push(token.nx);
+      });
+
+      return JSON.stringify({
+        comments: this.comments,
+        conlluLoaded: this.conlluLoaded,
+        cg3Loaded: this.cg3Loaded,
+        options: this.options,
+        tokens: tokens
+      }, null, this.options.prettyOutput ? 2 : 0);
+    }
+  }, {
     key: 'conllu',
     get: function get() {
+
+      if (!this.conlluLoaded) log.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
 
       var comments = _.map(this.comments, function (comment) {
         return '# ' + comment;
@@ -2136,6 +2179,7 @@ var Sentence = function (_Object) {
         }
       }
 
+      this.conlluLoaded = true;
       return this.attachHeads().conllu;
     }
   }, {
@@ -2188,10 +2232,17 @@ var Token = function (_Object) {
   }
 
   _createClass(Token, [{
-    key: 'prev',
-
+    key: 'forEach',
+    value: function forEach(callback) {
+      for (var i = 0; i < this.length; i++) {
+        callback(this.analyses[i], i);
+      }
+    }
 
     // keeping track of ambiguous analyses
+
+  }, {
+    key: 'prev',
     value: function prev() {
       if (this._current > 0) this._current--;
       return this;
@@ -2276,6 +2327,20 @@ var Token = function (_Object) {
       return this.analysis.subTokens;
     }
   }, {
+    key: 'nx',
+    get: function get() {
+
+      var analyses = [];
+      this.forEach(function (analysis) {
+        analyses.push(analysis.nx);
+      });
+
+      return {
+        current: this._current,
+        analyses: analyses
+      };
+    }
+  }, {
     key: 'conllu',
     get: function get() {
       if (this.isAmbiguous) throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
@@ -2343,18 +2408,5 @@ var Token = function (_Object) {
 }(Object);
 
 module.exports = Token;
-
-/*
-id: undefined,
-form: '',
-lemma: undefined,
-upostag: undefined,
-xpostag: undefined,
-feats: undefined,
-head: undefined,
-deprel: undefined,
-deps: undefined,
-misc: undefined
-*/
 
 },{"./analysis":2,"./errors":3,"underscore":1}]},{},[4]);

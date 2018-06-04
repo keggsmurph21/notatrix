@@ -12,12 +12,18 @@ const regex = {
 
 class Sentence extends Object {
 
-  constructor() {
+  constructor(options) {
     super();
 
     this.comments = [];
     this.conlluLoaded = false;
     this.cg3Loaded = false;
+
+    this.options = _.defaults(options, {
+      helpWithForm: true,
+      helpWithLemma: true,
+      prettyOutput: true
+    });
 
     this.tokens = [];
   }
@@ -75,7 +81,27 @@ class Sentence extends Object {
     return null;
   }
 
+  // external formats
+  get nx() {
+    this.index();
+
+    let tokens = [];
+    this.forEach(token => {
+      tokens.push(token.nx);
+    });
+
+    return JSON.stringify({
+      comments: this.comments,
+      conlluLoaded: this.conlluLoaded,
+      cg3Loaded: this.cg3Loaded,
+      options: this.options,
+      tokens: tokens
+    }, null, this.options.prettyOutput ? 2 : 0);
+  }
   get conllu() {
+
+    if (!this.conlluLoaded)
+      log.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
 
     const comments = _.map(this.comments, comment => {
       return `# ${comment}`;
@@ -137,6 +163,7 @@ class Sentence extends Object {
       }
     }
 
+    this.conlluLoaded = true;
     return this.attachHeads().conllu;
   }
   get cg3() {

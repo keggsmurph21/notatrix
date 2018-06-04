@@ -32,7 +32,7 @@ describe('Token', () => {
 describe('Sentence', () => {
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
-      it(`${name}: should serialize to UD-Notation and back`, () => {
+      it(`${name}: should serialize to Notatrix and back`, () => {
         const s = new Sentence();
         s.conllu = text;
 
@@ -72,8 +72,6 @@ describe('Sentence', () => {
               const token = s.getToken(t)
               const expected = clean(token.analysis.conllu);
               assert.equal(actual, expected);
-
-              console.log(token.analysis.head)
               t++;
             });
             it(`should get token by index-string`, () => {
@@ -84,10 +82,6 @@ describe('Sentence', () => {
             });
           }
         }
-          /*
-          const actual = text.trim().replace(/[ \t]+/g, '\t').trim();
-          const expected = s.conllu.replace(/[ \t]+/g, '\t').trim();
-          assert.equal(actual, expected)*/
       });
     });
   });
