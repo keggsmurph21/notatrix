@@ -69,8 +69,11 @@ describe('Sentence', () => {
           } else {
             it(`should get token by index-number`, () => {
               const actual = clean(lines[i]);
-              const expected = clean(s.getToken(t).analysis.conllu);
+              const token = s.getToken(t)
+              const expected = clean(token.analysis.conllu);
               assert.equal(actual, expected);
+
+              console.log(token.analysis.head)
               t++;
             });
             it(`should get token by index-string`, () => {
@@ -78,7 +81,7 @@ describe('Sentence', () => {
               const index = lines[i].split(/[ \t]/)[0];
               const expected = clean(s.getTokenById(index).conllu);
               assert.equal(actual, expected);
-            })
+            });
           }
         }
           /*

@@ -17,7 +17,9 @@ const fields = [
 ];
 
 function sanitize(str) {
-  return (str || '').replace(/( |\t|\n)/g, '');
+  if (typeof str === 'string') // don't think this is necessary, but just in case
+    return (str || '').replace(/( |\t|\n)/g, '');
+  return str;
 }
 
 class Analysis extends Object {
@@ -88,11 +90,27 @@ class Analysis extends Object {
     this._feats = sanitize(feats);
   }
   get head() {
-    return this._head.id || this._head;
+    return _.map(this._heads, head => {
+      return (head.token.id || head.token)
+        + (head.deprel ? `:${head.deprel}` : '');
+    }).join('|');
+    //console.log(this.id, this._head.id || this._head, 'heads', heads)//, this._heads);
+    //return this._head.id || this._head;
   }
-  set head(head) {
-    head = sanitize(head);
-    this._head = this.sentence.getTokenById(head) || head;
+  set head(heads) {
+    heads = sanitize(heads).split('|');
+    this._heads = [];
+    //console.log(heads);
+    _.each(heads, head => {
+      head = head.split(':')
+      this._heads.push({
+        token: this.sentence.getTokenById(head[0]) || head[0],
+        deprel: head[1]
+      });
+    });
+    //console.log(this._heads);
+    //console.log('');
+    //this._head = this.sentence.getTokenById(head) || head;
   }
   get deprel() {
     return this._deprel;

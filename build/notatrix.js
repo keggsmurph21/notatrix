@@ -1713,7 +1713,9 @@ var fields = [
 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
 
 function sanitize(str) {
-  return (str || '').replace(/( |\t|\n)/g, '');
+  if (typeof str === 'string') // don't think this is necessary, but just in case
+    return (str || '').replace(/( |\t|\n)/g, '');
+  return str;
 }
 
 var Analysis = function (_Object) {
@@ -1808,11 +1810,28 @@ var Analysis = function (_Object) {
   }, {
     key: 'head',
     get: function get() {
-      return this._head.id || this._head;
+      return _.map(this._heads, function (head) {
+        return (head.token.id || head.token) + (head.deprel ? ':' + head.deprel : '');
+      }).join('|');
+      //console.log(this.id, this._head.id || this._head, 'heads', heads)//, this._heads);
+      //return this._head.id || this._head;
     },
-    set: function set(head) {
-      head = sanitize(head);
-      this._head = this.sentence.getTokenById(head) || head;
+    set: function set(heads) {
+      var _this3 = this;
+
+      heads = sanitize(heads).split('|');
+      this._heads = [];
+      //console.log(heads);
+      _.each(heads, function (head) {
+        head = head.split(':');
+        _this3._heads.push({
+          token: _this3.sentence.getTokenById(head[0]) || head[0],
+          deprel: head[1]
+        });
+      });
+      //console.log(this._heads);
+      //console.log('');
+      //this._head = this.sentence.getTokenById(head) || head;
     }
   }, {
     key: 'deprel',
