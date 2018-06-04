@@ -9,9 +9,10 @@ function split(str) {
 }
 
 class Token extends Object {
-  constructor(data) {
+  constructor(sent) {
     super();
 
+    this.sentence = sent;
     this._current = 0;
     this.analyses = [ null ];
   }
@@ -23,10 +24,12 @@ class Token extends Object {
   prev() {
     if (this._current > 0)
       this._current--;
+    return this;
   }
   next() {
     if (this._current < this.length - 1)
       this._current++;
+    return this;
   }
   get current() {
     return this._current;
@@ -49,8 +52,9 @@ class Token extends Object {
     return this.analyses[this.current] || 'not set';
   }
   set analysis(params) {
-    this.analyses[this.current] = new Analysis(params);
+    this.analyses[this.current] = new Analysis(this, params);
   }
+
 
   get subTokens() {
     return this.analysis.subTokens;
@@ -65,6 +69,7 @@ class Token extends Object {
       return false;
     }
 
+    token.analysis.superToken = this.analysis;
     const subTokens = this.analysis.subTokens;
     this.analysis.subTokens = subTokens.slice(0, index)
       .concat(token)
@@ -125,6 +130,13 @@ class Token extends Object {
     throw new Error('CG3 not implemented yet');
 
     return this.cg3;
+  }
+  get params() {
+    return this.analysis.params;
+  }
+  set params(params) {
+    this.analysis = params;
+    return this.params;
   }
 
   // bool stuff

@@ -23,16 +23,40 @@ class Sentence extends Object {
     return this.tokens.length;
   }
 
-  get(index) { // get the <index>th token or subtoken, assuming current analysis
+  getComment(index) {
+    return this.comments[index] || null;
+  }
+  getToken(index) { // get the <index>th token or subtoken, assuming current analysis
+    let i=0;
+    while (i<this.length) {
+      let tok = this.tokens[i];
+      if (i===index)
+        return tok;
+      for (let j=0; j<tok.analysis.length; j++) {
+        i++;
+        if (i===index)
+          return tok.analysis.subTokens[j];
+      }
+      i++;
+    }
+    return null;
+  }
+  getAnalysis(index) {
+    const tok = this.getToken(index);
+    return tok ? tok.analysis : null;
+  }
+  getTokenById(index) { // get the token or subtoken by the given CoNLL-U index, assume current analysis
     let i=0;
     while (i<this.length) {
       let ana = this.tokens[i].analysis;
-      if (i===index)
+      if (ana.id===index)
         return ana;
+      i++;
       for (let j=0; j<ana.length; j++) {
+        let subAna = ana.tokens[j].analysis;
+        if (subAna.id===index)
+          return subAna;
         i++;
-        if (i===index)
-          return ana.tokens[j].analysis;
       }
     }
     return null;
@@ -71,10 +95,10 @@ class Sentence extends Object {
           .split('-')
           .map(str => { return parseInt(str); });
 
-        const superToken = new Token();
+        const superToken = new Token(this);
         superToken.conllu = lines[i];
         for (let j=subTokenIndices[0]; j<=subTokenIndices[1]; j++) {
-          const subToken = new Token();
+          const subToken = new Token(this);
           subToken.conllu = lines[j + this.comments.length];
           i++;
           superToken.insertSubToken(subToken);
@@ -83,7 +107,7 @@ class Sentence extends Object {
 
       } else {
         if (lines[i].trim().length) {
-          const token = new Token();
+          const token = new Token(this);
           token.conllu = lines[i];
           this.tokens.push(token);
 
@@ -93,11 +117,16 @@ class Sentence extends Object {
 
     return this.conllu;
   }
-
   get cg3() {
 
   }
   set cg3(cg3) {
+
+  }
+  get params() {
+
+  }
+  set params(params) {
 
   }
 }

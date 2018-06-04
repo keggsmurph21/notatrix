@@ -20,21 +20,27 @@ function sanitize(str) {
 }
 
 class Analysis extends Object {
-  constructor(params) {
+  constructor(token, params) {
     super();
 
+    this.token = token;
+    this.sentence = token.sentence;
     this.params = params;
     _.each(params, (value, key) => {
       if (fields.indexOf(key) > -1)
         this[key] = value;
     });
 
-    this.id = '';
+    this.id = null; // see Token.index()
     this.superToken = null;
     this.subTokens = [];
   }
   get length() {
     return this.subTokens.length;
+  }
+
+  getSubToken(index) {
+    return this.subTokens[index] || null;
   }
 
   // external formats
