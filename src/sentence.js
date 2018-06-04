@@ -103,12 +103,36 @@ class Sentence extends Object {
 
   // manipulate token array
   insertTokenAt(indices, token) {
+    console.log(indices);
+    if (indices.super === null)
+      return null;
 
+    if (token.isSubToken) {
+
+    } else {
+      // do more checking here
+      token.sentence = this;
+      token.forEach(analysis => {
+        analysis.sentence = this;
+      });
+
+      this.tokens = this.tokens.slice(0, indices.super)
+        .concat(token)
+        .concat(this.tokens.slice(indices.super));
+
+      return token;
+    }
   }
   removeTokenAt(indices, token) {
+    if (indices.super === null)
+      return null;
+
 
   }
   moveTokenAt(sourceIndices, targetIndices) {
+    if (sourceIndices.super === null || targetIndices.super === null)
+      return null;
+
 
   }
 

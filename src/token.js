@@ -55,6 +55,9 @@ class Token extends Object {
 
   // getting indices for current analysis
   getIndices() {
+    if (!this.sentence)
+      return { super: null, sub: null };
+    
     for (let i=0; i<this.sentence.tokens.length; i++) {
 
       const ana = this.sentence.tokens[i].analysis;
@@ -88,11 +91,18 @@ class Token extends Object {
 
   // token insertion, removal, moving
   insertBefore(token) {
+    const indices = this.getIndices();
+    if (!this.sentence)
+      return null;
 
-
+    return this.sentence.insertTokenAt(indices, token);
   }
   insertAfter(token) {
+    const indices = this.getIndicesAfter();
+    if (!this.sentence)
+      return null;
 
+    return this.sentence.insertTokenAt(indices, token);
   }
   insertSubTokenBefore(subToken) {
 
