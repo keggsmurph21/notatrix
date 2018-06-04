@@ -54,6 +54,7 @@ class Sentence extends Object {
     return this;
   }
 
+  // sub-object getters
   getComment(index) {
     return this.comments[index] || null;
   }
@@ -85,6 +86,76 @@ class Sentence extends Object {
       }
     }
     return null;
+  }
+  getByIndices(indices) {
+    if (indices.super === null)
+      return null;
+
+    if (indices.sub === null)
+      return this.tokens[indices.super];
+
+    if (!this.tokens[indices.super])
+      return null;
+
+    return this.tokens[indices.super].subTokens[indices.sub];
+  }
+
+  // manipulate token array
+  insertTokenAt(indices, token) {
+    if (indices.super === null)
+      throw new E.TransformationError('can\'t insert at null index')
+
+    if (indices.sub === null) {
+
+      token.sentence = this;
+      token.forEach(analysis => {
+        analysis.sentence = this;
+      });
+
+      this.tokens = this.tokens.slice(0, indices.super)
+        .concat(token)
+        .concat(this.tokens.slice(indices.super));
+
+      return token;
+    
+    } else {
+      if (token.isSuperToken) {
+        throw new E.TransformationError('can\'t insert superToken as subToken');
+
+      } else {
+
+        const superToken = this.tokens[indices.super];
+        if (!superToken)
+          throw new E.TransformationError('can\'t insert a subToken to null');
+
+        token.sentence = this;
+        token.forEach(analysis => {
+          analysis.sentence = this;
+          analysis.superToken = superToken;
+        });
+
+        superToken.insertSubToken(indices.sub, token);
+        /*
+        superToken.subTokens = superToken.subTokens.slice(0, indices.super)
+          .concat(token)
+          .concat(superToken.subTokens.slice(indices.super));*/
+
+        return token;
+
+      }
+    }
+  }
+  removeTokenAt(indices, token) {
+    if (indices.super === null)
+      return null;
+
+
+  }
+  moveTokenAt(sourceIndices, targetIndices) {
+    if (sourceIndices.super === null || targetIndices.super === null)
+      return null;
+
+
   }
 
   // external formats
@@ -221,7 +292,13 @@ class Sentence extends Object {
     });
     return this.params;
   }
+  get eles() {
 
+  }
+
+  clean() {
+
+  }
   index() {
     let id = 1; // CoNLL-U indexes start at 1 (because 0 is root)
     _.each(this.tokens, token => {
