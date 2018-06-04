@@ -6,33 +6,33 @@ Experimental notational system for ud-annotatrix, combines CoNLL-U and CG3 into 
 
 First require the module:
 ```js
-var Nx = require('notatrix');
+var nx = require('notatrix');
 ```
 
 ### Initializing
 Then you can create a `Sentence` from ...
  - a `CoNLL-U` serial string
 ```js
-var sent = new Nx.Sentence();
+var sent = new nx.Sentence();
 sent.conllu = some_serial_string;
 ```
 
 - a `CG3` serial string
 ```js
-var sent = new Nx.Sentence();
+var sent = new nx.Sentence();
 sent.cg3 = some_serial_string;
 ```
 
 - a set of parameters
 ```js
-var sent = new Nx.Sentence();
+var sent = new nx.Sentence();
 sent.params = { form: 'did', lemma: 'do', upostag: 'vblex' };
 ```
 
 ### Getting
 Get the current analysis of the `n`th token (incl. subtokens)
 ```js
-var sent = new Nx.Sentence();
+var sent = new nx.Sentence();
 sent.conllu = `1	They	they	PRON	PRP	Case=Nom|Number=Plur	2	nsubj	2:nsubj|4:nsubj	_
 2	buy	buy	VERB	VBP	Number=Plur|Person=3|Tense=Pres	0	root	0:root	_
 3	and	and	CONJ	CC	_	4	cc	4:cc	_
@@ -55,7 +55,7 @@ Copy the (minified) file `build/notatrix.min.js` to your public javascript path 
 
 Then you can access it with by including
 ```js
-var Nx = require('notatrix');
+var nx = require('notatrix');
 ```
 in your javascript.
 
