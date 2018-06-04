@@ -1779,6 +1779,9 @@ var Analysis = function (_Object) {
     key: 'removeHead',
     value: function removeHead(head) {}
   }, {
+    key: 'changeHead',
+    value: function changeHead(head, deprel) {}
+  }, {
     key: 'eachDep',
     value: function eachDep(callback) {
       _.each(this._deps, function (dep, i) {
@@ -1788,10 +1791,73 @@ var Analysis = function (_Object) {
     }
   }, {
     key: 'addDep',
-    value: function addDep(dep, deprel) {}
+    value: function addDep(dep, deprel) {
+      if (!(dep instanceof Analysis)) {
+        this.sentence.logger.warn('can\'t add dep');
+        return null;
+      }
+
+      // first try to change an existing one (don't want duplicate deps)
+      if (this.changeDep(dep, deprel)) return this;
+
+      this._deps.push({
+        token: dep,
+        deprel: deprel
+      });
+      dep._heads.push({
+        token: this,
+        deprel: deprel
+      });
+
+      return this;
+    }
   }, {
     key: 'removeDep',
-    value: function removeDep(dep) {}
+    value: function removeDep(dep) {
+      var _this2 = this;
+
+      if (!(dep instanceof Analysis)) {
+        this.sentence.logger.warn('can\'t remove dep');
+        return null;
+      }
+
+      var removing = -1;
+      this.eachDep(function (token, deprel, i) {
+        if (token === dep) removing = i;
+      });
+      if (removing > -1) this._deps.splice(removing, 1);
+
+      removing = -1;
+      dep.eachHead(function (token, deprel, i) {
+        if (token === _this2) removing = i;
+      });
+      if (removing > -1) dep._heads.splice(removing, 1);
+
+      return this;
+    }
+  }, {
+    key: 'changeDep',
+    value: function changeDep(dep, deprel) {
+      var _this3 = this;
+
+      if (!(dep instanceof Analysis)) {
+        this.sentence.logger.warn('can\'t change dep');
+        return null;
+      }
+
+      var done = false;
+      this.eachDep(function (token, _deprel, i) {
+        if (token === dep) {
+          _this3._deps[i].deprel = deprel;
+          done = true;
+        }
+      });
+      dep.eachHead(function (token, _deprel, i) {
+        if (token === _this3) dep._heads[i].deprel = deprel;
+      });
+
+      return done ? this : null;
+    }
 
     // field getters and setters
 
@@ -1803,11 +1869,11 @@ var Analysis = function (_Object) {
   }, {
     key: 'nx',
     get: function get() {
-      var _this2 = this;
+      var _this4 = this;
 
       var values = {};
       _.each(fields, function (field) {
-        values[field] = _this2[field];
+        values[field] = _this4[field];
       });
 
       return {
@@ -1831,10 +1897,10 @@ var Analysis = function (_Object) {
   }, {
     key: 'conllu',
     get: function get() {
-      var _this3 = this;
+      var _this5 = this;
 
       return this.id + '\t' + _.map(fields, function (field) {
-        return _this3[field] || fallback;
+        return _this5[field] || fallback;
       }).join('\t');
     }
   }, {
@@ -1843,7 +1909,7 @@ var Analysis = function (_Object) {
   }, {
     key: 'form',
     get: function get() {
-      return this.sentence.options.helpWithForm ? this._form || this._lemma : this._form;
+      return this.sentence.options.help.form ? this._form || this._lemma : this._form;
     },
     set: function set(form) {
       this._form = sanitize(form);
@@ -1851,7 +1917,7 @@ var Analysis = function (_Object) {
   }, {
     key: 'lemma',
     get: function get() {
-      return this.sentence.options.helpWithLemma ? this._lemma || this._form : this._lemma;
+      return this.sentence.options.help.lemma ? this._lemma || this._form : this._lemma;
     },
     set: function set(lemma) {
       this._lemma = sanitize(lemma);
@@ -1894,13 +1960,13 @@ var Analysis = function (_Object) {
       }
     },
     set: function set(heads) {
-      var _this4 = this;
+      var _this6 = this;
 
       if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
       this._heads = heads.map(function (head) {
         return {
-          token: _this4.sentence.getById(head.token) || head.token,
+          token: _this6.sentence.getById(head.token) || head.token,
           deprel: head.deprel
         };
       });
@@ -1918,24 +1984,21 @@ var Analysis = function (_Object) {
   }, {
     key: 'deps',
     get: function get() {
-      if (this.sentence.options.showEnhanced) {
-        var deps = [];
-        this.eachDep(function (token, deprel) {
-          deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
-        });
-        return deps.join('|');
-      } else {
-        return this._deps.length ? this._deps[0].id || this._deps[0] : null;
-      }
+      // don't worry about enhanced stuff for deps (always can be multiple)
+      var deps = [];
+      this.eachDep(function (token, deprel) {
+        deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+      });
+      return deps.join('|');
     },
     set: function set(deps) {
-      var _this5 = this;
+      var _this7 = this;
 
       if (typeof deps === 'string') deps = parseEnhancedString(deps);
 
       this._deps = deps.map(function (dep) {
         return {
-          token: _this5.sentence.getById(dep.token) || dep.token,
+          token: _this7.sentence.getById(dep.token) || dep.token,
           deprel: dep.deprel
         };
       });
@@ -2163,7 +2226,7 @@ var Sentence = function (_Object) {
   }, {
     key: 'index',
     value: function index() {
-      var id = 1;
+      var id = 1; // CoNLL-U indexes start at 1 (because 0 is root)
       _.each(this.tokens, function (token) {
         id = token.index(id);
       });

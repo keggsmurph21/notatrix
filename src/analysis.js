@@ -110,6 +110,9 @@ class Analysis extends Object {
   removeHead(head) {
 
   }
+  changeHead(head, deprel) {
+
+  }
   eachDep(callback) {
     _.each(this._deps, (dep, i) => {
       callback(dep.token, dep.deprel, i);
@@ -117,15 +120,74 @@ class Analysis extends Object {
     return this;
   }
   addDep(dep, deprel) {
+    if (!(dep instanceof Analysis)) {
+      this.sentence.logger.warn('can\'t add dep');
+      return null;
+    }
 
+    // first try to change an existing one (don't want duplicate deps)
+    if (this.changeDep(dep, deprel))
+      return this;
+
+    this._deps.push({
+      token: dep,
+      deprel: deprel
+    });
+    dep._heads.push({
+      token: this,
+      deprel: deprel
+    });
+
+    return this;
   }
   removeDep(dep) {
+    if (!(dep instanceof Analysis)) {
+      this.sentence.logger.warn('can\'t remove dep');
+      return null;
+    }
 
+    let removing = -1;
+    this.eachDep((token, deprel, i) => {
+      if (token === dep)
+        removing = i;
+    });
+    if (removing > -1)
+      this._deps.splice(removing, 1);
+
+    removing = -1
+    dep.eachHead((token, deprel, i) => {
+      if (token === this)
+        removing = i;
+    });
+    if (removing > -1)
+      dep._heads.splice(removing, 1);
+
+    return this;
+  }
+  changeDep(dep, deprel) {
+    if (!(dep instanceof Analysis)) {
+      this.sentence.logger.warn('can\'t change dep');
+      return null;
+    }
+
+    let done = false;
+    this.eachDep((token, _deprel, i) => {
+      if (token === dep) {
+        this._deps[i].deprel = deprel;
+        done = true;
+      }
+    });
+    dep.eachHead((token, _deprel, i) => {
+      if (token === this)
+        dep._heads[i].deprel = deprel;
+    });
+
+    return done ? this : null;
   }
 
   // field getters and setters
   get form() {
-    return this.sentence.options.helpWithForm
+    return this.sentence.options.help.form
       ? this._form || this._lemma
       : this._form;
   }
@@ -133,7 +195,7 @@ class Analysis extends Object {
     this._form = sanitize(form);
   }
   get lemma() {
-    return this.sentence.options.helpWithLemma
+    return this.sentence.options.help.lemma
       ? this._lemma || this._form
       : this._lemma;
   }
@@ -192,18 +254,12 @@ class Analysis extends Object {
     this._deprel = sanitize(deprel);
   }
   get deps() {
-    if (this.sentence.options.showEnhanced) {
-      let deps = [];
-      this.eachDep((token, deprel) => {
-        deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
-      });
-      return deps.join('|');
-
-    } else {
-      return this._deps.length
-        ? this._deps[0].id || this._deps[0]
-        : null;
-    }
+    // don't worry about enhanced stuff for deps (always can be multiple)
+    let deps = [];
+    this.eachDep((token, deprel) => {
+      deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+    });
+    return deps.join('|');
   }
   set deps(deps) {
     if (typeof deps === 'string')

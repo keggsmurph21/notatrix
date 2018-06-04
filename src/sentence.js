@@ -223,7 +223,7 @@ class Sentence extends Object {
   }
 
   index() {
-    let id = 1;
+    let id = 1; // CoNLL-U indexes start at 1 (because 0 is root)
     _.each(this.tokens, token => {
       id = token.index(id);
     });
