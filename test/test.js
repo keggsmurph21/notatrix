@@ -7,6 +7,7 @@ const data = require('./data/index');
 const Sentence = require('../src/sentence');
 const Token = require('../src/token');
 const Analysis = require('../src/analysis');
+const E = require('../src/errors');
 
 function clean(str) {
   return str.trim().replace(/[ \t]+/g, '\t').trim();
@@ -119,6 +120,41 @@ describe('Sentence', () => {
             });
           }
         }
+
+        it(`should do nothing when given an invalid index to insert at`, () => {
+          const original = s.conllu;
+          const token = new Token();
+          token.params = { form: 'invalid' };
+
+          let op = () => { s.insertTokenAt({ super: null, sub: null }, token); };
+          assert.throws(op, E.TransformationError);
+          assert.equal(original, s.conllu);
+        });
+
+        it(`should add tokens even when one of our indices are "out of bounds"`, () => { // thanks to Array.slice()
+
+          const original = s.length;
+          const token = new Token();
+          token.params = { form: 'invalid' };
+
+          console.log(s.length);
+          s.insertTokenAt({ super: s.length + 10, sub: null }, token);
+          assert.equal(original, s.length - 1);
+          console.log(s.length);
+
+          s.insertTokenAt({ super: -10, sub: null }, token);
+          assert.equal(original, s.length - 2);
+          console.log(s.length);
+
+          let r = s.insertTokenAt({ super: 0, sub: s.length + 10 }, token);
+          console.log(s.length);
+          console.log(s.getToken(8));
+          assert.equal(original, s.length - 3);
+
+          s.insertTokenAt({ super: 0, sub: -10 }, token);
+          assert.equal(original, s.length - 4);
+
+        });
       });
     });
   });

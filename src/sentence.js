@@ -88,7 +88,6 @@ class Sentence extends Object {
     return null;
   }
   getByIndices(indices) {
-    console.log(indices);
     if (indices.super === null)
       return null;
 
@@ -103,7 +102,6 @@ class Sentence extends Object {
 
   // manipulate token array
   insertTokenAt(indices, token) {
-    console.log(indices);
     if (indices.super === null)
       throw new E.TransformationError('can\'t insert at null index')
 
@@ -136,9 +134,11 @@ class Sentence extends Object {
           analysis.superToken = superToken;
         });
 
+        superToken.insertSubToken(indices.sub, token);
+        /*
         superToken.subTokens = superToken.subTokens.slice(0, indices.super)
           .concat(token)
-          .concat(superToken.subTokens.slice(indices.super));
+          .concat(superToken.subTokens.slice(indices.super));*/
 
         return token;
 
