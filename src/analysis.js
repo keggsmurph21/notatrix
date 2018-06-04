@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
+const E = require('./errors');
 
 const fields = [
   // NB: 'id' is not kept
@@ -92,7 +93,7 @@ class Analysis extends Object {
   set head(head) {
     head = sanitize(head);
     let h = this.sentence.getTokenById(head);
-    //console.log('set', head, h);
+    console.log('set', head, h);
     this._head = head;
   }
   get deprel() {

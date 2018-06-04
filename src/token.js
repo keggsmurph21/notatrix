@@ -2,6 +2,7 @@
 
 const _ = require('underscore');
 
+const E = require('./errors');
 const Analysis = require('./analysis');
 
 function split(str) {
@@ -96,14 +97,9 @@ class Token extends Object {
   }
   get conllu() {
     if (this.isAmbiguous)
-      throw new Error('Token is ambiguous, can\'t be converted to CoNNL-U');
+      throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
 
-    let ret = [ this.analysis.conllu ].concat(
-      _.map(this.analysis.subTokens, subToken => {
-        return subToken.analysis.conllu;
-      })
-    );
-    return ret;
+    return this.analysis.conllu;
   }
   set conllu(serial) {
 

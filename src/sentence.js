@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
+const E = require('./errors');
 const Token = require('./token');
 
 const regex = {
@@ -81,11 +82,19 @@ class Sentence extends Object {
     });
 
     let tokens = [];
-    let id = 1;
-    _.each(this.tokens, token => {
-      id = token.index(id);
-      tokens = tokens.concat(token.conllu);
-    });
+    this.index();
+
+    try {
+
+      this.forEach(token => {
+        tokens.push(token.conllu);
+      });
+
+    } catch (e) {
+      if (! e instanceof E.InvalidCoNLLUError)
+        throw e;
+      return null;
+    }
 
     return comments.concat(tokens).join('\n');
   }
@@ -127,6 +136,7 @@ class Sentence extends Object {
       }
     }
 
+    this.attachHeads();
     return this.conllu;
   }
   get cg3() {
@@ -142,8 +152,18 @@ class Sentence extends Object {
 
   }
 
+  index() {
+    let id = 1;
+    _.each(this.tokens, token => {
+      id = token.index(id);
+    });
+    return this;
+  }
   attachHeads() {
-
+    this.forEach(token => {
+      token.analysis.head = token.analysis.head;
+    });
+    return this;
   }
 }
 

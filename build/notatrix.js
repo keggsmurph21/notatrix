@@ -1706,6 +1706,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _ = require('underscore');
+var E = require('./errors');
 
 var fields = [
 // NB: 'id' is not kept
@@ -1812,7 +1813,7 @@ var Analysis = function (_Object) {
     set: function set(head) {
       head = sanitize(head);
       var h = this.sentence.getTokenById(head);
-      //console.log('set', head, h);
+      console.log('set', head, h);
       this._head = head;
     }
   }, {
@@ -1859,18 +1860,90 @@ var Analysis = function (_Object) {
 
 module.exports = Analysis;
 
-},{"underscore":1}],3:[function(require,module,exports){
+},{"./errors":3,"underscore":1}],3:[function(require,module,exports){
+'use strict';
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NotatrixError = function (_Error) {
+  _inherits(NotatrixError, _Error);
+
+  function NotatrixError() {
+    var _ref;
+
+    _classCallCheck(this, NotatrixError);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(this, (_ref = NotatrixError.__proto__ || Object.getPrototypeOf(NotatrixError)).call.apply(_ref, [this].concat(args)));
+  }
+
+  return NotatrixError;
+}(Error);
+
+var InvalidCG3Error = function (_NotatrixError) {
+  _inherits(InvalidCG3Error, _NotatrixError);
+
+  function InvalidCG3Error() {
+    var _ref2;
+
+    _classCallCheck(this, InvalidCG3Error);
+
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    return _possibleConstructorReturn(this, (_ref2 = InvalidCG3Error.__proto__ || Object.getPrototypeOf(InvalidCG3Error)).call.apply(_ref2, [this].concat(args)));
+  }
+
+  return InvalidCG3Error;
+}(NotatrixError);
+
+var InvalidCoNLLUError = function (_NotatrixError2) {
+  _inherits(InvalidCoNLLUError, _NotatrixError2);
+
+  function InvalidCoNLLUError() {
+    var _ref3;
+
+    _classCallCheck(this, InvalidCoNLLUError);
+
+    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return _possibleConstructorReturn(this, (_ref3 = InvalidCoNLLUError.__proto__ || Object.getPrototypeOf(InvalidCoNLLUError)).call.apply(_ref3, [this].concat(args)));
+  }
+
+  return InvalidCoNLLUError;
+}(NotatrixError);
+
+module.exports = {
+
+  NotatrixError: NotatrixError,
+  InvalidCG3Error: InvalidCG3Error,
+  InvalidCoNLLUError: InvalidCoNLLUError
+
+};
+
+},{}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = {
 
+  'Error': require('./errors'),
   Sentence: require('./sentence'),
   Token: require('./token'),
   Analysis: require('./analysis')
 
 };
 
-},{"./analysis":2,"./sentence":4,"./token":5}],4:[function(require,module,exports){
+},{"./analysis":2,"./errors":3,"./sentence":5,"./token":6}],5:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1882,6 +1955,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _ = require('underscore');
+var E = require('./errors');
 var Token = require('./token');
 
 var regex = {
@@ -1962,8 +2036,22 @@ var Sentence = function (_Object) {
       return null;
     }
   }, {
+    key: 'index',
+    value: function index() {
+      var id = 1;
+      _.each(this.tokens, function (token) {
+        id = token.index(id);
+      });
+      return this;
+    }
+  }, {
     key: 'attachHeads',
-    value: function attachHeads() {}
+    value: function attachHeads() {
+      this.forEach(function (token) {
+        token.analysis.head = token.analysis.head;
+      });
+      return this;
+    }
   }, {
     key: 'length',
     get: function get() {
@@ -1983,11 +2071,17 @@ var Sentence = function (_Object) {
       });
 
       var tokens = [];
-      var id = 1;
-      _.each(this.tokens, function (token) {
-        id = token.index(id);
-        tokens = tokens.concat(token.conllu);
-      });
+      this.index();
+
+      try {
+
+        this.forEach(function (token) {
+          tokens.push(token.conllu);
+        });
+      } catch (e) {
+        if (!e instanceof E.InvalidCoNLLUError) throw e;
+        return null;
+      }
 
       return comments.concat(tokens).join('\n');
     },
@@ -2023,6 +2117,7 @@ var Sentence = function (_Object) {
         }
       }
 
+      this.attachHeads();
       return this.conllu;
     }
   }, {
@@ -2040,7 +2135,7 @@ var Sentence = function (_Object) {
 
 module.exports = Sentence;
 
-},{"./token":5,"underscore":1}],5:[function(require,module,exports){
+},{"./errors":3,"./token":6,"underscore":1}],6:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2053,6 +2148,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var _ = require('underscore');
 
+var E = require('./errors');
 var Analysis = require('./analysis');
 
 function split(str) {
@@ -2164,12 +2260,9 @@ var Token = function (_Object) {
   }, {
     key: 'conllu',
     get: function get() {
-      if (this.isAmbiguous) throw new Error('Token is ambiguous, can\'t be converted to CoNNL-U');
+      if (this.isAmbiguous) throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
 
-      var ret = [this.analysis.conllu].concat(_.map(this.analysis.subTokens, function (subToken) {
-        return subToken.analysis.conllu;
-      }));
-      return ret;
+      return this.analysis.conllu;
     },
     set: function set(serial) {
 
@@ -2246,4 +2339,4 @@ deps: undefined,
 misc: undefined
 */
 
-},{"./analysis":2,"underscore":1}]},{},[3]);
+},{"./analysis":2,"./errors":3,"underscore":1}]},{},[4]);
