@@ -1907,6 +1907,9 @@ var Analysis = function (_Object) {
     key: 'cg3',
     get: function get() {}
   }, {
+    key: 'eles',
+    get: function get() {}
+  }, {
     key: 'form',
     get: function get() {
       return this.sentence.options.help.form ? this._form || this._lemma : this._form;
@@ -2096,11 +2099,30 @@ var InvalidCoNLLUError = function (_NotatrixError2) {
   return InvalidCoNLLUError;
 }(NotatrixError);
 
+var TransformationError = function (_NotatrixError3) {
+  _inherits(TransformationError, _NotatrixError3);
+
+  function TransformationError() {
+    var _ref4;
+
+    _classCallCheck(this, TransformationError);
+
+    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+
+    return _possibleConstructorReturn(this, (_ref4 = TransformationError.__proto__ || Object.getPrototypeOf(TransformationError)).call.apply(_ref4, [this].concat(args)));
+  }
+
+  return TransformationError;
+}(NotatrixError);
+
 module.exports = {
 
   NotatrixError: NotatrixError,
   InvalidCG3Error: InvalidCG3Error,
-  InvalidCoNLLUError: InvalidCoNLLUError
+  InvalidCoNLLUError: InvalidCoNLLUError,
+  TransformationError: TransformationError
 
 };
 
@@ -2180,6 +2202,9 @@ var Sentence = function (_Object) {
       }
       return this;
     }
+
+    // sub-object getters
+
   }, {
     key: 'getComment',
     value: function getComment(index) {
@@ -2220,9 +2245,77 @@ var Sentence = function (_Object) {
       }
       return null;
     }
+  }, {
+    key: 'getByIndices',
+    value: function getByIndices(indices) {
+      if (indices.super === null) return null;
+
+      if (indices.sub === null) return this.tokens[indices.super];
+
+      if (!this.tokens[indices.super]) return null;
+
+      return this.tokens[indices.super].subTokens[indices.sub];
+    }
+
+    // manipulate token array
+
+  }, {
+    key: 'insertTokenAt',
+    value: function insertTokenAt(indices, token) {
+      var _this2 = this;
+
+      if (indices.super === null) throw new E.TransformationError('can\'t insert at null index');
+
+      if (indices.sub === null) {
+
+        token.sentence = this;
+        token.forEach(function (analysis) {
+          analysis.sentence = _this2;
+        });
+
+        this.tokens = this.tokens.slice(0, indices.super).concat(token).concat(this.tokens.slice(indices.super));
+
+        return token;
+      } else {
+        if (token.isSuperToken) {
+          throw new E.TransformationError('can\'t insert superToken as subToken');
+        } else {
+
+          var superToken = this.tokens[indices.super];
+          if (!superToken) throw new E.TransformationError('can\'t insert a subToken to null');
+
+          token.sentence = this;
+          token.forEach(function (analysis) {
+            analysis.sentence = _this2;
+            analysis.superToken = superToken;
+          });
+
+          superToken.insertSubToken(indices.sub, token);
+          /*
+          superToken.subTokens = superToken.subTokens.slice(0, indices.super)
+            .concat(token)
+            .concat(superToken.subTokens.slice(indices.super));*/
+
+          return token;
+        }
+      }
+    }
+  }, {
+    key: 'removeTokenAt',
+    value: function removeTokenAt(indices, token) {
+      if (indices.super === null) return null;
+    }
+  }, {
+    key: 'moveTokenAt',
+    value: function moveTokenAt(sourceIndices, targetIndices) {
+      if (sourceIndices.super === null || targetIndices.super === null) return null;
+    }
 
     // external formats
 
+  }, {
+    key: 'clean',
+    value: function clean() {}
   }, {
     key: 'index',
     value: function index() {
@@ -2369,15 +2462,18 @@ var Sentence = function (_Object) {
       }
     },
     set: function set(paramsList) {
-      var _this2 = this;
+      var _this3 = this;
 
       _.each(paramsList, function (params) {
-        var token = new Token(_this2);
+        var token = new Token(_this3);
         token.params = params;
-        _this2.tokens.push(token);
+        _this3.tokens.push(token);
       });
       return this.params;
     }
+  }, {
+    key: 'eles',
+    get: function get() {}
   }]);
 
   return Sentence;
@@ -2442,6 +2538,95 @@ var Token = function (_Object) {
       return this;
     }
   }, {
+    key: 'getIndices',
+
+
+    // getting indices for current analysis
+    value: function getIndices() {
+      if (!this.sentence) return { super: null, sub: null };
+
+      for (var i = 0; i < this.sentence.tokens.length; i++) {
+
+        var ana = this.sentence.tokens[i].analysis;
+        if (ana === this.analysis) return { super: i, sub: null };
+
+        for (var j = 0; j < ana.subTokens.length; j++) {
+          var subAna = ana.subTokens[j].analysis;
+          if (subAna === this.analysis) return { super: i, sub: j };
+        }
+      }
+
+      this.sentence.logger.warn('token not in current analysis');
+      return { super: null, sub: null };
+    }
+  }, {
+    key: 'getIndicesAfter',
+    value: function getIndicesAfter() {
+      var current = this.getIndices();
+
+      if (current.super === null) {
+        // pass, can't find
+      } else if (current.sub === null) {
+        current.super++;
+      } else {
+        current.sub++;
+      }
+
+      return current;
+    }
+
+    // token insertion, removal, moving
+
+  }, {
+    key: 'insertBefore',
+    value: function insertBefore(token) {
+      var indices = this.getIndices();
+      if (!this.sentence) return null;
+
+      return this.sentence.insertTokenAt(indices, token);
+    }
+  }, {
+    key: 'insertAfter',
+    value: function insertAfter(token) {
+      var indices = this.getIndicesAfter();
+      if (!this.sentence) return null;
+
+      return this.sentence.insertTokenAt(indices, token);
+    }
+  }, {
+    key: 'insertSubTokenBefore',
+    value: function insertSubTokenBefore(subToken) {}
+  }, {
+    key: 'insertSubTokenAfter',
+    value: function insertSubTokenAfter(subToken) {}
+  }, {
+    key: 'remove',
+    value: function remove() {}
+  }, {
+    key: 'moveBefore',
+    value: function moveBefore(token) {}
+  }, {
+    key: 'moveAfter',
+    value: function moveAfter(token) {}
+  }, {
+    key: 'makeSubTokenOf',
+    value: function makeSubTokenOf(token) {}
+
+    // token combining, merging, splitting
+
+  }, {
+    key: 'combineWith',
+    value: function combineWith(token) {}
+  }, {
+    key: 'mergeWith',
+    value: function mergeWith(token) {}
+  }, {
+    key: 'split',
+    value: function split() {}
+
+    // internal format
+
+  }, {
     key: 'insertSubToken',
     value: function insertSubToken(index, token) {
       if (token === undefined) {
@@ -2498,9 +2683,6 @@ var Token = function (_Object) {
       this._current = current;
       return this.current;
     }
-
-    // internal format
-
   }, {
     key: 'analysis',
     get: function get() {
@@ -2577,6 +2759,9 @@ var Token = function (_Object) {
       this.analysis = params;
       return this.params;
     }
+  }, {
+    key: 'eles',
+    get: function get() {}
 
     // bool stuff
 
