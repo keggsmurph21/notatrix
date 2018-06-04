@@ -3,6 +3,7 @@
 const _ = require('underscore');
 const E = require('./errors');
 
+const fallback = '_';
 const fields = [
   // NB: 'id' is not kept here
   'form',
@@ -61,12 +62,21 @@ class Analysis extends Object {
         return subToken.id;
       })
     };
-    
+
+  }
+  get text() {
+    if (this.form && (this.form !== fallback))
+      return this.form;
+
+    if (this.lemma && (this.lemma !== fallback))
+      return this.lemma;
+
+    return fallback;
   }
   get conllu() {
     return `${this.id}\t${
       _.map(fields, field => {
-        return this[field] || '_';
+        return this[field] || fallbacks;
       }).join('\t')
     }`;
   }

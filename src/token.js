@@ -111,6 +111,9 @@ class Token extends Object {
       analyses: analyses
     };
   }
+  get text() {
+    return this.analysis.text;
+  }
   get conllu() {
     if (this.isAmbiguous)
       throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');

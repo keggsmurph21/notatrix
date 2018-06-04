@@ -98,6 +98,14 @@ class Sentence extends Object {
       tokens: tokens
     }, null, this.options.prettyOutput ? 2 : 0);
   }
+  get text() {
+    let tokens = [];
+    this.forEach(token => {
+      if (!token.isSuperToken)
+        tokens.push(token.text);
+    });
+    return tokens.join(' ');
+  }
   get conllu() {
 
     if (!this.conlluLoaded)

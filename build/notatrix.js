@@ -1708,6 +1708,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _ = require('underscore');
 var E = require('./errors');
 
+var fallback = '_';
 var fields = [
 // NB: 'id' is not kept here
 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
@@ -1772,12 +1773,21 @@ var Analysis = function (_Object) {
       };
     }
   }, {
+    key: 'text',
+    get: function get() {
+      if (this.form && this.form !== fallback) return this.form;
+
+      if (this.lemma && this.lemma !== fallback) return this.lemma;
+
+      return fallback;
+    }
+  }, {
     key: 'conllu',
     get: function get() {
       var _this3 = this;
 
       return this.id + '\t' + _.map(fields, function (field) {
-        return _this3[field] || '_';
+        return _this3[field] || fallbacks;
       }).join('\t');
     }
   }, {
@@ -2122,6 +2132,15 @@ var Sentence = function (_Object) {
       }, null, this.options.prettyOutput ? 2 : 0);
     }
   }, {
+    key: 'text',
+    get: function get() {
+      var tokens = [];
+      this.forEach(function (token) {
+        if (!token.isSuperToken) tokens.push(token.text);
+      });
+      return tokens.join(' ');
+    }
+  }, {
     key: 'conllu',
     get: function get() {
 
@@ -2339,6 +2358,11 @@ var Token = function (_Object) {
         current: this._current,
         analyses: analyses
       };
+    }
+  }, {
+    key: 'text',
+    get: function get() {
+      return this.analysis.text;
     }
   }, {
     key: 'conllu',
