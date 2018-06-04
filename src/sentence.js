@@ -105,12 +105,10 @@ class Sentence extends Object {
   insertTokenAt(indices, token) {
     console.log(indices);
     if (indices.super === null)
-      return null;
+      throw new E.TransformationError('can\'t insert at null index')
 
-    if (token.isSubToken) {
+    if (indices.sub === null) {
 
-    } else {
-      // do more checking here
       token.sentence = this;
       token.forEach(analysis => {
         analysis.sentence = this;
@@ -121,6 +119,30 @@ class Sentence extends Object {
         .concat(this.tokens.slice(indices.super));
 
       return token;
+    
+    } else {
+      if (token.isSuperToken) {
+        throw new E.TransformationError('can\'t insert superToken as subToken');
+
+      } else {
+
+        const superToken = this.tokens[indices.super];
+        if (!superToken)
+          throw new E.TransformationError('can\'t insert a subToken to null');
+
+        token.sentence = this;
+        token.forEach(analysis => {
+          analysis.sentence = this;
+          analysis.superToken = superToken;
+        });
+
+        superToken.subTokens = superToken.subTokens.slice(0, indices.super)
+          .concat(token)
+          .concat(superToken.subTokens.slice(indices.super));
+
+        return token;
+
+      }
     }
   }
   removeTokenAt(indices, token) {
