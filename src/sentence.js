@@ -93,6 +93,7 @@ class Sentence extends Object {
     } catch (e) {
       if (! e instanceof E.InvalidCoNLLUError)
         throw e;
+
       return null;
     }
 
@@ -136,8 +137,7 @@ class Sentence extends Object {
       }
     }
 
-    this.attachHeads();
-    return this.conllu;
+    return this.attachHeads().conllu;
   }
   get cg3() {
 
@@ -160,6 +160,7 @@ class Sentence extends Object {
     return this;
   }
   attachHeads() {
+    this.index();
     this.forEach(token => {
       token.analysis.head = token.analysis.head;
     });

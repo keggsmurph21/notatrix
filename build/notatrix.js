@@ -1808,13 +1808,11 @@ var Analysis = function (_Object) {
   }, {
     key: 'head',
     get: function get() {
-      return this._head; // ? this._head.id : this._head;
+      return this._head.id || this._head;
     },
     set: function set(head) {
       head = sanitize(head);
-      var h = this.sentence.getTokenById(head);
-      console.log('set', head, h);
-      this._head = head;
+      this._head = this.sentence.getTokenById(head) || head;
     }
   }, {
     key: 'deprel',
@@ -2047,6 +2045,7 @@ var Sentence = function (_Object) {
   }, {
     key: 'attachHeads',
     value: function attachHeads() {
+      this.index();
       this.forEach(function (token) {
         token.analysis.head = token.analysis.head;
       });
@@ -2080,6 +2079,7 @@ var Sentence = function (_Object) {
         });
       } catch (e) {
         if (!e instanceof E.InvalidCoNLLUError) throw e;
+
         return null;
       }
 
@@ -2117,8 +2117,7 @@ var Sentence = function (_Object) {
         }
       }
 
-      this.attachHeads();
-      return this.conllu;
+      return this.attachHeads().conllu;
     }
   }, {
     key: 'cg3',

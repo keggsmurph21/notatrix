@@ -88,13 +88,11 @@ class Analysis extends Object {
     this._feats = sanitize(feats);
   }
   get head() {
-    return this._head; // ? this._head.id : this._head;
+    return this._head.id || this._head;
   }
   set head(head) {
     head = sanitize(head);
-    let h = this.sentence.getTokenById(head);
-    console.log('set', head, h);
-    this._head = head;
+    this._head = this.sentence.getTokenById(head) || head;
   }
   get deprel() {
     return this._deprel;
