@@ -19,25 +19,32 @@ class Sentence extends Object {
 
     this.tokens = [];
   }
-  get length() {
-    return this.tokens.length;
+  get length() { // total number of tokens/subtokens, use this.tokens.length for
+    let acc = 0;
+    for (let i=0; i<this.tokens.length; i++) {
+      acc++;
+      for (let j=0; j<this.tokens[i].analysis.length; j++) {
+        acc++;
+      }
+    }
+    return acc;
   }
 
   getComment(index) {
     return this.comments[index] || null;
   }
   getToken(index) { // get the <index>th token or subtoken, assuming current analysis
-    let i=0;
-    while (i<this.length) {
-      let tok = this.tokens[i];
-      if (i===index)
-        return tok;
-      for (let j=0; j<tok.analysis.length; j++) {
-        i++;
-        if (i===index)
-          return tok.analysis.subTokens[j];
+    let t=0;
+    for (let i=0; i<this.tokens.length; i++) {
+      const token = this.tokens[i];
+      if (t === index)
+        return token;
+      t++;
+      for (let j=0; j<token.subTokens.length; j++) {
+        if (t === index)
+          return token.subTokens[j];
+        t++;
       }
-      i++;
     }
     return null;
   }
@@ -46,17 +53,17 @@ class Sentence extends Object {
     return tok ? tok.analysis : null;
   }
   getTokenById(index) { // get the token or subtoken by the given CoNLL-U index, assume current analysis
-    let i=0;
-    while (i<this.length) {
-      let ana = this.tokens[i].analysis;
-      if (ana.id===index)
-        return ana;
-      i++;
-      for (let j=0; j<ana.length; j++) {
-        let subAna = ana.tokens[j].analysis;
-        if (subAna.id===index)
-          return subAna;
-        i++;
+    let t=0;
+    for (let i=0; i<this.tokens.length; i++) {
+      const token = this.tokens[i];
+      if (token.analysis.id == index)
+        return token.analysis;
+      t++;
+      for (let j=0; j<token.subTokens.length; j++) {
+        const subToken = token.subTokens[j];
+        if (subToken.analysis.id == index)
+          return subToken.analysis;
+        t++;
       }
     }
     return null;

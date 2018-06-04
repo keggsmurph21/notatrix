@@ -1754,7 +1754,7 @@ var Analysis = function (_Object) {
     get: function get() {
       var _this2 = this;
 
-      return _.map(fields, function (field) {
+      return this.id + '\t' + _.map(fields, function (field) {
         return _this2[field] || '_';
       }).join('\t');
     }
@@ -1912,15 +1912,15 @@ var Sentence = function (_Object) {
     key: 'getToken',
     value: function getToken(index) {
       // get the <index>th token or subtoken, assuming current analysis
-      var i = 0;
-      while (i < this.length) {
-        var tok = this.tokens[i];
-        if (i === index) return tok;
-        for (var j = 0; j < tok.analysis.length; j++) {
-          i++;
-          if (i === index) return tok.analysis.subTokens[j];
+      var t = 0;
+      for (var i = 0; i < this.tokens.length; i++) {
+        var token = this.tokens[i];
+        if (t === index) return token;
+        t++;
+        for (var j = 0; j < token.subTokens.length; j++) {
+          if (t === index) return token.subTokens[j];
+          t++;
         }
-        i++;
       }
       return null;
     }
@@ -1934,15 +1934,15 @@ var Sentence = function (_Object) {
     key: 'getTokenById',
     value: function getTokenById(index) {
       // get the token or subtoken by the given CoNLL-U index, assume current analysis
-      var i = 0;
-      while (i < this.length) {
-        var ana = this.tokens[i].analysis;
-        if (ana.id === index) return ana;
-        i++;
-        for (var j = 0; j < ana.length; j++) {
-          var subAna = ana.tokens[j].analysis;
-          if (subAna.id === index) return subAna;
-          i++;
+      var t = 0;
+      for (var i = 0; i < this.tokens.length; i++) {
+        var token = this.tokens[i];
+        if (token.analysis.id == index) return token.analysis;
+        t++;
+        for (var j = 0; j < token.subTokens.length; j++) {
+          var subToken = token.subTokens[j];
+          if (subToken.analysis.id == index) return subToken.analysis;
+          t++;
         }
       }
       return null;
@@ -1950,7 +1950,15 @@ var Sentence = function (_Object) {
   }, {
     key: 'length',
     get: function get() {
-      return this.tokens.length;
+      // total number of tokens/subtokens, use this.tokens.length for
+      var acc = 0;
+      for (var i = 0; i < this.tokens.length; i++) {
+        acc++;
+        for (var j = 0; j < this.tokens[i].analysis.length; j++) {
+          acc++;
+        }
+      }
+      return acc;
     }
   }, {
     key: 'conllu',
@@ -2144,8 +2152,8 @@ var Token = function (_Object) {
     get: function get() {
       if (this.isAmbiguous) throw new Error('Token is ambiguous, can\'t be converted to CoNNL-U');
 
-      var ret = [this.analysis.id + '\t' + this.analysis.conllu].concat(_.map(this.analysis.subTokens, function (subToken) {
-        return subToken.analysis.id + '\t' + subToken.analysis.conllu;
+      var ret = [this.analysis.conllu].concat(_.map(this.analysis.subTokens, function (subToken) {
+        return subToken.analysis.conllu;
       }));
       return ret;
     },

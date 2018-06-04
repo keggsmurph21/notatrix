@@ -45,9 +45,11 @@ class Analysis extends Object {
 
   // external formats
   get conllu() {
-    return _.map(fields, field => {
-      return this[field] || '_';
-    }).join('\t');
+    return `${this.id}\t${
+      _.map(fields, field => {
+        return this[field] || '_';
+      }).join('\t')
+    }`;
   }
   get cg3() {
 

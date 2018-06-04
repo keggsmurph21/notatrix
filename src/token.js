@@ -98,9 +98,9 @@ class Token extends Object {
     if (this.isAmbiguous)
       throw new Error('Token is ambiguous, can\'t be converted to CoNNL-U');
 
-    let ret = [ `${this.analysis.id}\t${this.analysis.conllu}` ].concat(
+    let ret = [ this.analysis.conllu ].concat(
       _.map(this.analysis.subTokens, subToken => {
-        return `${subToken.analysis.id}\t${subToken.analysis.conllu}`;
+        return subToken.analysis.conllu;
       })
     );
     return ret;
