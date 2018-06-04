@@ -24,6 +24,7 @@ class Sentence extends Object {
       helpWithLemma: true,
       prettyOutput: true
     });
+    this.logger = console;
 
     this.tokens = [];
   }
@@ -181,7 +182,31 @@ class Sentence extends Object {
 
   }
   get params() {
+    try {
+      let params = [];
+      this.forEach(token => {
+        if (token.isSuperToken || token.isSubToken)
+          throw new E.InvalidCoNLLUError();
+        if (token.isAmbiguous)
+          throw new E.InvalidCG3Error();
 
+        params.push(token.params);
+      });
+      return params;
+
+    } catch (e) {
+      if (e instanceof E.InvalidCoNLLUError) {
+        this.logger.warn('cannot get params for this sentence: contains MultiWordTokens');
+        return null;
+
+      } else if (e instanceof E.InvalidCG3Error) {
+        this.logger.warn('cannot get params for this sentence: contains ambiguous analyses');
+        return null;
+
+      } else {
+        throw e;
+      }
+    }
   }
   set params(params) {
 

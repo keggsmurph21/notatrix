@@ -2022,6 +2022,7 @@ var Sentence = function (_Object) {
       helpWithLemma: true,
       prettyOutput: true
     });
+    _this.logger = console;
 
     _this.tokens = [];
     return _this;
@@ -2207,7 +2208,28 @@ var Sentence = function (_Object) {
     set: function set(cg3) {}
   }, {
     key: 'params',
-    get: function get() {},
+    get: function get() {
+      try {
+        var params = [];
+        this.forEach(function (token) {
+          if (token.isSuperToken || token.isSubToken) throw new E.InvalidCoNLLUError();
+          if (token.isAmbiguous) throw new E.InvalidCG3Error();
+
+          params.push(token.params);
+        });
+        return params;
+      } catch (e) {
+        if (e instanceof E.InvalidCoNLLUError) {
+          this.logger.warn('cannot get params for this sentence: contains MultiWordTokens');
+          return null;
+        } else if (e instanceof E.InvalidCG3Error) {
+          this.logger.warn('cannot get params for this sentence: contains ambiguous analyses');
+          return null;
+        } else {
+          throw e;
+        }
+      }
+    },
     set: function set(params) {}
   }]);
 
@@ -2280,7 +2302,7 @@ var Token = function (_Object) {
         index = this.analysis.length;
       }
       if (!token instanceof Token) {
-        console.warn('token not an instance of Token');
+        this.logger.warn('token not an instance of Token');
         return false;
       }
 

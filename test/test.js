@@ -30,6 +30,7 @@ describe('Sentence', () => {
         const expected = clean(text);
         const actual = clean(s.conllu);
         assert.equal(expected, actual)
+
       });
     });
   });

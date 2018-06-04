@@ -70,7 +70,7 @@ class Token extends Object {
       index = this.analysis.length;
     }
     if (! token instanceof Token) {
-      console.warn('token not an instance of Token');
+      this.logger.warn('token not an instance of Token');
       return false;
     }
 
