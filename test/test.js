@@ -1,14 +1,5 @@
 'use strict';
 
-/*
-describe('Array', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.equal([1,2,3].indexOf(4), -1);
-    });
-  });
-});*/
-
 const _ = require('underscore');
 const assert = require('assert');
 
@@ -36,9 +27,9 @@ describe('Sentence', () => {
         const s = new Sentence();
         s.conllu = text;
 
-        const actual = clean(text);
-        const expected = clean(s.conllu);
-        assert.equal(actual, expected)
+        const expected = clean(text);
+        const actual = clean(s.conllu);
+        assert.equal(expected, actual)
       });
     });
   });
@@ -51,9 +42,9 @@ describe('Sentence', () => {
 
         const lines = text.trim().split('\n');
         it(`should get consistent number of comments and tokens`, () => {
-          const actual = lines.length;
-          const expected = s.comments.length + s.length;
-          assert.equal(actual, expected);
+          const expected = lines.length;
+          const actual = s.comments.length + s.length;
+          assert.equal(expected, actual);
         });
 
         let c = 0, t = 0;
@@ -61,24 +52,35 @@ describe('Sentence', () => {
 
           if (lines[i].startsWith('#')) {
             it(`should get comment by index`, () => {
-              const actual = lines[i].slice(1).trim();
-              const expected = s.getComment(c);
-              assert.equal(actual, expected);
+              const expected = lines[i].slice(1).trim();
+              const actual = s.getComment(c);
+              assert.equal(expected, actual);
               c++;
             });
           } else {
+
+            const expected = clean(lines[i]);
+            const token = s.getToken(t);
+            const index = lines[i].split(/[ \t]/)[0];
+            t++;
+
             it(`should get token by index-number`, () => {
-              const actual = clean(lines[i]);
-              const token = s.getToken(t)
-              const expected = clean(token.analysis.conllu);
-              assert.equal(actual, expected);
-              t++;
+              const actual = clean(token.analysis.conllu);
+              assert.equal(expected, actual);
             });
+
             it(`should get token by index-string`, () => {
-              const actual = clean(lines[i]);
-              const index = lines[i].split(/[ \t]/)[0];
-              const expected = clean(s.getTokenById(index).conllu);
-              assert.equal(actual, expected);
+              const actual = clean(s.getTokenById(index).conllu);
+              assert.equal(expected, actual);
+            });
+
+            _.each(token.analysis.head.match(/[0-9]+/g), match => {
+              match = parseInt(match);
+              if (match) { // catch 0 and NaN
+                it(`should have found a real head`, () => {
+                  assert.equal(true, s.getTokenById(match) instanceof Analysis);
+                });
+              }
             });
           }
         }
