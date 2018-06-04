@@ -48,9 +48,9 @@ console.log(books.conllu);
 
 ## Include
 
-Simply include the following after the `body` in your project's `html`
+Copy the (minified) file `build/notatrix.min.js` to your public javascript path (e.g. `public/js`), then simply include the following after the `body` in your project's `html`
 ```html
-<script src=/notatrix.min.js></script>
+<script src=/js/notatrix.min.js></script>
 ```
 
 Then you can access it with by including
