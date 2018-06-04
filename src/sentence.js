@@ -110,7 +110,7 @@ class Sentence extends Object {
   get conllu() {
 
     if (!this.conlluLoaded)
-      log.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
+      this.logger.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
 
     const comments = _.map(this.comments, comment => {
       return `# ${comment}`;
@@ -208,8 +208,13 @@ class Sentence extends Object {
       }
     }
   }
-  set params(params) {
-
+  set params(paramsList) {
+    _.each(paramsList, params => {
+      const token = new Token(this);
+      token.params = params;
+      this.tokens.push(token);
+    });
+    return this.params;
   }
 
   index() {

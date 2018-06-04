@@ -2145,7 +2145,7 @@ var Sentence = function (_Object) {
     key: 'conllu',
     get: function get() {
 
-      if (!this.conlluLoaded) log.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
+      if (!this.conlluLoaded) this.logger.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
 
       var comments = _.map(this.comments, function (comment) {
         return '# ' + comment;
@@ -2230,7 +2230,16 @@ var Sentence = function (_Object) {
         }
       }
     },
-    set: function set(params) {}
+    set: function set(paramsList) {
+      var _this2 = this;
+
+      _.each(paramsList, function (params) {
+        var token = new Token(_this2);
+        token.params = params;
+        _this2.tokens.push(token);
+      });
+      return this.params;
+    }
   }]);
 
   return Sentence;
