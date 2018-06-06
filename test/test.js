@@ -145,11 +145,84 @@ describe('Token', () => {
     });
 
     describe(`modify contents`, () => {
-      it(`insert, remove, move`, () => {
+      it(`has consistent insert, remove, move`, () => {
         let s = new Sentence();
         let t = new Token(s);
         t.params = { form: 'zeroth' };
 
+        let a1 = new Analysis(t, { form: 'first' });
+        let a2 = new Analysis(t, { form: 'second' });
+        let a3 = new Analysis(t, { form: 'third' });
+        let a4 = new Analysis(t, { form: 'fourth' });
+        let a5 = null;
+
+        assert.deepEqual(['zeroth'], forms(t));
+
+        t.insertAnalysisAt(0, a1);
+        assert.deepEqual(['first', 'zeroth'], forms(t));
+
+        t.insertAnalysisAt(1, a2);
+        assert.deepEqual(['first', 'second', 'zeroth'], forms(t));
+
+        t.insertAnalysisAt(-1, a3);
+        assert.deepEqual(['third', 'first', 'second', 'zeroth'], forms(t));
+
+        t.insertAnalysisAt(Infinity, a4);
+        assert.deepEqual(['third', 'first', 'second', 'zeroth', 'fourth'], forms(t));
+
+        t.removeAnalysisAt(0);
+        assert.deepEqual(['first', 'second', 'zeroth', 'fourth'], forms(t));
+
+        t.removeAnalysisAt(1);
+        assert.deepEqual(['first', 'zeroth', 'fourth'], forms(t));
+
+        t.removeAnalysisAt(-1);
+        assert.deepEqual(['zeroth', 'fourth'], forms(t));
+
+        t.removeAnalysisAt(Infinity);
+        assert.deepEqual(['zeroth'], forms(t));
+
+        t.removeAnalysisAt(Infinity);
+        assert.deepEqual([], forms(t));
+
+        t.removeAnalysisAt(0);
+        assert.deepEqual([], forms(t));
+
+        t.removeAnalysisAt(-3);
+        assert.deepEqual([], forms(t));
+
+        t.insertAnalysisAt(6, a1);
+        assert.deepEqual(['first'], forms(t));
+
+        t.insertAnalysisAt(6, a2);
+        assert.deepEqual(['first', 'second'], forms(t));
+
+        t.insertAnalysisAt(6, a3).insertAnalysisAt(6, a4);
+        assert.deepEqual(['first', 'second', 'third', 'fourth'], forms(t));
+
+        t.moveAnalysisAt(0, 1);
+        assert.deepEqual(['second', 'first', 'third', 'fourth'], forms(t));
+
+        t.moveAnalysisAt(0, 10);
+        assert.deepEqual(['first', 'third', 'fourth', 'second'], forms(t));
+
+        t.moveAnalysisAt(-2, 2);
+        assert.deepEqual(['third', 'fourth', 'first', 'second'], forms(t));
+
+        t.moveAnalysisAt(Infinity, Infinity);
+        assert.deepEqual(['third', 'fourth', 'first', 'second'], forms(t));
+
+        assert.throws(() => { t.insertAnalysisAt(0, a5); }, E.NotatrixError);
+
+      });
+
+      it(`has consistent change current (get, set, prev, next)`, () => {
+        let s = new Sentence();
+        let t = new Token(s);
+
+        assert.deepEqual([], forms(t));
+        return;
+        
         let a1 = new Analysis(t, { form: 'first' });
         let a2 = new Analysis(t, { form: 'second' });
         let a3 = new Analysis(t, { form: 'third' });

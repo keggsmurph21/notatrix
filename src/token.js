@@ -62,6 +62,7 @@ class Token extends Object {
     this._current = current;
     return this.current;
   }
+
   insertAnalysisAt(index, analysis) {
     if (!(analysis instanceof Analysis))
       throw new E.NotatrixError('unable to insert analysis: not instance of Analysis');
