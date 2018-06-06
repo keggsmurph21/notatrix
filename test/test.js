@@ -87,6 +87,7 @@ describe('Analysis', () => {
         assert.equal(null, a.superToken);
         assert.deepEqual([], a.subTokens);
         assert.equal(0, a.length);
+        assert.equal(null, a[0]);
         assert.equal(null, a.getSubToken(0));
 
         assert.equal(false, a.isSuperToken);
@@ -345,7 +346,6 @@ describe('Sentence', () => {
       assert.deepEqual([], s.comments);
       assert.equal(false, s.conlluLoaded);
       assert.equal(false, s.cg3Loaded);
-      assert.deepEqual(console, s.logger);
       assert.deepEqual([], s.tokens);
       assert.equal(0, s.length);
 
@@ -440,7 +440,8 @@ describe('Sentence', () => {
 
       s.getAnalysis(4).addHead(s.getAnalysis(5));
       s.index();
-      console.log(s.getAnalysis(5).id);
+      console.log(s[0].id)
+      console.log(s.getAnalysis(0).id);
 
       console.log(s.text);
 

@@ -362,11 +362,28 @@ class Analysis extends Object {
     return this.subTokens.length > 0;
   }
   get isCurrent() {
+    console.log('token analysis', this.token.analysis);
+    console.log('this', this);
     return this.token.analysis === this;
   }
   get isEmpty() { // TODO: not implemented
     return false;
   }
 }
+Analysis.prototype.__proto__ = new Proxy(Analysis.prototype.__proto__, {
+  get(target, name, receiver) {
+    if (typeof name === 'symbol')
+      return this[name];
+
+    let id = parseInt(name);
+    if (!isNaN(id)) {
+      let token = receiver.subTokens[id];
+      return token ? token.analysis : null;
+    } else {
+      return this[name];
+    }
+  }
+});
+
 
 module.exports = Analysis;

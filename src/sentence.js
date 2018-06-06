@@ -29,7 +29,6 @@ class Sentence extends Object {
       prettyOutput: true,
       showEnhanced: true
     });
-    this.logger = console;
 
     this.tokens = [];
   }
@@ -278,11 +277,11 @@ class Sentence extends Object {
 
     } catch (e) {
       if (e instanceof E.InvalidCoNLLUError) {
-        this.logger.warn('cannot get params for this sentence: contains MultiWordTokens');
+        console.warn('cannot get params for this sentence: contains MultiWordTokens');
         return null;
 
       } else if (e instanceof E.InvalidCG3Error) {
-        this.logger.warn('cannot get params for this sentence: contains ambiguous analyses');
+        console.warn('cannot get params for this sentence: contains ambiguous analyses');
         return null;
 
       } else {
@@ -338,5 +337,20 @@ class Sentence extends Object {
     return valid;
   }
 }
+Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
+  get(target, name, receiver) {
+    if (typeof name === 'symbol')
+      return this[name];
+
+    let id = parseInt(name);
+    if (!isNaN(id)) {
+      let token = receiver.getToken(id);
+      return token ? token.analysis : null;
+    } else {
+      return this[name];
+    }
+  }
+});
+
 
 module.exports = Sentence;

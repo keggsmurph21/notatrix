@@ -131,7 +131,7 @@ class Token extends Object {
         }
     }
 
-    this.sentence.logger.warn('token not in current analysis');
+    console.warn('token not in current analysis');
     return { super: null, sub: null };
   }
   getIndicesAfter() {
