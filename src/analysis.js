@@ -362,8 +362,6 @@ class Analysis extends Object {
     return this.subTokens.length > 0;
   }
   get isCurrent() {
-    console.log('token analysis', this.token.analysis);
-    console.log('this', this);
     return this.token.analysis === this;
   }
   get isEmpty() { // TODO: not implemented
