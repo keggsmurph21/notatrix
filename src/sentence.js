@@ -105,10 +105,14 @@ class Sentence extends Object {
     if (!(token instanceof Token))
       throw new E.NotatrixError('unable to insert token: not instance of Token');
 
-    if (indices.super === null)
+    if (indices.super === null || indices.super === undefined)
       throw new E.TransformationError('can\'t insert at null index')
 
-    if (indices.sub === null) {
+    indices.super = indices.super < 0 ? 0
+      : indices.super > this.length ? this.length
+      : indices.super;
+
+    if (indices.sub === null || indices.sub === undefined) {
 
       token.sentence = this;
       token.forEach(analysis => {
@@ -188,15 +192,14 @@ class Sentence extends Object {
   }
   get conllu() {
 
-    if (!this.conlluLoaded)
-      this.logger.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
+    //if (!this.conlluLoaded)
+      //this.logger.warn('note: CoNLL-U has not been explicitly loaded for this sentence');
 
     const comments = _.map(this.comments, comment => {
       return `# ${comment}`;
     });
 
     let tokens = [];
-    this.index();
 
     try {
 
@@ -316,6 +319,23 @@ class Sentence extends Object {
       token.analysis.deps = token.analysis.deps;
     });
     return this;
+  }
+
+  get isValidConllu() {
+    let valid = true;
+    this.forEach(token => {
+      if (token.isAmbiguous)
+        valid = false;
+    });
+    return valid;
+  }
+  get isValidCG3() {
+    let valid = true;
+    this.forEach(token => {
+      if (token.isSubToken || token.isSuperToken || token.isEmpty)
+        valid = false;
+    });
+    return valid;
   }
 }
 

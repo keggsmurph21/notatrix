@@ -12,6 +12,9 @@ const E = require('../src/errors');
 function clean(str) {
   return str.trim().replace(/[ \t]+/g, '\t').trim();
 }
+function ignoreIndices(str) {
+  return clean(str.split('\t').slice(1).join('\t'));
+}
 function countHeads(ana) {
   let acc = 0;
   ana.eachHead(() => {
@@ -29,14 +32,19 @@ function countDeps(ana) {
 function forms(token) {
   return token.analyses.map(ana => {
     return ana.form;
-  });
+  }).join(' ');
+}
+function currentForms(sentence) {
+  return sentence.tokens.map(tok => {
+    return tok.analysis.form;
+  }).join(' ');
 }
 
 const fallback = '_';
 
 describe('Analysis', () => {
   describe('invalid intializer', () => {
-    it(`should throw a NotatrixError`, () => {
+    it(`throw a NotatrixError`, () => {
       assert.throws(() => { let a = new Analysis(); }, E.NotatrixError);
     });
   });
@@ -67,7 +75,7 @@ describe('Analysis', () => {
 
   _.each(data, d => {
     describe(`valid intializer`, () => {
-      it(`should initialize correctly`, () => {
+      it(`initialize correctly`, () => {
         let t = new Token(s);
         t.params = d.inParams;
         let a = t.analysis;
@@ -92,7 +100,7 @@ describe('Analysis', () => {
 
       });
 
-      it(`should return formats correctly`, () => {
+      it(`return formats correctly`, () => {
         let t = new Token(s);
         t.params = d.inParams;
         let a = t.analysis;
@@ -113,7 +121,7 @@ describe('Analysis', () => {
 
 describe('Token', () => {
   describe('invalid intializer', () => {
-    it(`should throw a NotatrixError`, () => {
+    it(`throw a NotatrixError`, () => {
       assert.throws(() => { let t = new Token(); }, E.NotatrixError);
     });
   });
@@ -123,7 +131,7 @@ describe('Token', () => {
 
   _.each(data, d => {
     describe(`valid initializer`, () => {
-      it(`should initialize correctly`, () => {
+      it(`initialize correctly`, () => {
         let t = new Token(s);
 
         assert.equal(s, t.sentence);
@@ -140,7 +148,7 @@ describe('Token', () => {
 
       });
 
-      it(`should return formats correctly`, () => {
+      it(`return formats correctly`, () => {
         let t = new Token(s);
 
         assert.throws(() => { return t.text; }, E.NotatrixError);
@@ -159,12 +167,12 @@ describe('Token', () => {
     });
 
     describe(`valid after initializing first Analysis`, () => {
-      it(`should initialize with = operator`, () => {
+      it(`initialize with = operator`, () => {
         let t = new Token(s);
         t.params = { form: 'testing' }; // can only set t.analysis (i.e. current) this way
 
         assert.equal(0, t.current);
-        assert.deepEqual(['testing'], forms(t));
+        assert.equal('testing', forms(t));
         assert.equal('testing', t.analysis.form);
         assert.equal(1, t.length);
         assert.deepEqual([], t.subTokens);
@@ -176,12 +184,12 @@ describe('Token', () => {
 
       });
 
-      it(`should initialize with Token.insertAnalysisAt() method`, () => {
+      it(`initialize with Token.insertAnalysisAt() method`, () => {
         let t = new Token(s);
         t.insertAnalysisAt(0, new Analysis(t, { form: 'testing' })); // more flexible
 
         assert.equal(0, t.current);
-        assert.deepEqual(['testing'], forms(t));
+        assert.equal('testing', forms(t));
         assert.equal('testing', t.analysis.form);
         assert.equal(1, t.length);
         assert.deepEqual([], t.subTokens);
@@ -192,7 +200,7 @@ describe('Token', () => {
 
       })
 
-      it(`should return formats correctly`, () => {
+      it(`return formats correctly`, () => {
         let t = new Token(s);
         t.params = { form: 'testing' };
 
@@ -219,67 +227,67 @@ describe('Token', () => {
         let a4 = new Analysis(t, { form: 'fourth' });
         let a5 = null;
 
-        assert.deepEqual(['zeroth'], forms(t));
+        assert.equal('zeroth', forms(t));
 
         t.insertAnalysisAt(0, a1);
-        assert.deepEqual(['first', 'zeroth'], forms(t));
+        assert.equal('first zeroth', forms(t));
 
         t.insertAnalysisAt(1, a2);
-        assert.deepEqual(['first', 'second', 'zeroth'], forms(t));
+        assert.equal('first second zeroth', forms(t));
 
         t.insertAnalysisAt(-1, a3);
-        assert.deepEqual(['third', 'first', 'second', 'zeroth'], forms(t));
+        assert.equal('third first second zeroth', forms(t));
 
         t.insertAnalysisAt(Infinity, a4);
-        assert.deepEqual(['third', 'first', 'second', 'zeroth', 'fourth'], forms(t));
+        assert.equal('third first second zeroth fourth', forms(t));
 
         t.removeAnalysisAt(0);
-        assert.deepEqual(['first', 'second', 'zeroth', 'fourth'], forms(t));
+        assert.equal('first second zeroth fourth', forms(t));
 
         t.removeAnalysisAt(1);
-        assert.deepEqual(['first', 'zeroth', 'fourth'], forms(t));
+        assert.equal('first zeroth fourth', forms(t));
 
         t.removeAnalysisAt(-1);
-        assert.deepEqual(['zeroth', 'fourth'], forms(t));
+        assert.equal('zeroth fourth', forms(t));
 
         t.removeAnalysisAt(Infinity);
-        assert.deepEqual(['zeroth'], forms(t));
+        assert.equal('zeroth', forms(t));
         assert.equal(0, t.current);
         assert.equal('zeroth', t.analysis.form);
 
         t.removeAnalysisAt(Infinity);
-        assert.deepEqual([], forms(t));
+        assert.equal('', forms(t));
         assert.equal(null, t.current);
         assert.equal(null, t.analysis);
 
         t.removeAnalysisAt(0);
-        assert.deepEqual([], forms(t));
+        assert.equal('', forms(t));
 
         t.removeAnalysisAt(-3);
-        assert.deepEqual([], forms(t));
+        assert.equal('', forms(t));
 
         t.insertAnalysisAt(6, a1);
-        assert.deepEqual(['first'], forms(t));
+        assert.equal('first', forms(t));
         assert.equal(0, t.current);
         assert.equal('first', t.analysis.form);
 
         t.insertAnalysisAt(6, a2);
-        assert.deepEqual(['first', 'second'], forms(t));
+        assert.equal('first second', forms(t));
 
         t.insertAnalysisAt(6, a3).insertAnalysisAt(6, a4);
-        assert.deepEqual(['first', 'second', 'third', 'fourth'], forms(t));
+        assert.equal('first second third fourth', forms(t));
 
         t.moveAnalysisAt(0, 1);
-        assert.deepEqual(['second', 'first', 'third', 'fourth'], forms(t));
+        assert.equal('second first third fourth', forms(t));
 
         t.moveAnalysisAt(0, 10);
-        assert.deepEqual(['first', 'third', 'fourth', 'second'], forms(t));
+        assert.equal('first third fourth second', forms(t));
 
         t.moveAnalysisAt(-2, 2);
-        assert.deepEqual(['third', 'fourth', 'first', 'second'], forms(t));
+        assert.equal('third fourth first second', forms(t));
 
         t.moveAnalysisAt(Infinity, Infinity);
-        assert.deepEqual(['third', 'fourth', 'first', 'second'], forms(t));
+        assert.equal('third fourth first second', forms(t));
 
         assert.throws(() => { t.insertAnalysisAt(0, a5); }, E.NotatrixError);
 
@@ -289,13 +297,13 @@ describe('Token', () => {
         let s = new Sentence();
         let t = new Token(s);
 
-        assert.deepEqual([], forms(t));
+        assert.equal('', forms(t));
 
         t.insertAnalysisAt(0, new Analysis(t, { form: 'first' }));
         t.insertAnalysisAt(1, new Analysis(t, { form: 'second' }));
         t.insertAnalysisAt(2, new Analysis(t, { form: 'third' }));
         t.insertAnalysisAt(3, new Analysis(t, { form: 'fourth' }));
-        assert.deepEqual(['first', 'second', 'third', 'fourth'], forms(t));
+        assert.equal('first second third fourth', forms(t));
 
         assert.equal('first', t.analysis.form);
         t.next();
@@ -324,35 +332,125 @@ describe('Token', () => {
         assert.equal('third', t.analysis.form);
 
       });
-
-      return;
-      const conllus = [
-        `1-3	He	he	det	_	pos|f|sp	_	det	_	_`,
-        `1	boued	boued	n	_	m|sg	4	obj	_	_`
-      ];
-      _.each(conllus, conllu => {
-        it(`parses the CoNLL-U string`, () => {
-          let s = new Sentence({ });
-          let t = new Token(s);
-
-          t.conllu = conllu;
-          t.index(0); // fool it
-          assert.equal(
-            clean(conllu.split('\t').slice(1).join('\t')),
-            clean(t.conllu.split('\t').slice(1).join('\t'))
-          );
-        });
-      });
-
     });
   });
 });
 
 describe('Sentence', () => {
 
+  describe('valid initializer', () => {
+    it(`initialize correctly`, () => {
+      let s = new Sentence();
+
+      assert.deepEqual([], s.comments);
+      assert.equal(false, s.conlluLoaded);
+      assert.equal(false, s.cg3Loaded);
+      assert.deepEqual(console, s.logger);
+      assert.deepEqual([], s.tokens);
+      assert.equal(0, s.length);
+
+      assert.equal(true, s.isValidConllu);
+      assert.equal(true, s.isValidCG3);
+
+    });
+
+    it(`well-defined getter behavior`, () => {
+      let s = new Sentence();
+
+      assert.equal(null, s.getComment(0));
+      assert.equal(null, s.getToken(0));
+      assert.equal(null, s.getAnalysis(0));
+      assert.equal(null, s.getById(0));
+      assert.equal(null, s.getByIndices(0));
+
+    });
+
+    it(`return formats correctly`, () => {
+      let s = new Sentence();
+
+      assert.equal('', s.text);
+      assert.equal('', s.conllu);
+      //assert.equal('', s.cg3);
+      assert.deepEqual([], s.params);
+
+    });
+  });
+
+  describe('parsers', () => {
+    it(`parse list of params`, () => {
+      let s = new Sentence();
+      let params = [{ form: 'hello' }, { form: 'world' }];
+      s.params = params;
+      assert.deepEqual(params, s.params);
+      assert.equal(true, s.isValidConllu);
+      assert.equal(true, s.isValidCG3);
+    });
+
+    it(`parse CoNLL-U`, () => {
+      let s = new Sentence();
+
+      _.each([data['CoNLL-U'].t, data['CoNLL-U'].from_cg3_with_spans], conllu => {
+        s.conllu = conllu;
+        assert.equal(clean(conllu), clean(s.conllu));
+        assert.equal(true, s.isValidConllu);
+      });
+    });
+
+    it(`parse CG3`, () => {
+
+    });
+
+    it(`parse nx`, () => {
+
+    });
+  });
+
+  describe(`token array manipulators`, () => {
+    it(`handles (insert|remove|move)TokenAt()`, () => {
+      let s = new Sentence();
+      s.params = [
+        { form: 'first' },
+        { form: 'second' },
+        { form: 'third' },
+        { form: 'fourth' }
+      ];
+
+      assert.equal(4, s.length);
+
+      let t = new Token(s);
+      t.params = { form: 'inserted' };
+
+      assert.throws(() => { s.insertTokenAt(); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt({}); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt(null); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt(undefined); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt({ super: null }); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt({ super: undefined }); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt({ super: 0 }); }, E.NotatrixError);
+      assert.throws(() => { s.insertTokenAt({ super: 0 }, null); }, E.NotatrixError);
+
+      s.insertTokenAt({ super: 0 }, t);
+      assert.equal('inserted first second third fourth', currentForms(s));
+
+      s.insertTokenAt({ super: 2 }, t);
+      assert.equal('inserted first inserted second third fourth', currentForms(s));
+
+      s.insertTokenAt({ super: -1 }, t);
+      assert.equal('inserted inserted first inserted second third fourth', currentForms(s));
+
+      s.getAnalysis(4).addHead(s.getAnalysis(5));
+      s.index();
+      console.log(s.conllu);
+
+      console.log(s.text);
+
+    })
+  })
+  return;
+
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
-      it(`${name}: should serialize to Notatrix and back`, () => {
+      it(`${name}: serialize to Notatrix and back`, () => {
         const s = new Sentence();
         s.conllu = text;
 
@@ -371,7 +469,7 @@ describe('Sentence', () => {
         s.conllu = text;
 
         const lines = text.trim().split('\n');
-        it(`should get consistent number of comments and tokens`, () => {
+        it(`get consistent number of comments and tokens`, () => {
           const expected = lines.length;
           const actual = s.comments.length + s.length;
           assert.equal(expected, actual);
@@ -381,7 +479,7 @@ describe('Sentence', () => {
         for (let i=0; i<lines.length; i++) {
 
           if (lines[i].startsWith('#')) {
-            it(`should get comment by index`, () => {
+            it(`get comment by index`, () => {
               const expected = lines[i].slice(1).trim();
               const actual = s.getComment(c);
               assert.equal(expected, actual);
@@ -394,22 +492,22 @@ describe('Sentence', () => {
             const index = lines[i].split(/[ \t]/)[0];
             t++;
 
-            it(`should get token by number`, () => {
+            it(`get token by number`, () => {
               const actual = clean(token.analysis.conllu);
               assert.equal(expected, actual);
             });
 
-            it(`should get token by indices`, () => {
+            it(`get token by indices`, () => {
               assert.equal(token, s.getByIndices(token.getIndices()));
             })
 
-            it(`should get token by string`, () => {
+            it(`get token by string`, () => {
               const actual = clean(s.getById(index).conllu);
               assert.equal(expected, actual);
             });
 
             if (/\-/.test(index)) {
-              it(`should be a superToken`, () => {
+              it(`be a superToken`, () => {
                 assert.equal(true, s.getById(index).isSuperToken);
               });
 
@@ -417,7 +515,7 @@ describe('Sentence', () => {
               start = parseInt(start);
               end = parseInt(end);
               for (let j=start; j<=end; j++) {
-                it(`should be a subToken`, () => {
+                it(`be a subToken`, () => {
                   assert.equal(true, s.getById(j).isSubToken);
                 });
               }
@@ -426,10 +524,10 @@ describe('Sentence', () => {
             _.each(token.analysis.head.match(/[0-9]+/g), (match, j) => {
               match = parseInt(match);
               if (match) { // catch 0 and NaN
-                it(`should have found a real head`, () => {
+                it(`have found a real head`, () => {
                   assert.equal(true, s.getById(match) instanceof Analysis);
                 });
-                it(`should have found the right head`, () => {
+                it(`have found the right head`, () => {
                   assert.equal(s.getById(match), token.analysis._heads[j].token);
                 });
               }
@@ -438,10 +536,10 @@ describe('Sentence', () => {
             _.each(token.analysis.deps.match(/[0-9]+/g), (match, j) => {
               match = parseInt(match);
               if (match) {
-                it(`should have found a real dep`, () => {
+                it(`have found a real dep`, () => {
                   assert.equal(true, s.getById(match) instanceof Analysis);
                 });
-                it(`should have found the right dep`, () => {
+                it(`have found the right dep`, () => {
                   assert.equal(s.getById(match), token.analysis._deps[j].token);
                 });
               }
@@ -449,7 +547,7 @@ describe('Sentence', () => {
           }
         }
 
-        it(`should do nothing when given an invalid index to insert at`, () => {
+        it(`do nothing when given an invalid index to insert at`, () => {
           const original = s.conllu;
           const token = new Token(s);
           token.params = { form: 'invalid' };
@@ -459,7 +557,7 @@ describe('Sentence', () => {
           assert.equal(original, s.conllu);
         });
 
-        it(`should add tokens even when one of our indices are "out of bounds"`, () => { // thanks to Array.slice()
+        it(`add tokens even when one of our indices are "out of bounds"`, () => { // thanks to Array.slice()
 
           const original = s.length;
           const token = new Token(s);
