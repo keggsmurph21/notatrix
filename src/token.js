@@ -117,9 +117,6 @@ class Token extends Object {
 
   // getting indices for current analysis
   getIndices() {
-    if (!this.sentence)
-      return { super: null, sub: null };
-
     for (let i=0; i<this.sentence.tokens.length; i++) {
 
       const ana = this.sentence.tokens[i].analysis;
@@ -155,16 +152,10 @@ class Token extends Object {
   // token insertion, removal, moving
   insertBefore(token) {
     const indices = this.getIndices();
-    if (!this.sentence)
-      return null;
-
     return this.sentence.insertTokenAt(indices, token);
   }
   insertAfter(token) {
     const indices = this.getIndicesAfter();
-    if (!this.sentence)
-      return null;
-
     return this.sentence.insertTokenAt(indices, token);
   }
   insertSubTokenBefore(subToken) {
@@ -205,7 +196,7 @@ class Token extends Object {
   }
   set analysis(analysis) {
     if (!(analysis instanceof Analysis))
-      throw new E.NotatrixError('unable to set analysis to non-Analysis object');
+      throw new E.NotatrixError('unable to set analysis: not instance of Analysis');
     if (this.analysis === null) {
       this.insertAnalysisAt(0, analysis);
     } else {
@@ -241,6 +232,9 @@ class Token extends Object {
 
   // external format stuff
   index(id) {
+    if (isNaN(parseInt(id)))
+      throw new E.NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
+
     if (this.current === null)
       return id;
 
@@ -329,10 +323,13 @@ class Token extends Object {
 
   // bool stuff
   get isSubToken() {
-    return this.analysis.isSubToken;
+    return this.analysis ? this.analysis.isSubToken : null;
   }
   get isSuperToken() {
-    return this.analysis.isSuperToken;
+    return this.analysis ? this.analysis.isSuperToken : null;
+  }
+  get isEmpty() {
+    return this.analysis ? this.analysis.isEmpty : null;
   }
   get isAmbiguous() {
     return this.length > 1;

@@ -94,6 +94,9 @@ class Analysis extends Object {
     return fallback;
   }
   get conllu() {
+    if (this.id === null || this.id === undefined)
+      throw new E.NotatrixError('can\'t get CoNLL-U before indexing the Analysis (call Sentence.index())');
+
     return `${this.id}\t${
       _.map(fields, field => {
         return this[field] || fallback;
@@ -101,6 +104,8 @@ class Analysis extends Object {
     }`;
   }
   get cg3() {  // TODO: not implemented
+    if (this.id === null || this.id === undefined)
+      throw new E.NotatrixError('can\'t get CG3 before indexing the Analysis (call Sentence.index())');
 
   }
   get eles() { // TODO: not implemented

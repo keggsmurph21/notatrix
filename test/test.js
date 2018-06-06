@@ -46,26 +46,22 @@ describe('Analysis', () => {
     {
       inParams: undefined,
       outParams: {},
-      text: fallback,
-      conllu: `null	_	_	_	_	_	_	_	_	_`,
+      text: fallback
     },
     {
       inParams: null,
       outParams: {},
-      text: fallback,
-      conllu: `null	_	_	_	_	_	_	_	_	_`
+      text: fallback
     },
     {
       inParams: { form: 'string' },
       outParams: { form: 'string' },
-      text: 'string',
-      conllu: `null	string	string	_	_	_	_	_	_	_`
+      text: 'string'
     },
     {
       inParams: { ignore: 'string' },
       outParams: {},
-      text: fallback,
-      conllu: `null	_	_	_	_	_	_	_	_	_`
+      text: fallback
     }
   ];
 
@@ -101,8 +97,13 @@ describe('Analysis', () => {
         t.params = d.inParams;
         let a = t.analysis;
 
-        assert.equal(d.text, a.text);
-        assert.equal(d.conllu, a.conllu);
+        assert.throws(() => { return a.conllu; }, E.NotatrixError); // not indexed yet
+        assert.throws(() => { return a.cg3; }, E.NotatrixError); // not indexed yet
+
+        // even after indexing (Token not attached to Sentence yet)
+        t.sentence.index();
+        assert.throws(() => { return a.conllu; }, E.NotatrixError);
+        assert.throws(() => { return a.cg3; }, E.NotatrixError);
 
       });
 
@@ -130,6 +131,12 @@ describe('Token', () => {
         assert.deepEqual([], t.analyses);
         assert.equal(null, t.analysis);
         assert.equal(0, t.length);
+        assert.equal(null, t.subTokens);
+
+        assert.equal(null, t.isSubToken);
+        assert.equal(null, t.isSuperToken);
+        assert.equal(null, t.isEmpty);
+        assert.equal(false, t.isAmbiguous);
 
       });
 
@@ -141,6 +148,58 @@ describe('Token', () => {
         assert.throws(() => { return t.cg3; }, E.NotatrixError);
         assert.throws(() => { return t.params; }, E.NotatrixError);
 
+        // even after "indexing" (b/c the token hasn't actually been added to the Sentence yet)
+        t.sentence.index();
+        assert.throws(() => { return t.text; }, E.NotatrixError);
+        assert.throws(() => { return t.conllu; }, E.NotatrixError);
+        assert.throws(() => { return t.cg3; }, E.NotatrixError);
+        assert.throws(() => { return t.params; }, E.NotatrixError);
+
+      })
+    });
+
+    describe(`valid after initializing first Analysis`, () => {
+      it(`should initialize with = operator`, () => {
+        let t = new Token(s);
+        t.params = { form: 'testing' }; // can only set t.analysis (i.e. current) this way
+
+        assert.equal(0, t.current);
+        assert.deepEqual(['testing'], forms(t));
+        assert.equal('testing', t.analysis.form);
+        assert.equal(1, t.length);
+        assert.deepEqual([], t.subTokens);
+
+        assert.equal(false, t.isSubToken);
+        assert.equal(false, t.isSuperToken);
+        assert.equal(false, t.isEmpty);
+        assert.equal(false, t.isAmbiguous);
+
+      });
+
+      it(`should initialize with Token.insertAnalysisAt() method`, () => {
+        let t = new Token(s);
+        t.insertAnalysisAt(0, new Analysis(t, { form: 'testing' })); // more flexible
+
+        assert.equal(0, t.current);
+        assert.deepEqual(['testing'], forms(t));
+        assert.equal('testing', t.analysis.form);
+        assert.equal(1, t.length);
+        assert.deepEqual([], t.subTokens);
+
+        assert.equal(false, t.isSubToken);
+        assert.equal(false, t.isSuperToken);
+        assert.equal(false, t.isAmbiguous);
+
+      })
+
+      it(`should return formats correctly`, () => {
+        let t = new Token(s);
+        t.params = { form: 'testing' };
+
+        assert.equal('testing', t.text);
+        assert.throws(() => { t.conllu }, E.NotatrixError); // not indexed yet
+        //assert.throws(() => { t.cg3 }, E.NotatrixError); // not indexed yet
+        assert.deepEqual({ form: 'testing' }, t.params);
       })
     });
 
