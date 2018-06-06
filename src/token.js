@@ -17,8 +17,8 @@ class Token extends Object {
       throw new E.NotatrixError('missing required arg: Sentence')
 
     this.sentence = sent;
-    this._current = 0;
-    this.analyses = [ null ];
+    this._current = null;
+    this.analyses = [];
   }
   get length() {
     return this.analyses.length;
@@ -30,12 +30,19 @@ class Token extends Object {
   }
 
   // keeping track of ambiguous analyses
+  getAnalysis(index) {
+    return this.analyses[index] || null;
+  }
   prev() {
+    if (this._current === null)
+      return null;
     if (this._current > 0)
       this._current--;
     return this;
   }
   next() {
+    if (this._current === null)
+      return null;
     if (this._current < this.length - 1)
       this._current++;
     return this;
@@ -59,23 +66,36 @@ class Token extends Object {
     if (!(analysis instanceof Analysis))
       throw new E.NotatrixError('unable to insert analysis: not instance of Analysis');
 
+    if (this.current === null)
+      this._current = 0;
+
+    index = index < 0 ? 0
+      : index > this.length ? this.length
+      : index;
+
+    analysis.token = this;
     this.analyses = this.analyses.slice(0, index)
       .concat(analysis)
       .concat(this.analyses.slice(index));
 
     return this;
   }
-  removeAnalysisAt(index, analysis) {
-    if (!(analysis instanceof Analysis))
-      throw new E.NotatrixError('unable to remove analysis: not instance of Analysis');
+  removeAnalysisAt(index) {
+    if (!this.length)
+      return this;
 
-    this.analyses = this.analyses.splice(index, 1);
+    index = index < 0 ? 0
+      : index > this.length -1 ? this.length - 1
+      : index;
+
+    this.analyses.splice(index, 1);
+
+    if (!this.length)
+      this._current = null;
 
     return this;
   }
   moveAnalysisAt(sourceIndex, targetIndex) {
-    if (!(analysis instanceof Analysis))
-      throw new E.NotatrixError('unable to remove analysis: not instance of Analysis');
 
     sourceIndex = sourceIndex < 0 ? 0 : sourceIndex;
     targetIndex = targetIndex > this.length - 1 ? this.length - 1 : targetIndex;
@@ -105,11 +125,12 @@ class Token extends Object {
       if (ana === this.analysis)
         return { super: i, sub: null };
 
-      for (let j=0; j<ana.subTokens.length; j++) {
-        const subAna = ana.subTokens[j].analysis;
-        if (subAna === this.analysis)
-          return { super: i, sub: j };
-      }
+      if (ana)
+        for (let j=0; j<ana.subTokens.length; j++) {
+          const subAna = ana.subTokens[j].analysis;
+          if (subAna === this.analysis)
+            return { super: i, sub: j };
+        }
     }
 
     this.sentence.logger.warn('token not in current analysis');
@@ -177,26 +198,35 @@ class Token extends Object {
 
   // internal format
   get analysis() {
+    if (this.current === null)
+      return null;
     return this.analyses[this.current];
   }
   set analysis(analysis) {
     if (!(analysis instanceof Analysis))
       throw new E.NotatrixError('unable to set analysis to non-Analysis object');
-    this.analyses[this.current] = analysis;
+    if (this.analysis === null) {
+      this.insertAnalysisAt(0, analysis);
+    } else {
+      this.analyses[this.current] = analysis;
+    }
   }
 
   get subTokens() {
+    if (this.analysis === null)
+      return null;
     return this.analysis.subTokens;
   }
   insertSubToken(index, token) {
+    if (this.analysis === null)
+      throw new E.NotatrixError('unable to insert subtoken: analysis is null');
+
     if (token === undefined) {
       token = index;
       index = this.analysis.length;
     }
-    if (! token instanceof Token) {
-      this.logger.warn('token not an instance of Token');
-      return false;
-    }
+    if (!(token instanceof Token))
+      throw new E.NotatrixError('unable to insert subtoken: not instance of Token');
 
     token.analysis.superToken = this.analysis;
     const subTokens = this.analysis.subTokens;
@@ -210,6 +240,9 @@ class Token extends Object {
 
   // external format stuff
   index(id) {
+    if (this.current === null)
+      return id;
+
     if (this.isSuperToken) {
       this.analysis.id = `${id}-${id + this.analysis.length - 1}`;
       _.each(this.analysis.subTokens, subToken => {
@@ -231,7 +264,7 @@ class Token extends Object {
     });
 
     return {
-      current: this._current,
+      current: this.current,
       analyses: analyses
     };
   }
