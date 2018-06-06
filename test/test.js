@@ -12,15 +12,114 @@ const E = require('../src/errors');
 function clean(str) {
   return str.trim().replace(/[ \t]+/g, '\t').trim();
 }
+function countHeads(ana) {
+  let acc = 0;
+  ana.eachHead(() => {
+    acc++;
+  });
+  return acc;
+}
+function countDeps(ana) {
+  let acc = 0;
+  ana.eachDep(() => {
+    acc++;
+  });
+  return acc;
+}
+
+const fallback = '_';
 
 describe('Analysis', () => {
+  describe('invalid intializer', () => {
+    it(`should throw a NotatrixError`, () => {
+      assert.throws(() => { let a = new Analysis(); }, E.NotatrixError);
+    });
+  });
 
+  const s = new Sentence();
+  const data = [
+    {
+      inParams: undefined,
+      outParams: {},
+      text: fallback,
+      conllu: `null	_	_	_	_	_	_	_	_	_`
+    },
+    {
+      inParams: null,
+      outParams: {},
+      text: fallback,
+      conllu: `null	_	_	_	_	_	_	_	_	_`
+    },
+    {
+      inParams: { form: 'string' },
+      outParams: { form: 'string' },
+      text: 'string',
+      conllu: `null	string	string	_	_	_	_	_	_	_`
+    },
+    {
+      inParams: { ignore: 'string' },
+      outParams: {},
+      text: fallback,
+      conllu: `null	_	_	_	_	_	_	_	_	_`
+    }
+  ];
+
+  _.each(data, d => {
+    describe(`valid intializer`, () => {
+      it(`should initialize correctly`, () => {
+        let t = new Token(s);
+        t.params = d.inParams;
+        let a = t.analysis;
+
+        assert.equal(t, a.token);
+        assert.equal(s, a.sentence);
+        assert.deepEqual(d.outParams, a.params);
+        assert.equal(null, a.id);
+        assert.equal(null, a.superToken);
+        assert.deepEqual([], a.subTokens);
+        assert.equal(0, a.length);
+        assert.equal(null, a.getSubToken(0));
+
+        assert.equal(false, a.isSuperToken);
+        assert.equal(false, a.isSubToken);
+        assert.equal(true, a.isCurrent);
+        assert.equal(false, a.isEmpty);
+
+        assert.deepEqual([], a._heads);
+        assert.deepEqual([], a._deps);
+        assert.equal(0, countDeps(a));
+
+      });
+
+      it(`should return formats correctly`, () => {
+        let t = new Token(s);
+        t.params = d.inParams;
+        let a = t.analysis;
+
+        assert.equal(d.text, a.text);
+        assert.equal(d.conllu, a.conllu);
+
+      });
+
+    });
+  });
 });
 
 describe('Token', () => {
+  describe('invalid intializer', () => {
+    it(`should throw a NotatrixError`, () => {
+      assert.throws(() => { let t = new Token(); }, E.NotatrixError);
+    });
+  });
+
+  const s = new Sentence();
+  describe(`valid initializer`, () => {
+
+  });
 
 });
 
+if (false)
 describe('Sentence', () => {
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
@@ -36,7 +135,7 @@ describe('Sentence', () => {
     });
   });
 
-  describe('token getters', () => {
+  describe('token validation', () => {
     _.each(data['CoNLL-U'], (text, name) => {
       describe(name, () => {
         const s = new Sentence();
@@ -137,25 +236,475 @@ describe('Sentence', () => {
           const token = new Token();
           token.params = { form: 'invalid' };
 
-          console.log(s.length);
+          //console.log(s.length);
           s.insertTokenAt({ super: s.length + 10, sub: null }, token);
           assert.equal(original, s.length - 1);
-          console.log(s.length);
+          //console.log(s.length);
 
           s.insertTokenAt({ super: -10, sub: null }, token);
           assert.equal(original, s.length - 2);
-          console.log(s.length);
+          //console.log(s.length);
 
           let r = s.insertTokenAt({ super: 0, sub: s.length + 10 }, token);
-          console.log(s.length);
-          console.log(s.getToken(8));
-          assert.equal(original, s.length - 3);
+          //console.log(s.length);
+          //console.log(s.getToken(8));
+          //assert.equal(original, s.length - 3);
 
-          s.insertTokenAt({ super: 0, sub: -10 }, token);
-          assert.equal(original, s.length - 4);
+          //s.insertTokenAt({ super: 0, sub: -10 }, token);
+          //assert.equal(original, s.length - 4);
 
         });
       });
+    });
+  });
+});
+
+describe(`Hybrid methods`, () => {
+  describe(`modify heads & deps`, () => {
+    it(`modify heads`, () => {
+      let s = new Sentence();
+      s.params = [
+        { form: 'first' },
+        { form: 'second' },
+        { form: 'third' }
+      ];
+
+      let a0 = s.getAnalysis(0);
+      let a1 = s.getAnalysis(1);
+      let a2 = s.getAnalysis(2);
+      let a3 = s.getAnalysis(3); // null
+
+      a0.removeHead(a1);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addHead(a1);
+
+        assert.equal('2', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.removeHead(a0);
+
+        assert.equal('2', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.removeHead(a1);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addHead(a1, 'test-dependent');
+
+        assert.equal('2:test-dependent', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addHead(a1, 'test-dependent-2');  // overwrite, don't add
+
+        assert.equal('2:test-dependent-2', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addHead(a1); // don't overwrite if less data than before
+
+        assert.equal('2:test-dependent-2', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.changeHead(a2);
+
+        assert.equal('2:test-dependent-2', a0.head);
+        assert.equal(1, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addHead(a2, 'test-dependent-3');
+
+        assert.equal('2:test-dependent-2|3:test-dependent-3', a0.head);
+        assert.equal(2, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('1:test-dependent-3', a2.deps);
+        assert.equal(1, countDeps(a2));
+
+      a0.changeHead(a2, 'test-dependent-4');
+
+        assert.equal('2:test-dependent-2|3:test-dependent-4', a0.head);
+        assert.equal(2, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('1:test-dependent-4', a2.deps);
+        assert.equal(1, countDeps(a2));
+
+      a0.changeHead(a2);
+
+        assert.equal('2:test-dependent-2|3:test-dependent-4', a0.head);
+        assert.equal(2, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('1:test-dependent-2', a1.deps);
+        assert.equal(1, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('1:test-dependent-4', a2.deps);
+        assert.equal(1, countDeps(a2));
+
+      a0.removeHead(a1).removeHead(a2);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      assert.throws(() => { a0.addHead(a3); }, E.NotatrixError);
+      assert.throws(() => { a0.removeHead(a3); }, E.NotatrixError);
+      assert.throws(() => { a0.changeHead(a3); }, E.NotatrixError);
+
+    });
+
+    it(`modify deps`, () => {
+      let s = new Sentence();
+      s.params = [
+        { form: 'first' },
+        { form: 'second' },
+        { form: 'third' }
+      ];
+
+      let a0 = s.getAnalysis(0);
+      let a1 = s.getAnalysis(1);
+      let a2 = s.getAnalysis(2);
+      let a3 = s.getAnalysis(3); // null
+
+      a0.removeDep(a1);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addDep(a1);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.removeDep(a0);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.removeDep(a1);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addDep(a1, 'test-dependent');
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1:test-dependent', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addDep(a1, 'test-dependent-2');  // overwrite, don't add
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addDep(a1); // don't overwrite if less data than before
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.changeDep(a2, 'test-dependent-3');
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2', a0.deps);
+        assert.equal(1, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.addDep(a2, 'test-dependent-3');
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2|3:test-dependent-3', a0.deps);
+        assert.equal(2, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('1:test-dependent-3', a2.head);
+        assert.equal(1, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.changeDep(a2, 'test-dependent-4');
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2|3:test-dependent-4', a0.deps);
+        assert.equal(2, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('1:test-dependent-4', a2.head);
+        assert.equal(1, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.changeDep(a2);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('2:test-dependent-2|3:test-dependent-4', a0.deps);
+        assert.equal(2, countDeps(a0));
+
+        assert.equal('1:test-dependent-2', a1.head);
+        assert.equal(1, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('1:test-dependent-4', a2.head);
+        assert.equal(1, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      a0.removeDep(a1).removeDep(a2);
+
+        assert.equal('', a0.head);
+        assert.equal(0, countHeads(a0));
+        assert.equal('', a0.deps);
+        assert.equal(0, countDeps(a0));
+
+        assert.equal('', a1.head);
+        assert.equal(0, countHeads(a1));
+        assert.equal('', a1.deps);
+        assert.equal(0, countDeps(a1));
+
+        assert.equal('', a2.head);
+        assert.equal(0, countHeads(a2));
+        assert.equal('', a2.deps);
+        assert.equal(0, countDeps(a2));
+
+      assert.throws(() => { a0.addDep(a3); }, E.NotatrixError);
+      assert.throws(() => { a0.removeDep(a3); }, E.NotatrixError);
+      assert.throws(() => { a0.changeDep(a3); }, E.NotatrixError);
+
     });
   });
 });

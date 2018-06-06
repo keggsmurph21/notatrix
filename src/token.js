@@ -13,6 +13,9 @@ class Token extends Object {
   constructor(sent) {
     super();
 
+    if (!sent)
+      throw new E.NotatrixError('missing required arg: Sentence')
+
     this.sentence = sent;
     this._current = 0;
     this.analyses = [ null ];
@@ -57,7 +60,7 @@ class Token extends Object {
   getIndices() {
     if (!this.sentence)
       return { super: null, sub: null };
-    
+
     for (let i=0; i<this.sentence.tokens.length; i++) {
 
       const ana = this.sentence.tokens[i].analysis;
@@ -138,8 +141,10 @@ class Token extends Object {
   get analysis() {
     return this.analyses[this.current] || 'not set';
   }
-  set analysis(params) {
-    this.analyses[this.current] = new Analysis(this, params);
+  set analysis(analysis) {
+    if (!(analysis instanceof Analysis))
+      throw new E.NotatrixError('unable to set analysis to non-Analysis object');
+    this.analyses[this.current] = analysis;
   }
 
   get subTokens() {
@@ -205,7 +210,7 @@ class Token extends Object {
 
     const fields = split(serial);
 
-    this.analysis = {
+    this.analysis = new Analysis(this, {
       form: fields[1],
       lemma: fields[2],
       upostag: fields[3],
@@ -215,7 +220,7 @@ class Token extends Object {
       deprel: fields[7],
       deps: fields[8],
       misc: fields[9]
-    };
+    });
 
     return this.conllu;
   }
@@ -231,7 +236,7 @@ class Token extends Object {
     return this.analysis.params;
   }
   set params(params) {
-    this.analysis = params;
+    this.analysis = new Analysis(this, params);
     return this.params;
   }
   get eles() {

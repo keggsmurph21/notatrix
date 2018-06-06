@@ -117,7 +117,7 @@ class Sentence extends Object {
         .concat(this.tokens.slice(indices.super));
 
       return token;
-    
+
     } else {
       if (token.isSuperToken) {
         throw new E.TransformationError('can\'t insert superToken as subToken');
@@ -290,7 +290,7 @@ class Sentence extends Object {
       token.params = params;
       this.tokens.push(token);
     });
-    return this.params;
+    return this.attach().params;
   }
   get eles() {
 

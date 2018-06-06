@@ -24,12 +24,14 @@ function parseEnhancedString(str) {
   let heads = [];
 
   str = sanitize(str);
+
   _.each(str.split('|'), head => {
     head = head.split(':');
-    heads.push({
-      token: head[0],
-      deprel: head[1]
-    });
+    if (head[0])
+      heads.push({
+        token: head[0],
+        deprel: head[1]
+      });
   });
   return heads;
 }
@@ -38,10 +40,12 @@ class Analysis extends Object {
   constructor(token, params) {
     super();
 
-    this.initializing = true;
+    if (!token)
+      throw new E.NotatrixError('missing required arg: Token');
+
     this.token = token;
     this.sentence = token.sentence;
-    this.params = params;
+    this.params = _.pick(params, ...fields);
     _.each(params, (value, key) => {
       if (fields.indexOf(key) > -1)
         this[key] = value;
@@ -50,7 +54,10 @@ class Analysis extends Object {
     this.id = null; // see Sentence.index() and Token.index()
     this.superToken = null;
     this.subTokens = [];
-    this.initializing = false;
+
+    this._heads = [];
+    this._deps = [];
+
   }
   get length() {
     return this.subTokens.length;
@@ -97,7 +104,7 @@ class Analysis extends Object {
 
   }
   get eles() {
-    
+
   }
 
   // array-field (heads & deps) manipulators
@@ -108,13 +115,63 @@ class Analysis extends Object {
     return this;
   }
   addHead(head, deprel) {
+    if (!(head instanceof Analysis))
+      throw new E.NotatrixError('can\'t add head: not Analysis instance');
 
+    // first try to change an existing one (don't want duplicate heads)
+    if (this.changeHead(head, deprel))
+      return this;
+
+    this._heads.push({
+      token: head,
+      deprel: deprel
+    });
+    head._deps.push({
+      token: this,
+      deprel: deprel
+    });
+
+    return this;
   }
   removeHead(head) {
+    if (!(head instanceof Analysis))
+      throw new E.NotatrixError('can\'t remove head: not Analysis instance');
 
+    let removing = -1;
+    this.eachHead((token, deprel, i) => {
+      if (token === head)
+        removing = i;
+    });
+    if (removing > -1)
+      this._heads.splice(removing, 1);
+
+    removing = -1
+    head.eachDep((token, deprel, i) => {
+      if (token === this)
+        removing = i;
+    });
+    if (removing > -1)
+      head._deps.splice(removing, 1);
+
+    return this;
   }
   changeHead(head, deprel) {
+    if (!(head instanceof Analysis))
+      throw new E.NotatrixError('can\'t change head: not Analysis instance');
 
+    let done = false;
+    this.eachHead((token, _deprel, i) => {
+      if (token === head) {
+        this._heads[i].deprel = deprel || _deprel;
+        done = true;
+      }
+    });
+    head.eachDep((token, _deprel, i) => {
+      if (token === this)
+        head._deps[i].deprel = deprel || _deprel;
+    });
+
+    return done ? this : null;
   }
   eachDep(callback) {
     _.each(this._deps, (dep, i) => {
@@ -123,10 +180,8 @@ class Analysis extends Object {
     return this;
   }
   addDep(dep, deprel) {
-    if (!(dep instanceof Analysis)) {
-      this.sentence.logger.warn('can\'t add dep');
-      return null;
-    }
+    if (!(dep instanceof Analysis))
+      throw new E.NotatrixError('can\'t add dep: not Analysis instance');
 
     // first try to change an existing one (don't want duplicate deps)
     if (this.changeDep(dep, deprel))
@@ -144,10 +199,8 @@ class Analysis extends Object {
     return this;
   }
   removeDep(dep) {
-    if (!(dep instanceof Analysis)) {
-      this.sentence.logger.warn('can\'t remove dep');
-      return null;
-    }
+    if (!(dep instanceof Analysis))
+      throw new E.NotatrixError('can\'t remove dep: not Analysis instance');
 
     let removing = -1;
     this.eachDep((token, deprel, i) => {
@@ -168,21 +221,19 @@ class Analysis extends Object {
     return this;
   }
   changeDep(dep, deprel) {
-    if (!(dep instanceof Analysis)) {
-      this.sentence.logger.warn('can\'t change dep');
-      return null;
-    }
+    if (!(dep instanceof Analysis))
+      throw new E.NotatrixError('can\'t change dep: not Analysis instance');
 
     let done = false;
     this.eachDep((token, _deprel, i) => {
       if (token === dep) {
-        this._deps[i].deprel = deprel;
+        this._deps[i].deprel = deprel || _deprel;
         done = true;
       }
     });
     dep.eachHead((token, _deprel, i) => {
       if (token === this)
-        dep._heads[i].deprel = deprel;
+        dep._heads[i].deprel = deprel || _deprel;
     });
 
     return done ? this : null;
@@ -232,7 +283,7 @@ class Analysis extends Object {
       return heads.join('|');
 
     } else {
-      return this._heads.length 
+      return this._heads.length
         ? this._heads[0].id || this._heads[0]
         : null;
     }
@@ -290,6 +341,12 @@ class Analysis extends Object {
   }
   get isSuperToken() {
     return this.subTokens.length > 0;
+  }
+  get isCurrent() {
+    return this.token.analysis === this;
+  }
+  get isEmpty() {
+    return false;
   }
 }
 
