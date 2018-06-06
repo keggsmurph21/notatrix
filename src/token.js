@@ -19,6 +19,7 @@ class Token extends Object {
     this.sentence = sent;
     this._current = null;
     this.analyses = [];
+    this.superToken = null;
   }
   get length() {
     return this.analyses.length;
@@ -64,6 +65,10 @@ class Token extends Object {
   }
 
   insertAnalysisAt(index, analysis) {
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to insert subToken: unable to cast index to int');
+
     if (!(analysis instanceof Analysis))
       throw new E.NotatrixError('unable to insert analysis: not instance of Analysis');
 
@@ -72,7 +77,7 @@ class Token extends Object {
 
     index = index < 0 ? 0
       : index > this.length ? this.length
-      : index;
+      : parseInt(index);
 
     analysis.token = this;
     this.analyses = this.analyses.slice(0, index)
@@ -85,21 +90,31 @@ class Token extends Object {
     if (!this.length)
       return this;
 
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to remove subToken: unable to cast index to int');
+
     index = index < 0 ? 0
-      : index > this.length -1 ? this.length - 1
-      : index;
+      : index > this.length - 1 ? this.length - 1
+      : parseInt(index);
 
-    this.analyses.splice(index, 1);
-
-    if (!this.length)
+    if (this.length === 1)
       this._current = null;
 
-    return this;
+    return this.analyses.splice(index, 1);
   }
   moveAnalysisAt(sourceIndex, targetIndex) {
+    sourceIndex = parseFloat(sourceIndex);
+    targetIndex = parseFloat(targetIndex);
+    if (isNaN(sourceIndex) || isNaN(targetIndex))
+      throw new E.NotatrixError('unable to move analysis: unable to cast indices to ints');
 
-    sourceIndex = sourceIndex < 0 ? 0 : sourceIndex;
-    targetIndex = targetIndex > this.length - 1 ? this.length - 1 : targetIndex;
+    sourceIndex = sourceIndex < 0 ? 0
+      : sourceIndex > this.length - 1 ? this.length - 1
+      : parseInt(sourceIndex);
+    targetIndex = targetIndex < 0 ? 0
+      : targetIndex > this.length - 1 ? this.length - 1
+      : parseInt(targetIndex);
 
     if (sourceIndex === targetIndex) {
       // do nothing
@@ -150,7 +165,7 @@ class Token extends Object {
 
 
   // token insertion, removal, moving
-  insertBefore(token) {
+  /*insertBefore(token) {
     const indices = this.getIndices();
     return this.sentence.insertTokenAt(indices, token);
   }
@@ -186,7 +201,7 @@ class Token extends Object {
   }
   split() {
 
-  }
+  }*/
 
   // internal format
   get analysis() {
@@ -200,6 +215,7 @@ class Token extends Object {
     if (this.analysis === null) {
       this.insertAnalysisAt(0, analysis);
     } else {
+      analysis.token = this;
       this.analyses[this.current] = analysis;
     }
   }
@@ -209,7 +225,7 @@ class Token extends Object {
       return null;
     return this.analysis.subTokens;
   }
-  insertSubToken(index, token) {
+  /*insertSubToken(index, token) {
     if (this.analysis === null)
       throw new E.NotatrixError('unable to insert subtoken: analysis is null');
 
@@ -228,7 +244,7 @@ class Token extends Object {
   }
   removeSubToken(index) {
 
-  }
+  }*/
 
   // external format stuff
   index(id) {
@@ -322,7 +338,7 @@ class Token extends Object {
 
   // bool stuff
   get isSubToken() {
-    return this.analysis ? this.analysis.isSubToken : null;
+    return this.superToken !== null;
   }
   get isSuperToken() {
     return this.analysis ? this.analysis.isSuperToken : null;

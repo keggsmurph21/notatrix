@@ -15,6 +15,11 @@ function clean(str) {
 function ignoreIndices(str) {
   return clean(str.split('\t').slice(1).join('\t'));
 }
+function ignoreAfterLemma(str) {
+  return str.split('\n').map(line => {
+    return line.split('\t').slice(0, 3).join(' ');
+  }).join(' ');
+}
 function countHeads(ana) {
   let acc = 0;
   ana.eachHead(() => {
@@ -123,6 +128,181 @@ describe('Analysis', () => {
 
     });
   });
+
+  describe('modify subTokens', () => {
+    it(`handles (insert|remove|move)TokenAt()`, () => {
+      let s = new Sentence();
+
+      let t0 = new Token(s);
+      let t1 = new Token(s);
+      let t2 = new Token(s);
+      let t3 = new Token(s);
+      let t4 = new Token(s);
+
+      let a0 = new Analysis(t0, { form: 'zeroth' });
+      let a1 = new Analysis(t1, { form: 'first' });
+      let a2 = new Analysis(t2, { form: 'second' });
+      let a3 = new Analysis(t3, { form: 'third' });
+      let a4 = new Analysis(t4, { form: 'fourth' });
+
+      t0.analysis = a0;
+      t1.analysis = a1;
+      t2.analysis = a2;
+      t3.analysis = a3;
+      t4.analysis = a4;
+
+      expect(t0.text).to.equal('zeroth');
+      expect(t1.text).to.equal('first');
+      expect(t2.text).to.equal('second');
+      expect(t3.text).to.equal('third');
+      expect(t4.text).to.equal('fourth');
+
+      expect(a0[0]).to.equal(null);
+      expect(a1[0]).to.equal(null);
+      expect(a2[0]).to.equal(null);
+      expect(a3[0]).to.equal(null);
+      expect(a4[0]).to.equal(null);
+
+      expect(() => { a0.insertSubTokenAt(); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt({}); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(null); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(undefined); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt('x'); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(0); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(0, {}); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(0, null); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(0, undefined); }).to.throw(E.NotatrixError);
+      expect(() => { a0.insertSubTokenAt(0, a1); }).to.throw(E.NotatrixError);
+
+      s.insertTokenAt({ super:0, sub:null }, t0);
+
+      a0.insertSubTokenAt(0, t1);
+
+        expect(a0.subTokens).to.deep.equal([t1]);
+        expect(a0[0]).to.deep.equal(a1);
+        expect(a0[1]).to.equal(null);
+        expect(a0.isSuperToken).to.equal(true);
+        expect(a0.isSubToken).to.equal(false);
+
+        expect(t0.subTokens).to.deep.equal([t1]);
+        expect(t0.isSuperToken).to.equal(true);
+        expect(t0.isSubToken).to.equal(false);
+
+        expect(a1.superToken).to.deep.equal(a0);
+        expect(a1.isSuperToken).to.equal(false);
+        expect(a1.isSubToken).to.equal(true);
+
+        expect(t1.superToken).to.deep.equal(a0);
+        expect(t1.isSuperToken).to.equal(false);
+        expect(t1.isSubToken).to.equal(true);
+
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth zeroth 1 first first')
+
+      a0.insertSubTokenAt(-1, t2);
+
+        expect(a0.subTokens).to.deep.equal([t2, t1]);
+        expect(a0[0]).to.deep.equal(a2);
+        expect(a0[1]).to.equal(a1);
+        expect(a0[2]).to.equal(null);
+        expect(a0.isSuperToken).to.equal(true);
+        expect(a0.isSubToken).to.equal(false);
+
+        expect(t0.subTokens).to.deep.equal([t2, t1]);
+        expect(t0.isSuperToken).to.equal(true);
+        expect(t0.isSubToken).to.equal(false);
+
+        expect(a2.superToken).to.deep.equal(a0);
+        expect(a2.isSuperToken).to.equal(false);
+        expect(a2.isSubToken).to.equal(true);
+
+        expect(t2.superToken).to.deep.equal(a0);
+        expect(t2.isSuperToken).to.equal(false);
+        expect(t2.isSubToken).to.equal(true);
+
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth zeroth 1 second second 2 first first')
+
+      expect(() => { a3.insertSubTokenAt(0, t0); }).to.throw(E.NotatrixError);
+      expect(() => { a3.insertSubTokenAt(0, t1); }).to.throw(E.NotatrixError);
+
+      a0.insertSubTokenAt(1, t3);
+
+        expect(a0.subTokens).to.deep.equal([t2, t3, t1]);
+        expect(a0[0]).to.deep.equal(a2);
+        expect(a0[1]).to.equal(a3);
+        expect(a0[2]).to.equal(a1);
+        expect(a0[3]).to.equal(null);
+        expect(a0.isSuperToken).to.equal(true);
+        expect(a0.isSubToken).to.equal(false);
+
+        expect(t0.subTokens).to.deep.equal([t2, t3, t1]);
+        expect(t0.isSuperToken).to.equal(true);
+        expect(t0.isSubToken).to.equal(false);
+
+        expect(a3.superToken).to.deep.equal(a0);
+        expect(a3.isSuperToken).to.equal(false);
+        expect(a3.isSubToken).to.equal(true);
+
+        expect(t3.superToken).to.deep.equal(a0);
+        expect(t3.isSuperToken).to.equal(false);
+        expect(t3.isSubToken).to.equal(true);
+
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth zeroth 1 second second 2 third third 3 first first');
+
+      a0.insertSubTokenAt(Infinity, t4);
+
+        expect(a0.subTokens).to.deep.equal([t2, t3, t1, t4]);
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-4 zeroth zeroth 1 second second 2 third third 3 first first 4 fourth fourth');
+
+      a0.removeSubTokenAt(1);
+
+        expect(a0.subTokens).to.deep.equal([t2, t1, t4]);
+        expect(a3.superToken).to.equal(null);
+        expect(a3.isSubToken).to.equal(false);
+        expect(t3.isSubToken).to.equal(false);
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth zeroth 1 second second 2 first first 3 fourth fourth');
+
+      a0.removeSubTokenAt(2);
+
+        expect(a0.subTokens).to.deep.equal([t2, t1]);
+        expect(a4.superToken).to.equal(null);
+        expect(a4.isSubToken).to.equal(false);
+        expect(t4.isSubToken).to.equal(false);
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth zeroth 1 second second 2 first first');
+
+      a0.removeSubTokenAt(-5);
+
+        expect(a0.subTokens).to.deep.equal([t1]);
+        expect(a2.superToken).to.equal(null);
+        expect(a2.isSubToken).to.equal(false);
+        expect(t2.isSubToken).to.equal(false);
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth zeroth 1 first first');
+
+      a0.removeSubTokenAt(Infinity);
+
+        expect(a0.subTokens).to.deep.equal([]);
+        expect(a0.isSuperToken).to.equal(false);
+        expect(a1.superToken).to.equal(null);
+        expect(a1.isSubToken).to.equal(false);
+        expect(t1.isSubToken).to.equal(false);
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1 zeroth zeroth');
+
+      let ret = a0.push(t1).push(t2).push(t3).pop();
+      a0.push(t4);
+
+        expect(a0.subTokens).to.deep.equal([t1, t2, t4]);
+        expect(ret).to.deep.equal(t3);
+
+      a0.moveSubTokenAt(0, 2);
+      expect(a0.subTokens).to.deep.equal([t2, t4, t1]);
+
+      a0.moveSubTokenAt(1, 0);
+      expect(a0.subTokens).to.deep.equal([t4, t2, t1]);
+
+      a0.moveSubTokenAt(Infinity, -Infinity);
+      expect(a0.subTokens).to.deep.equal([t1, t4, t2]);
+
+    });
+  });
 });
 
 describe('Token', () => {
@@ -147,7 +327,7 @@ describe('Token', () => {
         expect(t.length).to.equal(0);
         expect(t.subTokens).to.equal(null);
 
-        expect(t.isSubToken).to.equal(null);
+        expect(t.isSubToken).to.equal(false);
         expect(t.isSuperToken).to.equal(null);
         expect(t.isEmpty).to.equal(null);
         expect(t.isAmbiguous).to.equal(false);
@@ -179,6 +359,7 @@ describe('Token', () => {
 
         expect(t.current).to.equal(0);
         expect(forms(t)).to.equal('testing');
+        expect(t.analysis).to.be.an.instanceof(Analysis);
         expect(t.analysis.form).to.equal('testing');
         expect(t.length).to.equal(1);
         expect(t.subTokens).to.deep.equal([]);
@@ -196,6 +377,7 @@ describe('Token', () => {
 
         expect(t.current).to.equal(0);
         expect(forms(t)).to.equal('testing');
+        expect(t.analysis).to.be.an.instanceof(Analysis);
         expect(t.analysis.form).to.equal('testing');
         expect(t.length).to.equal(1);
         expect(t.subTokens).to.deep.equal([]);
@@ -364,7 +546,7 @@ describe('Sentence', () => {
 
       expect(s.getComment(0)).to.equal(null);
       expect(s.getToken(0)).to.equal(null);
-      expect(s.getAnalysis(0)).to.equal(null);
+      expect(s[0]).to.equal(null); // analysis
       expect(s.getById(0)).to.equal(null);
       expect(s.getByIndices(0)).to.equal(null);
 
@@ -443,10 +625,8 @@ describe('Sentence', () => {
       s.insertTokenAt({ super: -1 }, t);
       expect(currentForms(s)).to.equal('inserted inserted first inserted second third fourth');
 
-      s.getAnalysis(4).addHead(s.getAnalysis(5));
+      s[4].addHead(s[5]);
       s.index();
-      console.log(s[0] === s.getAnalysis(0));
-
       console.log(s.text);
 
     })
@@ -597,10 +777,15 @@ describe(`Hybrid methods`, () => {
         { form: 'third' }
       ];
 
-      let a0 = s.getAnalysis(0);
-      let a1 = s.getAnalysis(1);
-      let a2 = s.getAnalysis(2);
-      let a3 = s.getAnalysis(3); // null
+      let a0 = s[0];
+      let a1 = s[1];
+      let a2 = s[2];
+      let a3 = s[3];
+
+      expect(a0).to.be.an.instanceof(Analysis)
+      expect(a1).to.be.an.instanceof(Analysis);
+      expect(a2).to.be.an.instanceof(Analysis);
+      expect(a3).to.equal(null);
 
       a0.removeHead(a1);
 
@@ -820,10 +1005,15 @@ describe(`Hybrid methods`, () => {
         { form: 'third' }
       ];
 
-      let a0 = s.getAnalysis(0);
-      let a1 = s.getAnalysis(1);
-      let a2 = s.getAnalysis(2);
-      let a3 = s.getAnalysis(3); // null
+      let a0 = s[0];
+      let a1 = s[1];
+      let a2 = s[2];
+      let a3 = s[3];
+
+      expect(a0).to.be.an.instanceof(Analysis)
+      expect(a1).to.be.an.instanceof(Analysis);
+      expect(a2).to.be.an.instanceof(Analysis);
+      expect(a3).to.equal(null);
 
       a0.removeDep(a1);
 

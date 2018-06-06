@@ -56,7 +56,6 @@ class Analysis extends Object {
     });
 
     this.id = null; // see Sentence.index() and Token.index()
-    this.superToken = null;
     this.subTokens = [];
 
     this.initializing = false;
@@ -65,6 +64,83 @@ class Analysis extends Object {
   get length() {
     return this.subTokens.length;
   }
+
+  insertSubTokenAt(index, token) {
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to insert subToken: unable to cast index to int');
+
+    if (!token)
+      throw new E.NotatrixError('unable to insert subToken: no subToken provided');
+
+    if (token.__proto__ !== this.token.__proto__)
+      throw new E.NotatrixError('unable to insert subToken: not instance of Token');
+
+    if (token.isSuperToken)
+      throw new E.NotatrixError('unable to insert subToken: token has subTokens');
+
+    if (token.isSubToken)
+      throw new E.NotatrixError('unable to insert subToken: token is already a subToken')
+
+    index = index < 0 ? 0
+      : index > this.length ? this.length
+      : parseInt(index);
+
+    token.superToken = this;
+    this.subTokens = this.subTokens.slice(0, index)
+      .concat(token)
+      .concat(this.subTokens.slice(index));
+
+    return this;
+  }
+  removeSubTokenAt(index) {
+    if (!this.length)
+      return null;
+
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to remove subToken: unable to cast index to int');
+
+    index = index < 0 ? 0
+      : index > this.length - 1 ? this.length - 1
+      : parseInt(index);
+
+    this.subTokens[index].superToken = null;
+    return this.subTokens.splice(index, 1)[0];
+  }
+  moveSubTokenAt(sourceIndex, targetIndex) {
+    sourceIndex = parseFloat(sourceIndex);
+    targetIndex = parseFloat(targetIndex);
+    if (isNaN(sourceIndex) || isNaN(targetIndex))
+      throw new E.NotatrixError('unable to move subToken: unable to cast indices to ints');
+
+    sourceIndex = sourceIndex < 0 ? 0
+      : sourceIndex > this.length - 1 ? this.length - 1
+      : parseInt(sourceIndex);
+    targetIndex = targetIndex < 0 ? 0
+      : targetIndex > this.length - 1 ? this.length - 1
+      : parseInt(targetIndex);
+
+    if (sourceIndex === targetIndex) {
+      // do nothing
+    } else {
+
+      let subToken = this.subTokens.splice(sourceIndex, 1);
+      this.subTokens = this.subTokens.slice(0, targetIndex)
+        .concat(subToken)
+        .concat(this.subTokens.slice(targetIndex));
+
+    }
+
+    return this;
+  }
+  push(token) {
+    return this.insertSubTokenAt(Infinity, token);
+  }
+  pop() {
+    return this.removeSubTokenAt(Infinity);
+  }
+
   getSubToken(index) {
     return this.subTokens[index] || null;
   }
@@ -355,6 +431,9 @@ class Analysis extends Object {
   }
 
   // bool stuff for MultiWordTokens
+  get superToken() {
+    return this.token.superToken;
+  }
   get isSubToken() {
     return this.superToken !== null;
   }
@@ -373,8 +452,9 @@ Analysis.prototype.__proto__ = new Proxy(Analysis.prototype.__proto__, {
     if (typeof name === 'symbol')
       return this[name];
 
-    let id = parseInt(name);
+    let id = parseFloat(name); // catch Infinity (used in tests, and maybe other stuff)
     if (!isNaN(id)) {
+      id = parseInt(id);
       let token = receiver.subTokens[id];
       return token ? token.analysis : null;
     } else {

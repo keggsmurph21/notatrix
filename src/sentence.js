@@ -342,8 +342,9 @@ Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
     if (typeof name === 'symbol')
       return this[name];
 
-    let id = parseInt(name);
+    let id = parseFloat(name); // catch Infinity (used in tests, and maybe other stuff)
     if (!isNaN(id)) {
+      id = parseInt(id);
       let token = receiver.getToken(id);
       return token ? token.analysis : null;
     } else {
