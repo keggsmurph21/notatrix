@@ -200,6 +200,10 @@ describe('Token', () => {
         assert.throws(() => { t.conllu }, E.NotatrixError); // not indexed yet
         //assert.throws(() => { t.cg3 }, E.NotatrixError); // not indexed yet
         assert.deepEqual({ form: 'testing' }, t.params);
+
+        t.sentence.index();
+        assert.throws(() => { return t.conllu; }, E.NotatrixError);
+        //assert.throws(() => { return t.cg3; }, E.NotatrixError);
       })
     });
 
@@ -320,12 +324,32 @@ describe('Token', () => {
         assert.equal('third', t.analysis.form);
 
       });
+
+      return;
+      const conllus = [
+        `1-3	He	he	det	_	pos|f|sp	_	det	_	_`,
+        `1	boued	boued	n	_	m|sg	4	obj	_	_`
+      ];
+      _.each(conllus, conllu => {
+        it(`parses the CoNLL-U string`, () => {
+          let s = new Sentence({ });
+          let t = new Token(s);
+
+          t.conllu = conllu;
+          t.index(0); // fool it
+          assert.equal(
+            clean(conllu.split('\t').slice(1).join('\t')),
+            clean(t.conllu.split('\t').slice(1).join('\t'))
+          );
+        });
+      });
+
     });
   });
 });
 
-if (false)
 describe('Sentence', () => {
+
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
       it(`${name}: should serialize to Notatrix and back`, () => {
@@ -427,7 +451,7 @@ describe('Sentence', () => {
 
         it(`should do nothing when given an invalid index to insert at`, () => {
           const original = s.conllu;
-          const token = new Token();
+          const token = new Token(s);
           token.params = { form: 'invalid' };
 
           let op = () => { s.insertTokenAt({ super: null, sub: null }, token); };
@@ -438,7 +462,7 @@ describe('Sentence', () => {
         it(`should add tokens even when one of our indices are "out of bounds"`, () => { // thanks to Array.slice()
 
           const original = s.length;
-          const token = new Token();
+          const token = new Token(s);
           token.params = { form: 'invalid' };
 
           //console.log(s.length);

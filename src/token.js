@@ -294,7 +294,6 @@ class Token extends Object {
       misc: fields[9]
     });
 
-    return this.conllu;
   }
   get cg3() {
     if (this.analysis === null)

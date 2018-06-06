@@ -43,8 +43,12 @@ class Analysis extends Object {
     if (!token)
       throw new E.NotatrixError('missing required arg: Token');
 
+    this.initializing = true;
     this.token = token;
     this.sentence = token.sentence;
+
+    this._heads = [];
+    this._deps = [];
     this.params = _.pick(params, ...fields);
     _.each(params, (value, key) => {
       if (fields.indexOf(key) > -1)
@@ -55,8 +59,7 @@ class Analysis extends Object {
     this.superToken = null;
     this.subTokens = [];
 
-    this._heads = [];
-    this._deps = [];
+    this.initializing = false;
 
   }
   get length() {
@@ -94,8 +97,9 @@ class Analysis extends Object {
     return fallback;
   }
   get conllu() {
+    this.sentence.index();
     if (this.id === null || this.id === undefined)
-      throw new E.NotatrixError('can\'t get CoNLL-U before indexing the Analysis (call Sentence.index())');
+      throw new E.NotatrixError('analysis is not currently indexed');
 
     return `${this.id}\t${
       _.map(fields, field => {
@@ -104,8 +108,9 @@ class Analysis extends Object {
     }`;
   }
   get cg3() {  // TODO: not implemented
+    this.sentence.index();
     if (this.id === null || this.id === undefined)
-      throw new E.NotatrixError('can\'t get CG3 before indexing the Analysis (call Sentence.index())');
+      throw new E.NotatrixError('analysis is not currently indexed');
 
   }
   get eles() { // TODO: not implemented
@@ -126,7 +131,6 @@ class Analysis extends Object {
     // first try to change an existing one (don't want duplicate heads)
     if (this.changeHead(head, deprel))
       return this;
-
     this._heads.push({
       token: head,
       deprel: deprel
@@ -298,10 +302,15 @@ class Analysis extends Object {
       heads = parseEnhancedString(heads);
 
     this._heads = heads.map(head => {
-      return {
-        token: this.sentence.getById(head.token) || head.token,
-        deprel: head.deprel
-      };
+      return this.initializing
+        ? {
+            token: head.token,
+            deprel: head.deprel
+          }
+        : {
+            token: this.sentence.getById(head.token) || head.token,
+            deprel: head.deprel
+          };
     });
 
     return this;
@@ -325,10 +334,15 @@ class Analysis extends Object {
       deps = parseEnhancedString(deps);
 
     this._deps = deps.map(dep => {
-      return {
-        token: this.sentence.getById(dep.token) || dep.token,
-        deprel: dep.deprel
-      };
+      return this.initializing
+        ? {
+            token: dep.token,
+            deprel: dep.deprel
+          }
+        : {
+            token: this.sentence.getById(dep.token) || dep.token,
+            deprel: dep.deprel
+          };
     });
 
     return this;

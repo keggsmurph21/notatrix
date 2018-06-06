@@ -244,8 +244,8 @@ class Sentence extends Object {
       } else {
         if (lines[i].trim().length) {
           const token = new Token(this);
-          token.conllu = lines[i];
           this.tokens.push(token);
+          token.conllu = lines[i];
 
         }
       }
