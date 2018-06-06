@@ -440,7 +440,7 @@ describe('Sentence', () => {
 
       s.getAnalysis(4).addHead(s.getAnalysis(5));
       s.index();
-      console.log(s.conllu);
+      console.log(s.getAnalysis(5).id);
 
       console.log(s.text);
 
