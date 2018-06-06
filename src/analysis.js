@@ -100,10 +100,10 @@ class Analysis extends Object {
       }).join('\t')
     }`;
   }
-  get cg3() {
+  get cg3() {  // TODO: not implemented
 
   }
-  get eles() {
+  get eles() { // TODO: not implemented
 
   }
 
@@ -345,7 +345,7 @@ class Analysis extends Object {
   get isCurrent() {
     return this.token.analysis === this;
   }
-  get isEmpty() {
+  get isEmpty() { // TODO: not implemented
     return false;
   }
 }

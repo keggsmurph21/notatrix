@@ -42,7 +42,7 @@ describe('Analysis', () => {
       inParams: undefined,
       outParams: {},
       text: fallback,
-      conllu: `null	_	_	_	_	_	_	_	_	_`
+      conllu: `null	_	_	_	_	_	_	_	_	_`,
     },
     {
       inParams: null,
@@ -113,10 +113,31 @@ describe('Token', () => {
   });
 
   const s = new Sentence();
-  describe(`valid initializer`, () => {
+  const data = [ {} ];
 
+  _.each(data, d => {
+    describe(`valid initializer`, () => {
+      it(`should initialize correctly`, () => {
+        let t = new Token(s);
+
+        assert.equal(s, t.sentence);
+        assert.equal(0, t.current);
+        assert.deepEqual([ null ], t.analyses);
+        assert.equal(null, t.analysis);
+
+      });
+
+      it(`should return formats correctly`, () => {
+        let t = new Token(s);
+
+        assert.throws(() => { return t.text; }, E.NotatrixError);
+        assert.throws(() => { return t.conllu; }, E.NotatrixError);
+        assert.throws(() => { return t.cg3; }, E.NotatrixError);
+        assert.throws(() => { return t.params; }, E.NotatrixError);
+
+      })
+    });
   });
-
 });
 
 if (false)

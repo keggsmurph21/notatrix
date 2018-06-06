@@ -102,6 +102,9 @@ class Sentence extends Object {
 
   // manipulate token array
   insertTokenAt(indices, token) {
+    if (!(token instanceof Token))
+      throw new E.NotatrixError('unable to insert token: not instance of Token');
+
     if (indices.super === null)
       throw new E.TransformationError('can\'t insert at null index')
 
@@ -116,7 +119,7 @@ class Sentence extends Object {
         .concat(token)
         .concat(this.tokens.slice(indices.super));
 
-      return token;
+      return this;
 
     } else {
       if (token.isSuperToken) {
@@ -140,7 +143,7 @@ class Sentence extends Object {
           .concat(token)
           .concat(superToken.subTokens.slice(indices.super));*/
 
-        return token;
+        return this;
 
       }
     }

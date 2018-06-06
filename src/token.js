@@ -55,6 +55,44 @@ class Token extends Object {
     this._current = current;
     return this.current;
   }
+  insertAnalysisAt(index, analysis) {
+    if (!(analysis instanceof Analysis))
+      throw new E.NotatrixError('unable to insert analysis: not instance of Analysis');
+
+    this.analyses = this.analyses.slice(0, index)
+      .concat(analysis)
+      .concat(this.analyses.slice(index));
+
+    return this;
+  }
+  removeAnalysisAt(index, analysis) {
+    if (!(analysis instanceof Analysis))
+      throw new E.NotatrixError('unable to remove analysis: not instance of Analysis');
+
+    this.analyses = this.analyses.splice(index, 1);
+
+    return this;
+  }
+  moveAnalysisAt(sourceIndex, targetIndex) {
+    if (!(analysis instanceof Analysis))
+      throw new E.NotatrixError('unable to remove analysis: not instance of Analysis');
+
+    sourceIndex = sourceIndex < 0 ? 0 : sourceIndex;
+    targetIndex = targetIndex > this.length - 1 ? this.length - 1 : targetIndex;
+
+    if (sourceIndex === targetIndex) {
+      // do nothing
+    } else {
+
+      let analysis = this.analyses.splice(sourceIndex, 1);
+      this.analyses = this.analyses.slice(0, targetIndex)
+        .concat(analysis)
+        .concat(this.analyses.slice(targetIndex));
+
+    }
+
+    return this;
+  }
 
   // getting indices for current analysis
   getIndices() {
@@ -139,7 +177,7 @@ class Token extends Object {
 
   // internal format
   get analysis() {
-    return this.analyses[this.current] || 'not set';
+    return this.analyses[this.current];
   }
   set analysis(analysis) {
     if (!(analysis instanceof Analysis))
@@ -198,9 +236,15 @@ class Token extends Object {
     };
   }
   get text() {
-    return this.analysis.text;
+    if (this.analysis === null)
+      throw new E.NotatrixError('no analysis to get text for');
+
+    return this.analysis.text || '';
   }
   get conllu() {
+    if (this.analysis === null)
+      throw new E.NotatrixError('no analysis to get CoNLL-U for');
+
     if (this.isAmbiguous)
       throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
 
@@ -225,7 +269,10 @@ class Token extends Object {
     return this.conllu;
   }
   get cg3() {
-    return this.analysis.cg3;
+    if (this.analysis === null)
+      throw new E.NotatrixError('no analysis to get CG3 for');
+
+    return undefined;
   }
   set cg3(serial) {
     throw new Error('CG3 not implemented yet');
@@ -233,6 +280,9 @@ class Token extends Object {
     return this.cg3;
   }
   get params() {
+    if (this.analysis === null)
+      throw new E.NotatrixError('no analysis to get params for');
+
     return this.analysis.params;
   }
   set params(params) {
