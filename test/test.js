@@ -89,6 +89,10 @@ describe('Analysis', () => {
         expect(a.subTokens).to.deep.equal([]);
         expect(a.length).to.equal(0);
         expect(a[0]).to.equal(null);
+        expect(a[-1]).to.equal(null);
+        expect(a[100]).to.equal(null);
+        expect(a[Infinity]).to.equal(null);
+        expect(a[-Infinity]).to.equal(null);
         expect(a.getSubToken(0)).to.equal(null);
 
         expect(a.isSuperToken).to.equal(false);
