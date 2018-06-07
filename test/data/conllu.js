@@ -9,6 +9,13 @@ t: `# testing :)
 4	doob	doobie	np	_	_	3	_	_	_
 5	Mona	Mona	np	_	ant|f|sg	4	nsubj	_	_`,
 
+empty: `1      Sue       Sue       _       _       _       _       _       _       _
+2      likes     like       _       _       _       _       _       _       _
+3      coffee    coffee       _       _       _       _       _       _       _
+4      and       and       _       _       _       _       _       _       _
+5      Bill      Bill       _       _       _       _       _       _       _
+5.1    likes     like       _       _       _       _       _       _       _
+6      tea       tea       _       _       _       _       _       _       _`,
 
 0: `# sent_id = _
 # text = this is a test

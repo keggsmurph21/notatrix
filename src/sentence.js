@@ -7,7 +7,8 @@ const Token = require('./token');
 const regex = {
   comment: /^\W*\#/,
   commentContent: /^\W*\#\W*(.*)/,
-  superToken: /^\W*[0-9]+\-[0-9]+/
+  superToken: /^\W*[0-9.]+\-[0-9.]+/,
+  empty: /^\W*[0-9]+\.[0-9]+/
 }
 
 class Sentence extends Object {
@@ -185,7 +186,7 @@ class Sentence extends Object {
   get text() {
     let tokens = [];
     this.forEach(token => {
-      if (!token.isSuperToken)
+      if (!token.isSuperToken && !token.isEmpty)
         tokens.push(token.text);
     });
     return tokens.join(' ');
@@ -234,23 +235,17 @@ class Sentence extends Object {
           .split('-')
           .map(str => { return parseInt(str); });
 
-        const superToken = new Token(this);
-        superToken.conllu = lines[i];
+        const superToken = Token.fromConllu(this, lines[i]);
         for (let j=subTokenIndices[0]; j<=subTokenIndices[1]; j++) {
-          const subToken = new Token(this);
-          subToken.conllu = lines[j + this.comments.length];
+          superToken.pushSubToken( Token.fromConllu(this, lines[j + this.comments.length]) );
           i++;
-          superToken.pushSubToken(subToken);
         }
-        this.tokens.push(superToken);
+        this.pushToken(superToken);
 
       } else {
-        if (lines[i].trim().length) {
-          const token = new Token(this);
-          this.tokens.push(token);
-          token.conllu = lines[i];
+        if (lines[i].trim().length)
+          this.pushToken( Token.fromConllu(this, lines[i]) );
 
-        }
       }
     }
 
@@ -324,9 +319,9 @@ class Sentence extends Object {
 
   }
   index() {
-    let id = 1; // CoNLL-U indexes start at 1 (because 0 is root)
+    let id = 0, empty = 0; // CoNLL-U indexes start at 1, so incr before setting (because 0 is root)
     _.each(this.tokens, token => {
-      id = token.index(id);
+      [id, empty] = token.index(id, empty);
     });
     return this;
   }

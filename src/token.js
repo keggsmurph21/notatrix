@@ -20,6 +20,7 @@ class Token extends Object {
     this._current = null;
     this.analyses = [];
     this.superToken = null;
+    this._isEmpty = false;
 
     if (params !== undefined)
       this.analysis = new Analysis(this, params);
@@ -263,7 +264,7 @@ class Token extends Object {
   }*/
 
   // external format stuff
-  index(id) {
+  index(id, empty) {
     if (isNaN(parseInt(id)))
       throw new E.NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
 
@@ -273,14 +274,28 @@ class Token extends Object {
     this.forEach(analysis => {
       if (analysis === this.analysis) { // current
         if (this.isSuperToken) {
-          this.analysis.id = `${id}-${id + this.analysis.length - 1}`;
           _.each(this.analysis.subTokens, subToken => {
-            subToken.analysis.id = `${id}`;
-            id++;
+            if (subToken.isEmpty) {
+              empty++;
+              subToken.analysis.id = `${id}.${empty}`
+            } else {
+              id++;
+              subToken.analysis.id = `${id}`;
+              empty = 0;
+            }
           });
+          this.analysis.id = `${
+            this.analysis.subTokens[0].analysis.id}-${
+            this.analysis.subTokens[this.analysis.length - 1].analysis.id}`;
         } else {
-          this.analysis.id = `${id}`;
-          id++;
+          if (this.isEmpty) {
+            empty++;
+            this.analysis.id = `${id}.${empty}`
+          } else {
+            id++;
+            this.analysis.id = `${id}`;
+            empty = 0;
+          }
         }
       } else {
         analysis.id = null;
@@ -290,7 +305,7 @@ class Token extends Object {
       }
     });
 
-    return id;
+    return [id, empty];
   }
   get nx() {
 
@@ -322,6 +337,8 @@ class Token extends Object {
   set conllu(serial) {
 
     const fields = split(serial);
+    this._isEmpty = /\./.test(fields[0]);
+
     this.analysis = new Analysis(this, {
       form: fields[1],
       lemma: fields[2],
@@ -383,7 +400,7 @@ class Token extends Object {
     return this.analysis ? this.analysis.isSuperToken : null;
   }
   get isEmpty() {
-    return this.analysis ? this.analysis.isEmpty : null;
+    return this.isSubToken ? this.superToken.token.isEmpty : this._isEmpty;
   }
   get isAmbiguous() {
     return this.length > 1;

@@ -329,7 +329,7 @@ describe('Token', () => {
 
         expect(t.isSubToken).to.equal(false);
         expect(t.isSuperToken).to.equal(null);
-        expect(t.isEmpty).to.equal(null);
+        expect(t.isEmpty).to.equal(false);
         expect(t.isAmbiguous).to.equal(false);
 
       });
@@ -783,7 +783,7 @@ describe('Sentence', () => {
 
     });
 
-    it(`tests integrating token and subToken manipulation`, () => {
+    it(`integrate token and subToken manipulation`, () => {
       let s = new Sentence();
 
       s.comments = [ 'this is the test sentence' ];
@@ -828,138 +828,52 @@ describe('Sentence', () => {
 4	sixth	sixth	_	_	_	_	_	_	sub`);
 
     });
+
+    it(`integrate subTokens with empty tokens`, () => {
+      let s = new Sentence();
+      s.comments = [ 'this is the #-# and #.# integration test' ];
+
+      s.pushToken(new Token(s, { form: 'zeroth', misc: 'super' }));
+      s.pushToken(Token.fromConllu(s, `3.1 first first _ _ _ _ _ _ empty`));
+      s[0].pushSubToken(new Token(s, { form: 'second', misc: 'sub' }));
+      s[0].pushSubToken(new Token(s, { form: 'third', misc: 'sub' }));
+
+      expect(s.getToken(3).isEmpty).to.equal(true);
+      expect(s.text).to.equal('second third');
+      expect(s.conllu).to.equal(`# this is the #-# and #.# integration test
+1-2	zeroth	zeroth	_	_	_	_	_	_	super
+1	second	second	_	_	_	_	_	_	sub
+2	third	third	_	_	_	_	_	_	sub
+2.1	first	first	_	_	_	_	_	_	empty`);
+
+      let tmp = s[0].popSubToken();
+      s[1].pushSubToken(tmp);
+
+      expect(s[1].token.isEmpty).to.equal(true);
+      expect(s[1][0].token.isEmpty).to.equal(true);
+      expect(s.text).to.equal('second');
+      expect(s.conllu).to.equal(`# this is the #-# and #.# integration test
+1-1	zeroth	zeroth	_	_	_	_	_	_	super
+1	second	second	_	_	_	_	_	_	sub
+1.1-1.1	first	first	_	_	_	_	_	_	empty
+1.1	third	third	_	_	_	_	_	_	sub`);
+
+    });
   });
-  return;
 
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
       it(`${name}: serialize to Notatrix and back`, () => {
-        const s = new Sentence();
+        let s = new Sentence(null, {
+          help: {
+            head: false,
+            deps: false
+          }
+        });
         s.conllu = text;
 
         expect(clean(s.conllu)).to.equal(clean(text));
 
-      });
-    });
-  });
-
-  describe('token validation', () => {
-    _.each(data['CoNLL-U'], (text, name) => {
-      describe(name, () => {
-        const s = new Sentence();
-        s.conllu = text;
-
-        const lines = text.trim().split('\n');
-        it(`get consistent number of comments and tokens`, () => {
-          expect(s.comments.length + s.length).to.equal(lines.length);
-        });
-
-        let c = 0, t = 0;
-        for (let i=0; i<lines.length; i++) {
-
-          if (lines[i].startsWith('#')) {
-            it(`get comment by index`, () => {
-              const expected = lines[i].slice(1).trim();
-              const actual = s.getComment(c);
-              expect(actual).to.equal(expected);
-              c++;
-            });
-          } else {
-
-            const expected = clean(lines[i]);
-            const token = s.getToken(t);
-            const index = lines[i].split(/[ \t]/)[0];
-            t++;
-
-            it(`get token by number`, () => {
-              const actual = clean(token.analysis.conllu);
-              expect(actual).to.equal(expected);
-            });
-
-            it(`get token by indices`, () => {
-              expect(s.getByIndices(token.getIndices())).to.equal(token);
-            })
-
-            it(`get token by string`, () => {
-              const actual = clean(s.getById(index).conllu);
-              expect(actual).to.equal(expected);
-            });
-
-            if (/\-/.test(index)) {
-              it(`be a superToken`, () => {
-                expect(s.getById(index).isSuperToken).to.equal(true);
-              });
-
-              let [ start, end ] = index.split('-');
-              start = parseInt(start);
-              end = parseInt(end);
-              for (let j=start; j<=end; j++) {
-                it(`be a subToken`, () => {
-                  expect(s.getById(j).isSubToken).to.equal(true);
-                });
-              }
-            }
-
-            _.each(token.analysis.head.match(/[0-9]+/g), (match, j) => {
-              match = parseInt(match);
-              if (match) { // catch 0 and NaN
-                it(`have found a real head`, () => {
-                  expect(s.getById(match)).to.be.an.instanceof(Analysis);
-                });
-                it(`have found the right head`, () => {
-                  expect(token.analysis._heads[j].token).to.equal(s.getById(match));
-                });
-              }
-            });
-
-            _.each(token.analysis.deps.match(/[0-9]+/g), (match, j) => {
-              match = parseInt(match);
-              if (match) {
-                it(`have found a real dep`, () => {
-                  expect(s.getById(match)).to.be.an.instanceof(Analysis);
-                });
-                it(`have found the right dep`, () => {
-                  expect(token.analysis._deps[j].token).to.equal(s.getById(match));
-                });
-              }
-            });
-          }
-        }
-
-        it(`do nothing when given an invalid index to insert at`, () => {
-          const original = s.conllu;
-          const token = new Token(s);
-          token.params = { form: 'invalid' };
-
-          let op = () => { s.insertTokenAt({ super: null, sub: null }, token); };
-          expect(op).to.throw(E.TransformationError);
-          expect(s.conllu).to.equal(original);
-        });
-
-        it(`add tokens even when one of our indices are "out of bounds"`, () => { // thanks to Array.slice()
-
-          const original = s.length;
-          const token = new Token(s);
-          token.params = { form: 'invalid' };
-
-          //console.log(s.length);
-          s.insertTokenAt({ super: s.length + 10, sub: null }, token);
-          expect(s.length - 1).to.equal(original);
-          //console.log(s.length);
-
-          s.insertTokenAt({ super: -10, sub: null }, token);
-          expect(s.length - 2).to.equal(original);
-          //console.log(s.length);
-
-          let r = s.insertTokenAt({ super: 0, sub: s.length + 10 }, token);
-          //console.log(s.length);
-          //console.log(s.getToken(8));
-          //expect(s.length - 3).to.equal(original);
-
-          //s.insertTokenAt({ super: 0, sub: -10 }, token);
-          //expect(s.length - 4).to.equal(original);
-
-        });
       });
     });
   });
