@@ -777,6 +777,16 @@ describe('Sentence', () => {
       expect(currentForms(s)).to.equal('third zeroth fourth');
 
     });
+
+    it(`tests integrating token and subToken manipulation`, () => {
+      let s = new Sentence();
+
+      s.pushToken(new Token(s, { form: 'zeroth', misc: 'test' }));
+      s.pushToken(new Token(s, { form: 'first', misc: 'test' }));
+      s.pushToken(new Token(s, { form: 'second', misc: 'test' }));
+
+      console.log(s.conllu);
+    });
   });
   return;
 
