@@ -174,7 +174,7 @@ class Analysis extends Object {
       params: this.params,
       values: values,
       subTokens: this.subTokens.map(subToken => {
-        return subToken.id;
+        return subToken.analysis.id;
       })
     };
 
