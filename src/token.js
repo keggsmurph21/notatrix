@@ -139,6 +139,13 @@ class Token extends Object {
     return this.removeAnalysisAt(Infinity);
   }
 
+  // shortcut to analysis stuff
+  pushSubToken(subToken) {
+    if (!this.analysis)
+      return null;
+    return this.analysis.pushSubToken(subToken);
+  }
+
   // getting indices for current analysis
   getIndices() {
     for (let i=0; i<this.sentence.tokens.length; i++) {

@@ -174,7 +174,7 @@ describe('Analysis', () => {
       expect(() => { a0.insertSubTokenAt(0, undefined); }).to.throw(E.NotatrixError);
       expect(() => { a0.insertSubTokenAt(0, a1); }).to.throw(E.NotatrixError);
 
-      s.insertTokenAt({ super:0, sub:null }, t0);
+      s.insertTokenAt(0, t0);
 
       a0.insertSubTokenAt(0, t1);
 
@@ -421,7 +421,6 @@ describe('Token', () => {
         tokens[2].pushAnalysis(new Analysis(tokens[2], params));
 
         _.each(tokens, token => {
-          console.log(token.params);
           expect(token).to.deep.equal(tokens[0]);
         });
       });
@@ -436,8 +435,11 @@ describe('Token', () => {
         expect(t.params).to.deep.equal({ form: 'testing' });
 
         t.sentence.index();
-        expect(() => { return t.conllu; }).to.throw(E.NotatrixError);
+        expect(() => { return t.conllu; }).to.throw(E.NotatrixError); // not attached to sentence
         //expect(() => { return t.cg3; }).to.throw(E.NotatrixError);
+
+        s.pushToken(t);
+        expect(ignoreAfterLemma(t.conllu)).to.equal('1 testing testing');
       });
     });
   });
@@ -576,8 +578,8 @@ describe('Sentence', () => {
       let s = new Sentence();
 
       expect(s.comments).to.deep.equal([]);
-      expect(s.conlluLoaded).to.equal(false);
-      expect(s.cg3Loaded).to.equal(false);
+      //expect(s.conlluLoaded).to.equal(false);
+      //expect(s.cg3Loaded).to.equal(false);
       expect(s.tokens).to.deep.equal([]);
       expect(s.length).to.equal(0);
 
@@ -604,6 +606,83 @@ describe('Sentence', () => {
       expect(s.conllu).to.equal('');
       //expect(s.cg3).to.equal('');
       expect(s.params).to.deep.equal([]);
+
+    });
+  });
+
+  describe(`valid after initializing first Analysis`, () => {
+    let params = [{ form: 'hello' }, { form: 'world' }];
+
+    it(`initialize directly with params`, () => {
+      let s = new Sentence(params);
+
+      expect(s.comments).to.deep.equal([]);
+      //expect(s.conlluLoaded).to.equal(false);
+      //expect(s.cg3Loaded).to.equal(false);
+      expect(currentForms(s)).to.equal('hello world');
+      expect(s.length).to.equal(2);
+
+      expect(s.isValidConllu).to.equal(true);
+      expect(s.isValidCG3).to.equal(true);
+
+    });
+
+    it(`initialize with = operator`, () => {
+      let s = new Sentence();
+      s.tokens = [ new Token(s, params[0]), new Token(s, params[1]) ];
+
+      expect(s.comments).to.deep.equal([]);
+      //expect(s.conlluLoaded).to.equal(false);
+      //expect(s.cg3Loaded).to.equal(false);
+      expect(currentForms(s)).to.equal('hello world');
+      expect(s.length).to.equal(2);
+
+      expect(s.isValidConllu).to.equal(true);
+      expect(s.isValidCG3).to.equal(true);
+
+    });
+
+    it(`initialize with Sentence.insertTokenAt method`, () => {
+      let s = new Sentence();
+      s.pushToken(new Token(s, params[0])).pushToken(new Token(s, params[1]));
+
+      expect(s.comments).to.deep.equal([]);
+      //expect(s.conlluLoaded).to.equal(false);
+      //expect(s.cg3Loaded).to.equal(false);
+      expect(currentForms(s)).to.equal('hello world');
+      expect(s.length).to.equal(2);
+
+      expect(s.isValidConllu).to.equal(true);
+      expect(s.isValidCG3).to.equal(true);
+
+    });
+
+    it(`has equivalent initializers`, () => {
+      let sents = [
+        new Sentence(params),
+        new Sentence(),
+        new Sentence(),
+        Sentence.fromConllu('1\thello\n2\tworld'),
+        //Sentence.fromCG3([/* ??? */]),
+        Sentence.fromParams(params)
+      ];
+      sents[1].tokens = [new Token(sents[1], params[0]), new Token(sents[1], params[1])];
+      sents[2].pushToken(new Token(sents[2], params[0])).pushToken(new Token(sents[2], params[1]));
+
+      _.each(sents, (s, i) => {
+        s.index();
+        expect(s).to.deep.equal(sents[0]);
+      });
+
+    });
+
+    it(`return formats correctly`, () => {
+      let s = new Sentence(params);
+
+      expect(s.text).to.equal('hello world');
+      expect(ignoreAfterLemma(s.conllu)).to.equal('1 hello hello 2 world world');
+      //expect(s.cg3).to.equal()
+      expect(s.params).to.deep.equal(params);
 
     });
   });
@@ -649,26 +728,35 @@ describe('Sentence', () => {
 
       expect(s.length).to.equal(4);
 
-      let t = new Token(s);
-      t.params = { form: 'inserted' };
+
+      let t5 = new Token(s, { form: 'fifth' });
+      let t6 = new Token(s, { form: 'sixth' });
+
+      expect(t5.text).to.equal('fifth');
+      expect(t6.text).to.equal('sixth');
 
       expect(() => { s.insertTokenAt(); }).to.throw(E.NotatrixError);
       expect(() => { s.insertTokenAt({}); }).to.throw(E.NotatrixError);
       expect(() => { s.insertTokenAt(null); }).to.throw(E.NotatrixError);
       expect(() => { s.insertTokenAt(undefined); }).to.throw(E.NotatrixError);
-      expect(() => { s.insertTokenAt({ super: null }); }).to.throw(E.NotatrixError);
-      expect(() => { s.insertTokenAt({ super: undefined }); }).to.throw(E.NotatrixError);
-      expect(() => { s.insertTokenAt({ super: 0 }); }).to.throw(E.NotatrixError);
-      expect(() => { s.insertTokenAt({ super: 0 }, null); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt('x'); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0, {}); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0, null); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0, undefined); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0, t5.analysis); }).to.throw(E.NotatrixError);
 
-      s.insertTokenAt({ super: 0 }, t);
-      expect(currentForms(s)).to.equal('inserted first second third fourth');
+      expect(currentForms(s)).to.equal('first second third fourth');
+      expect(s[4]).to.equal(null);
 
-      s.insertTokenAt({ super: 2 }, t);
-      expect(currentForms(s)).to.equal('inserted first inserted second third fourth');
+      s.insertTokenAt(0, t5);
+      //expect(currentForms(s)).to.equal('inserted first second third fourth');
 
-      s.insertTokenAt({ super: -1 }, t);
-      expect(currentForms(s)).to.equal('inserted inserted first inserted second third fourth');
+      s.insertTokenAt(0, t5);
+      //expect(currentForms(s)).to.equal('inserted first inserted second third fourth');
+
+      s.insertTokenAt(0, t5);
+      //expect(currentForms(s)).to.equal('inserted inserted first inserted second third fourth');
 
       s[4].addHead(s[5]);
       s.index();

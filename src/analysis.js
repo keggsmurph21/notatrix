@@ -451,6 +451,10 @@ class Analysis extends Object {
   }
 }
 Analysis.prototype.__proto__ = new Proxy(Analysis.prototype.__proto__, {
+  /**
+   * add this so that we can have Array-like access to the Analysis (for subTokens)
+   *   i.e. ana[0] is just an alias for ana.subTokens[0]
+   */
   get(target, name, receiver) {
     if (typeof name === 'symbol')
       return this[name];

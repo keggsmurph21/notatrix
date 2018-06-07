@@ -12,12 +12,12 @@ const regex = {
 
 class Sentence extends Object {
 
-  constructor(options, paramsList) {
+  constructor(paramsList, options) {
     super();
 
     this.comments = [];
-    this.conlluLoaded = false;
-    this.cg3Loaded = false;
+    //this.conlluLoaded = false;
+    //this.cg3Loaded = false;
 
     this.options = _.defaults(options, {
       help: {
@@ -68,10 +68,6 @@ class Sentence extends Object {
     });
     return token;
   }
-  getAnalysis(index) {
-    const tok = this.getToken(index);
-    return tok ? tok.analysis : null;
-  }
   getById(index) { // get the token or subtoken by the given CoNLL-U index, assume current analysis
     let t=0;
     for (let i=0; i<this.tokens.length; i++) {
@@ -102,7 +98,30 @@ class Sentence extends Object {
   }
 
   // manipulate token array
-  insertTokenAt(indices, token) {
+  insertTokenAt(index, token) {
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to insert token: unable to cast index to int');
+
+    if (!(token instanceof Token))
+      throw new E.NotatrixError('unable to insert token: not instance of Token');
+
+    index = index < 0 ? 0
+      : index > this.length ? this.length
+      : parseInt(index);
+
+    token.sentence = this;
+    token.forEach(analysis => {
+      analysis.sentence = this;
+    });
+
+    this.tokens = this.tokens.slice(0, index)
+      .concat(token)
+      .concat(this.tokens.slice(index));
+
+    return this;
+
+    /*
     if (!(token instanceof Token))
       throw new E.NotatrixError('unable to insert token: not instance of Token');
 
@@ -139,7 +158,6 @@ class Sentence extends Object {
         token.sentence = this;
         token.forEach(analysis => {
           analysis.sentence = this;
-          analysis.superToken = superToken;
         });
 
         superToken.insertSubToken(indices.sub, token);
@@ -148,10 +166,10 @@ class Sentence extends Object {
           .concat(token)
           .concat(superToken.subTokens.slice(indices.super));*/
 
-        return this;
+        /*return this;
 
       }
-    }
+    }*/
   }
   removeTokenAt(indices, token) {
     if (indices.super === null)
@@ -165,6 +183,12 @@ class Sentence extends Object {
 
 
   }
+  pushToken(token) {
+    return this.insertTokenAt(Infinity, token);
+  }
+  popToken() {
+    return this.removeTokenAt(Infinity);
+  }
 
   // external formats
   get nx() {
@@ -177,8 +201,8 @@ class Sentence extends Object {
 
     return JSON.stringify({
       comments: this.comments,
-      conlluLoaded: this.conlluLoaded,
-      cg3Loaded: this.cg3Loaded,
+      //conlluLoaded: this.conlluLoaded,
+      //cg3Loaded: this.cg3Loaded,
       options: this.options,
       tokens: tokens
     }, null, this.options.prettyOutput ? 2 : 0);
@@ -241,7 +265,7 @@ class Sentence extends Object {
           const subToken = new Token(this);
           subToken.conllu = lines[j + this.comments.length];
           i++;
-          superToken.insertSubToken(subToken);
+          superToken.pushSubToken(subToken);
         }
         this.tokens.push(superToken);
 
@@ -255,10 +279,10 @@ class Sentence extends Object {
       }
     }
 
-    this.conlluLoaded = true;
+    //this.conlluLoaded = true;
     return this.attach().conllu;
   }
-  static fromConllu(options, serial) {
+  static fromConllu(serial, options) {
     let sent = new Sentence(options);
     sent.conllu = serial;
     return sent;
@@ -269,7 +293,7 @@ class Sentence extends Object {
   set cg3(cg3) {
 
   }
-  static fromCG3(options, serial) {
+  static fromCG3(serial, options) {
     let sent = new Sentence(options);
     sent.cg3 = serial;
     return sent;
@@ -312,7 +336,7 @@ class Sentence extends Object {
     });
     return this.attach().params;
   }
-  static fromParams(options, paramsList) {
+  static fromParams(paramsList, options) {
     let sent = new Sentence(options);
     sent.params = paramsList;
     return sent;
@@ -358,6 +382,10 @@ class Sentence extends Object {
   }
 }
 Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
+  /**
+   * add this so that we can have Array-like access to the Sentence (for tokens)
+   *   i.e. sent[0] is just an alias for sent.getToken(0)
+   */
   get(target, name, receiver) {
     if (typeof name === 'symbol')
       return this[name];
