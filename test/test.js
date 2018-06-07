@@ -662,12 +662,14 @@ describe('Sentence', () => {
         new Sentence(params),
         new Sentence(),
         new Sentence(),
+        new Sentence(),
         Sentence.fromConllu('1\thello\n2\tworld'),
         //Sentence.fromCG3([/* ??? */]),
         Sentence.fromParams(params)
       ];
       sents[1].tokens = [new Token(sents[1], params[0]), new Token(sents[1], params[1])];
       sents[2].pushToken(new Token(sents[2], params[0])).pushToken(new Token(sents[2], params[1]));
+      sents[3].params = params;
 
       _.each(sents, (s, i) => {
         s.index();
