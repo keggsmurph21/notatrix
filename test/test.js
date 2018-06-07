@@ -721,16 +721,12 @@ describe('Sentence', () => {
   describe(`token array manipulators`, () => {
     it(`handles (insert|remove|move)TokenAt()`, () => {
       let s = new Sentence();
-      s.params = [
-        { form: 'first' },
-        { form: 'second' },
-        { form: 'third' },
-        { form: 'fourth' }
-      ];
 
-      expect(s.length).to.equal(4);
-
-
+      let t0 = new Token(s, { form: 'zeroth' });
+      let t1 = new Token(s, { form: 'first' });
+      let t2 = new Token(s, { form: 'second' });
+      let t3 = new Token(s, { form: 'third' });
+      let t4 = new Token(s, { form: 'fourth' });
       let t5 = new Token(s, { form: 'fifth' });
       let t6 = new Token(s, { form: 'sixth' });
 
@@ -746,26 +742,42 @@ describe('Sentence', () => {
       expect(() => { s.insertTokenAt(0, {}); }).to.throw(E.NotatrixError);
       expect(() => { s.insertTokenAt(0, null); }).to.throw(E.NotatrixError);
       expect(() => { s.insertTokenAt(0, undefined); }).to.throw(E.NotatrixError);
-      expect(() => { s.insertTokenAt(0, t5.analysis); }).to.throw(E.NotatrixError);
+      expect(() => { s.insertTokenAt(0, t0.analysis); }).to.throw(E.NotatrixError);
 
-      expect(currentForms(s)).to.equal('first second third fourth');
-      expect(s[4]).to.equal(null);
+      expect(currentForms(s)).to.equal('');
+      expect(s[-1]).to.equal(null);
+      expect(s[0]).to.equal(null);
+      expect(s[1]).to.equal(null);
 
-      s.insertTokenAt(0, t5);
-      //expect(currentForms(s)).to.equal('inserted first second third fourth');
+      s.insertTokenAt(0, t0);
+      expect(currentForms(s)).to.equal('zeroth');
 
-      s.insertTokenAt(0, t5);
-      //expect(currentForms(s)).to.equal('inserted first inserted second third fourth');
+      s.insertTokenAt(-1, t1);
+      expect(currentForms(s)).to.equal('first zeroth');
 
-      s.insertTokenAt(0, t5);
-      //expect(currentForms(s)).to.equal('inserted inserted first inserted second third fourth');
+      s.insertTokenAt(1, t2);
+      expect(currentForms(s)).to.equal('first second zeroth');
 
-      s[4].addHead(s[5]);
-      s.index();
-      console.log(s.text);
+      s.insertTokenAt(Infinity, t3);
+      expect(currentForms(s)).to.equal('first second zeroth third');
 
-    })
-  })
+      s.moveTokenAt(-1, 2);
+      expect(currentForms(s)).to.equal('second zeroth first third');
+
+      s.moveTokenAt(Infinity, 1);
+      expect(currentForms(s)).to.equal('second third zeroth first');
+
+      s.removeTokenAt(3);
+      expect(currentForms(s)).to.equal('second third zeroth');
+
+      s.removeTokenAt(-1);
+      expect(currentForms(s)).to.equal('third zeroth');
+
+      s.pushToken(t4).pushToken(t5).popToken();
+      expect(currentForms(s)).to.equal('third zeroth fourth');
+
+    });
+  });
   return;
 
   describe('serializer', () => {

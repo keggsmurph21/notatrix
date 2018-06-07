@@ -110,78 +110,51 @@ class Sentence extends Object {
       : index > this.length ? this.length
       : parseInt(index);
 
-    token.sentence = this;
-    token.forEach(analysis => {
-      analysis.sentence = this;
-    });
-
     this.tokens = this.tokens.slice(0, index)
       .concat(token)
       .concat(this.tokens.slice(index));
 
     return this;
+  }
+  removeTokenAt(index) {
+    if (!this.tokens.length)
+      return null;
 
-    /*
-    if (!(token instanceof Token))
-      throw new E.NotatrixError('unable to insert token: not instance of Token');
+    index = parseFloat(index); // catch Infinity
+    if (isNaN(index))
+      throw new E.NotatrixError('unable to remove token: unable to cast index to int');
 
-    if (indices.super === null || indices.super === undefined)
-      throw new E.TransformationError('can\'t insert at null index')
+    index = index < 0 ? 0
+      : index > this.tokens.length - 1 ? this.tokens.length - 1
+      : parseInt(index);
 
-    indices.super = indices.super < 0 ? 0
-      : indices.super > this.length ? this.length
-      : indices.super;
+    return this.tokens.splice(index, 1)[0];
+  }
+  moveTokenAt(sourceIndex, targetIndex) {
+    sourceIndex = parseFloat(sourceIndex);
+    targetIndex = parseFloat(targetIndex);
+    if (isNaN(sourceIndex) || isNaN(targetIndex))
+      throw new E.NotatrixError('unable to move token: unable to cast indices to ints');
 
-    if (indices.sub === null || indices.sub === undefined) {
+    sourceIndex = sourceIndex < 0 ? 0
+      : sourceIndex > this.tokens.length - 1 ? this.tokens.length - 1
+      : parseInt(sourceIndex);
+    targetIndex = targetIndex < 0 ? 0
+      : targetIndex > this.tokens.length - 1 ? this.tokens.length - 1
+      : parseInt(targetIndex);
 
-      token.sentence = this;
-      token.forEach(analysis => {
-        analysis.sentence = this;
-      });
-
-      this.tokens = this.tokens.slice(0, indices.super)
-        .concat(token)
-        .concat(this.tokens.slice(indices.super));
-
-      return this;
-
+    if (sourceIndex === targetIndex) {
+      // do nothing
     } else {
-      if (token.isSuperToken) {
-        throw new E.TransformationError('can\'t insert superToken as subToken');
 
-      } else {
+      let token = this.tokens.splice(sourceIndex, 1);
+      this.tokens = this.tokens.slice(0, targetIndex)
+        .concat(token)
+        .concat(this.tokens.slice(targetIndex));
 
-        const superToken = this.tokens[indices.super];
-        if (!superToken)
-          throw new E.TransformationError('can\'t insert a subToken to null');
+    }
 
-        token.sentence = this;
-        token.forEach(analysis => {
-          analysis.sentence = this;
-        });
-
-        superToken.insertSubToken(indices.sub, token);
-        /*
-        superToken.subTokens = superToken.subTokens.slice(0, indices.super)
-          .concat(token)
-          .concat(superToken.subTokens.slice(indices.super));*/
-
-        /*return this;
-
-      }
-    }*/
-  }
-  removeTokenAt(indices, token) {
-    if (indices.super === null)
-      return null;
-
-
-  }
-  moveTokenAt(sourceIndices, targetIndices) {
-    if (sourceIndices.super === null || targetIndices.super === null)
-      return null;
-
-
+    return this;
   }
   pushToken(token) {
     return this.insertTokenAt(Infinity, token);
