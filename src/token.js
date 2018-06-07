@@ -270,16 +270,25 @@ class Token extends Object {
     if (this.current === null)
       return id;
 
-    if (this.isSuperToken) {
-      this.analysis.id = `${id}-${id + this.analysis.length - 1}`;
-      _.each(this.analysis.subTokens, subToken => {
-        subToken.analysis.id = `${id}`;
-        id++;
-      });
-    } else {
-      this.analysis.id = `${id}`;
-      id++;
-    }
+    this.forEach(analysis => {
+      if (analysis === this.analysis) { // current
+        if (this.isSuperToken) {
+          this.analysis.id = `${id}-${id + this.analysis.length - 1}`;
+          _.each(this.analysis.subTokens, subToken => {
+            subToken.analysis.id = `${id}`;
+            id++;
+          });
+        } else {
+          this.analysis.id = `${id}`;
+          id++;
+        }
+      } else {
+        analysis.id = null;
+        _.each(analysis.subTokens, subToken => {
+          subToken.analysis.id = null;
+        });
+      }
+    });
 
     return id;
   }
