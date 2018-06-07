@@ -10,7 +10,7 @@ function split(str) {
 }
 
 class Token extends Object {
-  constructor(sent) {
+  constructor(sent, params) {
     super();
 
     if (!sent)
@@ -20,6 +20,9 @@ class Token extends Object {
     this._current = null;
     this.analyses = [];
     this.superToken = null;
+
+    if (params !== undefined)
+      this.analysis = new Analysis(this, params);
   }
   get length() {
     return this.analyses.length;
@@ -101,7 +104,7 @@ class Token extends Object {
     if (this.length === 1)
       this._current = null;
 
-    return this.analyses.splice(index, 1);
+    return this.analyses.splice(index, 1)[0];
   }
   moveAnalysisAt(sourceIndex, targetIndex) {
     sourceIndex = parseFloat(sourceIndex);
@@ -128,6 +131,12 @@ class Token extends Object {
     }
 
     return this;
+  }
+  pushAnalysis(analysis) {
+    return this.insertAnalysisAt(Infinity, analysis);
+  }
+  popAnalysis() {
+    return this.removeAnalysisAt(Infinity);
   }
 
   // getting indices for current analysis
@@ -297,7 +306,6 @@ class Token extends Object {
   set conllu(serial) {
 
     const fields = split(serial);
-
     this.analysis = new Analysis(this, {
       form: fields[1],
       lemma: fields[2],
@@ -311,6 +319,11 @@ class Token extends Object {
     });
 
   }
+  static fromConllu(sent, serial) {
+    let token = new Token(sent);
+    token.conllu = serial;
+    return token;
+  }
   get cg3() {
     if (this.analysis === null)
       throw new E.NotatrixError('no analysis to get CG3 for');
@@ -322,6 +335,11 @@ class Token extends Object {
 
     return this.cg3;
   }
+  static fromCG3(sent, serial) {
+    let token = new Token(sent);
+    token.cg3 = serial;
+    return token;
+  }
   get params() {
     if (this.analysis === null)
       throw new E.NotatrixError('no analysis to get params for');
@@ -331,6 +349,11 @@ class Token extends Object {
   set params(params) {
     this.analysis = new Analysis(this, params);
     return this.params;
+  }
+  static fromParams(sent, params) {
+    let token = new Token(sent);
+    token.params = params;
+    return token;
   }
   get eles() {
 

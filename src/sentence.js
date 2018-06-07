@@ -12,7 +12,7 @@ const regex = {
 
 class Sentence extends Object {
 
-  constructor(options) {
+  constructor(options, paramsList) {
     super();
 
     this.comments = [];
@@ -31,6 +31,8 @@ class Sentence extends Object {
     });
 
     this.tokens = [];
+
+    this.params = paramsList;
   }
   get length() { // total number of tokens/subtokens, use this.tokens.length for
     let acc = 0;
@@ -256,11 +258,21 @@ class Sentence extends Object {
     this.conlluLoaded = true;
     return this.attach().conllu;
   }
+  static fromConllu(options, serial) {
+    let sent = new Sentence(options);
+    sent.conllu = serial;
+    return sent;
+  }
   get cg3() {
 
   }
   set cg3(cg3) {
 
+  }
+  static fromCG3(options, serial) {
+    let sent = new Sentence(options);
+    sent.cg3 = serial;
+    return sent;
   }
   get params() {
     try {
@@ -290,12 +302,20 @@ class Sentence extends Object {
     }
   }
   set params(paramsList) {
+    if (!(paramsList instanceof Array))
+      return null;
+
     _.each(paramsList, params => {
       const token = new Token(this);
       token.params = params;
       this.tokens.push(token);
     });
     return this.attach().params;
+  }
+  static fromParams(options, paramsList) {
+    let sent = new Sentence(options);
+    sent.params = paramsList;
+    return sent;
   }
   get eles() {
 

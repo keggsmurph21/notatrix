@@ -129,8 +129,8 @@ describe('Analysis', () => {
     });
   });
 
-  describe('modify subTokens', () => {
-    it(`handles (insert|remove|move)TokenAt()`, () => {
+  describe('modify contents', () => {
+    it(`handles (insert|remove|move)SubTokenAt() and (push|pop)SubToken`, () => {
       let s = new Sentence();
 
       let t0 = new Token(s);
@@ -286,8 +286,8 @@ describe('Analysis', () => {
         expect(t1.isSubToken).to.equal(false);
         expect(ignoreAfterLemma(s.conllu)).to.equal('1 zeroth zeroth');
 
-      let ret = a0.push(t1).push(t2).push(t3).pop();
-      a0.push(t4);
+      let ret = a0.pushSubToken(t1).pushSubToken(t2).pushSubToken(t3).popSubToken();
+      a0.pushSubToken(t4);
 
         expect(a0.subTokens).to.deep.equal([t1, t2, t4]);
         expect(ret).to.deep.equal(t3);
@@ -353,6 +353,23 @@ describe('Token', () => {
     });
 
     describe(`valid after initializing first Analysis`, () => {
+      it(`initialize directly with params`, () => {
+        let t = new Token(s, { form: 'testing' });
+
+        expect(t.current).to.equal(0);
+        expect(forms(t)).to.equal('testing');
+        expect(t.analysis).to.be.an.instanceof(Analysis);
+        expect(t.analysis.form).to.equal('testing');
+        expect(t.length).to.equal(1);
+        expect(t.subTokens).to.deep.equal([]);
+
+        expect(t.isSubToken).to.equal(false);
+        expect(t.isSuperToken).to.equal(false);
+        expect(t.isEmpty).to.equal(false);
+        expect(t.isAmbiguous).to.equal(false);
+
+      });
+
       it(`initialize with = operator`, () => {
         let t = new Token(s);
         t.params = { form: 'testing' }; // can only set t.analysis (i.e. current) this way
@@ -386,7 +403,28 @@ describe('Token', () => {
         expect(t.isSuperToken).to.equal(false);
         expect(t.isAmbiguous).to.equal(false);
 
-      })
+      });
+
+      it(`has equivalent initializers`, () => {
+        let params = { form: 'testing' };
+
+        let tokens = [
+          new Token(s, params),
+          new Token(s),
+          new Token(s),
+          Token.fromParams(s, params),
+          Token.fromConllu(s, '1\ttesting'),
+          //Token.fromCG3(s, /* ??? */)
+        ];
+
+        tokens[1].params = params;
+        tokens[2].pushAnalysis(new Analysis(tokens[2], params));
+
+        _.each(tokens, token => {
+          console.log(token.params);
+          expect(token).to.deep.equal(tokens[0]);
+        });
+      });
 
       it(`return formats correctly`, () => {
         let t = new Token(s);
@@ -400,126 +438,133 @@ describe('Token', () => {
         t.sentence.index();
         expect(() => { return t.conllu; }).to.throw(E.NotatrixError);
         //expect(() => { return t.cg3; }).to.throw(E.NotatrixError);
-      })
+      });
+    });
+  });
+
+  describe(`modify contents`, () => {
+    it(`handles (insert|remove|move)AnalysisAt() and (push|pop)Analysis`, () => {
+      let s = new Sentence();
+      let t = new Token(s);
+      t.params = { form: 'zeroth' };
+
+      let a1 = new Analysis(t, { form: 'first' });
+      let a2 = new Analysis(t, { form: 'second' });
+      let a3 = new Analysis(t, { form: 'third' });
+      let a4 = new Analysis(t, { form: 'fourth' });
+      let a5 = null;
+
+      expect(forms(t)).to.equal('zeroth');
+
+      t.insertAnalysisAt(0, a1);
+      expect(forms(t)).to.equal('first zeroth');
+
+      t.insertAnalysisAt(1, a2);
+      expect(forms(t)).to.equal('first second zeroth');
+
+      t.insertAnalysisAt(-1, a3);
+      expect(forms(t)).to.equal('third first second zeroth');
+
+      t.insertAnalysisAt(Infinity, a4);
+      expect(forms(t)).to.equal('third first second zeroth fourth');
+
+      t.removeAnalysisAt(0);
+      expect(forms(t)).to.equal('first second zeroth fourth');
+
+      t.removeAnalysisAt(1);
+      expect(forms(t)).to.equal('first zeroth fourth');
+
+      t.removeAnalysisAt(-1);
+      expect(forms(t)).to.equal('zeroth fourth');
+
+      t.removeAnalysisAt(Infinity);
+      expect(forms(t)).to.equal('zeroth');
+      expect(t.current).to.equal(0);
+      expect(t.analysis.form).to.equal('zeroth');
+
+      t.removeAnalysisAt(Infinity);
+      expect(forms(t)).to.equal('');
+      expect(t.current).to.equal(null);
+      expect(t.analysis).to.equal(null);
+
+      t.removeAnalysisAt(0);
+      expect(forms(t)).to.equal('');
+
+      t.removeAnalysisAt(-3);
+      expect(forms(t)).to.equal('');
+
+      t.insertAnalysisAt(6, a1);
+      expect(forms(t)).to.equal('first');
+      expect(t.current).to.equal(0);
+      expect(t.analysis.form).to.equal('first');
+
+      t.insertAnalysisAt(6, a2);
+      expect(forms(t)).to.equal('first second');
+
+      t.insertAnalysisAt(6, a3).insertAnalysisAt(6, a4);
+      expect(forms(t)).to.equal('first second third fourth');
+
+      t.moveAnalysisAt(0, 1);
+      expect(forms(t)).to.equal('second first third fourth');
+
+      t.moveAnalysisAt(0, 10);
+      expect(forms(t)).to.equal('first third fourth second');
+
+      t.moveAnalysisAt(-2, 2);
+      expect(forms(t)).to.equal('third fourth first second');
+
+      t.moveAnalysisAt(Infinity, Infinity);
+      expect(forms(t)).to.equal('third fourth first second');
+
+      let ret = t.popAnalysis();
+      expect(forms(t)).to.equal('third fourth first');
+      expect(ret.form).to.equal('second');
+
+      t.pushAnalysis(a2).pushAnalysis(a2).pushAnalysis(a2).pushAnalysis(a2);
+      expect(forms(t)).to.equal('third fourth first second second second second');
+
+      expect(() => { t.insertAnalysisAt(0, a5); }).to.throw(E.NotatrixError);
+
     });
 
-    describe(`modify contents`, () => {
-      it(`has consistent insert, remove, move`, () => {
-        let s = new Sentence();
-        let t = new Token(s);
-        t.params = { form: 'zeroth' };
+    it(`has consistent get, set, prev, next`, () => {
+      let s = new Sentence();
+      let t = new Token(s);
 
-        let a1 = new Analysis(t, { form: 'first' });
-        let a2 = new Analysis(t, { form: 'second' });
-        let a3 = new Analysis(t, { form: 'third' });
-        let a4 = new Analysis(t, { form: 'fourth' });
-        let a5 = null;
+      expect(forms(t)).to.equal('');
 
-        expect(forms(t)).to.equal('zeroth');
+      t.insertAnalysisAt(0, new Analysis(t, { form: 'first' }));
+      t.insertAnalysisAt(1, new Analysis(t, { form: 'second' }));
+      t.insertAnalysisAt(2, new Analysis(t, { form: 'third' }));
+      t.insertAnalysisAt(3, new Analysis(t, { form: 'fourth' }));
+      expect(forms(t)).to.equal('first second third fourth');
 
-        t.insertAnalysisAt(0, a1);
-        expect(forms(t)).to.equal('first zeroth');
+      expect(t.analysis.form).to.equal('first');
+      t.next();
+      expect(t.analysis.form).to.equal('second');
+      t.next();
+      expect(t.analysis.form).to.equal('third');
+      t.next();
+      expect(t.analysis.form).to.equal('fourth');
+      t.next();
+      expect(t.analysis.form).to.equal('fourth');
+      t.prev();
+      expect(t.analysis.form).to.equal('third');
+      t.prev();
+      expect(t.analysis.form).to.equal('second');
+      t.prev();
+      expect(t.analysis.form).to.equal('first');
+      t.prev();
+      expect(t.analysis.form).to.equal('first');
+      t.current = 0;
+      expect(t.analysis.form).to.equal('first');
+      t.current = 2;
+      expect(t.analysis.form).to.equal('third');
+      t.current = Infinity;
+      expect(t.analysis.form).to.equal('third');
+      t.current = -Infinity
+      expect(t.analysis.form).to.equal('third');
 
-        t.insertAnalysisAt(1, a2);
-        expect(forms(t)).to.equal('first second zeroth');
-
-        t.insertAnalysisAt(-1, a3);
-        expect(forms(t)).to.equal('third first second zeroth');
-
-        t.insertAnalysisAt(Infinity, a4);
-        expect(forms(t)).to.equal('third first second zeroth fourth');
-
-        t.removeAnalysisAt(0);
-        expect(forms(t)).to.equal('first second zeroth fourth');
-
-        t.removeAnalysisAt(1);
-        expect(forms(t)).to.equal('first zeroth fourth');
-
-        t.removeAnalysisAt(-1);
-        expect(forms(t)).to.equal('zeroth fourth');
-
-        t.removeAnalysisAt(Infinity);
-        expect(forms(t)).to.equal('zeroth');
-        expect(t.current).to.equal(0);
-        expect(t.analysis.form).to.equal('zeroth');
-
-        t.removeAnalysisAt(Infinity);
-        expect(forms(t)).to.equal('');
-        expect(t.current).to.equal(null);
-        expect(t.analysis).to.equal(null);
-
-        t.removeAnalysisAt(0);
-        expect(forms(t)).to.equal('');
-
-        t.removeAnalysisAt(-3);
-        expect(forms(t)).to.equal('');
-
-        t.insertAnalysisAt(6, a1);
-        expect(forms(t)).to.equal('first');
-        expect(t.current).to.equal(0);
-        expect(t.analysis.form).to.equal('first');
-
-        t.insertAnalysisAt(6, a2);
-        expect(forms(t)).to.equal('first second');
-
-        t.insertAnalysisAt(6, a3).insertAnalysisAt(6, a4);
-        expect(forms(t)).to.equal('first second third fourth');
-
-        t.moveAnalysisAt(0, 1);
-        expect(forms(t)).to.equal('second first third fourth');
-
-        t.moveAnalysisAt(0, 10);
-        expect(forms(t)).to.equal('first third fourth second');
-
-        t.moveAnalysisAt(-2, 2);
-        expect(forms(t)).to.equal('third fourth first second');
-
-        t.moveAnalysisAt(Infinity, Infinity);
-        expect(forms(t)).to.equal('third fourth first second');
-
-        expect(() => { t.insertAnalysisAt(0, a5); }).to.throw(E.NotatrixError);
-
-      });
-
-      it(`has consistent get, set, prev, next`, () => {
-        let s = new Sentence();
-        let t = new Token(s);
-
-        expect(forms(t)).to.equal('');
-
-        t.insertAnalysisAt(0, new Analysis(t, { form: 'first' }));
-        t.insertAnalysisAt(1, new Analysis(t, { form: 'second' }));
-        t.insertAnalysisAt(2, new Analysis(t, { form: 'third' }));
-        t.insertAnalysisAt(3, new Analysis(t, { form: 'fourth' }));
-        expect(forms(t)).to.equal('first second third fourth');
-
-        expect(t.analysis.form).to.equal('first');
-        t.next();
-        expect(t.analysis.form).to.equal('second');
-        t.next();
-        expect(t.analysis.form).to.equal('third');
-        t.next();
-        expect(t.analysis.form).to.equal('fourth');
-        t.next();
-        expect(t.analysis.form).to.equal('fourth');
-        t.prev();
-        expect(t.analysis.form).to.equal('third');
-        t.prev();
-        expect(t.analysis.form).to.equal('second');
-        t.prev();
-        expect(t.analysis.form).to.equal('first');
-        t.prev();
-        expect(t.analysis.form).to.equal('first');
-        t.current = 0;
-        expect(t.analysis.form).to.equal('first');
-        t.current = 2;
-        expect(t.analysis.form).to.equal('third');
-        t.current = Infinity;
-        expect(t.analysis.form).to.equal('third');
-        t.current = -Infinity
-        expect(t.analysis.form).to.equal('third');
-
-      });
     });
   });
 });

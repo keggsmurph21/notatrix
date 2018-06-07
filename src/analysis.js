@@ -49,11 +49,14 @@ class Analysis extends Object {
 
     this._heads = [];
     this._deps = [];
-    this.params = _.pick(params, ...fields);
     _.each(params, (value, key) => {
-      if (fields.indexOf(key) > -1)
+      if (value === undefined || fields.indexOf(key) === -1) {
+        delete params[key];
+      } else {
         this[key] = value;
+      }
     });
+    this.params = params || {};
 
     this.id = null; // see Sentence.index() and Token.index()
     this.subTokens = [];
@@ -134,10 +137,10 @@ class Analysis extends Object {
 
     return this;
   }
-  push(token) {
+  pushSubToken(token) {
     return this.insertSubTokenAt(Infinity, token);
   }
-  pop() {
+  popSubToken() {
     return this.removeSubTokenAt(Infinity);
   }
 
