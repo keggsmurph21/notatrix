@@ -16,6 +16,7 @@ const fields = [
   'deps',
   'misc'
 ];
+const puncts = /[.,!?]/;
 
 function sanitize(str) {
   return (str || '').replace(/( |\t|\n)/g, '');
@@ -34,6 +35,15 @@ function parseEnhancedString(str) {
       });
   });
   return heads;
+}
+function evaluatePunctPos(ana, string) {
+  if (puncts.test(string)) {
+    if (ana.sentence.options.help.upostag && !ana.upostag)
+      ana.upostag = 'PUNCT';
+
+    if (ana.sentence.options.help.xpostag && !ana.xpostag)
+      ana.xpostag = 'PUNCT';
+  }
 }
 
 class Analysis extends Object {
@@ -84,6 +94,9 @@ class Analysis extends Object {
 
     if (token.isSubToken)
       throw new E.NotatrixError('unable to insert subToken: token is already a subToken')
+
+    if (this.isSubToken)
+      throw new E.NotatrixError('unable to insert subToken: this is already a subToken');
 
     index = index < 0 ? 0
       : index > this.length ? this.length
@@ -214,10 +227,11 @@ class Analysis extends Object {
       token: head,
       deprel: deprel
     });
-    head._deps.push({
-      token: this,
-      deprel: deprel
-    });
+    if (this.sentence.options.help.head)
+      head._deps.push({
+        token: this,
+        deprel: deprel
+      });
 
     return this;
   }
@@ -234,10 +248,11 @@ class Analysis extends Object {
       this._heads.splice(removing, 1);
 
     removing = -1
-    head.eachDep((token, deprel, i) => {
-      if (token === this)
-        removing = i;
-    });
+    if (this.sentence.options.help.head)
+      head.eachDep((token, deprel, i) => {
+        if (token === this)
+          removing = i;
+      });
     if (removing > -1)
       head._deps.splice(removing, 1);
 
@@ -254,10 +269,12 @@ class Analysis extends Object {
         done = true;
       }
     });
-    head.eachDep((token, _deprel, i) => {
-      if (token === this)
-        head._deps[i].deprel = deprel || _deprel;
-    });
+
+    if (this.sentence.options.help.head)
+      head.eachDep((token, _deprel, i) => {
+        if (token === this)
+          head._deps[i].deprel = deprel || _deprel;
+      });
 
     return done ? this : null;
   }
@@ -279,10 +296,11 @@ class Analysis extends Object {
       token: dep,
       deprel: deprel
     });
-    dep._heads.push({
-      token: this,
-      deprel: deprel
-    });
+    if (this.sentence.options.help.deps)
+      dep._heads.push({
+        token: this,
+        deprel: deprel
+      });
 
     return this;
   }
@@ -298,11 +316,13 @@ class Analysis extends Object {
     if (removing > -1)
       this._deps.splice(removing, 1);
 
+
     removing = -1
-    dep.eachHead((token, deprel, i) => {
-      if (token === this)
-        removing = i;
-    });
+    if (this.sentence.options.help.deps)
+      dep.eachHead((token, deprel, i) => {
+        if (token === this)
+          removing = i;
+      });
     if (removing > -1)
       dep._heads.splice(removing, 1);
 
@@ -319,10 +339,11 @@ class Analysis extends Object {
         done = true;
       }
     });
-    dep.eachHead((token, _deprel, i) => {
-      if (token === this)
-        dep._heads[i].deprel = deprel || _deprel;
-    });
+    if (this.sentence.options.help.deps)
+      dep.eachHead((token, _deprel, i) => {
+        if (token === this)
+          dep._heads[i].deprel = deprel || _deprel;
+      });
 
     return done ? this : null;
   }
@@ -334,7 +355,9 @@ class Analysis extends Object {
       : this._form;
   }
   set form(form) {
-    this._form = sanitize(form);
+    form = sanitize(form);
+    evaluatePunctPos(this, form);
+    this._form = form;
   }
   get lemma() {
     return this.sentence.options.help.lemma
@@ -342,7 +365,9 @@ class Analysis extends Object {
       : this._lemma;
   }
   set lemma(lemma) {
-    this._lemma = sanitize(lemma);
+    lemma = sanitize(lemma);
+    evaluatePunctPos(this, lemma);
+    this._lemma = lemma;
   }
   get upostag() {
     return this._upostag;
@@ -366,7 +391,8 @@ class Analysis extends Object {
     if (this.sentence.options.showEnhanced) {
       let heads = [];
       this.eachHead((token, deprel) => {
-        heads.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+        if (token === this.sentence.getById(token.id) || !this.sentence.options.help.head)
+          heads.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
       });
       return heads.join('|');
 
@@ -404,7 +430,8 @@ class Analysis extends Object {
     // don't worry about enhanced stuff for deps (always can be multiple)
     let deps = [];
     this.eachDep((token, deprel) => {
-      deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+      if (token === this.sentence.getById(token.id) || !this.sentence.options.help.deps)
+        deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
     });
     return deps.join('|');
   }

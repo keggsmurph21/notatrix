@@ -23,6 +23,8 @@ class Sentence extends Object {
       help: {
         form: true,
         lemma: true,
+        upostag: true,
+        xpostag: true,
         head: true,
         deps: true
       },
@@ -366,7 +368,7 @@ Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
     let id = parseFloat(name); // catch Infinity (used in tests, and maybe other stuff)
     if (!isNaN(id)) {
       id = parseInt(id);
-      let token = receiver.getToken(id);
+      let token = receiver.tokens[id];
       return token ? token.analysis : null;
     } else {
       return this[name];

@@ -700,7 +700,12 @@ describe('Sentence', () => {
     });
 
     it(`parse CoNLL-U`, () => {
-      let s = new Sentence();
+      let s = new Sentence(null, {
+        help: {
+          head: false,
+          deps: false
+        }
+      });
 
       _.each([data['CoNLL-U'].t, data['CoNLL-U'].from_cg3_with_spans], conllu => {
         s.conllu = conllu;
@@ -781,11 +786,47 @@ describe('Sentence', () => {
     it(`tests integrating token and subToken manipulation`, () => {
       let s = new Sentence();
 
-      s.pushToken(new Token(s, { form: 'zeroth', misc: 'test' }));
-      s.pushToken(new Token(s, { form: 'first', misc: 'test' }));
-      s.pushToken(new Token(s, { form: 'second', misc: 'test' }));
+      s.comments = [ 'this is the test sentence' ];
+      s.pushToken(new Token(s, { form: 'zeroth', misc: 'super' }));
+      s.pushToken(new Token(s, { form: 'first', misc: 'super' }));
+      s.pushToken(new Token(s, { form: 'second', misc: 'super' }));
 
-      console.log(s.conllu);
+      s[0].pushSubToken(new Token(s, { form: 'third', misc: 'sub' }));
+      s[0].pushSubToken(new Token(s, { form: 'fourth', misc: 'sub' }));
+      s[2].pushSubToken(new Token(s, { form: 'fifth', misc: 'sub' }));
+      s[2].pushSubToken(new Token(s, { form: 'sixth', misc: 'sub' }));
+
+      expect(s.conllu).to.equal(`# this is the test sentence
+1-2	zeroth	zeroth	_	_	_	_	_	_	super
+1	third	third	_	_	_	_	_	_	sub
+2	fourth	fourth	_	_	_	_	_	_	sub
+3	first	first	_	_	_	_	_	_	super
+4-5	second	second	_	_	_	_	_	_	super
+4	fifth	fifth	_	_	_	_	_	_	sub
+5	sixth	sixth	_	_	_	_	_	_	sub`);
+
+      s[0].addHead(s[2][0], 'one');
+      s[2][0].addHead(s[1], 'two');
+
+      expect(s.conllu).to.equal(`# this is the test sentence
+1-2	zeroth	zeroth	_	_	_	4:one	_	_	super
+1	third	third	_	_	_	_	_	_	sub
+2	fourth	fourth	_	_	_	_	_	_	sub
+3	first	first	_	_	_	_	_	4:two	super
+4-5	second	second	_	_	_	_	_	_	super
+4	fifth	fifth	_	_	_	3:two	_	1-2:one	sub
+5	sixth	sixth	_	_	_	_	_	_	sub`);
+
+      s[2].removeSubTokenAt(0);
+
+      expect(s.conllu).to.equal(`# this is the test sentence
+1-2	zeroth	zeroth	_	_	_	_	_	_	super
+1	third	third	_	_	_	_	_	_	sub
+2	fourth	fourth	_	_	_	_	_	_	sub
+3	first	first	_	_	_	_	_	_	super
+4-4	second	second	_	_	_	_	_	_	super
+4	sixth	sixth	_	_	_	_	_	_	sub`);
+
     });
   });
   return;
