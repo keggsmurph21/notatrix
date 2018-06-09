@@ -8,7 +8,9 @@ const regex = {
   comment: /^\W*\#/,
   commentContent: /^\W*\#\W*(.*)/,
   superToken: /^\W*[0-9.]+\-[0-9.]+/,
-  empty: /^\W*[0-9]+\.[0-9]+/
+  empty: /^\W*[0-9]+\.[0-9]+/,
+  cg3TokenStart: /^"<(.|\\")*>"/,
+  cg3TokenContent: /^;?\s+"(.|\\")*"/
 }
 
 class Sentence extends Object {
@@ -30,7 +32,8 @@ class Sentence extends Object {
         deps: true
       },
       prettyOutput: true,
-      showEnhanced: true
+      showEnhanced: true,
+      showEmptyDependencies: true
     });
 
     this.tokens = [];
@@ -171,9 +174,9 @@ class Sentence extends Object {
     this.index();
 
     let tokens = [];
-    this.forEach(token => {
-      tokens.push(token.nx);
-    });
+    for (let i=0; i<this.tokens.length; i++) {
+      tokens.push(this.tokens[i].nx);
+    }
 
     return JSON.stringify({
       comments: this.comments,
@@ -236,8 +239,9 @@ class Sentence extends Object {
           .map(str => { return parseInt(str); });
 
         const superToken = Token.fromConllu(this, lines[i]);
-        for (let j=subTokenIndices[0]; j<=subTokenIndices[1]; j++) {
-          superToken.pushSubToken( Token.fromConllu(this, lines[j + this.comments.length]) );
+        let k = i;
+        for (let j=0; j<=(subTokenIndices[1] - subTokenIndices[0]); j++) {
+          superToken.pushSubToken( Token.fromConllu(this, lines[j + k + 1]) );
           i++;
         }
         this.pushToken(superToken);
@@ -259,9 +263,61 @@ class Sentence extends Object {
   }
   get cg3() {
 
+    const comments = _.map(this.comments, comment => {
+      return `# ${comment}`;
+    });
+
+    let tokens = [];
+
+    try {
+
+      for (let i=0; i<this.tokens.length; i++) {
+        tokens.push(this.tokens[i].cg3);
+      }
+      return comments.concat(tokens).join('\n');
+
+    } catch (e) {
+      if (!(e instanceof E.InvalidCG3Error))
+        throw e;
+
+      return null;
+    }
   }
   set cg3(cg3) {
 
+    this.comments = [];
+    this.tokens = [];
+
+    const lines = cg3.trim().split('\n');
+    let token = null;
+    let tokenLines = [];
+    for (let i=0; i<lines.length; i++) {
+      let isToken = regex.cg3TokenStart.test(lines[i]);
+      let isContent = regex.cg3TokenContent.test(lines[i]);
+      if (isToken) {
+        if (tokenLines.length) {
+          token.cg3 = tokenLines;
+          this.tokens.push(token);
+        }
+        token = new Token(this);
+        tokenLines = [ lines[i] ];
+
+      } else {
+        if (tokenLines.length && isContent) {
+
+          tokenLines.push(lines[i]);
+        } else {
+          this.comments.push(
+            lines[i].match(regex.commentContent)[1] );
+        }
+      }
+    }
+    if (tokenLines.length) {
+      token.cg3 = tokenLines;
+      this.tokens.push(token);
+    }
+
+    return this.attach().cg3;
   }
   static fromCG3(serial, options) {
     let sent = new Sentence(options);

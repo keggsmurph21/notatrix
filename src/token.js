@@ -8,6 +8,15 @@ const Analysis = require('./analysis');
 function split(str) {
   return (str || '').split(/[ \n\t]+/);
 }
+function getIndent(line) {
+  let chars = line.split('');
+  let i = 0;
+
+  while (chars[i++] === '\t')
+    true; // do nothing
+
+  return i - 1;
+}
 
 class Token extends Object {
   constructor(sent, params) {
@@ -361,12 +370,104 @@ class Token extends Object {
     if (this.analysis === null)
       throw new E.NotatrixError('no analysis to get CG3 for');
 
+    return [ `"<${this.analysis.form}>"` ].concat(
+      this.analyses.map(analysis => {
+        return analysis.cg3;
+      })
+    ).join('\n');
+
     return undefined;
   }
-  set cg3(serial) {
-    throw new Error('CG3 not implemented yet');
+  set cg3(tokenLines) {
 
-    return this.cg3;
+    const cg3Regex = {
+      form: /^"<((.|\\")*)>"/,
+      lemma: /["\]](.*)["\]](\s|$)/,
+      head: /->(.*)$/,
+      dependency: /^#(.+)->(.*)/,
+      deprel: /^@(.*)/,
+      misc: /.+:.*/
+    };
+
+    function extractForm(line) {
+      return cg3Regex.form.test(line)
+        ? line.match(cg3Regex.form)[1]
+        : undefined
+    }
+    function extractTags(line) {
+      let lemma, xpostag = [],
+        head, deprel, deps, misc = [];
+
+      if (cg3Regex.lemma.test(line))
+        lemma = line.match(cg3Regex.lemma)[1];
+
+      line = lemma ? line.slice(line.indexOf(lemma) + lemma.length + 1).trim() : line;
+
+      let chunks = line.split(/\s/);
+      for (let j=0; j<chunks.length; j++) {
+        if (cg3Regex.deprel.test(chunks[j])) {
+          deprel = chunks[j].match(cg3Regex.deprel)[1];
+        } else if (cg3Regex.dependency.test(chunks[j])) {
+          head = chunks[j].match(cg3Regex.dependency)[2];
+        } else if (cg3Regex.misc.test(chunks[j])) {
+          misc.push(chunks[j])
+        } else {
+          xpostag.push(chunks[j]);
+        }
+      }
+
+      return {
+        lemma: lemma,
+        xpostag: xpostag.join(';') || undefined,
+        head: head,
+        deprel: deprel,
+        deps: deps,
+        misc: misc.join(';') || undefined
+      };
+    }
+
+    function parseAnalysis(token, lines) {
+      let form = extractForm(lines[0]);
+
+      if (lines.length === 2) {
+
+        // no subtokens
+        let tags = extractTags(lines[1]);
+        tags.form = form;
+        token.pushAnalysis(new Analysis(token, tags));
+
+      } else {
+
+        // has subtokens
+        let analysis = new Analysis(token, {
+          form: form
+        });
+        for (let i=1; i<lines.length; i++) {
+          let tags = extractTags(lines[i]);
+          let subToken = new Token(token.sentence, tags);
+          analysis.pushSubToken( subToken );
+        }
+        token.pushAnalysis(analysis);
+
+      }
+    }
+
+    let analysis = [ tokenLines[0] ];
+    for (let i=1; i<tokenLines.length; i++) {
+      let line = tokenLines[i].replace(/^;/, '');
+
+      let indent = getIndent(line);
+
+      if (indent === 1 && i > 1) {
+        parseAnalysis(this, analysis);
+        analysis = [ tokenLines[0] ];
+      }
+
+      analysis.push(line);
+
+    }
+    parseAnalysis(this, analysis);
+    return;
   }
   static fromCG3(sent, serial) {
     let token = new Token(sent);

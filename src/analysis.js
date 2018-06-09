@@ -174,7 +174,7 @@ class Analysis extends Object {
       params: this.params,
       values: values,
       subTokens: this.subTokens.map(subToken => {
-        return subToken.analysis.id;
+        return subToken.nx;
       })
     };
 
@@ -201,9 +201,28 @@ class Analysis extends Object {
   }
   get cg3() {  // TODO: not implemented
     this.sentence.index();
-    if (this.id === null || this.id === undefined)
-      throw new E.NotatrixError('analysis is not currently indexed');
 
+    function format(analysis, tabs) {
+
+      let indent = new Array(tabs).fill('\t').join('');
+      let tags = analysis.xpostag ? ` ${analysis.xpostag.replace(/;/g, ' ')}` : '';
+      let misc = analysis.misc ? ` ${analysis.misc.replace(/;/g, ' ')}` : '';
+      let deprel = analysis.deprel ? ` @${analysis.deprel}` : '';
+      let id = analysis.id ? ` #${analysis.id}->` : '';
+      let head = (id && analysis.head) ? `${analysis.head}` : ``;
+      let dependency = head || (id && analysis.sentence.options.showEmptyDependencies)
+        ? `${id}${head}` : '';
+
+      return `${indent}"${analysis.lemma}"${tags}${misc}${deprel}${dependency}`;
+    }
+
+    if (this.isSuperToken) {
+      return this.subTokens.map((subToken, i) => {
+        return format(subToken.analysis, i + 1);
+      }).join('\n');
+    } else {
+      return format(this, 1);
+    }
   }
   get eles() { // TODO: not implemented
 
@@ -369,6 +388,9 @@ class Analysis extends Object {
     evaluatePunctPos(this, lemma);
     this._lemma = lemma;
   }
+  get pos() {
+    return this.upostag || this.xpostag;
+  }
   get upostag() {
     return this._upostag;
   }
@@ -391,8 +413,11 @@ class Analysis extends Object {
     if (this.sentence.options.showEnhanced) {
       let heads = [];
       this.eachHead((token, deprel) => {
-        if (token === this.sentence.getById(token.id) || !this.sentence.options.help.head)
+        if (token === this.sentence.getById(token.id) || !this.sentence.options.help.head) {
           heads.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+        } else {
+          heads.push(`${token}${deprel ? `:${deprel}` : ''}`);
+        }
       });
       return heads.join('|');
 
