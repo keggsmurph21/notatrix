@@ -12,6 +12,11 @@ const E = require('../src/errors');
 function clean(str) {
   return str.trim().replace(/[ \t]+/g, '\t').trim();
 }
+function ignoreSemicolons(str) {
+  return clean(str).split('\n').map(line => {
+    return line.replace(/^;/, '');
+  }).join('\n');
+}
 function ignoreIndices(str) {
   return clean(str.split('\t').slice(1).join('\t'));
 }
@@ -117,12 +122,12 @@ describe('Analysis', () => {
         let a = t.analysis;
 
         expect(() => { return a.conllu; }).to.throw(E.NotatrixError); // not indexed yet
-        expect(() => { return a.cg3; }).to.throw(E.NotatrixError); // not indexed yet
+        a.cg3;
 
         // even after indexing (Token not attached to Sentence yet)
         t.sentence.index();
         expect(() => { return a.conllu; }).to.throw(E.NotatrixError);
-        expect(() => { return a.cg3; }).to.throw(E.NotatrixError);
+        a.cg3;
 
       });
 
@@ -699,29 +704,41 @@ describe('Sentence', () => {
       expect(s.isValidCG3).to.equal(true);
     });
 
-    it(`parse CoNLL-U`, () => {
-      let s = new Sentence(null, {
-        help: {
-          head: false,
-          deps: false
-        }
-      });
+    _.each(data['CoNLL-U'], (conllu, name) => {
+      it(`parse CoNLL-U:${name}`, () => {
+        let s = new Sentence(null, {
+          help: {
+            head: false,
+            deps: false
+          }
+        });
 
-      _.each([data['CoNLL-U'].t, data['CoNLL-U'].from_cg3_with_spans], conllu => {
         s.conllu = conllu;
         expect(clean(s.conllu)).to.equal(clean(conllu));
         expect(s.isValidConllu).to.equal(true);
       });
     });
 
-    it(`parse CG3`, () => {
+    _.each(data.CG3, (cg3, name) => {
+      it(`parse CG3:${name}`, () => {
+        let s = new Sentence(null, {
+          help: {
+            head: false,
+            deps: false
+          },
+          showEmptyDependencies: false
+        });
 
+        s.cg3 = cg3;
+        expect(clean(s.cg3)).to.equal(ignoreSemicolons(cg3));
+      })
     });
 
     it(`parse nx`, () => {
 
     });
   });
+  return;
 
   describe(`token array manipulators`, () => {
     it(`handles (insert|remove|move)TokenAt()`, () => {
