@@ -2,15 +2,34 @@
 
 const _ = require('underscore');
 
-const E = require('./errors');
+const NotatrixError       = require('./errors').NotatrixError;
+const InvalidCG3Error     = require('./errors').InvalidCG3Error;
+const InvalidCoNLLUError  = require('./errors').InvalidCoNLLUError
+
 const Analysis = require('./analysis');
 
 function split(str) {
-  return (str || '').split(/[ \n\t]+/);
+  /**
+   * split
+   * helper function to split on whitespace
+   *
+   * @param {String} str
+   * @return {Array}
+   */
+
+  return (str || '').split(/\s+/);
 }
 function getIndent(line) {
-  let chars = line.split('');
-  let i = 0;
+  /**
+   * getIndent
+   * helper function to count the number of leading `\t` characters in a string
+   *
+   * @param {String} line
+   * @return {Number}
+   */
+
+  let chars = line.split(''),
+    i = 0;
 
   while (chars[i++] === '\t')
     true; // do nothing
@@ -18,110 +37,307 @@ function getIndent(line) {
   return i - 1;
 }
 
+function cg3StringGetForm(line) {
+  return cg3Regex.form.test(line)
+    ? line.match(cg3Regex.form)[1]
+    : undefined
+}
+function cg3StringGetTags(line) {
+  let lemma, xpostag = [],
+    head, deprel, deps, misc = [];
+
+  if (cg3Regex.lemma.test(line))
+    lemma = line.match(cg3Regex.lemma)[1];
+
+  line = lemma ? line.slice(line.indexOf(lemma) + lemma.length + 1).trim() : line;
+
+  let chunks = line.split(/\s/);
+  for (let j=0; j<chunks.length; j++) {
+    if (cg3Regex.deprel.test(chunks[j])) {
+      deprel = chunks[j].match(cg3Regex.deprel)[1];
+    } else if (cg3Regex.dependency.test(chunks[j])) {
+      head = chunks[j].match(cg3Regex.dependency)[2];
+    } else if (cg3Regex.misc.test(chunks[j])) {
+      misc.push(chunks[j])
+    } else {
+      xpostag.push(chunks[j]);
+    }
+  }
+
+  return {
+    lemma: lemma,
+    xpostag: xpostag.join(';') || undefined,
+    head: head,
+    deprel: deprel,
+    deps: deps,
+    misc: misc.join(';') || undefined
+  };
+}
+
+function cg3StringParseAnalysis(token, lines) {
+  let form = cg3StringGetForm(lines[0]);
+
+  if (lines.length === 2) {
+
+    // no subtokens
+    let tags = cg3StringGetTags(lines[1]);
+    tags.form = form;
+    token.pushAnalysis(new Analysis(token, tags));
+
+  } else {
+
+    // has subtokens
+    let analysis = new Analysis(token, {
+      form: form
+    });
+    for (let i=1; i<lines.length; i++) {
+      let tags = cg3StringGetTags(lines[i]);
+      let subToken = new Token(token.sentence, tags);
+      analysis.pushSubToken( subToken );
+    }
+    token.pushAnalysis(analysis);
+
+  }
+}
+
+const cg3Regex = {
+  form: /^"<((.|\\")*)>"/,
+  lemma: /["\]](.*)["\]](\s|$)/,
+  head: /->(.*)$/,
+  dependency: /^#(.+)->(.*)/,
+  deprel: /^@(.*)/,
+  misc: /.+:.*/
+};
+
 class Token extends Object {
   constructor(sent, params) {
     super();
 
+    // require sentence param
     if (!sent)
-      throw new E.NotatrixError('missing required arg: Sentence')
+      throw new NotatrixError('missing required arg: Sentence')
 
+    // pointer to parent
     this.sentence = sent;
-    this._current = null;
-    this.analyses = [];
-    this.superToken = null;
-    this._isEmpty = false;
 
-    if (params !== undefined)
+    // internal stuff
+    this.superToken = null;
+    this.analyses = []; // array of analyses
+    this._current = null; // index of current analysis in array
+    this._isEmpty = false; // used for CoNLL-U "empty" tokens
+
+    // try parsing an analysis from params
+    if (params)
       this.analysis = new Analysis(this, params);
   }
   get length() {
+    /**
+     * Analysis::length [get]
+     *
+     * @return {Number} total number of analyses in this token
+     */
+
     return this.analyses.length;
   }
   forEach(callback) {
+    /**
+     * Analysis::forEach
+     * loop through every analysis in the sentence and apply a callback
+     *
+     * @param {Function} callback function to be applied to every analysis
+     * @return {Token}
+     */
+
     for (let i=0; i<this.length; i++) {
       callback(this.analyses[i], i);
     }
+
+    // chaining
+    return this;
   }
 
   // keeping track of ambiguous analyses
-  getAnalysis(index) {
-    return this.analyses[index] || null;
-  }
   prev() {
+    /**
+     * Token::prev
+     * decrement the _current counter by one (set "previous" analysis as current)
+     *
+     * @return {Token}
+     */
+
+    // if no analyses set whatsoever
     if (this._current === null)
       return null;
+
+    // if we're not already at the first one
     if (this._current > 0)
       this._current--;
+
+    // chaining
     return this;
   }
   next() {
+    /**
+     * Token::next
+     * increment the _current counter by one (set "next" analysis as current)
+     *
+     * @return {Token}
+     */
+
+    // if no analyses set whatsoever
     if (this._current === null)
       return null;
+
+    // if we're not already at the last one
     if (this._current < this.length - 1)
       this._current++;
+
+    // chaining
     return this;
   }
   get current() {
+    /**
+     * Token::current [get]
+     * return the _current index
+     *
+     * @return {Number}
+     */
+
     return this._current;
   }
   set current(current) {
+    /**
+     * Token::current [set]
+     * set the _current index to the given index if possible
+     *
+     * @param {Number} current
+     * @return {Number}
+     */
+
+    // force cast to int
     current = parseInt(current);
     if (isNaN(current))
       return this.current;
+
+    // bounds checking
     if (current < 0)
       return this.current;
     if (current > this.length - 1)
       return this.current;
 
+    // set and return it
     this._current = current;
     return this.current;
   }
 
+  // maniuplate analyses array
   insertAnalysisAt(index, analysis) {
+    /**
+     * Token::insertAnalysisAt
+     * insert an analysis BEFORE the given index
+     *
+     * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
+     *   to fit the bounds. this means that you can call this with `index=-Infinity`
+     *   to push to the front of the analyses array or with `index=Infinity` to push
+     *   to the end
+     *
+     * @param {Number} index
+     * @param {Analysis} analysis
+     * @return {Token}
+     *
+     * @throws {NotatrixError} if given invalid index or analysis
+     */
+
     index = parseFloat(index); // catch Infinity
     if (isNaN(index))
-      throw new E.NotatrixError('unable to insert subToken: unable to cast index to int');
+      throw new NotatrixError('unable to insert subToken: unable to cast index to int');
 
     if (!(analysis instanceof Analysis))
-      throw new E.NotatrixError('unable to insert analysis: not instance of Analysis');
+      throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
+    // if we had no analyses, make this the first
     if (this.current === null)
       this._current = 0;
 
+    // bounds checking
     index = index < 0 ? 0
       : index > this.length ? this.length
       : parseInt(index);
 
+    // set the parent pointer on the analysis
     analysis.token = this;
+
+    // array insertion
     this.analyses = this.analyses.slice(0, index)
       .concat(analysis)
       .concat(this.analyses.slice(index));
 
+    // chaining
     return this;
   }
   removeAnalysisAt(index) {
+    /**
+     * Token::removeAnalysisAt
+     * remove an analysis at the given index
+     *
+     * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
+     *   adjusted to fit the bounds. this means that you can call this with
+     *   `index=-Infinity` to remove the first element of the analyses array or
+     *   with `index=Infinity` to remove the last
+     *
+     * @param {Number} index
+     * @return {Analysis||null}
+     *
+     * @throws {NotatrixError} if given invalid index
+     */
+
+    // can't remove if we have an empty array
     if (!this.length)
-      return this;
+      return null;
 
     index = parseFloat(index); // catch Infinity
     if (isNaN(index))
-      throw new E.NotatrixError('unable to remove subToken: unable to cast index to int');
+      throw new NotatrixError('unable to remove subToken: unable to cast index to int');
 
+    // bounds checking
     index = index < 0 ? 0
       : index > this.length - 1 ? this.length - 1
       : parseInt(index);
 
+    // go to previous analysis if we just deleted our current one or before it
+    if (this.current >= index)
+      this.prev();
+
+    // if we now have an empty array, update _current
     if (this.length === 1)
       this._current = null;
 
+    // array splicing, return spliced element
     return this.analyses.splice(index, 1)[0];
   }
   moveAnalysisAt(sourceIndex, targetIndex) {
+    /**
+     * Token::moveAnalysisAt
+     * move an analysis from sourceIndex to targetIndex
+     *
+     * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
+     *   be adjusted to fit the bounds. this means that you can call this with
+     *   `sourceIndex=-Infinity` to select the first element of the analyses array
+     *   or with `sourceIndex=Infinity` to select the last
+     *
+     * @param {Number} sourceIndex
+     * @param {Number} targetIndex
+     * @return {Token}
+     *
+     * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
+     */
+
     sourceIndex = parseFloat(sourceIndex);
     targetIndex = parseFloat(targetIndex);
     if (isNaN(sourceIndex) || isNaN(targetIndex))
-      throw new E.NotatrixError('unable to move analysis: unable to cast indices to ints');
+      throw new NotatrixError('unable to move analysis: unable to cast indices to ints');
 
+    // bounds checking
     sourceIndex = sourceIndex < 0 ? 0
       : sourceIndex > this.length - 1 ? this.length - 1
       : parseInt(sourceIndex);
@@ -133,6 +349,7 @@ class Token extends Object {
       // do nothing
     } else {
 
+      // array splice and insert
       let analysis = this.analyses.splice(sourceIndex, 1);
       this.analyses = this.analyses.slice(0, targetIndex)
         .concat(analysis)
@@ -140,53 +357,31 @@ class Token extends Object {
 
     }
 
+    // chaining
     return this;
   }
   pushAnalysis(analysis) {
+    /**
+     * Token::pushAnalysis
+     * push an analysis to the end of the analyses array ... sugar for
+     *   Token::insertAnalysisAt(Infinity, analysis)
+     *
+     * @param {Analysis} analysis
+     * @return {Token}
+     */
+
     return this.insertAnalysisAt(Infinity, analysis);
   }
   popAnalysis() {
+    /**
+     * Token::popAnalysis
+     * pop an analysis from the end of the analyses array ... sugar for
+     *   Token::insertRemoveAt(Infinity)
+     *
+     * @return {Analysis||null}
+     */
+
     return this.removeAnalysisAt(Infinity);
-  }
-
-  // shortcut to analysis stuff
-  pushSubToken(subToken) {
-    if (!this.analysis)
-      return null;
-    return this.analysis.pushSubToken(subToken);
-  }
-
-  // getting indices for current analysis
-  getIndices() {
-    for (let i=0; i<this.sentence.tokens.length; i++) {
-
-      const ana = this.sentence.tokens[i].analysis;
-      if (ana === this.analysis)
-        return { super: i, sub: null };
-
-      if (ana)
-        for (let j=0; j<ana.subTokens.length; j++) {
-          const subAna = ana.subTokens[j].analysis;
-          if (subAna === this.analysis)
-            return { super: i, sub: j };
-        }
-    }
-
-    console.warn('token not in current analysis');
-    return { super: null, sub: null };
-  }
-  getIndicesAfter() {
-    const current = this.getIndices();
-
-    if (current.super === null) {
-      // pass, can't find
-    } else if (current.sub === null) {
-      current.super++;
-    } else {
-      current.sub++;
-    }
-
-    return current;
   }
 
 
@@ -231,82 +426,118 @@ class Token extends Object {
 
   // internal format
   get analysis() {
+    /**
+     * Token::analysis [get]
+     * get the current analysis for the token or null if none exist
+     *
+     * @return {Analysis||null}
+     */
+
     if (this.current === null)
       return null;
     return this.analyses[this.current];
   }
   set analysis(analysis) {
+    /**
+     * Token::analysis [set]
+     * set the current analysis for the token
+     *
+     * NOTE: if there is already an analysis, overwrite
+     *
+     * @param {Analysis} analysis
+     * @return {Token}
+     *
+     * @throws {NotatrixError} if given invalid analysis
+     */
+
     if (!(analysis instanceof Analysis))
-      throw new E.NotatrixError('unable to set analysis: not instance of Analysis');
+      throw new NotatrixError('unable to set analysis: not instance of Analysis');
+
     if (this.analysis === null) {
+      // push to front if we have no analyses
       this.insertAnalysisAt(0, analysis);
+
     } else {
+      // otherwise overwrite
       analysis.token = this;
       this.analyses[this.current] = analysis;
     }
+
+    return this;
   }
 
   get subTokens() {
+    /**
+     * Token::subTokens [get]
+     * if we have a current analysis, return its subTokens
+     *
+     * @return {Array||null}
+     */
+
     if (this.analysis === null)
       return null;
     return this.analysis.subTokens;
   }
-  /*insertSubToken(index, token) {
-    if (this.analysis === null)
-      throw new E.NotatrixError('unable to insert subtoken: analysis is null');
-
-    if (token === undefined) {
-      token = index;
-      index = this.analysis.length;
-    }
-    if (!(token instanceof Token))
-      throw new E.NotatrixError('unable to insert subtoken: not instance of Token');
-
-    token.analysis.superToken = this.analysis;
-    const subTokens = this.analysis.subTokens;
-    this.analysis.subTokens = subTokens.slice(0, index)
-      .concat(token)
-      .concat(subTokens.slice(index));
-  }
-  removeSubToken(index) {
-
-  }*/
 
   // external format stuff
   index(id, empty) {
-    if (isNaN(parseInt(id)))
-      throw new E.NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
+    /**
+     * Token::index
+     * iterate over this token and its subTokens (if we have any) for the current
+     *   analysis, using the `id` and `empty` params to set indices
+     *
+     * @param {Number} id "overall" index
+     * @param {Number} empty
+     * @return {Array} [Number, Number]
+     *
+     * @throws {NotatrixError} if given invalid id or empty
+     */
 
-    if (this.current === null)
+    if (isNaN(parseInt(id)))
+      throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
+
+    // if no analysis, nothing to do
+    if (this.analysis === null)
       return id;
 
+    // iterate over analyses
     this.forEach(analysis => {
-      if (analysis === this.analysis) { // current
+
+      // only set the indices on the current analysis
+      if (analysis === this.analysis) {
         if (this.isSuperToken) {
+
+          // index subTokens
           _.each(this.analysis.subTokens, subToken => {
             if (subToken.isEmpty) {
-              empty++;
-              subToken.analysis.id = `${id}.${empty}`
+              empty++; // incr empty counter
+              subToken.analysis.id = `${id}.${empty}` // dot syntax
             } else {
-              id++;
-              subToken.analysis.id = `${id}`;
-              empty = 0;
+              id++; // incr regular counter
+              subToken.analysis.id = `${id}`; // vanilla syntax
+              empty = 0; // reset empty counter
             }
           });
-          this.analysis.id = `${
-            this.analysis.subTokens[0].analysis.id}-${
-            this.analysis.subTokens[this.analysis.length - 1].analysis.id}`;
+
+          // set special superToken index scheme
+          const firstSubAnalysis = this.subTokens[0].analysis;
+          const lastSubAnalysis = this.subTokens[this.analysis.length - 1].analysis;
+          this.analysis.id = `${firstSubAnalysis.id}-${lastSubAnalysis.id}`;
+
         } else {
           if (this.isEmpty) {
-            empty++;
-            this.analysis.id = `${id}.${empty}`
+            empty++; // incr empty counter
+            this.analysis.id = `${id}.${empty}` // dot syntax
           } else {
-            id++;
-            this.analysis.id = `${id}`;
-            empty = 0;
+            id++; // incr regular counter
+            this.analysis.id = `${id}`; // vanilla syntax
+            empty = 0; // reset empty counter
           }
         }
+
       } else {
+
+        // non-current analyses get indices set to null
         analysis.id = null;
         _.each(analysis.subTokens, subToken => {
           subToken.analysis.id = null;
@@ -314,40 +545,79 @@ class Token extends Object {
       }
     });
 
+    // return updated indices
     return [id, empty];
   }
   get nx() {
+    /**
+     * Token::nx [get]
+     * get a serial version of the internal token representation
+     *
+     * @return {Object}
+     */
 
+    // serialize analyses
     let analyses = [];
     this.forEach(analysis => {
       analyses.push(analysis.nx);
     });
 
+    // serialize other data
     return {
       current: this.current,
       analyses: analyses
     };
   }
   get text() {
+    /**
+     * Token::text [get]
+     * get a plain-text formatted string of the current analysis text
+     *
+     * @return {String}
+     *
+     * @throws {NotatrixError} if no analysis
+     */
+
     if (this.analysis === null)
-      throw new E.NotatrixError('no analysis to get text for');
+      throw new NotatrixError('no analysis to get text for');
 
     return this.analysis.text || '';
   }
   get conllu() {
+    /**
+     * Token::conllu [get]
+     * get a CoNLL-U formatted string representing the current analysis
+     *
+     * @return {String}
+     *
+     * @throws {NotatrixError} if no analysis
+     * @throws {InvalidCoNLLUError} if ambiguous
+     */
+
     if (this.analysis === null)
-      throw new E.NotatrixError('no analysis to get CoNLL-U for');
+      throw new NotatrixError('no analysis to get CoNLL-U for');
 
     if (this.isAmbiguous)
-      throw new E.InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
+      throw new InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
 
     return this.analysis.conllu;
   }
   set conllu(serial) {
+    /**
+     * Token::conllu [set]
+     * parse a CoNLL-U formatted string and save its contents to the current analysis
+     *
+     * @param {String} serial
+     * @return {undefined}
+     */
 
+    // split serial string on whitespace
     const fields = split(serial);
+
+    // check if serial index indicates an "empty" token
     this._isEmpty = /\./.test(fields[0]);
 
+    // generate an analysis from the fields
     this.analysis = new Analysis(this, {
       form: fields[1],
       lemma: fields[2],
@@ -359,153 +629,184 @@ class Token extends Object {
       deps: fields[8],
       misc: fields[9]
     });
-
   }
   static fromConllu(sent, serial) {
+    /**
+     * Token::fromConllu
+     * static method allowing us to construct a new Token directly from a
+     *   CoNLL-U string and bind it to a sentence
+     *
+     * @param {Sentence} sent
+     * @param {String} serial
+     * @return {Token}
+     */
+
     let token = new Token(sent);
     token.conllu = serial;
     return token;
   }
   get cg3() {
-    if (this.analysis === null)
-      throw new E.NotatrixError('no analysis to get CG3 for');
+    /**
+     * Token::cg3 [get]
+     * get a CG3 formatted string representing the current analysis
+     *
+     * @return {String}
+     *
+     * @throws {NotatrixError} if no analysis
+     */
 
+    if (this.analysis === null)
+      throw new NotatrixError('no analysis to get CG3 for');
+
+    // the form goes on its own line, with each analysis below
     return [ `"<${this.analysis.form}>"` ].concat(
       this.analyses.map(analysis => {
         return analysis.cg3;
       })
     ).join('\n');
-
-    return undefined;
   }
   set cg3(tokenLines) {
+    /**
+     * Token::cg3 [set]
+     * parse a CG3 formatted string and save its contents to the current analysis
+     *
+     * @param {Array} tokenLines generated in Sentence::cg3 [set] by splitting
+     *   a serial string on newlines
+     * @return {undefined}
+     */
 
-    const cg3Regex = {
-      form: /^"<((.|\\")*)>"/,
-      lemma: /["\]](.*)["\]](\s|$)/,
-      head: /->(.*)$/,
-      dependency: /^#(.+)->(.*)/,
-      deprel: /^@(.*)/,
-      misc: /.+:.*/
-    };
-
-    function extractForm(line) {
-      return cg3Regex.form.test(line)
-        ? line.match(cg3Regex.form)[1]
-        : undefined
-    }
-    function extractTags(line) {
-      let lemma, xpostag = [],
-        head, deprel, deps, misc = [];
-
-      if (cg3Regex.lemma.test(line))
-        lemma = line.match(cg3Regex.lemma)[1];
-
-      line = lemma ? line.slice(line.indexOf(lemma) + lemma.length + 1).trim() : line;
-
-      let chunks = line.split(/\s/);
-      for (let j=0; j<chunks.length; j++) {
-        if (cg3Regex.deprel.test(chunks[j])) {
-          deprel = chunks[j].match(cg3Regex.deprel)[1];
-        } else if (cg3Regex.dependency.test(chunks[j])) {
-          head = chunks[j].match(cg3Regex.dependency)[2];
-        } else if (cg3Regex.misc.test(chunks[j])) {
-          misc.push(chunks[j])
-        } else {
-          xpostag.push(chunks[j]);
-        }
-      }
-
-      return {
-        lemma: lemma,
-        xpostag: xpostag.join(';') || undefined,
-        head: head,
-        deprel: deprel,
-        deps: deps,
-        misc: misc.join(';') || undefined
-      };
-    }
-
-    function parseAnalysis(token, lines) {
-      let form = extractForm(lines[0]);
-
-      if (lines.length === 2) {
-
-        // no subtokens
-        let tags = extractTags(lines[1]);
-        tags.form = form;
-        token.pushAnalysis(new Analysis(token, tags));
-
-      } else {
-
-        // has subtokens
-        let analysis = new Analysis(token, {
-          form: form
-        });
-        for (let i=1; i<lines.length; i++) {
-          let tags = extractTags(lines[i]);
-          let subToken = new Token(token.sentence, tags);
-          analysis.pushSubToken( subToken );
-        }
-        token.pushAnalysis(analysis);
-
-      }
-    }
-
+    // again, we have complicated parsing here ... first make sure we get an
+    //   array of the important information (minimally the form on the first line)
     let analysis = [ tokenLines[0] ];
+
+    // iterate over the strings
     for (let i=1; i<tokenLines.length; i++) {
+
+      // ignore leading semicolons (TODO: determine what these are)
       let line = tokenLines[i].replace(/^;/, '');
 
+      // determine line indent
       let indent = getIndent(line);
 
+      // if we're back at indent=1 and we already have stuff in our analysis
+      //   buffer, parse it as an analysis
       if (indent === 1 && i > 1) {
-        parseAnalysis(this, analysis);
+        // parse as analysis
+        cg3StringParseAnalysis(this, analysis);
+        // reset buffer
         analysis = [ tokenLines[0] ];
       }
 
+      // add to buffer
       analysis.push(line);
-
     }
-    parseAnalysis(this, analysis);
-    return;
+
+    // parse and clear buffer
+    cg3StringParseAnalysis(this, analysis);
   }
-  static fromCG3(sent, serial) {
+  static fromCG3(sent, tokenLines) {
+    /**
+     * Token::fromCG3
+     * static method allowing us to construct a new Token directly from a
+     *   CG3 string
+     *
+     * @param {Sentence} sent
+     * @param {Array} tokenLines
+     * @return {Token}
+     */
+
     let token = new Token(sent);
-    token.cg3 = serial;
+    token.cg3 = tokenLines;
     return token;
   }
   get params() {
+    /**
+     * Token::params [get]
+     * get the token parameters for the current analysis
+     *
+     * @return {Object}
+     *
+     * @throws {NotatrixError} if no analysis
+     */
+
     if (this.analysis === null)
-      throw new E.NotatrixError('no analysis to get params for');
+      throw new NotatrixError('no analysis to get params for');
 
     return this.analysis.params;
   }
   set params(params) {
+    /**
+     * Token::params [set]
+     * set a set of parameters as the current analysis
+     *
+     * @param {Object} params
+     * @return {Object}
+     */
+
     this.analysis = new Analysis(this, params);
     return this.params;
   }
   static fromParams(sent, params) {
+    /**
+     * Token::fromParams
+     * static method allowing us to construct a new Token directly from a set
+     *   of parameters
+     *
+     * @param {Sentence} sent
+     * @param {Object} params
+     * @return {Token}
+     */
+
     let token = new Token(sent);
     token.params = params;
     return token;
   }
   get eles() {
-
+    throw new Error('Token::eles [get] is not implemented');
   }
 
   // bool stuff
   get isSubToken() {
+    /**
+     * Token::isSubToken
+     * returns true iff this token is a subToken of some other token
+     *
+     * @return {Boolean}
+     */
+
     return this.superToken !== null;
   }
   get isSuperToken() {
+    /**
+     * Token::isSuperToken
+     * returns true iff this token has subTokens
+     *
+     * @return {Boolean}
+     */
+
     return this.analysis ? this.analysis.isSuperToken : null;
   }
   get isEmpty() {
+    /**
+     * Token::isEmpty
+     * returns true iff this token or its superToken is an "empty" token
+     *
+     * @return {Boolean}
+     */
+
     return this.isSubToken ? this.superToken.token.isEmpty : this._isEmpty;
   }
   get isAmbiguous() {
+    /**
+     * Token::isAmbiguous
+     * return true iff this token has more than one analysis
+     *
+     * @return {Boolean}
+     */
+
     return this.length > 1;
   }
 }
 
+// expose to application
 module.exports = Token;
