@@ -1,6 +1,78 @@
 'use strict';
 
 module.exports = {
+nested: `# sent_id = wikipedia:Poyvi_Paraguái:11
+# text = Poyvi peteĩha ñane retãmegua niko ojepuru’ypýkuri 15 jasypo guive 16 jasypoteĩ meve ary 1811-pe.
+# text[spa] = Bandera uno nosotros de-de _ él-se-utilizó-_ 15 maio desde 16 junio hasta año 1811-en.
+"<Poyvi>"
+	"poyvi" n
+"<peteĩha>"
+	"pete" n incp
+		"ĩ" v tv pres
+			"ha" subs
+	"peteĩha" num
+"<ñane>"
+	"ñandé" prn pers p1 incl pl
+"<retãmegua>"
+	"*retãmegua"
+"<niko>"
+	"*niko"
+"<ojepuruʼypýkuri>"
+	"*ojepuruʼypýkuri"
+"<15>"
+	"15" num @amod
+"<jasypo>"
+	"ja" n incp
+		"sy" n incp
+			"po" n
+	"ja" n incp
+		"sy" n incp
+			"po" v iv pres
+	"ja" n incp
+		"sy" n incp
+			"po" v tv pres
+	"ja" prn p1 pl
+		"sy" n incp
+			"po" n
+	"ja" prn p1 pl
+		"sy" n incp
+			"po" v iv pres
+	"ja" prn p1 pl
+		"sy" n incp
+			"po" v tv pres
+	"jasy" n incp
+		"po" n
+	"jasy" n incp
+		"po" v iv pres
+	"jasy" n incp
+		"po" v tv pres
+	"jasypo" n
+"<guive>"
+	"guive" post @case
+"<16>"
+	"16" num @amod
+"<jasypoteĩ>"
+	"jasypoteĩ" n
+"<meve>"
+	"peve" post @case
+"<ary>"
+	"ary" n
+"<1811-pe>"
+	"1811" num
+		"pe" post @case`,
+
+/*nested_2: `"<ab>"
+	"A" #1->
+		"B" #2->
+"<cde>"
+	"C" #3->
+		"D" #4->
+			"E" #5->
+"<f>"
+	"F" #6->
+"<h>"
+	"H" #7->`,*/
+
 kdt_tagged_1: `# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.tagged.txt
 "<Өскеменнің>"
 	"Өскемен" np top gen @nmod:poss #1->3
@@ -48,31 +120,31 @@ kdt_tagged_3: `# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.
 	"?" sent @punct #6->4`,
 
 0: `"<Патшамен>"
-        "патша" n ins @nmod #1->3
+	"патша" n ins @nmod #1->3
 "<соғыс>"
-        "соғыс" n nom @obj #2->3
+	"соғыс" n nom @obj #2->3
 "<ашқанда>"
-        "аш" v tv ger_past loc @advcl #3->12
+	"аш" v tv ger_past loc @advcl #3->12
 "<,>"
-        "," cm @punct #4->12
+	"," cm @punct #4->12
 "<ел-жұрт>"
-        "ел-жұрт" n nom @conj #5->7
+	"ел-жұрт" n nom @conj #5->7
 "<,>"
-        "," cm @punct #6->7
+	"," cm @punct #6->7
 "<отанымды>"
-        "отан" n px1sg acc @obj #7->8
+	"отан" n px1sg acc @obj #7->8
 "<қорғауға>"
-        "қорға" v tv ger dat @advcl #8->12
+	"қорға" v tv ger dat @advcl #8->12
 "<,>"
-        "," cm @punct #9->12
+	"," cm @punct #9->12
 "<біз>"
-        "біз" prn pers p1 pl nom @nsubj #10->12
+	"біз" prn pers p1 pl nom @nsubj #10->12
 "<соғысқа>"
-        "соғыс" n dat @nmod #11->12
+	"соғыс" n dat @nmod #11->12
 "<бардық>"
-        "бар" v iv ifi p1 pl @root #12->0
+	"бар" v iv ifi p1 pl @root #12->0
 "<.>"
-        "." sent @punct #13->12`,
+	"." sent @punct #13->12`,
 
 1: `# text = He boued e tebr Mona er gegin.
 # text[eng] = Mona eats her food here in the kitchen.
@@ -113,9 +185,9 @@ kdt_tagged_3: `# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.
 		"an" det def sp @det #7->8
 "<gegin>"
 	"kegin" n f sg @obl #8->4
-	"kegin" n f pl @obl #8->4
+	"kegin" n f pl @obl
 "<.>"
-	"." sent @punct #9->4`,
+	"." sent @punct #9->4`, // note: changed line `"kegin" n f pl @obl #8->4`
 
 with_semicolumn: `
 "<Siedzieliśmy>"

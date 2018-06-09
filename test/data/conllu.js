@@ -1,6 +1,18 @@
 'use strict';
 
 module.exports = {
+nested_2: `# text = ab cde f h
+1-2	ab	_	_	_	_	_	_	_	_
+1	a	A	_	_	_	_	_	_	_
+2	b	B	_	_	_	_	_	_	_
+3-5	cde	_	_	_	_	_	_	_	_
+3	c	C	_	_	_	_	_	_	_
+4	d	D	_	_	_	_	_	_	_
+5	e	E	_	_	_	_	_	_	_
+6	f	F	_	_	_	_	_	_	_
+6.1	silent_g	G	_	_	_	_	_	_	_
+7	h	H	_	_	_	_	_	_	_`,
+
 t: `# testing :)
 1-3	He	he	det	_	pos|f|sp	_	det	_	_
 1	boued	boued	n	_	m|sg	4	obj	_	_
