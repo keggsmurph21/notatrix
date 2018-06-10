@@ -5,6 +5,7 @@ const buffer = require('vinyl-buffer');
 const babelify = require('babelify');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
+const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('js', () => {
   return browserify('src/index.js')
@@ -27,7 +28,13 @@ gulp.task('uglify', () => {
     .pipe(buffer())
     .pipe(gulp.dest('build'))
     .pipe(rename('notatrix.min.js'))
+    .pipe(sourcemaps.init())
     .pipe(uglify())
+    .pipe(sourcemaps.write('.', {
+      mapFile: (filename) => {
+        return filename.replace(/min\.js/, 'min.map');
+      }
+    }))
     .pipe(gulp.dest('build'));
 })
 
