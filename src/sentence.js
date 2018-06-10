@@ -18,6 +18,11 @@ const regex = {
   cg3TokenContent: /^;?\s+"(.|\\")*"/
 }
 
+/**
+ * this class contains all the information associated with a sentence, including
+ *   an comments array, a tokens array, and a list of options/settings that apply
+ *   to all subelements of this sentence
+ */
 class Sentence extends Object {
 
   constructor(paramsList, options) {
@@ -49,14 +54,13 @@ class Sentence extends Object {
     this.tokens = [];
 
     // try parsing a list of parameters
-    this.params = paramsList;
+    if (paramsList)
+      this.params = paramsList;
   }
+  /**
+   * @return {Number} total number of tokens/subTokens in this sentence
+   */
   get length() {
-    /**
-     * Sentence::length [get]
-     *
-     * @return {Number} total number of tokens/subtokens in this sentence
-     */
 
     let acc = 0;
     this.forEach(token => {
@@ -64,14 +68,13 @@ class Sentence extends Object {
     });
     return acc;
   }
+  /**
+   * loop through every token in the sentence and apply a callback
+   *
+   * @param {Function} callback function to be applied to every token
+   * @return {Sentence}
+   */
   forEach(callback) {
-    /**
-     * Sentence::forEach
-     * loop through every token in the sentence and apply a callback
-     *
-     * @param {Function} callback function to be applied to every token
-     * @return {Sentence}
-     */
 
     let t = 0;
     for (let i=0; i<this.tokens.length; i++) {
@@ -83,32 +86,31 @@ class Sentence extends Object {
         t++;
       }
     }
+
+    // chaining
     return this;
   }
 
-  // sub-object getters
-  getComment(index) {
-    /**
-     * Sentence::getComment
-     * return the comment at the given index, or null
-     *
-     * @param {Number} index
-     * @return {String||null}
-     */
 
+  /**
+   * return the comment at the given index, or null
+   *
+   * @param {Number} index
+   * @return {(String|null)}
+   */
+  getComment(index) {
     return this.comments[index] || null;
   }
-  getToken(index) {
-    /**
-     * Sentence::getToken
-     * return the token at the given index (note: this is regular token OR subtoken),
-     *   or null.  to choose by superToken index, use Sentence[index] syntax.  this
-     *   function assumes only the current analysis is desired.
-     *
-     * @param {Number} index
-     * @return {Token||null}
-     */
 
+  /**
+   * return the token at the given index (note: this is regular token OR subToken),
+   *   or null.  to choose by superToken index, use Sentence[index] syntax.  this
+   *   function assumes only the current analysis is desired.
+   *
+   * @param {Number} index
+   * @return {(Token|null)}
+   */
+  getToken(index) {
     let t = 0, token = null;
     this.forEach((tok, t) => {
       if (t === index)
@@ -116,18 +118,17 @@ class Sentence extends Object {
     });
     return token;
   }
-  getById(index) {
-    /**
-     * Sentence::getById
-     * return the current analysis of the token that matches a given index string
-     *
-     * NOTE: tokens outside the current analysis will have id=null and cannot be retrieved
-     *   with this function
-     *
-     * @param {String} index
-     * @return {Analysis||null}
-     */
 
+  /**
+   * return the current analysis of the token that matches a given index string
+   *
+   * NOTE: tokens outside the current analysis will have id=null and cannot be retrieved
+   *   with this function
+   *
+   * @param {String} index
+   * @return {(Analysis|null)}
+   */
+  getById(index) {
     for (let i=0; i<this.tokens.length; i++) {
       const token = this.tokens[i];
       if (token.analysis.id == index)
@@ -142,23 +143,22 @@ class Sentence extends Object {
   }
 
   // manipulate token array
-  insertTokenAt(index, token) {
-    /**
-     * Sentence::insertTokenAt
-     * insert a token BEFORE the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
-     *   to fit the bounds. this means that you can call this with `index=-Infinity`
-     *   to push to the front of the tokens array or with `index=Infinity` to push
-     *   to the end
-     *
-     * @param {Number} index
-     * @param {Token} token
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid index or token
-     */
 
+  /**
+   * insert a token BEFORE the given index
+   *
+   * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
+   *   to fit the bounds. this means that you can call this with `index=-Infinity`
+   *   to push to the front of the tokens array or with `index=Infinity` to push
+   *   to the end
+   *
+   * @param {Number} index
+   * @param {Token} token
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid index or token
+   */
+  insertTokenAt(index, token) {
     index = parseFloat(index); // catch Infinity
     if (isNaN(index))
       throw new NotatrixError('unable to insert token: unable to cast index to int');
@@ -179,22 +179,21 @@ class Sentence extends Object {
     // chaining
     return this;
   }
-  removeTokenAt(index) {
-    /**
-     * Sentence::removeTokenAt
-     * remove a token at the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
-     *   adjusted to fit the bounds. this means that you can call this with
-     *   `index=-Infinity` to remove the first element of the tokens array or
-     *   with `index=Infinity` to pop from the end
-     *
-     * @param {Number} index
-     * @return {Token||null}
-     *
-     * @throws {NotatrixError} if given invalid index
-     */
 
+  /**
+   * remove a token at the given index
+   *
+   * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
+   *   adjusted to fit the bounds. this means that you can call this with
+   *   `index=-Infinity` to remove the first element of the tokens array or
+   *   with `index=Infinity` to remove the last
+   *
+   * @param {Number} index
+   * @return {(Token|null)}
+   *
+   * @throws {NotatrixError} if given invalid index
+   */
+  removeTokenAt(index) {
     // can't remove if we have an empty sentence
     if (!this.tokens.length)
       return null;
@@ -211,23 +210,22 @@ class Sentence extends Object {
     // array splicing, return spliced element
     return this.tokens.splice(index, 1)[0];
   }
-  moveTokenAt(sourceIndex, targetIndex) {
-    /**
-     * Sentence::moveTokenAt
-     * move a token from sourceIndex to targetIndex
-     *
-     * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
-     *   be adjusted to fit the bounds. this means that you can call this with
-     *   `sourceIndex=-Infinity` to select the first element of the tokens array
-     *   or with `sourceIndex=Infinity` to select the last
-     *
-     * @param {Number} sourceIndex
-     * @param {Number} targetIndex
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
-     */
 
+  /**
+   * move a token from sourceIndex to targetIndex
+   *
+   * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
+   *   be adjusted to fit the bounds. this means that you can call this with
+   *   `sourceIndex=-Infinity` to select the first element of the tokens array
+   *   or with `sourceIndex=Infinity` to select the last
+   *
+   * @param {Number} sourceIndex
+   * @param {Number} targetIndex
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
+   */
+  moveTokenAt(sourceIndex, targetIndex) {
     sourceIndex = parseFloat(sourceIndex);
     targetIndex = parseFloat(targetIndex);
     if (isNaN(sourceIndex) || isNaN(targetIndex))
@@ -256,39 +254,36 @@ class Sentence extends Object {
     // chaining
     return this;
   }
-  pushToken(token) {
-    /**
-     * Sentence::pushToken
-     * push a token to the end of the tokens array ... sugar for
-     *   Sentence::insertTokenAt(Infinity, token)
-     *
-     * @param {Token} token
-     * @return {Sentence}
-     */
 
+  /**
+   * push a token to the end of the tokens array ... sugar for
+   *   Sentence::insertTokenAt(Infinity, token)
+   *
+   * @param {Token} token
+   * @return {Sentence}
+   */
+  pushToken(token) {
     return this.insertTokenAt(Infinity, token);
   }
-  popToken() {
-    /**
-     * Sentence::popToken
-     * pop a token from the end of the tokens array ... sugar for
-     *   Sentence::removeTokenAt(Infinity)
-     *
-     * @return {Token||null}
-     */
 
+  /**
+   * pop a token from the end of the tokens array ... sugar for
+   *   Sentence::removeTokenAt(Infinity)
+   *
+   * @return {(Token|null)}
+   */
+  popToken() {
     return this.removeTokenAt(Infinity);
   }
 
   // external formats
-  get nx() {
-    /**
-     * Sentence::nx [get]
-     * get a serial version of the internal sentence representation
-     *
-     * @return {String}
-     */
 
+  /**
+   * get a serial version of the internal sentence representation
+   *
+   * @return {String}
+   */
+  get nx() {
     // update indices
     this.index();
 
@@ -305,14 +300,13 @@ class Sentence extends Object {
       tokens: tokens
     }, null, this.options.prettyOutput ? 2 : 0);
   }
-  get text() {
-    /**
-     * Sentence::text [get]
-     * get a plain-text formatted string of the sentence's current analysis text
-     *
-     * @return {String}
-     */
 
+  /**
+   * get a plain-text formatted string of the sentence's current analysis text
+   *
+   * @return {String}
+   */
+  get text() {
     // only care about tokens (not comments or settings)
     let tokens = [];
     this.forEach(token => {
@@ -321,14 +315,13 @@ class Sentence extends Object {
     });
     return tokens.join(' ');
   }
-  get conllu() {
-    /**
-     * Sentence::conllu [get]
-     * get a CoNLL-U formatted string representing the sentence's current analysis
-     *
-     * @return {String||null}
-     */
 
+  /**
+   * get a CoNLL-U formatted string representing the sentence's current analysis
+   *
+   * @return {(String|null)}
+   */
+  get conllu() {
     // comments first
     const comments = _.map(this.comments, comment => {
       return `# ${comment}`;
@@ -353,15 +346,14 @@ class Sentence extends Object {
       return null;
     }
   }
-  set conllu(conllu) {
-    /**
-     * Sentence::conllu [set]
-     * parse a CoNLL-U formatted string and save its contents to the sentence
-     *
-     * @param {String} conllu
-     * @return {String}
-     */
 
+  /**
+   * parse a CoNLL-U formatted string and save its contents to the sentence
+   *
+   * @param {String} conllu
+   * @return {String}
+   */
+  set conllu(conllu) {
     // clear existing data
     this.comments = [];
     this.tokens = [];
@@ -391,7 +383,7 @@ class Sentence extends Object {
 
         // push them all to the superToken's current analysis
         for (let j=0; j<=(subTokenIndices[1] - subTokenIndices[0]); j++) {
-          superToken.pushSubToken( Token.fromConllu(this, lines[j + k + 1]) );
+          superToken.analysis.pushSubToken( Token.fromConllu(this, lines[j + k + 1]) );
           i++;
         }
 
@@ -410,29 +402,27 @@ class Sentence extends Object {
     // attach heads and return CoNLL-U string
     return this.attach().conllu;
   }
-  static fromConllu(serial, options) {
-    /**
-     * Sentence::fromConllu
-     * static method allowing us to construct a new Sentence directly from a
-     *   CoNLL-U string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
 
+  /**
+   * static method allowing us to construct a new Sentence directly from a
+   *   CoNLL-U string
+   *
+   * @param {String} serial
+   * @param {Object} options (optional)
+   * @return {Sentence}
+   */
+  static fromConllu(serial, options) {
     let sent = new Sentence(options);
     sent.conllu = serial;
     return sent;
   }
-  get cg3() {
-    /**
-     * Sentence::cg3 [get]
-     * get a CG3 formatted string representing all of the sentence's analyses
-     *
-     * @return {String||null}
-     */
 
+  /**
+   * get a CG3 formatted string representing all of the sentence's analyses
+   *
+   * @return {(String|null)}
+   */
+  get cg3() {
     // comments first
     const comments = _.map(this.comments, comment => {
       return `# ${comment}`;
@@ -456,15 +446,14 @@ class Sentence extends Object {
       return null;
     }
   }
-  set cg3(cg3) {
-    /**
-     * Sentence::cg3 [set]
-     * parse a CG3 formatted string and save its contents to the sentence
-     *
-     * @param {String} conllu
-     * @return {String}
-     */
 
+  /**
+   * parse a CG3 formatted string and save its contents to the sentence
+   *
+   * @param {String} conllu
+   * @return {String}
+   */
+  set cg3(cg3) {
     // clear existing data
     this.comments = [];
     this.tokens = [];
@@ -513,31 +502,29 @@ class Sentence extends Object {
     // attach heads and return CG3 string
     return this.attach().cg3;
   }
-  static fromCG3(serial, options) {
-    /**
-     * Sentence::fromCG3
-     * static method allowing us to construct a new Sentence directly from a
-     *   CG3 string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
 
+  /**
+   * static method allowing us to construct a new Sentence directly from a
+   *   CG3 string
+   *
+   * @param {String} serial
+   * @param {Object} options (optional)
+   * @return {Sentence}
+   */
+  static fromCG3(serial, options) {
     let sent = new Sentence(options);
     sent.cg3 = serial;
     return sent;
   }
-  get params() {
-    /**
-     * Sentence::params [get]
-     * get an array of token parameters representing the sentence
-     *
-     * NOTE: fails (returns null) if we have subTokens or ambiguous analyses
-     *
-     * @return {Array||null}
-     */
 
+  /**
+   * get an array of token parameters representing the sentence
+   *
+   * NOTE: fails (returns null) if we have subTokens or ambiguous analyses
+   *
+   * @return {(Array|null)}
+   */
+  get params() {
     try {
 
       let params = [];
@@ -567,15 +554,14 @@ class Sentence extends Object {
       }
     }
   }
-  set params(paramsList) {
-    /**
-     * Sentence::params [set]
-     * parse an array of token parameters and save contents to the sentence
-     *
-     * @param {Array} paramsList
-     * @return {Array||null}
-     */
 
+  /**
+   * parse an array of token parameters and save contents to the sentence
+   *
+   * @param {Array} paramsList
+   * @return {(Array|null)}
+   */
+  set params(paramsList) {
     // can only parse arrays
     if (!(paramsList instanceof Array))
       return null;
@@ -592,17 +578,16 @@ class Sentence extends Object {
     // attach heads and return validated parameter list
     return this.attach().params;
   }
-  static fromParams(paramsList, options) {
-    /**
-     * Sentence::fromParams
-     * static method allowing us to construct a new Sentence directly from an
-     *   array of parameters
-     *
-     * @param {Array} paramsList
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
 
+  /**
+   * static method allowing us to construct a new Sentence directly from an
+   *   array of parameters
+   *
+   * @param {Array} paramsList
+   * @param {Object} options (optional)
+   * @return {Sentence}
+   */
+  static fromParams(paramsList, options) {
     let sent = new Sentence(options);
     sent.params = paramsList;
     return sent;
@@ -614,16 +599,15 @@ class Sentence extends Object {
   clean() {
     throw new Error('Sentence::clean is not implemented'); // TODO
   }
-  index() {
-    /**
-     * Sentence::index
-     * iterate through the tokens and set an appropriate index for each (following
-     *   CoNLL-U indexing scheme with, e.g. 1 for regular token, 1-2 for superToken,
-     *   1.1 for "empty" token)
-     *
-     * @return {Sentence}
-     */
 
+  /**
+   * iterate through the tokens and set an appropriate index for each (following
+   *   CoNLL-U indexing scheme with, e.g. 1 for regular token, 1-2 for superToken,
+   *   1.1 for "empty" token)
+   *
+   * @return {Sentence}
+   */
+  index() {
     // track "overall" index number (id) and "empty" index number
     // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
     //   index before using it (see Token::index)
@@ -636,16 +620,15 @@ class Sentence extends Object {
     // chaining
     return this;
   }
-  attach() {
-    /**
-     * Sentence::attach
-     * iterate through the tokens and try to convert a plain string index to a
-     *   head to the actual token given by that index (called after parsing
-     *   CoNLL-U, CG3, or params)
-     *
-     * @return {Sentence}
-     */
 
+  /**
+   * iterate through the tokens and try to convert a plain string index to a
+   *   head to the actual token given by that index (called after parsing
+   *   CoNLL-U, CG3, or params)
+   *
+   * @return {Sentence}
+   */
+  attach() {
     // reindex in case we're out of date (valid index is crucial here)
     this.index();
     this.forEach(token => {
@@ -657,17 +640,16 @@ class Sentence extends Object {
     return this;
   }
 
-  get isValidConllu() {
-    /**
-     * Sentence::isValidConllu [get]
-     * iterate through the tokens and determine if they could be converted into
-     *   a CoNLL-U formatted string
-     *
-     * NOTE: currently, only returns false if it contains one/more ambiguous analyses
-     *
-     * @return {Boolean}
-     */
 
+  /**
+   * iterate through the tokens and determine if they could be converted into
+   *   a CoNLL-U formatted string
+   *
+   * NOTE: currently, only returns false if it contains one/more ambiguous analyses
+   *
+   * @return {Boolean}
+   */
+  get isValidConllu() {
     let valid = true;
     this.forEach(token => {
       if (token.isAmbiguous)
@@ -675,17 +657,16 @@ class Sentence extends Object {
     });
     return valid;
   }
-  get isValidCG3() {
-    /**
-     * Sentence::isValidCG3 [get]
-     * iterate through the tokens and determine if they could be converted into
-     *   a CG3 formatted string
-     *
-     * NOTE: currently, always returns true (see update below)
-     *
-     * @return {Boolean}
-     */
 
+  /**
+   * iterate through the tokens and determine if they could be converted into
+   *   a CG3 formatted string
+   *
+   * NOTE: currently, always returns true (see update below)
+   *
+   * @return {Boolean}
+   */
+  get isValidCG3() {
     let valid = true;
     this.forEach(token => {
       /*
@@ -699,17 +680,17 @@ class Sentence extends Object {
     return valid;
   }
 }
+
+/**
+ * Proxy so that we can get tokens using Array-like syntax
+ *
+ * NOTE: usage: `sent[8]` would return the analysis of the token at index 8
+ * NOTE: if `name` is not a Number, fall through to normal object
+ *
+ * @return {Mixed}
+ * @name Sentence#get
+ */
 Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
-  /**
-   * Sentence.prototype:: [get]
-   * add this Proxy so that we can get using Array-like syntax on the tokens
-   *   in each Sentence
-   *
-   * NOTE: usage: `sent[8]` would return the analysis of the token at index 8
-   * NOTE: if `name` is not a Number, fall through to normal object
-   *
-   * @return {Mixed}
-   */
 
   // default getter, called any time we use Sentence.name or Sentence[name]
   get(target, name, receiver) {

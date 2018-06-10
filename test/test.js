@@ -108,7 +108,6 @@ describe('Analysis', () => {
         expect(a.isSuperToken).to.equal(false);
         expect(a.isSubToken).to.equal(false);
         expect(a.isCurrent).to.equal(true);
-        expect(a.isEmpty).to.equal(false);
 
         expect(a._heads).to.deep.equal([]);
         expect(a._deps).to.deep.equal([]);
@@ -600,7 +599,6 @@ describe('Sentence', () => {
       expect(s.getToken(0)).to.equal(null);
       expect(s[0]).to.equal(null); // analysis
       expect(s.getById(0)).to.equal(null);
-      expect(s.getByIndices(0)).to.equal(null);
 
     });
 
@@ -706,7 +704,7 @@ describe('Sentence', () => {
 
     _.each(data['CoNLL-U'], (conllu, name) => {
       it(`parse CoNLL-U:${name}`, () => {
-        let s = new Sentence(null, {
+        let s = new Sentence({
           help: {
             head: false,
             deps: false
@@ -721,7 +719,7 @@ describe('Sentence', () => {
 
     _.each(data.CG3, (cg3, name) => {
       it(`parse CG3:${name}`, () => {
-        let s = new Sentence(null, {
+        let s = new Sentence({
           help: {
             head: false,
             deps: false
@@ -881,7 +879,7 @@ describe('Sentence', () => {
   describe('serializer', () => {
     _.each(data['CoNLL-U'], (text, name) => {
       it(`${name}: serialize to Notatrix and back`, () => {
-        let s = new Sentence(null, {
+        let s = new Sentence({
           help: {
             head: false,
             deps: false

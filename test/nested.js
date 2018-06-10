@@ -41,7 +41,7 @@ describe('CG3', () => {
   //if (false)
   describe('parsing "nested"', () => {
     const serial = cg3.nested;
-    let s = new Sentence(null, {
+    let s = new Sentence({
       showEmptyDependencies: false
     });
     s.cg3 = serial;
@@ -64,7 +64,7 @@ describe('CG3', () => {
 
   describe('parsing "kdt_tagged_1"', () => {
     const serial = cg3.kdt_tagged_1;
-    let s = new Sentence(null, {
+    let s = new Sentence({
       showEmptyDependencies: false
     });
     s.cg3 = serial;
@@ -76,7 +76,7 @@ describe('CG3', () => {
 
   describe('parsing "apertium_kaz_1"', () => {
     const serial = cg3.apertium_kaz_1;
-    let s = new Sentence(null, {
+    let s = new Sentence({
       showEmptyDependencies: false
     });
     s.cg3 = serial;
