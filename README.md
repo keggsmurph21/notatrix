@@ -1,3 +1,5 @@
+NOTE: see [the API documentation](build/docs.md)
+
 # Notatrix
 
 Experimental notational system for ud-annotatrix, combines CoNLL-U and CG3 into one backend.
