@@ -32,7 +32,7 @@ gulp.task('uglify', () => {
     .pipe(uglify())
     .pipe(sourcemaps.write('.', {
       mapFile: (filename) => {
-        return filename.replace(/min\.js/, 'min.map');
+        return filename.replace(/min\.js/, 'min');
       }
     }))
     .pipe(gulp.dest('build'));
