@@ -37,33 +37,65 @@ function getIndent(line) {
   return i - 1;
 }
 
+// CG3 parser helper functions
 function cg3StringGetForm(line) {
+  /**
+   * cg3StringGetForm
+   * extract the `form` parameter from a given string
+   *
+   * @param {String} line
+   * @return {String||undefined}
+   */
+
   return cg3Regex.form.test(line)
     ? line.match(cg3Regex.form)[1]
     : undefined
 }
 function cg3StringGetTags(line) {
+  /**
+   * cg3StringGetTags
+   * extract all the other (not `form`) tags from a given string
+   *
+   * @param {String} line
+   * @return {Object}
+   */
+
+  // initialize things
   let lemma, xpostag = [],
     head, deprel, deps, misc = [];
 
+  // get lemma
   if (cg3Regex.lemma.test(line))
     lemma = line.match(cg3Regex.lemma)[1];
 
+  // only consider line after lemma (if it exists)
   line = lemma ? line.slice(line.indexOf(lemma) + lemma.length + 1).trim() : line;
 
-  let chunks = line.split(/\s/);
+  // split on whitespace
+  let chunks = split(line);
+
+  // iterate over each chunk
   for (let j=0; j<chunks.length; j++) {
+
+    // try to extract deprel
     if (cg3Regex.deprel.test(chunks[j])) {
       deprel = chunks[j].match(cg3Regex.deprel)[1];
+
+    // try to extract head
     } else if (cg3Regex.dependency.test(chunks[j])) {
       head = chunks[j].match(cg3Regex.dependency)[2];
+
+    // try to extract misc, track with array (can be multiple)
     } else if (cg3Regex.misc.test(chunks[j])) {
-      misc.push(chunks[j])
+      misc.push(chunks[j]);
+
+    // try to extract tags (and save to xpostag), track with an array (can be multiple)
     } else {
       xpostag.push(chunks[j]);
     }
   }
 
+  // return our extracted data
   return {
     lemma: lemma,
     xpostag: xpostag.join(';') || undefined,
@@ -73,33 +105,43 @@ function cg3StringGetTags(line) {
     misc: misc.join(';') || undefined
   };
 }
-
 function cg3StringParseAnalysis(token, lines) {
-  let form = cg3StringGetForm(lines[0]);
+  /**
+   * cg3StringParseAnalysis
+   * parse an array of strings representing a CG3 analysis ... recall that in CG3,
+   *   subTokens have an increasingly hanging indent from their superToken
+   *
+   * @param {Token} token token to attach the analyses to
+   * @param {Array} lines [[String]]
+   * @return {undefined}
+   */
 
   if (lines.length === 2) {
 
-    // no subtokens
-    let tags = cg3StringGetTags(lines[1]);
-    tags.form = form;
-    token.pushAnalysis(new Analysis(token, tags));
+    // no subTokens
+    let tags = cg3StringGetTags(lines[1]); // extract tags
+    tags.form = cg3StringGetForm(lines[0]); // extract the form
+    token.pushAnalysis(new Analysis(token, tags)); // save to token
 
   } else {
 
-    // has subtokens
+    // has subTokens
     let analysis = new Analysis(token, {
-      form: form
+      form: cg3StringGetForm(lines[0]) // superToken only save form
     });
+
+    // for each subToken
     for (let i=1; i<lines.length; i++) {
-      let tags = cg3StringGetTags(lines[i]);
-      let subToken = new Token(token.sentence, tags);
-      analysis.pushSubToken( subToken );
+      let tags = cg3StringGetTags(lines[i]); // extract tags
+      let subToken = new Token(token.sentence, tags);  // make new subToken
+      analysis.pushSubToken( subToken ); // attach to this analysis
     }
-    token.pushAnalysis(analysis);
+    token.pushAnalysis(analysis); // save to token
 
   }
 }
 
+// define all the CG3-parsing regex here
 const cg3Regex = {
   form: /^"<((.|\\")*)>"/,
   lemma: /["\]](.*)["\]](\s|$)/,
@@ -383,7 +425,6 @@ class Token extends Object {
 
     return this.removeAnalysisAt(Infinity);
   }
-
 
   // token insertion, removal, moving
   /*insertBefore(token) {
