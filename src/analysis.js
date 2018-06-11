@@ -355,6 +355,7 @@ class Analysis extends Object {
     // serialize other data
     return {
       id: this.id,
+      num: this.num,
       params: this.params,
       values: values,
       subTokens: this.subTokens.map(subToken => {
@@ -452,6 +453,7 @@ class Analysis extends Object {
       eles.push({ // "number" node
         data: {
           id: `num-${this.id}`,
+          num: this.num,
           name: 'number',
           label: this.id,
           pos: this.pos,
@@ -462,6 +464,7 @@ class Analysis extends Object {
       }, { // "form" node
         data: {
           id: `form-${this.id}`,
+          num: this.num,
           name: `form`,
           attr: `form`,
           form: this.form,
@@ -475,6 +478,7 @@ class Analysis extends Object {
       }, { // "pos" node
         data: {
           id: `pos-node-${this.id}`,
+          num: this.num,
           name: `pos-node`,
           attr: `upostag`,
           label: this.pos || '',
@@ -485,6 +489,7 @@ class Analysis extends Object {
       }, { // "pos" edge
         data: {
           id: `pos-edge-${this.id}`,
+          num: this.num,
           name: `pos-edge`,
           source: `form-${this.id}`,
           target: `pos-node-${this.id}`
@@ -492,13 +497,32 @@ class Analysis extends Object {
         classes: 'pos'
       });
 
-      this.eachHead((token, deprel) => {
+      this.eachHead((head, deprel) => {
         deprel = deprel || '';
 
-        if (!head) // ROOT
+        if (!head || !head.id) // ROOT
           return;
 
+        eles.push({
+          data: {
+            id: `dep-${this.id}`,
+            name: `dependency`,
+            attr: `deprel`,
+            source: `form-${this.id}`,
+            sourceAnalysis: this,
+            target: `form-${head.id}`,
+            targetAnalysis: head,
+            length: `${deprel.length / 3}em`,
+            label: null, // TODO implement
+            ctrl: new Array(4).fill(null) // TODO implement
+          },
+          classes: null // TODO implement
+        });
 
+      });
+
+      _.each(this.subTokens, subToken => {
+        eles = eles.concat(subToken.eles);
       });
     }
 

@@ -600,6 +600,10 @@ class Sentence extends Object {
    * @return {Array}
    */
   get eles() {
+
+    // just in case, since it's critical
+    this.index();
+
     let eles = [];
     this.forEach(token => {
       eles = eles.concat(token.eles);
@@ -620,13 +624,13 @@ class Sentence extends Object {
    * @return {Sentence}
    */
   index() {
-    // track "overall" index number (id) and "empty" index number
+    // track "overall" index number (id) and "empty" index number and "absolute" num
     // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
     //   index before using it (see Token::index)
-    let id = 0, empty = 0;
+    let id = 0, empty = 0, num = 0;
     _.each(this.tokens, token => {
       // allow each token to return counters for the next guy
-      [id, empty] = token.index(id, empty);
+      [id, empty, num] = token.index(id, empty, num);
     });
 
     // chaining

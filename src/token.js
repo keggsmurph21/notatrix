@@ -534,21 +534,29 @@ class Token extends Object {
    *
    * @throws {NotatrixError} if given invalid id or empty
    */
-  index(id, empty) {
+  index(id, empty, num) {
 
-    if (isNaN(parseInt(id)))
+    id = parseInt(id);
+    empty = parseInt(empty);
+    num = parseInt(num);
+
+    if (isNaN(id) || isNaN(empty) || isNaN(num))
       throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
 
     // if no analysis, nothing to do
     if (this.analysis === null)
-      return id;
+      return [id, empty, num];
 
     // iterate over analyses
     this.forEach(analysis => {
 
-      // only set the indices on the current analysis
-      if (analysis === this.analysis) {
+      // only set the "id" and "empty" indices on the current analysis
+      if (analysis.isCurrent) {
         if (this.isSuperToken) {
+
+          // save the absolute index
+          this.analysis.num = num;
+          num++;
 
           // index subTokens
           _.each(this.analysis.subTokens, subToken => {
@@ -560,6 +568,12 @@ class Token extends Object {
               subToken.analysis.id = `${id}`; // vanilla syntax
               empty = 0; // reset empty counter
             }
+
+            // save the absolute index
+            subToken.forEach(analysis => {
+              analysis.num = num;
+              num++;
+            });
           });
 
           // set special superToken index scheme
@@ -568,6 +582,11 @@ class Token extends Object {
           this.analysis.id = `${firstSubAnalysis.id}-${lastSubAnalysis.id}`;
 
         } else {
+
+          // save the absolute index
+          this.analysis.num = num;
+          num++;
+
           if (this.isEmpty) {
             empty++; // incr empty counter
             this.analysis.id = `${id}.${empty}` // dot syntax
@@ -580,16 +599,28 @@ class Token extends Object {
 
       } else {
 
-        // non-current analyses get indices set to null
+        // save the absolute index
+        this.analysis.num = num;
+        num++;
+
+        // non-current analyses get "id" and "empty" indices set to null
         analysis.id = null;
         _.each(analysis.subTokens, subToken => {
           subToken.analysis.id = null;
+
+          subToken.forEach(analysis => {
+
+            // save the absolute index
+            this.analysis.num = num;
+            num++;
+
+          });
         });
       }
     });
 
     // return updated indices
-    return [id, empty];
+    return [id, empty, num];
   }
 
   /**
