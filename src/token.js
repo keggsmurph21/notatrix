@@ -796,8 +796,20 @@ class Token extends Object {
     token.params = params;
     return token;
   }
+
+  /**
+   * get an array of elements for exporting to external visualization libraries
+   *   for all the analyses of this token
+   *
+   * @return {Array}
+   */
   get eles() {
-    throw new Error('Token::eles [get] is not implemented'); // TODO
+    let eles = [];
+    this.forEach(analysis => {
+      eles = eles.concat(analysis.eles);
+    });
+
+    return eles;
   }
 
   // bool stuff

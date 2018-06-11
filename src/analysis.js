@@ -438,8 +438,71 @@ class Analysis extends Object {
 
     }
   }
+
+  /**
+   * get an array of nodes relating to this analysis for export to an external 
+   *   graphing library (e.g. Cytoscape, D3)
+   *
+   * @return {Array}
+   */
   get eles() {
-    throw new Error('Analysis::eles [get] is not implemented'); // TODO
+    let eles = [];
+
+    if (this.isCurrent) {
+      eles.push({ // "number" node
+        data: {
+          id: `num-${this.id}`,
+          name: 'number',
+          label: this.id,
+          pos: this.pos,
+          parent: this.id,
+          analysis: this
+        },
+        classes: 'number'
+      }, { // "form" node
+        data: {
+          id: `form-${this.id}`,
+          name: `form`,
+          attr: `form`,
+          form: this.form,
+          label: null, // TODO: fix
+          length: null, // TODO: relies on label
+          state: `normal`,
+          parent: `num-${this.id}`,
+          analysis: this
+        },
+        classes: `form${this.head == 0 ? ' root' : ''}`
+      }, { // "pos" node
+        data: {
+          id: `pos-node-${this.id}`,
+          name: `pos-node`,
+          attr: `upostag`,
+          label: this.pos || '',
+          length: `${(this.pos || '').length * 0.7 + 1}em`,
+          analysis: this
+        },
+        classes: 'pos'
+      }, { // "pos" edge
+        data: {
+          id: `pos-edge-${this.id}`,
+          name: `pos-edge`,
+          source: `form-${this.id}`,
+          target: `pos-node-${this.id}`
+        },
+        classes: 'pos'
+      });
+
+      this.eachHead((token, deprel) => {
+        deprel = deprel || '';
+
+        if (!head) // ROOT
+          return;
+
+
+      });
+    }
+
+    return eles;
   }
 
   // array-field (heads & deps) manipulators

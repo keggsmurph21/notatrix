@@ -592,8 +592,20 @@ class Sentence extends Object {
     sent.params = paramsList;
     return sent;
   }
+
+  /**
+   * get an array of the elements of this sentence, useful for exporting the data
+   *   to visualization libraries such as Cytoscape or D3
+   *
+   * @return {Array}
+   */
   get eles() {
-    throw new Error('Sentence::eles [get] is not implemented'); // TODO
+    let eles = [];
+    this.forEach(token => {
+      eles = eles.concat(token.eles);
+    });
+
+    return eles;
   }
 
   clean() {
