@@ -2299,6 +2299,7 @@ var Analysis = function (_Object) {
       // serialize other data
       return {
         id: this.id,
+        num: this.num,
         params: this.params,
         values: values,
         subTokens: this.subTokens.map(function (subToken) {
@@ -2383,10 +2384,98 @@ var Analysis = function (_Object) {
         return cg3FormatOutput(this, 1);
       }
     }
+
+    /**
+     * get an array of nodes relating to this analysis for export to an external 
+     *   graphing library (e.g. Cytoscape, D3)
+     *
+     * @return {Array}
+     */
+
   }, {
     key: 'eles',
     get: function get() {
-      throw new Error('Analysis::eles [get] is not implemented'); // TODO
+      var _this8 = this;
+
+      var eles = [];
+
+      if (this.isCurrent) {
+        eles.push({ // "number" node
+          data: {
+            id: 'num-' + this.id,
+            num: this.num,
+            name: 'number',
+            label: this.id,
+            pos: this.pos,
+            parent: this.id,
+            analysis: this
+          },
+          classes: 'number'
+        }, { // "form" node
+          data: {
+            id: 'form-' + this.id,
+            num: this.num,
+            name: 'form',
+            attr: 'form',
+            form: this.form,
+            label: null, // TODO: fix
+            length: null, // TODO: relies on label
+            state: 'normal',
+            parent: 'num-' + this.id,
+            analysis: this
+          },
+          classes: 'form' + (this.head == 0 ? ' root' : '')
+        }, { // "pos" node
+          data: {
+            id: 'pos-node-' + this.id,
+            num: this.num,
+            name: 'pos-node',
+            attr: 'upostag',
+            label: this.pos || '',
+            length: (this.pos || '').length * 0.7 + 1 + 'em',
+            analysis: this
+          },
+          classes: 'pos'
+        }, { // "pos" edge
+          data: {
+            id: 'pos-edge-' + this.id,
+            num: this.num,
+            name: 'pos-edge',
+            source: 'form-' + this.id,
+            target: 'pos-node-' + this.id
+          },
+          classes: 'pos'
+        });
+
+        this.eachHead(function (head, deprel) {
+          deprel = deprel || '';
+
+          if (!head || !head.id) // ROOT
+            return;
+
+          eles.push({
+            data: {
+              id: 'dep-' + _this8.id,
+              name: 'dependency',
+              attr: 'deprel',
+              source: 'form-' + _this8.id,
+              sourceAnalysis: _this8,
+              target: 'form-' + head.id,
+              targetAnalysis: head,
+              length: deprel.length / 3 + 'em',
+              label: null, // TODO implement
+              ctrl: new Array(4).fill(null) // TODO implement
+            },
+            classes: null // TODO implement
+          });
+        });
+
+        _.each(this.subTokens, function (subToken) {
+          eles = eles.concat(subToken.eles);
+        });
+      }
+
+      return eles;
     }
   }, {
     key: 'form',
@@ -2521,12 +2610,12 @@ var Analysis = function (_Object) {
   }, {
     key: 'head',
     get: function get() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (this.sentence.options.showEnhanced) {
         var heads = [];
         this.eachHead(function (token, deprel) {
-          if (token === _this8.sentence.getById(token.id) || !_this8.sentence.options.help.head) {
+          if (token === _this9.sentence.getById(token.id) || !_this9.sentence.options.help.head) {
             heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
           } else {
             heads.push('' + token + (deprel ? ':' + deprel : ''));
@@ -2546,16 +2635,16 @@ var Analysis = function (_Object) {
      */
     ,
     set: function set(heads) {
-      var _this9 = this;
+      var _this10 = this;
 
       if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
       this._heads = heads.map(function (head) {
-        return _this9.initializing ? {
+        return _this10.initializing ? {
           token: head.token,
           deprel: head.deprel
         } : {
-          token: _this9.sentence.getById(head.token) || head.token,
+          token: _this10.sentence.getById(head.token) || head.token,
           deprel: head.deprel
         };
       });
@@ -2592,12 +2681,12 @@ var Analysis = function (_Object) {
   }, {
     key: 'deps',
     get: function get() {
-      var _this10 = this;
+      var _this11 = this;
 
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
       this.eachDep(function (token, deprel) {
-        if (token === _this10.sentence.getById(token.id) || !_this10.sentence.options.help.deps) deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+        if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.deps) deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
       });
       return deps.join('|');
     }
@@ -2610,16 +2699,16 @@ var Analysis = function (_Object) {
      */
     ,
     set: function set(deps) {
-      var _this11 = this;
+      var _this12 = this;
 
       if (typeof deps === 'string') deps = parseEnhancedString(deps);
 
       this._deps = deps.map(function (dep) {
-        return _this11.initializing ? {
+        return _this12.initializing ? {
           token: dep.token,
           deprel: dep.deprel
         } : {
-          token: _this11.sentence.getById(dep.token) || dep.token,
+          token: _this12.sentence.getById(dep.token) || dep.token,
           deprel: dep.deprel
         };
       });
@@ -3160,20 +3249,22 @@ var Sentence = function (_Object) {
   }, {
     key: 'index',
     value: function index() {
-      // track "overall" index number (id) and "empty" index number
+      // track "overall" index number (id) and "empty" index number and "absolute" num
       // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
       //   index before using it (see Token::index)
       var id = 0,
-          empty = 0;
+          empty = 0,
+          num = 0;
       _.each(this.tokens, function (token) {
-        var _token$index = token.index(id, empty);
+        var _token$index = token.index(id, empty, num);
         // allow each token to return counters for the next guy
 
 
-        var _token$index2 = _slicedToArray(_token$index, 2);
+        var _token$index2 = _slicedToArray(_token$index, 3);
 
         id = _token$index2[0];
         empty = _token$index2[1];
+        num = _token$index2[2];
       });
 
       // chaining
@@ -3520,8 +3611,25 @@ var Sentence = function (_Object) {
 
   }, {
     key: 'eles',
+
+
+    /**
+     * get an array of the elements of this sentence, useful for exporting the data
+     *   to visualization libraries such as Cytoscape or D3
+     *
+     * @return {Array}
+     */
     get: function get() {
-      throw new Error('Sentence::eles [get] is not implemented'); // TODO
+
+      // just in case, since it's critical
+      this.index();
+
+      var eles = [];
+      this.forEach(function (token) {
+        eles = eles.concat(token.eles);
+      });
+
+      return eles;
     }
   }, {
     key: 'isValidConllu',
@@ -4085,20 +4193,28 @@ var Token = function (_Object) {
      *
      * @throws {NotatrixError} if given invalid id or empty
      */
-    value: function index(id, empty) {
+    value: function index(id, empty, num) {
       var _this2 = this;
 
-      if (isNaN(parseInt(id))) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
+      id = parseInt(id);
+      empty = parseInt(empty);
+      num = parseInt(num);
+
+      if (isNaN(id) || isNaN(empty) || isNaN(num)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
 
       // if no analysis, nothing to do
-      if (this.analysis === null) return id;
+      if (this.analysis === null) return [id, empty, num];
 
       // iterate over analyses
       this.forEach(function (analysis) {
 
-        // only set the indices on the current analysis
-        if (analysis === _this2.analysis) {
+        // only set the "id" and "empty" indices on the current analysis
+        if (analysis.isCurrent) {
           if (_this2.isSuperToken) {
+
+            // save the absolute index
+            _this2.analysis.num = num;
+            num++;
 
             // index subTokens
             _.each(_this2.analysis.subTokens, function (subToken) {
@@ -4110,6 +4226,12 @@ var Token = function (_Object) {
                 subToken.analysis.id = '' + id; // vanilla syntax
                 empty = 0; // reset empty counter
               }
+
+              // save the absolute index
+              subToken.forEach(function (analysis) {
+                analysis.num = num;
+                num++;
+              });
             });
 
             // set special superToken index scheme
@@ -4117,6 +4239,11 @@ var Token = function (_Object) {
             var lastSubAnalysis = _this2.subTokens[_this2.analysis.length - 1].analysis;
             _this2.analysis.id = firstSubAnalysis.id + '-' + lastSubAnalysis.id;
           } else {
+
+            // save the absolute index
+            _this2.analysis.num = num;
+            num++;
+
             if (_this2.isEmpty) {
               empty++; // incr empty counter
               _this2.analysis.id = id + '.' + empty; // dot syntax
@@ -4128,16 +4255,27 @@ var Token = function (_Object) {
           }
         } else {
 
-          // non-current analyses get indices set to null
+          // save the absolute index
+          _this2.analysis.num = num;
+          num++;
+
+          // non-current analyses get "id" and "empty" indices set to null
           analysis.id = null;
           _.each(analysis.subTokens, function (subToken) {
             subToken.analysis.id = null;
+
+            subToken.forEach(function (analysis) {
+
+              // save the absolute index
+              _this2.analysis.num = num;
+              num++;
+            });
           });
         }
       });
 
       // return updated indices
-      return [id, empty];
+      return [id, empty, num];
     }
 
     /**
@@ -4427,8 +4565,21 @@ var Token = function (_Object) {
 
   }, {
     key: 'eles',
+
+
+    /**
+     * get an array of elements for exporting to external visualization libraries
+     *   for all the analyses of this token
+     *
+     * @return {Array}
+     */
     get: function get() {
-      throw new Error('Token::eles [get] is not implemented'); // TODO
+      var eles = [];
+      this.forEach(function (analysis) {
+        eles = eles.concat(analysis.eles);
+      });
+
+      return eles;
     }
 
     // bool stuff

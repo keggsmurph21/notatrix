@@ -73,6 +73,7 @@ this class contains all the information associated with an analysis, including
     * [.text](#Analysis+text) ⇒ <code>String</code>
     * [.conllu](#Analysis+conllu) ⇒ <code>String</code>
     * [.cg3](#Analysis+cg3) ⇒ <code>String</code>
+    * [.eles](#Analysis+eles) ⇒ <code>Array</code>
     * [.form](#Analysis+form) ⇒ <code>String</code> \| <code>undefined</code>
     * [.form](#Analysis+form) ⇒ <code>undefined</code>
     * [.lemma](#Analysis+lemma) ⇒ <code>String</code> \| <code>undefined</code>
@@ -143,6 +144,13 @@ get a CoNLL-U formatted string representing the analysis
 
 ### analysis.cg3 ⇒ <code>String</code>
 get a CG3 formatted string representing the analysis
+
+**Kind**: instance property of [<code>Analysis</code>](#Analysis)  
+<a name="Analysis+eles"></a>
+
+### analysis.eles ⇒ <code>Array</code>
+get an array of nodes relating to this analysis for export to an external 
+  graphing library (e.g. Cytoscape, D3)
 
 **Kind**: instance property of [<code>Analysis</code>](#Analysis)  
 <a name="Analysis+form"></a>
@@ -505,6 +513,7 @@ this class contains all the information associated with a sentence, including
         * [.cg3](#Sentence+cg3) ⇒ <code>String</code>
         * [.params](#Sentence+params) ⇒ <code>Array</code> \| <code>null</code>
         * [.params](#Sentence+params) ⇒ <code>Array</code> \| <code>null</code>
+        * [.eles](#Sentence+eles) ⇒ <code>Array</code>
         * [.isValidConllu](#Sentence+isValidConllu) ⇒ <code>Boolean</code>
         * [.isValidCG3](#Sentence+isValidCG3) ⇒ <code>Boolean</code>
         * [.get](#Sentence+get) ⇒ <code>Mixed</code>
@@ -594,6 +603,13 @@ parse an array of token parameters and save contents to the sentence
 | --- | --- |
 | paramsList | <code>Array</code> | 
 
+<a name="Sentence+eles"></a>
+
+### sentence.eles ⇒ <code>Array</code>
+get an array of the elements of this sentence, useful for exporting the data
+  to visualization libraries such as Cytoscape or D3
+
+**Kind**: instance property of [<code>Sentence</code>](#Sentence)  
 <a name="Sentence+isValidConllu"></a>
 
 ### sentence.isValidConllu ⇒ <code>Boolean</code>
@@ -831,6 +847,7 @@ this class contains all the information associated with a token, including
         * [.cg3](#Token+cg3) ⇒ <code>undefined</code>
         * [.params](#Token+params) ⇒ <code>Object</code>
         * [.params](#Token+params) ⇒ <code>Object</code>
+        * [.eles](#Token+eles) ⇒ <code>Array</code>
         * [.isSubToken](#Token+isSubToken) ⇒ <code>Boolean</code>
         * [.isSuperToken](#Token+isSuperToken) ⇒ <code>Boolean</code>
         * [.isEmpty](#Token+isEmpty) ⇒ <code>Boolean</code>
@@ -980,6 +997,13 @@ set a set of parameters as the current analysis
 | --- | --- |
 | params | <code>Object</code> | 
 
+<a name="Token+eles"></a>
+
+### token.eles ⇒ <code>Array</code>
+get an array of elements for exporting to external visualization libraries
+  for all the analyses of this token
+
+**Kind**: instance property of [<code>Token</code>](#Token)  
 <a name="Token+isSubToken"></a>
 
 ### token.isSubToken ⇒ <code>Boolean</code>
