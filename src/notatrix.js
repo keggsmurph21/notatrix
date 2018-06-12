@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  'Error': require('./errors'),
+  Error: require('./errors'),
   Sentence: require('./sentence'),
   Token: require('./token'),
   Analysis: require('./analysis')

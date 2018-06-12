@@ -8,7 +8,9 @@ const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('js', () => {
-  return browserify('src/index.js')
+  return browserify('src/notatrix.js', {
+      standalone: 'nx'
+    })
     .transform('babelify', {
       presets: ['env']
     })
@@ -19,7 +21,9 @@ gulp.task('js', () => {
 });
 
 gulp.task('uglify', () => {
-  return browserify('src/index.js')
+  return browserify('src/notatrix.js', {
+      standalone: 'nx'
+    })
     .transform('babelify', {
       presets: ['env']
     })
