@@ -23,10 +23,9 @@ const regex = {
  *   an comments array, a tokens array, and a list of options/settings that apply
  *   to all subelements of this sentence
  */
-class Sentence extends Object {
+class Sentence {
 
   constructor(paramsList, options) {
-    super();
 
     // handle only receiving one arg better
     if (options === undefined && !Array.isArray(paramsList)) {
@@ -56,12 +55,15 @@ class Sentence extends Object {
     // try parsing a list of parameters
     if (paramsList)
       this.params = paramsList;
+
+    debugger;
   }
   /**
    * @return {Number} total number of tokens/subTokens in this sentence
    */
   get length() {
 
+    debugger;
     let acc = 0;
     this.forEach(token => {
       acc++;

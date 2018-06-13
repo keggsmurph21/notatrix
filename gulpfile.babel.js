@@ -12,7 +12,8 @@ gulp.task('js', () => {
       standalone: 'nx'
     })
     .transform('babelify', {
-      presets: ['env']
+      presets: ['env'],
+      plugins: ["transform-es5-property-mutators"]
     })
     .bundle()
     .pipe(source('notatrix.js'))
@@ -25,7 +26,8 @@ gulp.task('uglify', () => {
       standalone: 'nx'
     })
     .transform('babelify', {
-      presets: ['env']
+      presets: ['env'],
+      plugins: ["transform-es5-property-mutators"]
     })
     .bundle()
     .pipe(source('notatrix.js'))

@@ -155,9 +155,8 @@ const cg3Regex = {
  *   a possible superToken, an array of possible analyses, an index to the
  *   current analysis, and a Boolean representing whether it is an "empty" token
  */
-class Token extends Object {
+class Token {
   constructor(sent, params) {
-    super();
 
     // require sentence param
     if (!sent)
