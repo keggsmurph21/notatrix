@@ -2987,8 +2987,6 @@ var Sentence = function () {
 
     // try parsing a list of parameters
     if (paramsList) this.params = paramsList;
-
-    debugger;
   }
   /**
    * @return {Number} total number of tokens/subTokens in this sentence
@@ -3291,7 +3289,6 @@ var Sentence = function () {
     key: 'length',
     get: function get() {
 
-      debugger;
       var acc = 0;
       this.forEach(function (token) {
         acc++;

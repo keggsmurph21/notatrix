@@ -56,14 +56,12 @@ class Sentence {
     if (paramsList)
       this.params = paramsList;
 
-    debugger;
   }
   /**
    * @return {Number} total number of tokens/subTokens in this sentence
    */
   get length() {
 
-    debugger;
     let acc = 0;
     this.forEach(token => {
       acc++;
