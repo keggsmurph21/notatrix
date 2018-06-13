@@ -1703,10 +1703,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _ = require('underscore');
 
 var NotatrixError = require('./errors').NotatrixError;
@@ -1807,28 +1803,26 @@ var puncts = /[.,!?]/;
  *   deps, & misc ... also keeps an array of subTokens and an index
  */
 
-var Analysis = function (_Object) {
-  _inherits(Analysis, _Object);
-
+var Analysis = function () {
   function Analysis(token, params) {
+    var _this = this;
+
     _classCallCheck(this, Analysis);
 
     // require token param
-    var _this = _possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
-
     if (!token) throw new NotatrixError('missing required arg: Token');
 
     // used to make sure we only add the head/deps strings on first pass, since
     //   we'll eventually call attach() whenever we're constructing like this
-    _this.initializing = true;
+    this.initializing = true;
 
     // pointers to parents
-    _this.token = token;
-    _this.sentence = token.sentence;
+    this.token = token;
+    this.sentence = token.sentence;
 
     // internal arrays of Analyses
-    _this._heads = [];
-    _this._deps = [];
+    this._heads = [];
+    this._deps = [];
 
     // iterate over passed params
     _.each(params, function (value, key) {
@@ -1842,18 +1836,16 @@ var Analysis = function (_Object) {
     });
 
     // save updated params (mostly for debugging purposes)
-    _this.params = params || {};
+    this.params = params || {};
 
     // internal index (see Sentence::index and Token::index), don't change this!
-    _this.id = null;
+    this.id = null;
 
     // array of Tokens
-    _this.subTokens = [];
+    this.subTokens = [];
 
     // safe to unset this now
-    _this.initializing = false;
-
-    return _this;
+    this.initializing = false;
   }
 
   /**
@@ -2788,7 +2780,7 @@ var Analysis = function (_Object) {
   }]);
 
   return Analysis;
-}(Object);
+}();
 
 /**
  * Proxy so that we can get subTokens using Array-like syntax
@@ -2941,10 +2933,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _ = require('underscore');
 
 var NotatrixError = require('./errors').NotatrixError;
@@ -2968,22 +2956,18 @@ var regex = {
    *   to all subelements of this sentence
    */
 };
-var Sentence = function (_Object) {
-  _inherits(Sentence, _Object);
-
+var Sentence = function () {
   function Sentence(paramsList, options) {
     _classCallCheck(this, Sentence);
 
     // handle only receiving one arg better
-    var _this = _possibleConstructorReturn(this, (Sentence.__proto__ || Object.getPrototypeOf(Sentence)).call(this));
-
     if (options === undefined && !Array.isArray(paramsList)) {
       options = paramsList;
       paramsList = undefined;
     }
 
     // save sentence-wide settings here
-    _this.options = _.defaults(options, {
+    this.options = _.defaults(options, {
       help: {
         form: true,
         lemma: true,
@@ -2998,12 +2982,11 @@ var Sentence = function (_Object) {
     });
 
     // the actual data
-    _this.comments = [];
-    _this.tokens = [];
+    this.comments = [];
+    this.tokens = [];
 
     // try parsing a list of parameters
-    if (paramsList) _this.params = paramsList;
-    return _this;
+    if (paramsList) this.params = paramsList;
   }
   /**
    * @return {Number} total number of tokens/subTokens in this sentence
@@ -3582,7 +3565,7 @@ var Sentence = function (_Object) {
      */
     ,
     set: function set(paramsList) {
-      var _this2 = this;
+      var _this = this;
 
       // can only parse arrays
       if (!(paramsList instanceof Array)) return null;
@@ -3593,7 +3576,7 @@ var Sentence = function (_Object) {
 
       // push a new token for each set of parameters
       _.each(paramsList, function (params) {
-        _this2.tokens.push(Token.fromParams(_this2, params));
+        _this.tokens.push(Token.fromParams(_this, params));
       });
 
       // attach heads and return validated parameter list
@@ -3688,7 +3671,7 @@ var Sentence = function (_Object) {
   }]);
 
   return Sentence;
-}(Object);
+}();
 
 /**
  * Proxy so that we can get tokens using Array-like syntax
@@ -3734,10 +3717,6 @@ module.exports = Sentence;
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _ = require('underscore');
 
@@ -3894,29 +3873,24 @@ var cg3Regex = {
  *   current analysis, and a Boolean representing whether it is an "empty" token
  */
 
-var Token = function (_Object) {
-  _inherits(Token, _Object);
-
+var Token = function () {
   function Token(sent, params) {
     _classCallCheck(this, Token);
 
     // require sentence param
-    var _this = _possibleConstructorReturn(this, (Token.__proto__ || Object.getPrototypeOf(Token)).call(this));
-
     if (!sent) throw new NotatrixError('missing required arg: Sentence');
 
     // pointer to parent
-    _this.sentence = sent;
+    this.sentence = sent;
 
     // internal stuff
-    _this.superToken = null;
-    _this.analyses = []; // array of analyses
-    _this._current = null; // index of current analysis in array
-    _this._isEmpty = false; // used for CoNLL-U "empty" tokens
+    this.superToken = null;
+    this.analyses = []; // array of analyses
+    this._current = null; // index of current analysis in array
+    this._isEmpty = false; // used for CoNLL-U "empty" tokens
 
     // try parsing an analysis from params
-    if (params) _this.analysis = new Analysis(_this, params);
-    return _this;
+    if (params) this.analysis = new Analysis(this, params);
   }
 
   /**
@@ -4194,7 +4168,7 @@ var Token = function (_Object) {
      * @throws {NotatrixError} if given invalid id or empty
      */
     value: function index(id, empty, num) {
-      var _this2 = this;
+      var _this = this;
 
       id = parseInt(id);
       empty = parseInt(empty);
@@ -4210,14 +4184,14 @@ var Token = function (_Object) {
 
         // only set the "id" and "empty" indices on the current analysis
         if (analysis.isCurrent) {
-          if (_this2.isSuperToken) {
+          if (_this.isSuperToken) {
 
             // save the absolute index
-            _this2.analysis.num = num;
+            _this.analysis.num = num;
             num++;
 
             // index subTokens
-            _.each(_this2.analysis.subTokens, function (subToken) {
+            _.each(_this.analysis.subTokens, function (subToken) {
               if (subToken.isEmpty) {
                 empty++; // incr empty counter
                 subToken.analysis.id = id + '.' + empty; // dot syntax
@@ -4235,28 +4209,28 @@ var Token = function (_Object) {
             });
 
             // set special superToken index scheme
-            var firstSubAnalysis = _this2.subTokens[0].analysis;
-            var lastSubAnalysis = _this2.subTokens[_this2.analysis.length - 1].analysis;
-            _this2.analysis.id = firstSubAnalysis.id + '-' + lastSubAnalysis.id;
+            var firstSubAnalysis = _this.subTokens[0].analysis;
+            var lastSubAnalysis = _this.subTokens[_this.analysis.length - 1].analysis;
+            _this.analysis.id = firstSubAnalysis.id + '-' + lastSubAnalysis.id;
           } else {
 
             // save the absolute index
-            _this2.analysis.num = num;
+            _this.analysis.num = num;
             num++;
 
-            if (_this2.isEmpty) {
+            if (_this.isEmpty) {
               empty++; // incr empty counter
-              _this2.analysis.id = id + '.' + empty; // dot syntax
+              _this.analysis.id = id + '.' + empty; // dot syntax
             } else {
               id++; // incr regular counter
-              _this2.analysis.id = '' + id; // vanilla syntax
+              _this.analysis.id = '' + id; // vanilla syntax
               empty = 0; // reset empty counter
             }
           }
         } else {
 
           // save the absolute index
-          _this2.analysis.num = num;
+          _this.analysis.num = num;
           num++;
 
           // non-current analyses get "id" and "empty" indices set to null
@@ -4267,7 +4241,7 @@ var Token = function (_Object) {
             subToken.forEach(function (analysis) {
 
               // save the absolute index
-              _this2.analysis.num = num;
+              _this.analysis.num = num;
               num++;
             });
           });
@@ -4655,7 +4629,7 @@ var Token = function (_Object) {
   }]);
 
   return Token;
-}(Object);
+}();
 
 // expose to application
 

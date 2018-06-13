@@ -114,9 +114,8 @@ const puncts = /[.,!?]/;
  *   a value for each of form, lemma, upostag, xpostag, feats, head, deprel,
  *   deps, & misc ... also keeps an array of subTokens and an index
  */
-class Analysis extends Object {
+class Analysis {
   constructor(token, params) {
-    super();
 
     // require token param
     if (!token)
