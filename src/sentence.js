@@ -346,7 +346,7 @@ class Sentence {
    */
   static fromText(serial, options) {
     let sent = new Sentence(options);
-    sent.text = text;
+    sent.text = serial;
     return sent;
   }
 
