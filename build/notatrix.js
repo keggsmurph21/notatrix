@@ -2978,7 +2978,8 @@ var Sentence = function () {
       },
       prettyOutput: true,
       showEnhanced: true,
-      showEmptyDependencies: true
+      showEmptyDependencies: true,
+      catchInvalid: true
     });
 
     // the actual data
@@ -3357,7 +3358,7 @@ var Sentence = function () {
 
         // if the sentence contains ambiguous analyses, we will get an error,
         // so catch only those types of errors here
-        if (!(e instanceof InvalidCoNLLUError)) throw e;
+        if (!(e instanceof InvalidCoNLLUError) || !this.options.catchInvalid) throw e;
 
         // if sentence is ambiguous
         return null;
@@ -3451,7 +3452,7 @@ var Sentence = function () {
 
         // if the sentence is not analyzeable as CG3, we'll get an error
         // NOTE: this doesn't currently happen under any circumstances
-        if (!(e instanceof InvalidCG3Error)) throw e;
+        if (!(e instanceof InvalidCG3Error) || !this.options.catchInvalid) throw e;
 
         return null;
       }
@@ -3544,10 +3545,10 @@ var Sentence = function () {
         });
         return params;
       } catch (e) {
-        if (e instanceof InvalidCoNLLUError) {
+        if (e instanceof InvalidCoNLLUError && this.options.catchInvalid) {
           console.warn('cannot get params for this sentence: contains MultiWordTokens');
           return null;
-        } else if (e instanceof InvalidCG3Error) {
+        } else if (e instanceof InvalidCG3Error && this.options.catchInvalid) {
           console.warn('cannot get params for this sentence: contains ambiguous analyses');
           return null;
         } else {
