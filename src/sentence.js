@@ -318,6 +318,39 @@ class Sentence {
   }
 
   /**
+   * parse a Plain text formatted string and save its contents to the sentence
+   *
+   * @param {String} text
+   * @return {String}
+   */
+  set text(text) {
+
+    // insert a space before final punctuation
+    text = text.trim().replace(/([.,?!]+)$/, ' $1');
+
+    // split on whitespace and add form-only tokens
+    _.map(text.split(/\s/), chunk => {
+      this.pushToken( Token.fromParams(this, { form: chunk }) );
+    });
+
+    return this.text;
+  }
+
+  /**
+   * static method allowing us to construct a new Sentence directly from a
+   *   text string
+   *
+   * @param {String} serial
+   * @param {Object} options (optional)
+   * @return {Sentence}
+   */
+  static fromText(serial, options) {
+    let sent = new Sentence(options);
+    sent.text = text;
+    return sent;
+  }
+
+  /**
    * get a CoNLL-U formatted string representing the sentence's current analysis
    *
    * @return {(String|null)}
