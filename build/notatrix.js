@@ -3338,13 +3338,44 @@ var Sentence = function () {
     }
 
     /**
-     * get a CoNLL-U formatted string representing the sentence's current analysis
+     * parse a Plain text formatted string and save its contents to the sentence
      *
-     * @return {(String|null)}
+     * @param {String} text
+     * @return {String}
+     */
+    ,
+    set: function set(text) {
+      var _this = this;
+
+      // insert a space before final punctuation
+      text = text.trim().replace(/([.,?!]+)$/, ' $1');
+
+      // split on whitespace and add form-only tokens
+      _.map(text.split(/\s/), function (chunk) {
+        _this.pushToken(Token.fromParams(_this, { form: chunk }));
+      });
+
+      return this.text;
+    }
+
+    /**
+     * static method allowing us to construct a new Sentence directly from a
+     *   text string
+     *
+     * @param {String} serial
+     * @param {Object} options (optional)
+     * @return {Sentence}
      */
 
   }, {
     key: 'conllu',
+
+
+    /**
+     * get a CoNLL-U formatted string representing the sentence's current analysis
+     *
+     * @return {(String|null)}
+     */
     get: function get() {
       // comments first
       var comments = _.map(this.comments, function (comment) {
@@ -3570,7 +3601,7 @@ var Sentence = function () {
      */
     ,
     set: function set(paramsList) {
-      var _this = this;
+      var _this2 = this;
 
       // can only parse arrays
       if (!(paramsList instanceof Array)) return null;
@@ -3581,7 +3612,7 @@ var Sentence = function () {
 
       // push a new token for each set of parameters
       _.each(paramsList, function (params) {
-        _this.tokens.push(Token.fromParams(_this, params));
+        _this2.tokens.push(Token.fromParams(_this2, params));
       });
 
       // attach heads and return validated parameter list
@@ -3653,6 +3684,13 @@ var Sentence = function () {
       return valid;
     }
   }], [{
+    key: 'fromText',
+    value: function fromText(serial, options) {
+      var sent = new Sentence(options);
+      sent.text = serial;
+      return sent;
+    }
+  }, {
     key: 'fromConllu',
     value: function fromConllu(serial, options) {
       var sent = new Sentence(options);

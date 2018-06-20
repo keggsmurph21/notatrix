@@ -12,6 +12,9 @@ const E = require('../src/errors');
 function clean(str) {
   return str.trim().replace(/[ \t]+/g, '\t').trim();
 }
+function cleanText(str) {
+  return str.trim().replace(/([.,?!]+)$/, ' $1').replace(/(\s)+/, ' ').trim();
+}
 function ignoreSemicolons(str) {
   return clean(str).split('\n').map(line => {
     return line.replace(/^;/, '');
@@ -732,6 +735,20 @@ describe('Sentence', () => {
       })
     });
 
+    _.each(data['Plain text'], (text, name) => {
+      console.log(name);
+      it(`parse Plain text:${name}`, () => {
+        let s = new Sentence({
+          help: {
+            head: false,
+            deps: false
+          }
+        });
+
+        s.text = text;
+        expect(s.text).to.equal(cleanText(text));
+      });
+    });
     it(`parse nx`, () => {
 
     });
