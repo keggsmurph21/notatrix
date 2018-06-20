@@ -379,8 +379,12 @@ class Analysis {
     if (this.lemma && this.lemma !== fallback)
       return this.lemma;
 
-    // fall back to our fallback (defined above)
-    return fallback;
+    // if set, fall back to our fallback (defined above)
+    if (this.sentence.fallbackOnText)
+      return fallback;
+
+    // otherwise just give an empty string
+    return '';
   }
 
   /**
@@ -440,7 +444,7 @@ class Analysis {
   }
 
   /**
-   * get an array of nodes relating to this analysis for export to an external 
+   * get an array of nodes relating to this analysis for export to an external
    *   graphing library (e.g. Cytoscape, D3)
    *
    * @return {Array}

@@ -46,7 +46,8 @@ class Sentence {
       prettyOutput: true,
       showEnhanced: true,
       showEmptyDependencies: true,
-      catchInvalid: true
+      catchInvalid: true,
+      fallbackOnText: false
     });
 
     // the actual data
