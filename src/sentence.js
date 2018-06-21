@@ -7,6 +7,7 @@ const InvalidCG3Error     = require('./errors').InvalidCG3Error;
 const InvalidCoNLLUError  = require('./errors').InvalidCoNLLUError
 
 const Token = require('./token');
+const Analysis = require('./analysis');
 
 // define all the regex we use in this module here
 const regex = {
@@ -22,6 +23,7 @@ function getIndices(tok) {
 
   let superTokenId = -1,
     subTokenId = -1,
+    analysisId = 0,
     found = false,
     isSubToken = false;
 
@@ -29,6 +31,7 @@ function getIndices(tok) {
 
     if (found)
       return;
+
 
     if (token.isSubToken) {
       subTokenId++;
@@ -185,7 +188,7 @@ class Sentence {
       throw new NotatrixError('unable to insert token: not instance of Token');
 
     if (!(newToken instanceof Token))
-      newToken = Token.fromParams(this, {});
+      newToken = Token.fromParams(this, { form: 'inserted' });
 
     const indices = getIndices(atToken);
     if (indices === null)
@@ -201,15 +204,63 @@ class Sentence {
       throw new NotatrixError('unable to insert token: not instance of Token');
 
     if (!(newToken instanceof Token))
-      newToken = Token.fromParams(this, {});
+      newToken = Token.fromParams(this, { form: 'inserted' });
 
     const indices = getIndices(atToken);
     if (indices === null)
       return null;
 
-      return indices.sub === null
-        ? this.insertTokenAt(indices.super + 1, newToken)
-        : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
+    return indices.sub === null
+      ? this.insertTokenAt(indices.super + 1, newToken)
+      : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
+  }
+
+  insertAnalysisBefore(atAnalysis, newAnalysis) {
+    if (!(atAnalysis instanceof Analysis))
+      throw new NotatrixError('unable to insert analysis: not instance of Analysis');
+
+    if (!(newAnalysis instanceof Analysis))
+      newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
+
+    const indices = getIndices(atAnalysis.token);
+    if (indices === null)
+      return null;
+
+    const token = indices.sub === null
+      ? this[indices.super].token
+      : this[indices.super][indices.sub].token;
+
+    let analysisId = -1;
+    token.forEach((ana, i) => {
+      if (ana === atAnalysis)
+        analysisId = i;
+    });
+    if (analysisId > -1)
+      token.insertAnalysisAt(analysisId, newAnalysis);
+  }
+
+  insertAnalysisAfter(atAnalysis, newAnalysis) {
+    if (!(atAnalysis instanceof Analysis))
+      throw new NotatrixError('unable to insert analysis: not instance of Analysis');
+
+      if (!(newAnalysis instanceof Analysis))
+        newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
+
+      const indices = getIndices(atAnalysis.token);
+      if (indices === null)
+        return null;
+
+      const token = indices.sub === null
+        ? this[indices.super].token
+        : this[indices.super][indices.sub].token;
+
+      let analysisId = -1;
+      token.forEach((ana, i) => {
+        if (ana === atAnalysis)
+          analysisId = i;
+      });
+      if (analysisId > -1)
+        token.insertAnalysisAt(analysisId + 1, newAnalysis);
   }
 
   /**

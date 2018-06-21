@@ -2943,6 +2943,7 @@ var InvalidCG3Error = require('./errors').InvalidCG3Error;
 var InvalidCoNLLUError = require('./errors').InvalidCoNLLUError;
 
 var Token = require('./token');
+var Analysis = require('./analysis');
 
 // define all the regex we use in this module here
 var regex = {
@@ -2958,6 +2959,7 @@ function getIndices(tok) {
 
   var superTokenId = -1,
       subTokenId = -1,
+      analysisId = 0,
       found = false,
       isSubToken = false;
 
@@ -3118,7 +3120,7 @@ var Sentence = function () {
     value: function insertTokenBefore(atToken, newToken) {
       if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
 
-      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, {});
+      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
 
       var indices = getIndices(atToken);
       if (indices === null) return null;
@@ -3130,12 +3132,46 @@ var Sentence = function () {
     value: function insertTokenAfter(atToken, newToken) {
       if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
 
-      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, {});
+      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
 
       var indices = getIndices(atToken);
       if (indices === null) return null;
 
       return indices.sub === null ? this.insertTokenAt(indices.super + 1, newToken) : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
+    }
+  }, {
+    key: 'insertAnalysisBefore',
+    value: function insertAnalysisBefore(atAnalysis, newAnalysis) {
+      if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
+
+      if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
+
+      var indices = getIndices(atAnalysis.token);
+      if (indices === null) return null;
+
+      var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
+
+      var analysisId = -1;
+      token.forEach(function (ana, i) {
+        if (ana === atAnalysis) analysisId = i;
+      });
+      if (analysisId > -1) token.insertAnalysisAt(analysisId, newAnalysis);
+    }
+  }, {
+    key: 'insertAnalysisAfter',
+    value: function insertAnalysisAfter(atAnalysis, newAnalysis) {
+      if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
+
+      if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
+
+      var indices = getIndices(atAnalysis.token);
+      if (indices === null) return null;
+
+      var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
+
+      token.forEach(function (ana, i) {
+        if (ana === atAnalysis) token.insertAnalysisAt(i + 1, newAnalysis);
+      });
     }
 
     /**
@@ -3809,7 +3845,7 @@ Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
 // expose to application
 module.exports = Sentence;
 
-},{"./errors":3,"./token":6,"underscore":1}],6:[function(require,module,exports){
+},{"./analysis":2,"./errors":3,"./token":6,"underscore":1}],6:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
