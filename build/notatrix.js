@@ -1708,6 +1708,21 @@ var _ = require('underscore');
 var NotatrixError = require('./errors').NotatrixError;
 
 /**
+ * convert a string to subscripts (for ele labels)
+ *
+ * @param {String} str string to be subscripted
+ * @return {String}
+ */
+function toSubscript(str) {
+  var subscripts = { 0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄', 5: '₅',
+    6: '₆', 7: '₇', 8: '₈', 9: '₉', '-': '₋', '(': '₍', ')': '₎' };
+
+  return str.split('').map(function (char) {
+    return subscripts[char] || char;
+  }).join('');
+}
+
+/**
  * strip whitespace from a string
  *
  * @param {String} str
@@ -2395,6 +2410,7 @@ var Analysis = function () {
       var eles = [];
 
       if (this.isCurrent) {
+        var formLabel = '' + this.form + (this.isSuperToken ? toSubscript(this.id) : '');
         eles.push({ // "number" node
           data: {
             id: 'num-' + this.id,
@@ -2413,8 +2429,8 @@ var Analysis = function () {
             name: 'form',
             attr: 'form',
             form: this.form,
-            label: null, // TODO: fix
-            length: null, // TODO: relies on label
+            label: formLabel,
+            length: (formLabel.length > 3 ? formLabel.length * 0.7 : formLabel.length) + 'em',
             state: 'normal',
             parent: 'num-' + this.id,
             analysis: this
@@ -2458,10 +2474,10 @@ var Analysis = function () {
               target: 'form-' + head.id,
               targetAnalysis: head,
               length: deprel.length / 3 + 'em',
-              label: null, // TODO implement
-              ctrl: new Array(4).fill(null) // TODO implement
+              label: null, // NB overwrite this before use
+              ctrl: null // NB overwrite this before use
             },
-            classes: null // TODO implement
+            classes: null // NB overwrite this before use
           });
         });
 
@@ -2683,7 +2699,7 @@ var Analysis = function () {
       this.eachDep(function (token, deprel) {
         if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.deps) deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
       });
-      return deps.join('|');
+      return deps.join('|') || '_';
     }
 
     /**
@@ -3131,6 +3147,7 @@ var Sentence = function () {
   }, {
     key: 'insertTokenBefore',
     value: function insertTokenBefore(atToken, newToken) {
+
       if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
 
       if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
@@ -3157,6 +3174,7 @@ var Sentence = function () {
   }, {
     key: 'insertTokenAfter',
     value: function insertTokenAfter(atToken, newToken) {
+
       if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
 
       if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
@@ -3183,6 +3201,7 @@ var Sentence = function () {
   }, {
     key: 'insertAnalysisBefore',
     value: function insertAnalysisBefore(atAnalysis, newAnalysis) {
+
       if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
       if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
@@ -3196,6 +3215,7 @@ var Sentence = function () {
       token.forEach(function (ana, i) {
         if (ana === atAnalysis) analysisId = i;
       });
+
       if (analysisId > -1) return token.insertAnalysisAt(analysisId, newAnalysis);
     }
 
@@ -3215,6 +3235,7 @@ var Sentence = function () {
   }, {
     key: 'insertAnalysisAfter',
     value: function insertAnalysisAfter(atAnalysis, newAnalysis) {
+
       if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
       if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
@@ -3228,6 +3249,7 @@ var Sentence = function () {
       token.forEach(function (ana, i) {
         if (ana === atAnalysis) analysisId = i;
       });
+
       if (analysisId > -1) return token.insertAnalysisAt(analysisId + 1, newAnalysis);
     }
 

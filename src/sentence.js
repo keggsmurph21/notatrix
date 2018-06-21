@@ -196,6 +196,7 @@ class Sentence {
    * @throws {NotatrixError} if given invalid token for first param
    */
   insertTokenBefore(atToken, newToken) {
+    
     if (!(atToken instanceof Token))
       throw new NotatrixError('unable to insert token: not instance of Token');
 
@@ -224,6 +225,7 @@ class Sentence {
    * @throws {NotatrixError} if given invalid token for first param
    */
   insertTokenAfter(atToken, newToken) {
+
     if (!(atToken instanceof Token))
       throw new NotatrixError('unable to insert token: not instance of Token');
 
@@ -252,6 +254,7 @@ class Sentence {
    * @throws {NotatrixError} if given invalid analysis for first param
    */
   insertAnalysisBefore(atAnalysis, newAnalysis) {
+
     if (!(atAnalysis instanceof Analysis))
       throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
@@ -271,6 +274,7 @@ class Sentence {
       if (ana === atAnalysis)
         analysisId = i;
     });
+
     if (analysisId > -1)
       return token.insertAnalysisAt(analysisId, newAnalysis);
   }
@@ -288,6 +292,7 @@ class Sentence {
    * @throws {NotatrixError} if given invalid analysis for first param
    */
   insertAnalysisAfter(atAnalysis, newAnalysis) {
+
     if (!(atAnalysis instanceof Analysis))
       throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
@@ -307,6 +312,7 @@ class Sentence {
       if (ana === atAnalysis)
         analysisId = i;
     });
+
     if (analysisId > -1)
       return token.insertAnalysisAt(analysisId + 1, newAnalysis);
   }
