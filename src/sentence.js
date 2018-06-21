@@ -183,6 +183,18 @@ class Sentence {
 
   // manipulate token array
 
+  /**
+   * insert a token AFTER the given token
+   *
+   * NOTE: if only passed 1 arg, it will insert a token constructed from
+   *   the params { form: 'inserted' }
+   *
+   * @param {Token} atToken
+   * @param {(Token|null)} newToken
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid token for first param
+   */
   insertTokenBefore(atToken, newToken) {
     if (!(atToken instanceof Token))
       throw new NotatrixError('unable to insert token: not instance of Token');
@@ -199,6 +211,18 @@ class Sentence {
       : this[indices.super].insertSubTokenAt(indices.sub, newToken);
   }
 
+  /**
+   * insert a token AFTER the given token
+   *
+   * NOTE: if only passed 1 arg, it will insert a token constructed from
+   *   the params { form: 'inserted' }
+   *
+   * @param {Token} atToken
+   * @param {(Token|null)} newToken
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid token for first param
+   */
   insertTokenAfter(atToken, newToken) {
     if (!(atToken instanceof Token))
       throw new NotatrixError('unable to insert token: not instance of Token');
@@ -215,6 +239,18 @@ class Sentence {
       : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
   }
 
+  /**
+   * insert an analysis BEFORE the given analysis
+   *
+   * NOTE: if only passed 1 arg, it will insert an analysis constructed from
+   *   the params { form: 'inserted' }
+   *
+   * @param {Analysis} atAnalysis
+   * @param {(Analysis|null)} newAnalysis
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid analysis for first param
+   */
   insertAnalysisBefore(atAnalysis, newAnalysis) {
     if (!(atAnalysis instanceof Analysis))
       throw new NotatrixError('unable to insert analysis: not instance of Analysis');
@@ -236,31 +272,43 @@ class Sentence {
         analysisId = i;
     });
     if (analysisId > -1)
-      token.insertAnalysisAt(analysisId, newAnalysis);
+      return token.insertAnalysisAt(analysisId, newAnalysis);
   }
 
+  /**
+   * insert an analysis AFTER the given analysis
+   *
+   * NOTE: if only passed 1 arg, it will insert an analysis constructed from
+   *   the params { form: 'inserted' }
+   *
+   * @param {Analysis} atAnalysis
+   * @param {(Analysis|null)} newAnalysis
+   * @return {Sentence}
+   *
+   * @throws {NotatrixError} if given invalid analysis for first param
+   */
   insertAnalysisAfter(atAnalysis, newAnalysis) {
     if (!(atAnalysis instanceof Analysis))
       throw new NotatrixError('unable to insert analysis: not instance of Analysis');
 
-      if (!(newAnalysis instanceof Analysis))
-        newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
+    if (!(newAnalysis instanceof Analysis))
+      newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
 
-      const indices = getIndices(atAnalysis.token);
-      if (indices === null)
-        return null;
+    const indices = getIndices(atAnalysis.token);
+    if (indices === null)
+      return null;
 
-      const token = indices.sub === null
-        ? this[indices.super].token
-        : this[indices.super][indices.sub].token;
+    const token = indices.sub === null
+      ? this[indices.super].token
+      : this[indices.super][indices.sub].token;
 
-      let analysisId = -1;
-      token.forEach((ana, i) => {
-        if (ana === atAnalysis)
-          analysisId = i;
-      });
-      if (analysisId > -1)
-        token.insertAnalysisAt(analysisId + 1, newAnalysis);
+    let analysisId = -1;
+    token.forEach((ana, i) => {
+      if (ana === atAnalysis)
+        analysisId = i;
+    });
+    if (analysisId > -1)
+      return token.insertAnalysisAt(analysisId + 1, newAnalysis);
   }
 
   /**

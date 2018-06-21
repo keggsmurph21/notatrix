@@ -3115,6 +3115,19 @@ var Sentence = function () {
 
     // manipulate token array
 
+    /**
+     * insert a token AFTER the given token
+     *
+     * NOTE: if only passed 1 arg, it will insert a token constructed from
+     *   the params { form: 'inserted' }
+     *
+     * @param {Token} atToken
+     * @param {(Token|null)} newToken
+     * @return {Sentence}
+     *
+     * @throws {NotatrixError} if given invalid token for first param
+     */
+
   }, {
     key: 'insertTokenBefore',
     value: function insertTokenBefore(atToken, newToken) {
@@ -3127,6 +3140,20 @@ var Sentence = function () {
 
       return indices.sub === null ? this.insertTokenAt(indices.super, newToken) : this[indices.super].insertSubTokenAt(indices.sub, newToken);
     }
+
+    /**
+     * insert a token AFTER the given token
+     *
+     * NOTE: if only passed 1 arg, it will insert a token constructed from
+     *   the params { form: 'inserted' }
+     *
+     * @param {Token} atToken
+     * @param {(Token|null)} newToken
+     * @return {Sentence}
+     *
+     * @throws {NotatrixError} if given invalid token for first param
+     */
+
   }, {
     key: 'insertTokenAfter',
     value: function insertTokenAfter(atToken, newToken) {
@@ -3139,6 +3166,20 @@ var Sentence = function () {
 
       return indices.sub === null ? this.insertTokenAt(indices.super + 1, newToken) : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
     }
+
+    /**
+     * insert an analysis BEFORE the given analysis
+     *
+     * NOTE: if only passed 1 arg, it will insert an analysis constructed from
+     *   the params { form: 'inserted' }
+     *
+     * @param {Analysis} atAnalysis
+     * @param {(Analysis|null)} newAnalysis
+     * @return {Sentence}
+     *
+     * @throws {NotatrixError} if given invalid analysis for first param
+     */
+
   }, {
     key: 'insertAnalysisBefore',
     value: function insertAnalysisBefore(atAnalysis, newAnalysis) {
@@ -3155,8 +3196,22 @@ var Sentence = function () {
       token.forEach(function (ana, i) {
         if (ana === atAnalysis) analysisId = i;
       });
-      if (analysisId > -1) token.insertAnalysisAt(analysisId, newAnalysis);
+      if (analysisId > -1) return token.insertAnalysisAt(analysisId, newAnalysis);
     }
+
+    /**
+     * insert an analysis AFTER the given analysis
+     *
+     * NOTE: if only passed 1 arg, it will insert an analysis constructed from
+     *   the params { form: 'inserted' }
+     *
+     * @param {Analysis} atAnalysis
+     * @param {(Analysis|null)} newAnalysis
+     * @return {Sentence}
+     *
+     * @throws {NotatrixError} if given invalid analysis for first param
+     */
+
   }, {
     key: 'insertAnalysisAfter',
     value: function insertAnalysisAfter(atAnalysis, newAnalysis) {
@@ -3169,9 +3224,11 @@ var Sentence = function () {
 
       var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
 
+      var analysisId = -1;
       token.forEach(function (ana, i) {
-        if (ana === atAnalysis) token.insertAnalysisAt(i + 1, newAnalysis);
+        if (ana === atAnalysis) analysisId = i;
       });
+      if (analysisId > -1) return token.insertAnalysisAt(analysisId + 1, newAnalysis);
     }
 
     /**
