@@ -2952,13 +2952,43 @@ var regex = {
   empty: /^\W*[0-9]+\.[0-9]+/,
   cg3TokenStart: /^"<(.|\\")*>"/,
   cg3TokenContent: /^;?\s+"(.|\\")*"/
-
-  /**
-   * this class contains all the information associated with a sentence, including
-   *   an comments array, a tokens array, and a list of options/settings that apply
-   *   to all subelements of this sentence
-   */
 };
+
+function getIndices(tok) {
+
+  var superTokenId = -1,
+      subTokenId = -1,
+      found = false,
+      isSubToken = false;
+
+  tok.sentence.forEach(function (token) {
+
+    if (found) return;
+
+    if (token.isSubToken) {
+      subTokenId++;
+      isSubToken = true;
+    } else {
+      superTokenId++;
+      subTokenId = -1;
+      isSubToken = false;
+    }
+
+    if (token === tok) found = true;
+  });
+
+  return superTokenId === -1 ? null : {
+    super: superTokenId,
+    sub: isSubToken ? subTokenId : null
+  };
+}
+
+/**
+ * this class contains all the information associated with a sentence, including
+ *   an comments array, a tokens array, and a list of options/settings that apply
+ *   to all subelements of this sentence
+ */
+
 var Sentence = function () {
   function Sentence(paramsList, options) {
     _classCallCheck(this, Sentence);
@@ -3082,6 +3112,27 @@ var Sentence = function () {
     }
 
     // manipulate token array
+
+  }, {
+    key: 'insertTokenBefore',
+    value: function insertTokenBefore(atToken, newToken) {
+      if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
+
+      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, {});
+
+      var indices = getIndices(atToken);
+      if (indices === null) return null;
+
+      console.log(indices, newToken);
+      if (indices.sub === null) {
+        // superToken
+        return this.insertTokenAt(indices.super, newToken);
+      } else {
+        // subToken
+        console.log(this[indices.super]);
+        return this[indices.super].insertSubTokenAt(indices.sub, newToken);
+      }
+    }
 
     /**
      * insert a token BEFORE the given index
