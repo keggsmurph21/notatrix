@@ -3123,15 +3123,19 @@ var Sentence = function () {
       var indices = getIndices(atToken);
       if (indices === null) return null;
 
-      console.log(indices, newToken);
-      if (indices.sub === null) {
-        // superToken
-        return this.insertTokenAt(indices.super, newToken);
-      } else {
-        // subToken
-        console.log(this[indices.super]);
-        return this[indices.super].insertSubTokenAt(indices.sub, newToken);
-      }
+      return indices.sub === null ? this.insertTokenAt(indices.super, newToken) : this[indices.super].insertSubTokenAt(indices.sub, newToken);
+    }
+  }, {
+    key: 'insertTokenAfter',
+    value: function insertTokenAfter(atToken, newToken) {
+      if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
+
+      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, {});
+
+      var indices = getIndices(atToken);
+      if (indices === null) return null;
+
+      return indices.sub === null ? this.insertTokenAt(indices.super + 1, newToken) : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
     }
 
     /**
