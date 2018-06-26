@@ -526,7 +526,7 @@ class Analysis {
 
         eles.push({
           data: {
-            id: `dep-${this.id}`,
+            id: `dep_${this.id}_${head.id}`,
             name: `dependency`,
             attr: `deprel`,
             source: `form-${this.id}`,
@@ -582,7 +582,11 @@ class Analysis {
     if (this.changeHead(head, deprel))
       return this;
 
-    // otherwise push a new one
+    // get rid of "empty" value
+    if (this._heads.length === 1 && this._heads[0].token === '_')
+      this._heads = [];
+
+    // otherwise push a new one    
     this._heads.push({
       token: head,
       deprel: deprel
@@ -692,6 +696,10 @@ class Analysis {
     // first try to change an existing one (don't want duplicate deps)
     if (this.changeDep(dep, deprel))
       return this;
+
+    // get rid of "empty" value
+    if (this._deps.length === 1 && this._deps[0].token === '_')
+      this._deps = [];
 
     // otherwise push a new one
     this._deps.push({
