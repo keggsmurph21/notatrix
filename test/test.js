@@ -736,7 +736,6 @@ describe('Sentence', () => {
     });
 
     _.each(data['Plain text'], (text, name) => {
-      console.log(name);
       it(`parse Plain text:${name}`, () => {
         let s = new Sentence({
           help: {
@@ -933,153 +932,153 @@ describe(`Hybrid methods`, () => {
 
       a0.removeHead(a1);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addHead(a1);
 
         expect(a0.head).to.equal('2');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.removeHead(a0);
 
         expect(a0.head).to.equal('2');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.removeHead(a1);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addHead(a1, 'test-dependent');
 
         expect(a0.head).to.equal('2:test-dependent');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addHead(a1, 'test-dependent-2');  // overwrite, don't add
 
         expect(a0.head).to.equal('2:test-dependent-2');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addHead(a1); // don't overwrite if less data than before
 
         expect(a0.head).to.equal('2:test-dependent-2');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.changeHead(a2);
 
         expect(a0.head).to.equal('2:test-dependent-2');
         expect(countHeads(a0)).to.equal(1);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addHead(a2, 'test-dependent-3');
 
         expect(a0.head).to.equal('2:test-dependent-2|3:test-dependent-3');
         expect(countHeads(a0)).to.equal(2);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
         expect(a2.deps).to.equal('1:test-dependent-3');
         expect(countDeps(a2)).to.equal(1);
@@ -1088,15 +1087,15 @@ describe(`Hybrid methods`, () => {
 
         expect(a0.head).to.equal('2:test-dependent-2|3:test-dependent-4');
         expect(countHeads(a0)).to.equal(2);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
         expect(a2.deps).to.equal('1:test-dependent-4');
         expect(countDeps(a2)).to.equal(1);
@@ -1105,34 +1104,34 @@ describe(`Hybrid methods`, () => {
 
         expect(a0.head).to.equal('2:test-dependent-2|3:test-dependent-4');
         expect(countHeads(a0)).to.equal(2);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
         expect(a1.deps).to.equal('1:test-dependent-2');
         expect(countDeps(a1)).to.equal(1);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
         expect(a2.deps).to.equal('1:test-dependent-4');
         expect(countDeps(a2)).to.equal(1);
 
       a0.removeHead(a1).removeHead(a2);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       expect(() => { a0.addHead(a3); }).to.throw(E.NotatrixError);
@@ -1161,206 +1160,206 @@ describe(`Hybrid methods`, () => {
 
       a0.removeDep(a1);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addDep(a1);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.removeDep(a0);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.removeDep(a1);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addDep(a1, 'test-dependent');
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1:test-dependent');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addDep(a1, 'test-dependent-2');  // overwrite, don't add
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addDep(a1); // don't overwrite if less data than before
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.changeDep(a2, 'test-dependent-3');
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2');
         expect(countDeps(a0)).to.equal(1);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.addDep(a2, 'test-dependent-3');
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2|3:test-dependent-3');
         expect(countDeps(a0)).to.equal(2);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
         expect(a2.head).to.equal('1:test-dependent-3');
         expect(countHeads(a2)).to.equal(1);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.changeDep(a2, 'test-dependent-4');
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2|3:test-dependent-4');
         expect(countDeps(a0)).to.equal(2);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
         expect(a2.head).to.equal('1:test-dependent-4');
         expect(countHeads(a2)).to.equal(1);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.changeDep(a2);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
         expect(a0.deps).to.equal('2:test-dependent-2|3:test-dependent-4');
         expect(countDeps(a0)).to.equal(2);
 
         expect(a1.head).to.equal('1:test-dependent-2');
         expect(countHeads(a1)).to.equal(1);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
         expect(a2.head).to.equal('1:test-dependent-4');
         expect(countHeads(a2)).to.equal(1);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       a0.removeDep(a1).removeDep(a2);
 
-        expect(a0.head).to.equal('');
+        expect(a0.head).to.equal('_');
         expect(countHeads(a0)).to.equal(0);
-        expect(a0.deps).to.equal('');
+        expect(a0.deps).to.equal('_');
         expect(countDeps(a0)).to.equal(0);
 
-        expect(a1.head).to.equal('');
+        expect(a1.head).to.equal('_');
         expect(countHeads(a1)).to.equal(0);
-        expect(a1.deps).to.equal('');
+        expect(a1.deps).to.equal('_');
         expect(countDeps(a1)).to.equal(0);
 
-        expect(a2.head).to.equal('');
+        expect(a2.head).to.equal('_');
         expect(countHeads(a2)).to.equal(0);
-        expect(a2.deps).to.equal('');
+        expect(a2.deps).to.equal('_');
         expect(countDeps(a2)).to.equal(0);
 
       expect(() => { a0.addDep(a3); }).to.throw(E.NotatrixError);

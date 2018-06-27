@@ -98,8 +98,9 @@ function cg3FormatOutput(analysis, tabs) {
   let deprel = analysis.deprel ? ` @${analysis.deprel}` : '';
   let id = analysis.id ? ` #${analysis.id}->` : '';
   let head = (id && analysis.head) ? `${analysis.head}` : ``;
-  let dependency = head || (id && analysis.sentence.options.showEmptyDependencies)
-    ? `${id}${head}` : '';
+  let dependency = analysis.sentence.options.showEmptyDependencies || analysis.head !== fallback
+    ? `${id}${head}`
+    : ``;
 
   return `${indent}"${analysis.lemma}"${tags}${misc}${deprel}${dependency}`;
 }
@@ -911,12 +912,12 @@ class Analysis {
           heads.push(`${token}${deprel ? `:${deprel}` : ''}`);
         }
       });
-      return heads.join('|');
+      return heads.join('|') || fallback;
 
     } else {
       return this._heads.length
         ? this._heads[0].id || this._heads[0]
-        : null;
+        : fallback;
     }
   }
 
@@ -940,6 +941,9 @@ class Analysis {
             token: this.sentence.getById(head.token) || head.token,
             deprel: head.deprel
           };
+    }).filter(head => {
+      if (head.token !== fallback)
+        return head;
     });
   }
 
@@ -970,8 +974,11 @@ class Analysis {
     // don't worry about enhanced stuff for deps (always can be multiple)
     let deps = [];
     this.eachDep((token, deprel) => {
-      if (token === this.sentence.getById(token.id) || !this.sentence.options.help.deps)
+      if (token === this.sentence.getById(token.id) || !this.sentence.options.help.deps) {
         deps.push(`${token.id || token}${deprel ? `:${deprel}` : ''}`);
+      } else {
+        deps.push(`${token}${deprel ? `:${deprel}` : ''}`);
+      }
     });
     return deps.join('|') || '_';
   }
@@ -996,6 +1003,9 @@ class Analysis {
             token: this.sentence.getById(dep.token) || dep.token,
             deprel: dep.deprel
           };
+    }).filter(dep => {
+      if (dep.token !== fallback)
+        return dep;
     });
   }
 
