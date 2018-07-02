@@ -980,7 +980,7 @@ class Analysis {
         deps.push(`${token}${deprel ? `:${deprel}` : ''}`);
       }
     });
-    return deps.join('|') || '_';
+    return deps.join('|') || fallback;
   }
 
   /**
