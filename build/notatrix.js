@@ -1798,7 +1798,7 @@ function cg3FormatOutput(analysis, tabs) {
   var deprel = analysis.deprel ? ' @' + analysis.deprel : '';
   var id = analysis.id ? ' #' + analysis.id + '->' : '';
   var head = id && analysis.head ? '' + analysis.head : '';
-  var dependency = head || id && analysis.sentence.options.showEmptyDependencies ? '' + id + head : '';
+  var dependency = analysis.sentence.options.showEmptyDependencies || analysis.head !== fallback ? '' + id + head : '';
 
   return indent + '"' + analysis.lemma + '"' + tags + misc + deprel + dependency;
 }
@@ -2085,7 +2085,7 @@ var Analysis = function () {
       // get rid of "empty" value
       if (this._heads.length === 1 && this._heads[0].token === '_') this._heads = [];
 
-      // otherwise push a new one    
+      // otherwise push a new one
       this._heads.push({
         token: head,
         deprel: deprel
@@ -2416,80 +2416,94 @@ var Analysis = function () {
       var eles = [];
 
       if (this.isCurrent) {
-        var formLabel = '' + this.form + (this.isSuperToken ? toSubscript(this.id) : '');
-        eles.push({ // "number" node
-          data: {
-            id: 'num-' + this.id,
-            num: this.num,
-            name: 'number',
-            label: this.id,
-            pos: this.pos,
-            parent: this.id,
-            analysis: this
-          },
-          classes: 'number'
-        }, { // "form" node
-          data: {
-            id: 'form-' + this.id,
-            num: this.num,
-            name: 'form',
-            attr: 'form',
-            form: this.form,
-            label: formLabel,
-            length: (formLabel.length > 3 ? formLabel.length * 0.7 : formLabel.length) + 'em',
-            state: 'normal',
-            parent: 'num-' + this.id,
-            analysis: this
-          },
-          classes: 'form' + (this.head == 0 ? ' root' : '')
-        }, { // "pos" node
-          data: {
-            id: 'pos-node-' + this.id,
-            num: this.num,
-            name: 'pos-node',
-            attr: 'upostag',
-            label: this.pos || '',
-            length: (this.pos || '').length * 0.7 + 1 + 'em',
-            analysis: this
-          },
-          classes: 'pos'
-        }, { // "pos" edge
-          data: {
-            id: 'pos-edge-' + this.id,
-            num: this.num,
-            name: 'pos-edge',
-            source: 'form-' + this.id,
-            target: 'pos-node-' + this.id
-          },
-          classes: 'pos'
-        });
 
-        this.eachHead(function (head, deprel) {
-          deprel = deprel || '';
+        if (this.isSuperToken) {
 
-          if (!head || !head.id) // ROOT
-            return;
-
-          eles.push({
+          eles.push({ // multiword label
             data: {
-              id: 'dep_' + _this8.id + '_' + head.id,
-              name: 'dependency',
-              attr: 'deprel',
-              source: 'form-' + _this8.id,
-              sourceAnalysis: _this8,
-              target: 'form-' + head.id,
-              targetAnalysis: head,
-              length: deprel.length / 3 + 'em',
-              label: null, // NB overwrite this before use
-              ctrl: null // NB overwrite this before use
+              id: 'multiword-' + this.id,
+              num: this.num,
+              name: 'multiword',
+              label: this.form + ' ' + toSubscript(this.id)
             },
-            classes: null // NB overwrite this before use
-          });
-        });
+            classes: 'multiword' /*, {
+                                 } */ });
 
-        _.each(this.subTokens, function (subToken) {
-          eles = eles.concat(subToken.eles);
-        });
+          _.each(this.subTokens, function (subToken) {
+            eles = eles.concat(subToken.eles);
+          });
+        } else {
+
+          eles.push({ // "number" node
+            data: {
+              id: 'num-' + this.id,
+              num: this.num,
+              name: 'number',
+              label: this.id,
+              pos: this.pos,
+              parent: this.id,
+              analysis: this
+            },
+            classes: 'number'
+          }, { // "form" node
+            data: {
+              id: 'form-' + this.id,
+              num: this.num,
+              name: 'form',
+              attr: 'form',
+              form: this.form,
+              label: this.form,
+              length: (formLabel.length > 3 ? formLabel.length * 0.7 : formLabel.length) + 'em',
+              state: 'normal',
+              parent: 'num-' + this.id,
+              analysis: this
+            },
+            classes: 'form' + (this.head == 0 ? ' root' : '')
+          }, { // "pos" node
+            data: {
+              id: 'pos-node-' + this.id,
+              num: this.num,
+              name: 'pos-node',
+              attr: 'upostag',
+              label: this.pos || '',
+              length: (this.pos || '').length * 0.7 + 1 + 'em',
+              analysis: this
+            },
+            classes: 'pos'
+          }, { // "pos" edge
+            data: {
+              id: 'pos-edge-' + this.id,
+              num: this.num,
+              name: 'pos-edge',
+              source: 'form-' + this.id,
+              target: 'pos-node-' + this.id
+            },
+            classes: 'pos'
+          });
+
+          this.eachHead(function (head, deprel) {
+            deprel = deprel || '';
+
+            if (!head || !head.id) // ROOT
+              return;
+
+            eles.push({
+              data: {
+                id: 'dep_' + _this8.id + '_' + head.id,
+                name: 'dependency',
+                attr: 'deprel',
+                source: 'form-' + _this8.id,
+                sourceAnalysis: _this8,
+                target: 'form-' + head.id,
+                targetAnalysis: head,
+                length: deprel.length / 3 + 'em',
+                label: null, // NB overwrite this before use
+                ctrl: null // NB overwrite this before use
+              },
+              classes: null // NB overwrite this before use
+            });
+          });
+        }
       }
 
       return eles;
@@ -2638,9 +2652,9 @@ var Analysis = function () {
             heads.push('' + token + (deprel ? ':' + deprel : ''));
           }
         });
-        return heads.join('|');
+        return heads.join('|') || fallback;
       } else {
-        return this._heads.length ? this._heads[0].id || this._heads[0] : null;
+        return this._heads.length ? this._heads[0].id || this._heads[0] : fallback;
       }
     }
 
@@ -2664,6 +2678,8 @@ var Analysis = function () {
           token: _this10.sentence.getById(head.token) || head.token,
           deprel: head.deprel
         };
+      }).filter(function (head) {
+        if (head.token !== fallback) return head;
       });
     }
 
@@ -2703,9 +2719,13 @@ var Analysis = function () {
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
       this.eachDep(function (token, deprel) {
-        if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.deps) deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+        if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.deps) {
+          deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+        } else {
+          deps.push('' + token + (deprel ? ':' + deprel : ''));
+        }
       });
-      return deps.join('|') || '_';
+      return deps.join('|') || fallback;
     }
 
     /**
@@ -2728,6 +2748,8 @@ var Analysis = function () {
           token: _this12.sentence.getById(dep.token) || dep.token,
           deprel: dep.deprel
         };
+      }).filter(function (dep) {
+        if (dep.token !== fallback) return dep;
       });
     }
 

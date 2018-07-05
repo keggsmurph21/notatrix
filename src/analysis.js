@@ -468,84 +468,100 @@ class Analysis {
     let eles = [];
 
     if (this.isCurrent) {
-      const formLabel = `${this.form}${this.isSuperToken
-        ? toSubscript(this.id) : ''}`;
-      eles.push({ // "number" node
-        data: {
-          id: `num-${this.id}`,
-          num: this.num,
-          name: 'number',
-          label: this.id,
-          pos: this.pos,
-          parent: this.id,
-          analysis: this
-        },
-        classes: 'number'
-      }, { // "form" node
-        data: {
-          id: `form-${this.id}`,
-          num: this.num,
-          name: `form`,
-          attr: `form`,
-          form: this.form,
-          label: formLabel,
-          length: `${formLabel.length > 3
-            ? formLabel.length * 0.7
-            : formLabel.length}em`,
-          state: `normal`,
-          parent: `num-${this.id}`,
-          analysis: this
-        },
-        classes: `form${this.head == 0 ? ' root' : ''}`
-      }, { // "pos" node
-        data: {
-          id: `pos-node-${this.id}`,
-          num: this.num,
-          name: `pos-node`,
-          attr: `upostag`,
-          label: this.pos || '',
-          length: `${(this.pos || '').length * 0.7 + 1}em`,
-          analysis: this
-        },
-        classes: 'pos'
-      }, { // "pos" edge
-        data: {
-          id: `pos-edge-${this.id}`,
-          num: this.num,
-          name: `pos-edge`,
-          source: `form-${this.id}`,
-          target: `pos-node-${this.id}`
-        },
-        classes: 'pos'
-      });
 
-      this.eachHead((head, deprel) => {
-        deprel = deprel || '';
+      if (this.isSuperToken) {
 
-        if (!head || !head.id) // ROOT
-          return;
-
-        eles.push({
+        eles.push({ // multiword label
           data: {
-            id: `dep_${this.id}_${head.id}`,
-            name: `dependency`,
-            attr: `deprel`,
-            source: `form-${this.id}`,
-            sourceAnalysis: this,
-            target: `form-${head.id}`,
-            targetAnalysis: head,
-            length: `${deprel.length / 3}em`,
-            label: null, // NB overwrite this before use
-            ctrl: null   // NB overwrite this before use
+            id: `multiword-${this.id}`,
+            num: this.num,
+            name: `multiword`,
+            label: `${this.form} ${toSubscript(this.id)}`,
           },
-          classes: null  // NB overwrite this before use
+          classes: 'multiword'
+        }/*, {
+
+        } */);
+
+        _.each(this.subTokens, subToken => {
+          eles = eles.concat(subToken.eles);
         });
 
-      });
+      } else {
 
-      _.each(this.subTokens, subToken => {
-        eles = eles.concat(subToken.eles);
-      });
+        eles.push({ // "number" node
+          data: {
+            id: `num-${this.id}`,
+            num: this.num,
+            name: 'number',
+            label: this.id,
+            pos: this.pos,
+            parent: this.id,
+            analysis: this
+          },
+          classes: 'number'
+        }, { // "form" node
+          data: {
+            id: `form-${this.id}`,
+            num: this.num,
+            name: `form`,
+            attr: `form`,
+            form: this.form,
+            label: this.form,
+            length: `${formLabel.length > 3
+              ? formLabel.length * 0.7
+              : formLabel.length}em`,
+            state: `normal`,
+            parent: `num-${this.id}`,
+            analysis: this
+          },
+          classes: `form${this.head == 0 ? ' root' : ''}`
+        }, { // "pos" node
+          data: {
+            id: `pos-node-${this.id}`,
+            num: this.num,
+            name: `pos-node`,
+            attr: `upostag`,
+            label: this.pos || '',
+            length: `${(this.pos || '').length * 0.7 + 1}em`,
+            analysis: this
+          },
+          classes: 'pos'
+        }, { // "pos" edge
+          data: {
+            id: `pos-edge-${this.id}`,
+            num: this.num,
+            name: `pos-edge`,
+            source: `form-${this.id}`,
+            target: `pos-node-${this.id}`
+          },
+          classes: 'pos'
+        });
+
+        this.eachHead((head, deprel) => {
+          deprel = deprel || '';
+
+          if (!head || !head.id) // ROOT
+            return;
+
+          eles.push({
+            data: {
+              id: `dep_${this.id}_${head.id}`,
+              name: `dependency`,
+              attr: `deprel`,
+              source: `form-${this.id}`,
+              sourceAnalysis: this,
+              target: `form-${head.id}`,
+              targetAnalysis: head,
+              length: `${deprel.length / 3}em`,
+              label: null, // NB overwrite this before use
+              ctrl: null   // NB overwrite this before use
+            },
+            classes: null  // NB overwrite this before use
+          });
+
+        });
+      }
     }
 
     return eles;
@@ -587,7 +603,7 @@ class Analysis {
     if (this._heads.length === 1 && this._heads[0].token === '_')
       this._heads = [];
 
-    // otherwise push a new one    
+    // otherwise push a new one
     this._heads.push({
       token: head,
       deprel: deprel
