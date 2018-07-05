@@ -477,6 +477,9 @@ class Analysis {
             num: this.num,
             name: `multiword`,
             label: `${this.form} ${toSubscript(this.id)}`,
+            length: `${this.form.length > 3
+              ? this.form.length * 0.7
+              : this.form.length}em`
           },
           classes: 'multiword'
         }/*, {
@@ -508,9 +511,9 @@ class Analysis {
             attr: `form`,
             form: this.form,
             label: this.form,
-            length: `${formLabel.length > 3
-              ? formLabel.length * 0.7
-              : formLabel.length}em`,
+            length: `${this.form.length > 3
+              ? this.form.length * 0.7
+              : this.form.length}em`,
             state: `normal`,
             parent: `num-${this.id}`,
             analysis: this
