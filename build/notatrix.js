@@ -2444,7 +2444,7 @@ var Analysis = function () {
               name: 'number',
               label: this.id,
               pos: this.pos,
-              parent: this.superToken ? this.superToken.id : null, //this.id,
+              parent: this.superToken ? 'multiword-' + this.superToken.id : null, //this.id,
               analysis: this
             },
             classes: 'number'

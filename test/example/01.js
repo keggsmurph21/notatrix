@@ -1,7 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
-const nx = require('../../src/index');
+const nx = require('../..');
 
 function output(sent) {
   console.log(' - text:');
