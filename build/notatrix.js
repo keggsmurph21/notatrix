@@ -2424,8 +2424,10 @@ var Analysis = function () {
               id: 'multiword-' + this.id,
               num: this.num,
               name: 'multiword',
-              label: this.form + ' ' + toSubscript(this.id),
-              length: (this.form.length > 3 ? this.form.length * 0.7 : this.form.length) + 'em'
+              label: this.form + ' ' + toSubscript(this.id)
+              /*length: `${this.form.length > 3
+                ? this.form.length * 0.7
+                : this.form.length}em`*/
             },
             classes: 'multiword' /*, {
                                  } */ });
@@ -2442,7 +2444,7 @@ var Analysis = function () {
               name: 'number',
               label: this.id,
               pos: this.pos,
-              parent: this.id,
+              parent: this.superToken ? this.superToken.id : null, //this.id,
               analysis: this
             },
             classes: 'number'

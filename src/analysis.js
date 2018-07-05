@@ -477,9 +477,9 @@ class Analysis {
             num: this.num,
             name: `multiword`,
             label: `${this.form} ${toSubscript(this.id)}`,
-            length: `${this.form.length > 3
+            /*length: `${this.form.length > 3
               ? this.form.length * 0.7
-              : this.form.length}em`
+              : this.form.length}em`*/
           },
           classes: 'multiword'
         }/*, {
@@ -499,7 +499,7 @@ class Analysis {
             name: 'number',
             label: this.id,
             pos: this.pos,
-            parent: this.id,
+            parent: this.superToken ? this.superToken.id : null,//this.id,
             analysis: this
           },
           classes: 'number'
