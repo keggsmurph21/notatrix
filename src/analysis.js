@@ -499,7 +499,7 @@ class Analysis {
             name: 'number',
             label: this.id,
             pos: this.pos,
-            parent: this.superToken ? `multiword-${this.superToken.id}` : null,//this.id,
+            parent: this.superToken ? `multiword-${this.superToken.id}` : undefined,
             analysis: this
           },
           classes: 'number'
