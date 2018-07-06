@@ -2415,6 +2415,7 @@ var Analysis = function () {
 
       var eles = [];
 
+      console.log(this.numNoSuperTokens);
       if (this.isCurrent) {
 
         if (this.isSuperToken) {
@@ -2423,6 +2424,7 @@ var Analysis = function () {
             data: {
               id: 'multiword-' + this.id,
               num: this.num,
+              numNoSuperTokens: this.numNoSuperTokens,
               name: 'multiword',
               label: this.form + ' ' + toSubscript(this.id)
               /*length: `${this.form.length > 3
@@ -2441,6 +2443,7 @@ var Analysis = function () {
             data: {
               id: 'num-' + this.id,
               num: this.num,
+              numNoSuperTokens: this.numNoSuperTokens,
               name: 'number',
               label: this.id,
               pos: this.pos,
@@ -2452,6 +2455,7 @@ var Analysis = function () {
             data: {
               id: 'form-' + this.id,
               num: this.num,
+              numNoSuperTokens: this.numNoSuperTokens,
               name: 'form',
               attr: 'form',
               form: this.form,
@@ -2466,6 +2470,7 @@ var Analysis = function () {
             data: {
               id: 'pos-node-' + this.id,
               num: this.num,
+              numNoSuperTokens: this.numNoSuperTokens,
               name: 'pos-node',
               attr: 'upostag',
               label: this.pos || '',
@@ -2477,6 +2482,7 @@ var Analysis = function () {
             data: {
               id: 'pos-edge-' + this.id,
               num: this.num,
+              numNoSuperTokens: this.numNoSuperTokens,
               name: 'pos-edge',
               source: 'form-' + this.id,
               target: 'pos-node-' + this.id
@@ -3443,17 +3449,19 @@ var Sentence = function () {
       //   index before using it (see Token::index)
       var id = 0,
           empty = 0,
-          num = 0;
+          num = 0,
+          numNoSuperTokens = 0;
       _.each(this.tokens, function (token) {
-        var _token$index = token.index(id, empty, num);
+        var _token$index = token.index(id, empty, num, numNoSuperTokens);
         // allow each token to return counters for the next guy
 
 
-        var _token$index2 = _slicedToArray(_token$index, 3);
+        var _token$index2 = _slicedToArray(_token$index, 4);
 
         id = _token$index2[0];
         empty = _token$index2[1];
         num = _token$index2[2];
+        numNoSuperTokens = _token$index2[3];
       });
 
       // chaining
@@ -4411,17 +4419,18 @@ var Token = function () {
      *
      * @throws {NotatrixError} if given invalid id or empty
      */
-    value: function index(id, empty, num) {
+    value: function index(id, empty, num, numNoSuperTokens) {
       var _this = this;
 
       id = parseInt(id);
       empty = parseInt(empty);
       num = parseInt(num);
+      numNoSuperTokens = parseInt(numNoSuperTokens);
 
-      if (isNaN(id) || isNaN(empty) || isNaN(num)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
+      if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(numNoSuperTokens)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
 
       // if no analysis, nothing to do
-      if (this.analysis === null) return [id, empty, num];
+      if (this.analysis === null) return [id, empty, num, numNoSuperTokens];
 
       // iterate over analyses
       this.forEach(function (analysis) {
@@ -4432,6 +4441,7 @@ var Token = function () {
 
             // save the absolute index
             _this.analysis.num = num;
+            _this.analysis.numNoSuperTokens = null;
             num++;
 
             // index subTokens
@@ -4449,6 +4459,8 @@ var Token = function () {
               subToken.forEach(function (analysis) {
                 analysis.num = num;
                 num++;
+                analysis.numNoSuperTokens = numNoSuperTokens;
+                numNoSuperTokens++;
               });
             });
 
@@ -4461,6 +4473,8 @@ var Token = function () {
             // save the absolute index
             _this.analysis.num = num;
             num++;
+            _this.analysis.numNoSuperTokens = numNoSuperTokens;
+            numNoSuperTokens++;
 
             if (_this.isEmpty) {
               empty++; // incr empty counter
@@ -4493,7 +4507,7 @@ var Token = function () {
       });
 
       // return updated indices
-      return [id, empty, num];
+      return [id, empty, num, numNoSuperTokens];
     }
 
     /**

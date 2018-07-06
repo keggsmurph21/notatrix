@@ -196,7 +196,7 @@ class Sentence {
    * @throws {NotatrixError} if given invalid token for first param
    */
   insertTokenBefore(atToken, newToken) {
-    
+
     if (!(atToken instanceof Token))
       throw new NotatrixError('unable to insert token: not instance of Token');
 
@@ -833,10 +833,10 @@ class Sentence {
     // track "overall" index number (id) and "empty" index number and "absolute" num
     // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
     //   index before using it (see Token::index)
-    let id = 0, empty = 0, num = 0;
+    let id = 0, empty = 0, num = 0, numNoSuperTokens = 0;
     _.each(this.tokens, token => {
       // allow each token to return counters for the next guy
-      [id, empty, num] = token.index(id, empty, num);
+      [id, empty, num, numNoSuperTokens] = token.index(id, empty, num, numNoSuperTokens);
     });
 
     // chaining

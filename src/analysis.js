@@ -467,6 +467,7 @@ class Analysis {
   get eles() {
     let eles = [];
 
+    console.log(this.numNoSuperTokens);
     if (this.isCurrent) {
 
       if (this.isSuperToken) {
@@ -475,6 +476,7 @@ class Analysis {
           data: {
             id: `multiword-${this.id}`,
             num: this.num,
+            numNoSuperTokens: this.numNoSuperTokens,
             name: `multiword`,
             label: `${this.form} ${toSubscript(this.id)}`,
             /*length: `${this.form.length > 3
@@ -496,6 +498,7 @@ class Analysis {
           data: {
             id: `num-${this.id}`,
             num: this.num,
+            numNoSuperTokens: this.numNoSuperTokens,
             name: 'number',
             label: this.id,
             pos: this.pos,
@@ -507,6 +510,7 @@ class Analysis {
           data: {
             id: `form-${this.id}`,
             num: this.num,
+            numNoSuperTokens: this.numNoSuperTokens,
             name: `form`,
             attr: `form`,
             form: this.form,
@@ -523,6 +527,7 @@ class Analysis {
           data: {
             id: `pos-node-${this.id}`,
             num: this.num,
+            numNoSuperTokens: this.numNoSuperTokens,
             name: `pos-node`,
             attr: `upostag`,
             label: this.pos || '',
@@ -534,6 +539,7 @@ class Analysis {
           data: {
             id: `pos-edge-${this.id}`,
             num: this.num,
+            numNoSuperTokens: this.numNoSuperTokens,
             name: `pos-edge`,
             source: `form-${this.id}`,
             target: `pos-node-${this.id}`

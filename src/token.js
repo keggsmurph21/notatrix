@@ -533,18 +533,19 @@ class Token {
    *
    * @throws {NotatrixError} if given invalid id or empty
    */
-  index(id, empty, num) {
+  index(id, empty, num, numNoSuperTokens) {
 
     id = parseInt(id);
     empty = parseInt(empty);
     num = parseInt(num);
+    numNoSuperTokens = parseInt(numNoSuperTokens);
 
-    if (isNaN(id) || isNaN(empty) || isNaN(num))
+    if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(numNoSuperTokens))
       throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
 
     // if no analysis, nothing to do
     if (this.analysis === null)
-      return [id, empty, num];
+      return [id, empty, num, numNoSuperTokens];
 
     // iterate over analyses
     this.forEach(analysis => {
@@ -555,6 +556,7 @@ class Token {
 
           // save the absolute index
           this.analysis.num = num;
+          this.analysis.numNoSuperTokens = null;
           num++;
 
           // index subTokens
@@ -572,6 +574,8 @@ class Token {
             subToken.forEach(analysis => {
               analysis.num = num;
               num++;
+              analysis.numNoSuperTokens = numNoSuperTokens;
+              numNoSuperTokens++;
             });
           });
 
@@ -585,6 +589,8 @@ class Token {
           // save the absolute index
           this.analysis.num = num;
           num++;
+          this.analysis.numNoSuperTokens = numNoSuperTokens;
+          numNoSuperTokens++;
 
           if (this.isEmpty) {
             empty++; // incr empty counter
@@ -619,7 +625,7 @@ class Token {
     });
 
     // return updated indices
-    return [id, empty, num];
+    return [id, empty, num, numNoSuperTokens];
   }
 
   /**
