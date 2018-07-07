@@ -2415,7 +2415,6 @@ var Analysis = function () {
 
       var eles = [];
 
-      console.log(this.numNoSuperTokens);
       if (this.isCurrent) {
 
         if (this.isSuperToken) {

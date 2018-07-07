@@ -467,7 +467,6 @@ class Analysis {
   get eles() {
     let eles = [];
 
-    console.log(this.numNoSuperTokens);
     if (this.isCurrent) {
 
       if (this.isSuperToken) {
