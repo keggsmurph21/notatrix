@@ -19,41 +19,6 @@ const regex = {
   cg3TokenContent: /^;?\s+"(.|\\")*"/
 }
 
-function getIndices(tok) {
-
-  let superTokenId = -1,
-    subTokenId = -1,
-    analysisId = 0,
-    found = false,
-    isSubToken = false;
-
-  tok.sentence.forEach(token => {
-
-    if (found)
-      return;
-
-
-    if (token.isSubToken) {
-      subTokenId++;
-      isSubToken = true;
-    } else {
-      superTokenId++;
-      subTokenId = -1;
-      isSubToken = false;
-    }
-
-    if (token === tok)
-      found = true;
-
-  });
-
-  return superTokenId === -1
-    ? null
-    : {
-        super: superTokenId,
-        sub: isSubToken ? subTokenId : null
-      };
-}
 
 /**
  * this class contains all the information associated with a sentence, including
@@ -129,6 +94,47 @@ class Sentence {
     // chaining
     return this;
   }
+  /**
+   * loop through the tokens in the sentence and return the superToken and
+   *   subToken indices
+   * @param {Token} tok token to search for
+   * @return {(Object|null)}
+   */
+  getIndices(tok) {
+
+    let superTokenId = -1,
+      subTokenId = -1,
+      analysisId = 0,
+      found = false,
+      isSubToken = false;
+
+    tok.sentence.forEach(token => {
+
+      if (found)
+        return;
+
+
+      if (token.isSubToken) {
+        subTokenId++;
+        isSubToken = true;
+      } else {
+        superTokenId++;
+        subTokenId = -1;
+        isSubToken = false;
+      }
+
+      if (token === tok)
+        found = true;
+
+    });
+
+    return superTokenId === -1
+      ? null
+      : {
+          super: superTokenId,
+          sub: isSubToken ? subTokenId : null
+        };
+  }
 
 
   /**
@@ -203,7 +209,7 @@ class Sentence {
     if (!(newToken instanceof Token))
       newToken = Token.fromParams(this, { form: 'inserted' });
 
-    const indices = getIndices(atToken);
+    const indices = this.getIndices(atToken);
     if (indices === null)
       return null;
 
@@ -232,7 +238,7 @@ class Sentence {
     if (!(newToken instanceof Token))
       newToken = Token.fromParams(this, { form: 'inserted' });
 
-    const indices = getIndices(atToken);
+    const indices = this.getIndices(atToken);
     if (indices === null)
       return null;
 
@@ -261,7 +267,7 @@ class Sentence {
     if (!(newAnalysis instanceof Analysis))
       newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
 
-    const indices = getIndices(atAnalysis.token);
+    const indices = this.getIndices(atAnalysis.token);
     if (indices === null)
       return null;
 
@@ -299,7 +305,7 @@ class Sentence {
     if (!(newAnalysis instanceof Analysis))
       newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
 
-    const indices = getIndices(atAnalysis.token);
+    const indices = this.getIndices(atAnalysis.token);
     if (indices === null)
       return null;
 
@@ -379,6 +385,19 @@ class Sentence {
     index = index < 0 ? 0
       : index > this.tokens.length - 1 ? this.tokens.length - 1
       : parseInt(index);
+
+    // unlink heads and deps from the token to be removed
+    this.forEach(token => {
+      token.analysis
+        .eachHead(head => {
+          if (head === this[index])
+            token.analysis.removeHead(head);
+        })
+        .eachDep(dep => {
+          if (dep === this[index])
+            token.analysis.removeDep(dep);
+        });
+    });
 
     // array splicing, return spliced element
     return this.tokens.splice(index, 1)[0];
@@ -833,10 +852,10 @@ class Sentence {
     // track "overall" index number (id) and "empty" index number and "absolute" num
     // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
     //   index before using it (see Token::index)
-    let id = 0, empty = 0, num = 0, numNoSuperTokens = 0;
+    let id = 0, empty = 0, num = 0, clump = 0;
     _.each(this.tokens, token => {
       // allow each token to return counters for the next guy
-      [id, empty, num, numNoSuperTokens] = token.index(id, empty, num, numNoSuperTokens);
+      [id, empty, num, clump] = token.index(id, empty, num, clump);
     });
 
     // chaining

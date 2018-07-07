@@ -427,44 +427,60 @@ class Token {
     return this.removeAnalysisAt(Infinity);
   }
 
-  // token insertion, removal, moving // TODO
-  /*insertBefore(token) {
-    const indices = this.getIndices();
-    return this.sentence.insertTokenAt(indices, token);
-  }
-  insertAfter(token) {
-    const indices = this.getIndicesAfter();
-    return this.sentence.insertTokenAt(indices, token);
-  }
-  insertSubTokenBefore(subToken) {
-
-  }
-  insertSubTokenAfter(subToken) {
-
-  }
-  remove() {
-
-  }
-  moveBefore(token) {
-
-  }
-  moveAfter(token) {
-
-  }
-  makeSubTokenOf(token) {
-
-  }
-
   // token combining, merging, splitting
+
   combineWith(token) {
 
   }
   mergeWith(token) {
+    if (!(token instanceof Token))
+      throw new NotatrixError('unable to merge: not instance of Token');
 
+    if (this === token)
+      throw new NotatrixError('unable to merge: can\'t merge with self');
+
+    if (this.isSuperToken || token.isSuperToken)
+      throw new NotatrixError('unable to merge: can\'t merge superTokens');
+
+    if (this.superToken !== token.superToken)
+      throw new NotatrixError('unable to merge: can\'t merge tokens with different superTokens');
+
+    const dist = Math.abs(this.analysis.clump - token.analysis.clump);
+    if (dist !== 1)
+      throw new NotatrixError('unable to merge: tokens must be adjacent');
+
+    if (this.analysis === null || token.analysis === null)
+      throw new NotatrixError('unable to merge: tokens must have at least one analysis');
+
+    // combine the form and lemma fields
+    this.analysis.form = ((this.analysis.form || '') + (token.analysis.form || '')) || null;
+    this.analysis.lemma = ((this.analysis.lemma || '') + (token.analysis.lemma || '')) || null;
+
+    // take one of these fields
+    this.upostag = this.upostag || token.upostag || null;
+    this.xpostag = this.xpostag || token.xpostag || null;
+    this.feats = this.feats || token.feats || null;
+    this.misc = this.misc || token.misc || null;
+
+    // remove the token
+    if (token.isSubToken) {
+
+      const indices = this.sentence.getIndices(token);
+      this.superToken.removeSubTokenAt(indices.sub);
+
+    } else {
+
+      const indices = this.sentence.getIndices(token);
+      this.sentence.removeTokenAt(indices.super);
+
+    }
+
+    this.sentence.index();
+    return this; // chaining
   }
   split() {
 
-  }*/
+  }
 
   // internal format
 
@@ -533,19 +549,19 @@ class Token {
    *
    * @throws {NotatrixError} if given invalid id or empty
    */
-  index(id, empty, num, numNoSuperTokens) {
+  index(id, empty, num, clump) {
 
     id = parseInt(id);
     empty = parseInt(empty);
     num = parseInt(num);
-    numNoSuperTokens = parseInt(numNoSuperTokens);
+    clump = parseInt(clump);
 
-    if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(numNoSuperTokens))
+    if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(clump))
       throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()')
 
     // if no analysis, nothing to do
     if (this.analysis === null)
-      return [id, empty, num, numNoSuperTokens];
+      return [id, empty, num, clump];
 
     // iterate over analyses
     this.forEach(analysis => {
@@ -556,7 +572,7 @@ class Token {
 
           // save the absolute index
           this.analysis.num = num;
-          this.analysis.numNoSuperTokens = null;
+          this.analysis.clump = null;
           num++;
 
           // index subTokens
@@ -574,8 +590,8 @@ class Token {
             subToken.forEach(analysis => {
               analysis.num = num;
               num++;
-              analysis.numNoSuperTokens = numNoSuperTokens;
-              numNoSuperTokens++;
+              analysis.clump = clump;
+              clump++;
             });
           });
 
@@ -589,8 +605,8 @@ class Token {
           // save the absolute index
           this.analysis.num = num;
           num++;
-          this.analysis.numNoSuperTokens = numNoSuperTokens;
-          numNoSuperTokens++;
+          this.analysis.clump = clump;
+          clump++;
 
           if (this.isEmpty) {
             empty++; // incr empty counter
@@ -625,7 +641,7 @@ class Token {
     });
 
     // return updated indices
-    return [id, empty, num, numNoSuperTokens];
+    return [id, empty, num, clump];
   }
 
   /**

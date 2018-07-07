@@ -278,6 +278,19 @@ class Analysis {
       : index > this.length - 1 ? this.length - 1
       : parseInt(index);
 
+    // unlink heads and deps from the token to be removed
+    this.sentence.forEach(token => {
+      token.analysis
+        .eachHead(head => {
+          if (head === this[index])
+            token.analysis.removeHead(head);
+        })
+        .eachDep(dep => {
+          if (dep === this[index])
+            token.analysis.removeDep(dep);
+        });
+    });
+
     // remove the superToken pointer from the removed token
     this.subTokens[index].superToken = null;
 
@@ -475,7 +488,7 @@ class Analysis {
           data: {
             id: `multiword-${this.id}`,
             num: this.num,
-            numNoSuperTokens: this.numNoSuperTokens,
+            clump: this.clump,
             name: `multiword`,
             label: `${this.form} ${toSubscript(this.id)}`,
             /*length: `${this.form.length > 3
@@ -497,7 +510,7 @@ class Analysis {
           data: {
             id: `num-${this.id}`,
             num: this.num,
-            numNoSuperTokens: this.numNoSuperTokens,
+            clump: this.clump,
             name: 'number',
             label: this.id,
             pos: this.pos,
@@ -509,7 +522,7 @@ class Analysis {
           data: {
             id: `form-${this.id}`,
             num: this.num,
-            numNoSuperTokens: this.numNoSuperTokens,
+            clump: this.clump,
             name: `form`,
             attr: `form`,
             form: this.form,
@@ -526,7 +539,7 @@ class Analysis {
           data: {
             id: `pos-node-${this.id}`,
             num: this.num,
-            numNoSuperTokens: this.numNoSuperTokens,
+            clump: this.clump,
             name: `pos-node`,
             attr: `upostag`,
             label: this.pos || '',
@@ -538,7 +551,7 @@ class Analysis {
           data: {
             id: `pos-edge-${this.id}`,
             num: this.num,
-            numNoSuperTokens: this.numNoSuperTokens,
+            clump: this.clump,
             name: `pos-edge`,
             source: `form-${this.id}`,
             target: `pos-node-${this.id}`
