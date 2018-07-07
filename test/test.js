@@ -1369,3 +1369,185 @@ describe(`Hybrid methods`, () => {
     });
   });
 });
+
+describe('merging', () => {
+
+  const conllu = `1\tA\ta_lemma
+2\tB\tb_lemma
+3-5\tCDE\tcde_lemma
+3\tC\tc_lemma
+4\tD\td_lemma
+5\tE\te_lemma
+6\tF\tf_lemma
+7\tG\tg_lemma`;
+
+  it(`should throw errors at the right times`, () => {
+
+    let s = Sentence.fromConllu(conllu);
+    const ta = s[0].token,
+      tb = s[1].token,
+      tcde = s[2].token,
+      tc = s[2][0].token,
+      td = s[2][1].token,
+      te = s[2][2].token,
+      tf = s[3].token,
+      tg = s[4].token;
+
+    expect(() => { ta.mergeWith(ta); }).to.throw(E.NotatrixError);
+    //expect(() => { ta.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { ta.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    //expect(() => { tb.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { tb.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { tcde.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { tcde.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { tc.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(tc); }).to.throw(E.NotatrixError);
+    //expect(() => { tc.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { tc.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { td.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { td.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { td.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    //expect(() => { td.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { td.mergeWith(td); }).to.throw(E.NotatrixError);
+    //expect(() => { td.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { td.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { td.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { te.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(tc); }).to.throw(E.NotatrixError);
+    //expect(() => { te.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { te.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { tf.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(te); }).to.throw(E.NotatrixError);
+    expect(() => { tf.mergeWith(tf); }).to.throw(E.NotatrixError);
+    //expect(() => { tf.mergeWith(tg); }).to.throw(E.NotatrixError);
+
+    expect(() => { tg.mergeWith(ta); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(tb); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(tcde); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(tc); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(td); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(te); }).to.throw(E.NotatrixError);
+    //expect(() => { tg.mergeWith(tf); }).to.throw(E.NotatrixError);
+    expect(() => { tg.mergeWith(tg); }).to.throw(E.NotatrixError);
+  });
+
+  it(`should merge non-subTokens correctly (basics)`, () => {
+    let s;
+
+    s = Sentence.fromConllu(conllu);
+    s[0].token.mergeWith(s[1].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[1].token.mergeWith(s[0].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[3].token.mergeWith(s[4].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[4].token.mergeWith(s[3].token);
+    expect(s.length).to.equal(7);
+
+  });
+
+  it(`should merge subTokens correctly (basics)`, () => {
+    let s;
+
+    s = Sentence.fromConllu(conllu);
+    s[2][0].token.mergeWith(s[2][1].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[2][1].token.mergeWith(s[2][0].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[2][1].token.mergeWith(s[2][2].token);
+    expect(s.length).to.equal(7);
+
+    s = Sentence.fromConllu(conllu);
+    s[2][2].token.mergeWith(s[2][1].token);
+    expect(s.length).to.equal(7);
+
+  });
+
+  it(`should handle dependencies through merge`, () => {
+    let s;
+
+    s = Sentence.fromConllu(conllu);
+    s[0].addHead(s[4], 'test-head');
+    s[0].addDep(s[3], 'test-dep');
+    s[0].token.mergeWith(s[1].token);
+    expect(s[2].head).to.equal('1:test-dep');
+    expect(s[3].deps).to.equal('1:test-head');
+
+    s = Sentence.fromConllu(conllu);
+    s[0].addHead(s[4], 'test-head');
+    s[0].addDep(s[3], 'test-dep');
+    s[1].token.mergeWith(s[0].token);
+    expect(s[2].head).to.equal('_');
+    expect(s[3].deps).to.equal('_');
+
+    s = Sentence.fromConllu(conllu);
+    s[2][0].addHead(s[2][2], 'test-head');
+    s[2][0].token.mergeWith(s[2][1].token);
+    expect(s[2][0].head).to.equal('4:test-head');
+    expect(s[2][1].deps).to.equal('3:test-head');
+
+    s = Sentence.fromConllu(conllu);
+    s[2][0].addHead(s[2][2], 'test-head');
+    s[2][1].token.mergeWith(s[2][0].token);
+    expect(s[2][0].head).to.equal('_');
+    expect(s[2][1].deps).to.equal('_');
+
+    s = Sentence.fromConllu(conllu);
+    s[2][0].addDep(s[2][2], 'test-dep');
+    s[2][0].token.mergeWith(s[2][1].token);
+    expect(s[2][0].deps).to.equal('4:test-dep');
+    expect(s[2][1].head).to.equal('3:test-dep');
+
+    s = Sentence.fromConllu(conllu);
+    s[2][0].addDep(s[2][2], 'test-dep');
+    s[2][1].token.mergeWith(s[2][0].token);
+    expect(s[2][0].deps).to.equal('_');
+    expect(s[2][1].head).to.equal('_');
+
+  });
+});
