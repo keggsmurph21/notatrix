@@ -48,4 +48,4 @@ gulp.task('watch', () => {
   gulp.watch('src/*.js', gulp.series('uglify', 'js'));
 });
 
-gulp.task('default', gulp.series('uglify', 'js', 'watch'));
+gulp.task('default', gulp.series('uglify', 'js'));
