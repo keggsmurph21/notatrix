@@ -1953,6 +1953,7 @@ var Analysis = function () {
   }, {
     key: 'removeSubTokenAt',
     value: function removeSubTokenAt(index) {
+      var _this2 = this;
 
       // can't remove if we have an empty array
       if (!this.length) return null;
@@ -1962,6 +1963,15 @@ var Analysis = function () {
 
       // bounds checking
       index = index < 0 ? 0 : index > this.length - 1 ? this.length - 1 : parseInt(index);
+
+      // unlink heads and deps from the token to be removed
+      this.sentence.forEach(function (token) {
+        token.analysis.eachHead(function (head) {
+          if (head === _this2[index]) token.analysis.removeHead(head);
+        }).eachDep(function (dep) {
+          if (dep === _this2[index]) token.analysis.removeDep(dep);
+        });
+      });
 
       // remove the superToken pointer from the removed token
       this.subTokens[index].superToken = null;
@@ -2111,7 +2121,7 @@ var Analysis = function () {
   }, {
     key: 'removeHead',
     value: function removeHead(head) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!(head instanceof Analysis)) throw new NotatrixError('can\'t remove head: not Analysis instance');
 
@@ -2125,7 +2135,7 @@ var Analysis = function () {
       // if applicable, also remove from head's _deps
       removing = -1;
       if (this.sentence.options.help.head) head.eachDep(function (token, deprel, i) {
-        if (token === _this2) removing = i;
+        if (token === _this3) removing = i;
       });
       if (removing > -1) head._deps.splice(removing, 1);
 
@@ -2145,7 +2155,7 @@ var Analysis = function () {
   }, {
     key: 'changeHead',
     value: function changeHead(head, deprel) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!(head instanceof Analysis)) throw new NotatrixError('can\'t change head: not Analysis instance');
 
@@ -2153,14 +2163,14 @@ var Analysis = function () {
       var done = false;
       this.eachHead(function (token, _deprel, i) {
         if (token === head) {
-          _this3._heads[i].deprel = deprel || _deprel;
+          _this4._heads[i].deprel = deprel || _deprel;
           done = true;
         }
       });
 
       // if applicable, change for the head's dep too
       if (this.sentence.options.help.head) head.eachDep(function (token, _deprel, i) {
-        if (token === _this3) head._deps[i].deprel = deprel || _deprel;
+        if (token === _this4) head._deps[i].deprel = deprel || _deprel;
       });
 
       return done ? this : null;
@@ -2229,7 +2239,7 @@ var Analysis = function () {
   }, {
     key: 'removeDep',
     value: function removeDep(dep) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (!(dep instanceof Analysis)) throw new NotatrixError('can\'t remove dep: not Analysis instance');
 
@@ -2243,7 +2253,7 @@ var Analysis = function () {
       // if applicable, also remove from dep's _heads
       removing = -1;
       if (this.sentence.options.help.deps) dep.eachHead(function (token, deprel, i) {
-        if (token === _this4) removing = i;
+        if (token === _this5) removing = i;
       });
       if (removing > -1) dep._heads.splice(removing, 1);
 
@@ -2263,7 +2273,7 @@ var Analysis = function () {
   }, {
     key: 'changeDep',
     value: function changeDep(dep, deprel) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (!(dep instanceof Analysis)) throw new NotatrixError('can\'t change dep: not Analysis instance');
 
@@ -2271,14 +2281,14 @@ var Analysis = function () {
       var done = false;
       this.eachDep(function (token, _deprel, i) {
         if (token === dep) {
-          _this5._deps[i].deprel = deprel || _deprel;
+          _this6._deps[i].deprel = deprel || _deprel;
           done = true;
         }
       });
 
       // if applicable, change for the dep's head too
       if (this.sentence.options.help.deps) dep.eachHead(function (token, _deprel, i) {
-        if (token === _this5) dep._heads[i].deprel = deprel || _deprel;
+        if (token === _this6) dep._heads[i].deprel = deprel || _deprel;
       });
 
       return done ? this : null;
@@ -2301,12 +2311,12 @@ var Analysis = function () {
   }, {
     key: 'nx',
     get: function get() {
-      var _this6 = this;
+      var _this7 = this;
 
       // serialize "values" (getter/setter version of fields)
       var values = {};
       _.each(fields, function (field) {
-        values[field] = _this6[field];
+        values[field] = _this7[field];
       });
 
       // serialize other data
@@ -2355,7 +2365,7 @@ var Analysis = function () {
   }, {
     key: 'conllu',
     get: function get() {
-      var _this7 = this;
+      var _this8 = this;
 
       // reindex just in case since this is crucial
       this.sentence.index();
@@ -2370,7 +2380,7 @@ var Analysis = function () {
 
         // if we have no data for a field, use our fallback to maintain
         //   the correct matrix structure
-        return _this7[field] || fallback;
+        return _this8[field] || fallback;
       }).join('\t');
     }
 
@@ -2411,7 +2421,7 @@ var Analysis = function () {
   }, {
     key: 'eles',
     get: function get() {
-      var _this8 = this;
+      var _this9 = this;
 
       var eles = [];
 
@@ -2423,7 +2433,7 @@ var Analysis = function () {
             data: {
               id: 'multiword-' + this.id,
               num: this.num,
-              numNoSuperTokens: this.numNoSuperTokens,
+              clump: this.clump,
               name: 'multiword',
               label: this.form + ' ' + toSubscript(this.id)
               /*length: `${this.form.length > 3
@@ -2442,7 +2452,7 @@ var Analysis = function () {
             data: {
               id: 'num-' + this.id,
               num: this.num,
-              numNoSuperTokens: this.numNoSuperTokens,
+              clump: this.clump,
               name: 'number',
               label: this.id,
               pos: this.pos,
@@ -2454,7 +2464,7 @@ var Analysis = function () {
             data: {
               id: 'form-' + this.id,
               num: this.num,
-              numNoSuperTokens: this.numNoSuperTokens,
+              clump: this.clump,
               name: 'form',
               attr: 'form',
               form: this.form,
@@ -2469,7 +2479,7 @@ var Analysis = function () {
             data: {
               id: 'pos-node-' + this.id,
               num: this.num,
-              numNoSuperTokens: this.numNoSuperTokens,
+              clump: this.clump,
               name: 'pos-node',
               attr: 'upostag',
               label: this.pos || '',
@@ -2481,7 +2491,7 @@ var Analysis = function () {
             data: {
               id: 'pos-edge-' + this.id,
               num: this.num,
-              numNoSuperTokens: this.numNoSuperTokens,
+              clump: this.clump,
               name: 'pos-edge',
               source: 'form-' + this.id,
               target: 'pos-node-' + this.id
@@ -2497,11 +2507,11 @@ var Analysis = function () {
 
             eles.push({
               data: {
-                id: 'dep_' + _this8.id + '_' + head.id,
+                id: 'dep_' + _this9.id + '_' + head.id,
                 name: 'dependency',
                 attr: 'deprel',
-                source: 'form-' + _this8.id,
-                sourceAnalysis: _this8,
+                source: 'form-' + _this9.id,
+                sourceAnalysis: _this9,
                 target: 'form-' + head.id,
                 targetAnalysis: head,
                 length: deprel.length / 3 + 'em',
@@ -2649,12 +2659,12 @@ var Analysis = function () {
   }, {
     key: 'head',
     get: function get() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.sentence.options.showEnhanced) {
         var heads = [];
         this.eachHead(function (token, deprel) {
-          if (token === _this9.sentence.getById(token.id) || !_this9.sentence.options.help.head) {
+          if (token === _this10.sentence.getById(token.id) || !_this10.sentence.options.help.head) {
             heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
           } else {
             heads.push('' + token + (deprel ? ':' + deprel : ''));
@@ -2674,16 +2684,16 @@ var Analysis = function () {
      */
     ,
     set: function set(heads) {
-      var _this10 = this;
+      var _this11 = this;
 
       if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
       this._heads = heads.map(function (head) {
-        return _this10.initializing ? {
+        return _this11.initializing ? {
           token: head.token,
           deprel: head.deprel
         } : {
-          token: _this10.sentence.getById(head.token) || head.token,
+          token: _this11.sentence.getById(head.token) || head.token,
           deprel: head.deprel
         };
       }).filter(function (head) {
@@ -2722,12 +2732,12 @@ var Analysis = function () {
   }, {
     key: 'deps',
     get: function get() {
-      var _this11 = this;
+      var _this12 = this;
 
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
       this.eachDep(function (token, deprel) {
-        if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.deps) {
+        if (token === _this12.sentence.getById(token.id) || !_this12.sentence.options.help.deps) {
           deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
         } else {
           deps.push('' + token + (deprel ? ':' + deprel : ''));
@@ -2744,16 +2754,16 @@ var Analysis = function () {
      */
     ,
     set: function set(deps) {
-      var _this12 = this;
+      var _this13 = this;
 
       if (typeof deps === 'string') deps = parseEnhancedString(deps);
 
       this._deps = deps.map(function (dep) {
-        return _this12.initializing ? {
+        return _this13.initializing ? {
           token: dep.token,
           deprel: dep.deprel
         } : {
-          token: _this12.sentence.getById(dep.token) || dep.token,
+          token: _this13.sentence.getById(dep.token) || dep.token,
           deprel: dep.deprel
         };
       }).filter(function (dep) {
@@ -3005,44 +3015,13 @@ var regex = {
   empty: /^\W*[0-9]+\.[0-9]+/,
   cg3TokenStart: /^"<(.|\\")*>"/,
   cg3TokenContent: /^;?\s+"(.|\\")*"/
+
+  /**
+   * this class contains all the information associated with a sentence, including
+   *   an comments array, a tokens array, and a list of options/settings that apply
+   *   to all subelements of this sentence
+   */
 };
-
-function getIndices(tok) {
-
-  var superTokenId = -1,
-      subTokenId = -1,
-      analysisId = 0,
-      found = false,
-      isSubToken = false;
-
-  tok.sentence.forEach(function (token) {
-
-    if (found) return;
-
-    if (token.isSubToken) {
-      subTokenId++;
-      isSubToken = true;
-    } else {
-      superTokenId++;
-      subTokenId = -1;
-      isSubToken = false;
-    }
-
-    if (token === tok) found = true;
-  });
-
-  return superTokenId === -1 ? null : {
-    super: superTokenId,
-    sub: isSubToken ? subTokenId : null
-  };
-}
-
-/**
- * this class contains all the information associated with a sentence, including
- *   an comments array, a tokens array, and a list of options/settings that apply
- *   to all subelements of this sentence
- */
-
 var Sentence = function () {
   function Sentence(paramsList, options) {
     _classCallCheck(this, Sentence);
@@ -3106,6 +3085,44 @@ var Sentence = function () {
 
       // chaining
       return this;
+    }
+    /**
+     * loop through the tokens in the sentence and return the superToken and
+     *   subToken indices
+     * @param {Token} tok token to search for
+     * @return {(Object|null)}
+     */
+
+  }, {
+    key: 'getIndices',
+    value: function getIndices(tok) {
+
+      var superTokenId = -1,
+          subTokenId = -1,
+          analysisId = 0,
+          found = false,
+          isSubToken = false;
+
+      tok.sentence.forEach(function (token) {
+
+        if (found) return;
+
+        if (token.isSubToken) {
+          subTokenId++;
+          isSubToken = true;
+        } else {
+          superTokenId++;
+          subTokenId = -1;
+          isSubToken = false;
+        }
+
+        if (token === tok) found = true;
+      });
+
+      return superTokenId === -1 ? null : {
+        super: superTokenId,
+        sub: isSubToken ? subTokenId : null
+      };
     }
 
     /**
@@ -3188,7 +3205,7 @@ var Sentence = function () {
 
       if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
 
-      var indices = getIndices(atToken);
+      var indices = this.getIndices(atToken);
       if (indices === null) return null;
 
       return indices.sub === null ? this.insertTokenAt(indices.super, newToken) : this[indices.super].insertSubTokenAt(indices.sub, newToken);
@@ -3215,7 +3232,7 @@ var Sentence = function () {
 
       if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
 
-      var indices = getIndices(atToken);
+      var indices = this.getIndices(atToken);
       if (indices === null) return null;
 
       return indices.sub === null ? this.insertTokenAt(indices.super + 1, newToken) : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
@@ -3242,7 +3259,7 @@ var Sentence = function () {
 
       if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
 
-      var indices = getIndices(atAnalysis.token);
+      var indices = this.getIndices(atAnalysis.token);
       if (indices === null) return null;
 
       var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
@@ -3276,7 +3293,7 @@ var Sentence = function () {
 
       if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
 
-      var indices = getIndices(atAnalysis.token);
+      var indices = this.getIndices(atAnalysis.token);
       if (indices === null) return null;
 
       var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
@@ -3339,6 +3356,8 @@ var Sentence = function () {
   }, {
     key: 'removeTokenAt',
     value: function removeTokenAt(index) {
+      var _this = this;
+
       // can't remove if we have an empty sentence
       if (!this.tokens.length) return null;
 
@@ -3347,6 +3366,15 @@ var Sentence = function () {
 
       // bounds checking
       index = index < 0 ? 0 : index > this.tokens.length - 1 ? this.tokens.length - 1 : parseInt(index);
+
+      // unlink heads and deps from the token to be removed
+      this.forEach(function (token) {
+        token.analysis.eachHead(function (head) {
+          if (head === _this[index]) token.analysis.removeHead(head);
+        }).eachDep(function (dep) {
+          if (dep === _this[index]) token.analysis.removeDep(dep);
+        });
+      });
 
       // array splicing, return spliced element
       return this.tokens.splice(index, 1)[0];
@@ -3449,9 +3477,9 @@ var Sentence = function () {
       var id = 0,
           empty = 0,
           num = 0,
-          numNoSuperTokens = 0;
+          clump = 0;
       _.each(this.tokens, function (token) {
-        var _token$index = token.index(id, empty, num, numNoSuperTokens);
+        var _token$index = token.index(id, empty, num, clump);
         // allow each token to return counters for the next guy
 
 
@@ -3460,7 +3488,7 @@ var Sentence = function () {
         id = _token$index2[0];
         empty = _token$index2[1];
         num = _token$index2[2];
-        numNoSuperTokens = _token$index2[3];
+        clump = _token$index2[3];
       });
 
       // chaining
@@ -3553,14 +3581,14 @@ var Sentence = function () {
      */
     ,
     set: function set(text) {
-      var _this = this;
+      var _this2 = this;
 
       // insert a space before final punctuation
       text = text.trim().replace(/([.,?!]+)$/, ' $1');
 
       // split on whitespace and add form-only tokens
       _.map(text.split(/\s/), function (chunk) {
-        _this.pushToken(Token.fromParams(_this, { form: chunk }));
+        _this2.pushToken(Token.fromParams(_this2, { form: chunk }));
       });
 
       return this.text;
@@ -3809,7 +3837,7 @@ var Sentence = function () {
      */
     ,
     set: function set(paramsList) {
-      var _this2 = this;
+      var _this3 = this;
 
       // can only parse arrays
       if (!(paramsList instanceof Array)) return null;
@@ -3820,7 +3848,7 @@ var Sentence = function () {
 
       // push a new token for each set of parameters
       _.each(paramsList, function (params) {
-        _this2.tokens.push(Token.fromParams(_this2, params));
+        _this3.tokens.push(Token.fromParams(_this3, params));
       });
 
       // attach heads and return validated parameter list
@@ -4365,34 +4393,54 @@ var Token = function () {
       return this.removeAnalysisAt(Infinity);
     }
 
-    // token insertion, removal, moving // TODO
-    /*insertBefore(token) {
-      const indices = this.getIndices();
-      return this.sentence.insertTokenAt(indices, token);
+    // token combining, merging, splitting
+
+  }, {
+    key: 'combineWith',
+    value: function combineWith(token) {}
+  }, {
+    key: 'mergeWith',
+    value: function mergeWith(token) {
+      if (!(token instanceof Token)) throw new NotatrixError('unable to merge: not instance of Token');
+
+      if (this === token) throw new NotatrixError('unable to merge: can\'t merge with self');
+
+      if (this.isSuperToken || token.isSuperToken) throw new NotatrixError('unable to merge: can\'t merge superTokens');
+
+      if (this.superToken !== token.superToken) throw new NotatrixError('unable to merge: can\'t merge tokens with different superTokens');
+
+      var dist = Math.abs(this.analysis.clump - token.analysis.clump);
+      if (dist !== 1) throw new NotatrixError('unable to merge: tokens must be adjacent');
+
+      if (this.analysis === null || token.analysis === null) throw new NotatrixError('unable to merge: tokens must have at least one analysis');
+
+      // combine the form and lemma fields
+      this.analysis.form = (this.analysis.form || '') + (token.analysis.form || '') || null;
+      this.analysis.lemma = (this.analysis.lemma || '') + (token.analysis.lemma || '') || null;
+
+      // take one of these fields
+      this.upostag = this.upostag || token.upostag || null;
+      this.xpostag = this.xpostag || token.xpostag || null;
+      this.feats = this.feats || token.feats || null;
+      this.misc = this.misc || token.misc || null;
+
+      // remove the token
+      if (token.isSubToken) {
+
+        var indices = this.sentence.getIndices(token);
+        this.superToken.removeSubTokenAt(indices.sub);
+      } else {
+
+        var _indices = this.sentence.getIndices(token);
+        this.sentence.removeTokenAt(_indices.super);
+      }
+
+      this.sentence.index();
+      return this; // chaining
     }
-    insertAfter(token) {
-      const indices = this.getIndicesAfter();
-      return this.sentence.insertTokenAt(indices, token);
-    }
-    insertSubTokenBefore(subToken) {
-     }
-    insertSubTokenAfter(subToken) {
-     }
-    remove() {
-     }
-    moveBefore(token) {
-     }
-    moveAfter(token) {
-     }
-    makeSubTokenOf(token) {
-     }
-     // token combining, merging, splitting
-    combineWith(token) {
-     }
-    mergeWith(token) {
-     }
-    split() {
-     }*/
+  }, {
+    key: 'split',
+    value: function split() {}
 
     // internal format
 
@@ -4418,18 +4466,18 @@ var Token = function () {
      *
      * @throws {NotatrixError} if given invalid id or empty
      */
-    value: function index(id, empty, num, numNoSuperTokens) {
+    value: function index(id, empty, num, clump) {
       var _this = this;
 
       id = parseInt(id);
       empty = parseInt(empty);
       num = parseInt(num);
-      numNoSuperTokens = parseInt(numNoSuperTokens);
+      clump = parseInt(clump);
 
-      if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(numNoSuperTokens)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
+      if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(clump)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
 
       // if no analysis, nothing to do
-      if (this.analysis === null) return [id, empty, num, numNoSuperTokens];
+      if (this.analysis === null) return [id, empty, num, clump];
 
       // iterate over analyses
       this.forEach(function (analysis) {
@@ -4440,7 +4488,7 @@ var Token = function () {
 
             // save the absolute index
             _this.analysis.num = num;
-            _this.analysis.numNoSuperTokens = null;
+            _this.analysis.clump = null;
             num++;
 
             // index subTokens
@@ -4458,8 +4506,8 @@ var Token = function () {
               subToken.forEach(function (analysis) {
                 analysis.num = num;
                 num++;
-                analysis.numNoSuperTokens = numNoSuperTokens;
-                numNoSuperTokens++;
+                analysis.clump = clump;
+                clump++;
               });
             });
 
@@ -4472,8 +4520,8 @@ var Token = function () {
             // save the absolute index
             _this.analysis.num = num;
             num++;
-            _this.analysis.numNoSuperTokens = numNoSuperTokens;
-            numNoSuperTokens++;
+            _this.analysis.clump = clump;
+            clump++;
 
             if (_this.isEmpty) {
               empty++; // incr empty counter
@@ -4506,7 +4554,7 @@ var Token = function () {
       });
 
       // return updated indices
-      return [id, empty, num, numNoSuperTokens];
+      return [id, empty, num, clump];
     }
 
     /**
