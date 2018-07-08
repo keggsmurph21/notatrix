@@ -1556,7 +1556,9 @@ describe('nx deserializer', () => {
     help: {
       head: false,
       deps: false
-    }
+    },
+    prettyOutput: false,
+    showEmptyDependencies: false
   };
 
   _.each(data['CoNLL-U'], (conllu, name) => {
@@ -1565,6 +1567,7 @@ describe('nx deserializer', () => {
       let s = Sentence.fromNx(nx);
 
       expect(s.nx).to.equal(nx);
+      expect(clean(s.conllu)).to.equal(clean(conllu));
     });
   });
 
@@ -1574,6 +1577,7 @@ describe('nx deserializer', () => {
       let s = Sentence.fromNx(nx);
 
       expect(s.nx).to.equal(nx);
+      expect(clean(s.cg3)).to.equal(clean(cg3));
     });
   });
 
@@ -1583,6 +1587,7 @@ describe('nx deserializer', () => {
       let s = Sentence.fromNx(nx);
 
       expect(s.nx).to.equal(nx);
+      expect(s.text.replace(/\s*/g, '')).to.equal(text.replace(/\s*/g, ''));
     });
   });
 
