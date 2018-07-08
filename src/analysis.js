@@ -853,9 +853,11 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get lemma() {
-    return this.sentence.options.help.lemma
-      ? this._lemma || this._form
-      : this._lemma;
+    return this.isSuperToken
+      ? null
+      : this.sentence.options.help.lemma
+        ? this._lemma || this._form
+        : this._lemma;
   }
 
   /**
@@ -885,7 +887,9 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get upostag() {
-    return this._upostag;
+    return this.isSuperToken
+      ? null
+      : this._upostag;
   }
 
   /**
@@ -903,7 +907,9 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get xpostag() {
-    return this._xpostag;
+    return this.isSuperToken
+      ? null
+      : this._xpostag;
   }
 
   /**
@@ -921,7 +927,9 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get feats() {
-    return this._feats;
+    return this.isSuperToken
+      ? null
+      : this._feats;
   }
 
   /**
@@ -940,6 +948,9 @@ class Analysis {
    * @return {(String)}
    */
   get head() {
+    if (this.isSuperToken)
+      return null;
+
     if (this.sentence.options.showEnhanced) {
       let heads = [];
       this.eachHead((token, deprel) => {
@@ -965,6 +976,8 @@ class Analysis {
    * @return {undefined}
    */
   set head(heads) {
+
+    heads = heads || [];
     if (typeof heads === 'string')
       heads = parseEnhancedString(heads);
 
@@ -990,7 +1003,9 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get deprel() {
-    return this._deprel;
+    return this.isSuperToken
+      ? null
+      : this._deprel;
   }
 
   /**
@@ -1008,6 +1023,9 @@ class Analysis {
    * @return {(String)}
    */
   get deps() {
+    if (this.isSuperToken)
+      return null;
+
     // don't worry about enhanced stuff for deps (always can be multiple)
     let deps = [];
     this.eachDep((token, deprel) => {
@@ -1027,6 +1045,8 @@ class Analysis {
    * @return {undefined}
    */
   set deps(deps) {
+
+    deps = deps || [];
     if (typeof deps === 'string')
       deps = parseEnhancedString(deps);
 
@@ -1052,6 +1072,7 @@ class Analysis {
    * @return {(String|undefined)}
    */
   get misc() {
+    // superTokens can have "misc" field
     return this._misc;
   }
 

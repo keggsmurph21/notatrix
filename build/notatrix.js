@@ -2555,7 +2555,7 @@ var Analysis = function () {
   }, {
     key: 'lemma',
     get: function get() {
-      return this.sentence.options.help.lemma ? this._lemma || this._form : this._lemma;
+      return this.isSuperToken ? null : this.sentence.options.help.lemma ? this._lemma || this._form : this._lemma;
     }
 
     /**
@@ -2592,7 +2592,7 @@ var Analysis = function () {
   }, {
     key: 'upostag',
     get: function get() {
-      return this._upostag;
+      return this.isSuperToken ? null : this._upostag;
     }
 
     /**
@@ -2614,7 +2614,7 @@ var Analysis = function () {
   }, {
     key: 'xpostag',
     get: function get() {
-      return this._xpostag;
+      return this.isSuperToken ? null : this._xpostag;
     }
 
     /**
@@ -2636,7 +2636,7 @@ var Analysis = function () {
   }, {
     key: 'feats',
     get: function get() {
-      return this._feats;
+      return this.isSuperToken ? null : this._feats;
     }
 
     /**
@@ -2660,6 +2660,8 @@ var Analysis = function () {
     key: 'head',
     get: function get() {
       var _this10 = this;
+
+      if (this.isSuperToken) return null;
 
       if (this.sentence.options.showEnhanced) {
         var heads = [];
@@ -2686,6 +2688,7 @@ var Analysis = function () {
     set: function set(heads) {
       var _this11 = this;
 
+      heads = heads || [];
       if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
       this._heads = heads.map(function (head) {
@@ -2710,7 +2713,7 @@ var Analysis = function () {
   }, {
     key: 'deprel',
     get: function get() {
-      return this._deprel;
+      return this.isSuperToken ? null : this._deprel;
     }
 
     /**
@@ -2734,6 +2737,8 @@ var Analysis = function () {
     get: function get() {
       var _this12 = this;
 
+      if (this.isSuperToken) return null;
+
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
       this.eachDep(function (token, deprel) {
@@ -2756,6 +2761,7 @@ var Analysis = function () {
     set: function set(deps) {
       var _this13 = this;
 
+      deps = deps || [];
       if (typeof deps === 'string') deps = parseEnhancedString(deps);
 
       this._deps = deps.map(function (dep) {
@@ -2780,6 +2786,7 @@ var Analysis = function () {
   }, {
     key: 'misc',
     get: function get() {
+      // superTokens can have "misc" field
       return this._misc;
     }
 

@@ -14,7 +14,7 @@ nested_2: `# text = ab cde f h
 7	h	H	_	_	_	_	_	_	_`,
 
 t: `# testing :)
-1-3	He	he	det	_	pos|f|sp	_	det	_	_
+1-3	He	_	_	_	_	_	_	_	_
 1	boued	boued	n	_	m|sg	4	obj	_	_
 2	e	e	vpart	_	obj	4	aux	_	_
 3	tebr	debriñ	vblex	_	pri|p3|sg	0	root	_	_

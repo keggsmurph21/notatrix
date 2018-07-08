@@ -203,7 +203,7 @@ describe('Analysis', () => {
         expect(t1.isSuperToken).to.equal(false);
         expect(t1.isSubToken).to.equal(true);
 
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth zeroth 1 first first')
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth _ 1 first first')
 
       a0.insertSubTokenAt(-1, t2);
 
@@ -226,7 +226,7 @@ describe('Analysis', () => {
         expect(t2.isSuperToken).to.equal(false);
         expect(t2.isSubToken).to.equal(true);
 
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth zeroth 1 second second 2 first first')
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth _ 1 second second 2 first first')
 
       expect(() => { a3.insertSubTokenAt(0, t0); }).to.throw(E.NotatrixError);
       expect(() => { a3.insertSubTokenAt(0, t1); }).to.throw(E.NotatrixError);
@@ -253,12 +253,12 @@ describe('Analysis', () => {
         expect(t3.isSuperToken).to.equal(false);
         expect(t3.isSubToken).to.equal(true);
 
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth zeroth 1 second second 2 third third 3 first first');
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth _ 1 second second 2 third third 3 first first');
 
       a0.insertSubTokenAt(Infinity, t4);
 
         expect(a0.subTokens).to.deep.equal([t2, t3, t1, t4]);
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-4 zeroth zeroth 1 second second 2 third third 3 first first 4 fourth fourth');
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-4 zeroth _ 1 second second 2 third third 3 first first 4 fourth fourth');
 
       a0.removeSubTokenAt(1);
 
@@ -266,7 +266,7 @@ describe('Analysis', () => {
         expect(a3.superToken).to.equal(null);
         expect(a3.isSubToken).to.equal(false);
         expect(t3.isSubToken).to.equal(false);
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth zeroth 1 second second 2 first first 3 fourth fourth');
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-3 zeroth _ 1 second second 2 first first 3 fourth fourth');
 
       a0.removeSubTokenAt(2);
 
@@ -274,7 +274,7 @@ describe('Analysis', () => {
         expect(a4.superToken).to.equal(null);
         expect(a4.isSubToken).to.equal(false);
         expect(t4.isSubToken).to.equal(false);
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth zeroth 1 second second 2 first first');
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-2 zeroth _ 1 second second 2 first first');
 
       a0.removeSubTokenAt(-5);
 
@@ -282,7 +282,7 @@ describe('Analysis', () => {
         expect(a2.superToken).to.equal(null);
         expect(a2.isSubToken).to.equal(false);
         expect(t2.isSubToken).to.equal(false);
-        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth zeroth 1 first first');
+        expect(ignoreAfterLemma(s.conllu)).to.equal('1-1 zeroth _ 1 first first');
 
       a0.removeSubTokenAt(Infinity);
 
