@@ -1798,7 +1798,7 @@ function cg3FormatOutput(analysis, tabs) {
   var deprel = analysis.deprel ? ' @' + analysis.deprel : '';
   var id = analysis.id ? ' #' + analysis.id + '->' : '';
   var head = id && analysis.head ? '' + analysis.head : '';
-  var dependency = analysis.sentence.options.showEmptyDependencies || analysis.head !== fallback ? '' + id + head : '';
+  var dependency = analysis.sentence.options.showEmptyDependencies || analysis.head ? '' + id + head : '';
 
   return indent + '"' + analysis.lemma + '"' + tags + misc + deprel + dependency;
 }
@@ -2672,9 +2672,9 @@ var Analysis = function () {
             heads.push('' + token + (deprel ? ':' + deprel : ''));
           }
         });
-        return heads.join('|') || fallback;
+        return heads.join('|') || null;
       } else {
-        return this._heads.length ? this._heads[0].id || this._heads[0] : fallback;
+        return this._heads.length ? this._heads[0].id || this._heads[0] : null;
       }
     }
 
@@ -2748,7 +2748,7 @@ var Analysis = function () {
           deps.push('' + token + (deprel ? ':' + deprel : ''));
         }
       });
-      return deps.join('|') || fallback;
+      return deps.join('|') || null;
     }
 
     /**

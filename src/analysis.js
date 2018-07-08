@@ -98,7 +98,7 @@ function cg3FormatOutput(analysis, tabs) {
   let deprel = analysis.deprel ? ` @${analysis.deprel}` : '';
   let id = analysis.id ? ` #${analysis.id}->` : '';
   let head = (id && analysis.head) ? `${analysis.head}` : ``;
-  let dependency = analysis.sentence.options.showEmptyDependencies || analysis.head !== fallback
+  let dependency = analysis.sentence.options.showEmptyDependencies || analysis.head
     ? `${id}${head}`
     : ``;
 
@@ -960,12 +960,12 @@ class Analysis {
           heads.push(`${token}${deprel ? `:${deprel}` : ''}`);
         }
       });
-      return heads.join('|') || fallback;
+      return heads.join('|') || null;
 
     } else {
       return this._heads.length
         ? this._heads[0].id || this._heads[0]
-        : fallback;
+        : null;
     }
   }
 
@@ -1035,7 +1035,7 @@ class Analysis {
         deps.push(`${token}${deprel ? `:${deprel}` : ''}`);
       }
     });
-    return deps.join('|') || fallback;
+    return deps.join('|') || null;
   }
 
   /**
