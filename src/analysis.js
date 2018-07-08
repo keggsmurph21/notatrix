@@ -148,6 +148,12 @@ class Analysis {
     this._heads = [];
     this._deps = [];
 
+    // internal index (see Sentence::index and Token::index), don't change this!
+    this.id = null;
+
+    // array of Tokens
+    this.subTokens = [];
+
     // iterate over passed params
     _.each(params, (value, key) => {
       if (value === undefined || fields.indexOf(key) === -1) {
@@ -161,12 +167,6 @@ class Analysis {
 
     // save updated params (mostly for debugging purposes)
     this.params = params || {};
-
-    // internal index (see Sentence::index and Token::index), don't change this!
-    this.id = null;
-
-    // array of Tokens
-    this.subTokens = [];
 
     // safe to unset this now
     this.initializing = false;
