@@ -660,8 +660,50 @@ class Token {
     // serialize other data
     return {
       current: this.current,
+      isEmpty: this.isEmpty,
       analyses: analyses
     };
+  }
+
+  /**
+   * deserialize an internal representation
+   *
+   * @param {(String|Object)} nx JSON string or object
+   * @return {undefined}
+   */
+  set nx(nx) {
+
+    // parse the JSON if it's a string
+    nx = (typeof nx === 'string')
+      ? JSON.parse(nx)
+      : nx;
+
+    this.analyses = nx.analyses.map(analysisNx => {
+
+      let analysis = Analysis.fromNx(this, analysisNx);
+      analysis.subTokens = analysisNx.subTokens.map(subTokenNx => {
+        return Token.fromNx(this.sentence, subTokenNx);
+      });
+      return analysis;
+
+    });
+    this.current = nx.current;
+    this._isEmpty = nx.isEmpty;
+
+  }
+
+  /**
+   * static method allowing us to construct a new Token directly from an
+   *   Nx string and bind it to a sentence
+   *
+   * @param {Sentence} sent
+   * @param {String} serial
+   * @return {Token}
+   */
+  static fromNx(sent, serial) {
+    let token = new Token(sent);
+    token.nx = serial;
+    return token;
   }
 
   /**

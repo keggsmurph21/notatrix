@@ -393,6 +393,41 @@ class Analysis {
   }
 
   /**
+   * deserialize an internal representation
+   *
+   * @param {(String|Object)} nx JSON string or object
+   * @return {undefined}
+   */
+  set nx(nx) {
+
+    // parse the JSON if it's a string
+    nx = (typeof nx === 'string')
+      ? JSON.parse(nx)
+      : nx;
+
+    this.params = nx.params;
+    _.each(nx.values, (value, key) => {
+      this[key] = value;
+    });
+
+  }
+
+  /**
+   * static method allowing us to construct a new Analysis directly from an
+   *   Nx string and bind it to a token
+   *
+   * @param {Token} token
+   * @param {String} serial
+   * @return {Analysis}
+   */
+  static fromNx(token, serial) {
+    let analysis = new Analysis(token);
+    analysis.nx = serial;
+    return analysis;
+  }
+
+
+  /**
    * get a plain-text formatted string of the analysis
    *
    * @return {String}

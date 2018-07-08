@@ -1839,6 +1839,12 @@ var Analysis = function () {
     this._heads = [];
     this._deps = [];
 
+    // internal index (see Sentence::index and Token::index), don't change this!
+    this.id = null;
+
+    // array of Tokens
+    this.subTokens = [];
+
     // iterate over passed params
     _.each(params, function (value, key) {
       if (value === undefined || fields.indexOf(key) === -1) {
@@ -1852,12 +1858,6 @@ var Analysis = function () {
 
     // save updated params (mostly for debugging purposes)
     this.params = params || {};
-
-    // internal index (see Sentence::index and Token::index), don't change this!
-    this.id = null;
-
-    // array of Tokens
-    this.subTokens = [];
 
     // safe to unset this now
     this.initializing = false;
@@ -2332,13 +2332,42 @@ var Analysis = function () {
     }
 
     /**
-     * get a plain-text formatted string of the analysis
+     * deserialize an internal representation
      *
-     * @return {String}
+     * @param {(String|Object)} nx JSON string or object
+     * @return {undefined}
+     */
+    ,
+    set: function set(nx) {
+      var _this8 = this;
+
+      // parse the JSON if it's a string
+      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
+
+      this.params = nx.params;
+      _.each(nx.values, function (value, key) {
+        _this8[key] = value;
+      });
+    }
+
+    /**
+     * static method allowing us to construct a new Analysis directly from an
+     *   Nx string and bind it to a token
+     *
+     * @param {Token} token
+     * @param {String} serial
+     * @return {Analysis}
      */
 
   }, {
     key: 'text',
+
+
+    /**
+     * get a plain-text formatted string of the analysis
+     *
+     * @return {String}
+     */
     get: function get() {
 
       // first check if we have a form
@@ -2365,7 +2394,7 @@ var Analysis = function () {
   }, {
     key: 'conllu',
     get: function get() {
-      var _this8 = this;
+      var _this9 = this;
 
       // reindex just in case since this is crucial
       this.sentence.index();
@@ -2380,7 +2409,7 @@ var Analysis = function () {
 
         // if we have no data for a field, use our fallback to maintain
         //   the correct matrix structure
-        return _this8[field] || fallback;
+        return _this9[field] || fallback;
       }).join('\t');
     }
 
@@ -2421,7 +2450,7 @@ var Analysis = function () {
   }, {
     key: 'eles',
     get: function get() {
-      var _this9 = this;
+      var _this10 = this;
 
       var eles = [];
 
@@ -2507,11 +2536,11 @@ var Analysis = function () {
 
             eles.push({
               data: {
-                id: 'dep_' + _this9.id + '_' + head.id,
+                id: 'dep_' + _this10.id + '_' + head.id,
                 name: 'dependency',
                 attr: 'deprel',
-                source: 'form-' + _this9.id,
-                sourceAnalysis: _this9,
+                source: 'form-' + _this10.id,
+                sourceAnalysis: _this10,
                 target: 'form-' + head.id,
                 targetAnalysis: head,
                 length: deprel.length / 3 + 'em',
@@ -2659,14 +2688,14 @@ var Analysis = function () {
   }, {
     key: 'head',
     get: function get() {
-      var _this10 = this;
+      var _this11 = this;
 
       if (this.isSuperToken) return null;
 
       if (this.sentence.options.showEnhanced) {
         var heads = [];
         this.eachHead(function (token, deprel) {
-          if (token === _this10.sentence.getById(token.id) || !_this10.sentence.options.help.head) {
+          if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.head) {
             heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
           } else {
             heads.push('' + token + (deprel ? ':' + deprel : ''));
@@ -2686,17 +2715,17 @@ var Analysis = function () {
      */
     ,
     set: function set(heads) {
-      var _this11 = this;
+      var _this12 = this;
 
       heads = heads || [];
       if (typeof heads === 'string') heads = parseEnhancedString(heads);
 
       this._heads = heads.map(function (head) {
-        return _this11.initializing ? {
+        return _this12.initializing ? {
           token: head.token,
           deprel: head.deprel
         } : {
-          token: _this11.sentence.getById(head.token) || head.token,
+          token: _this12.sentence.getById(head.token) || head.token,
           deprel: head.deprel
         };
       }).filter(function (head) {
@@ -2735,14 +2764,14 @@ var Analysis = function () {
   }, {
     key: 'deps',
     get: function get() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.isSuperToken) return null;
 
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
       this.eachDep(function (token, deprel) {
-        if (token === _this12.sentence.getById(token.id) || !_this12.sentence.options.help.deps) {
+        if (token === _this13.sentence.getById(token.id) || !_this13.sentence.options.help.deps) {
           deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
         } else {
           deps.push('' + token + (deprel ? ':' + deprel : ''));
@@ -2759,17 +2788,17 @@ var Analysis = function () {
      */
     ,
     set: function set(deps) {
-      var _this13 = this;
+      var _this14 = this;
 
       deps = deps || [];
       if (typeof deps === 'string') deps = parseEnhancedString(deps);
 
       this._deps = deps.map(function (dep) {
-        return _this13.initializing ? {
+        return _this14.initializing ? {
           token: dep.token,
           deprel: dep.deprel
         } : {
-          token: _this13.sentence.getById(dep.token) || dep.token,
+          token: _this14.sentence.getById(dep.token) || dep.token,
           deprel: dep.deprel
         };
       }).filter(function (dep) {
@@ -2848,6 +2877,13 @@ var Analysis = function () {
     key: 'isCurrent',
     get: function get() {
       return this.token.analysis === this;
+    }
+  }], [{
+    key: 'fromNx',
+    value: function fromNx(token, serial) {
+      var analysis = new Analysis(token);
+      analysis.nx = serial;
+      return analysis;
     }
   }]);
 
@@ -3564,13 +3600,45 @@ var Sentence = function () {
     }
 
     /**
-     * get a plain-text formatted string of the sentence's current analysis text
+     * deserialize an internal representation
      *
+     * @param {(String|Object)} nx JSON string or object
      * @return {String}
+     */
+    ,
+    set: function set(nx) {
+      var _this2 = this;
+
+      // parse the JSON if it's a string
+      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
+
+      this.options = nx.options;
+      this.comments = nx.comments;
+      this.tokens = nx.tokens.map(function (tokenNx) {
+        return Token.fromNx(_this2, tokenNx);
+      });
+
+      return this.attach().nx;
+    }
+
+    /**
+     * static method allowing us to construct a new Sentence directly from an
+     *   Nx string
+     *
+     * @param {String} serial
+     * @param {Object} options (optional)
+     * @return {Sentence}
      */
 
   }, {
     key: 'text',
+
+
+    /**
+     * get a plain-text formatted string of the sentence's current analysis text
+     *
+     * @return {String}
+     */
     get: function get() {
       // only care about tokens (not comments or settings)
       var tokens = [];
@@ -3588,14 +3656,14 @@ var Sentence = function () {
      */
     ,
     set: function set(text) {
-      var _this2 = this;
+      var _this3 = this;
 
       // insert a space before final punctuation
       text = text.trim().replace(/([.,?!]+)$/, ' $1');
 
       // split on whitespace and add form-only tokens
       _.map(text.split(/\s/), function (chunk) {
-        _this2.pushToken(Token.fromParams(_this2, { form: chunk }));
+        _this3.pushToken(Token.fromParams(_this3, { form: chunk }));
       });
 
       return this.text;
@@ -3844,7 +3912,7 @@ var Sentence = function () {
      */
     ,
     set: function set(paramsList) {
-      var _this3 = this;
+      var _this4 = this;
 
       // can only parse arrays
       if (!(paramsList instanceof Array)) return null;
@@ -3855,7 +3923,7 @@ var Sentence = function () {
 
       // push a new token for each set of parameters
       _.each(paramsList, function (params) {
-        _this3.tokens.push(Token.fromParams(_this3, params));
+        _this4.tokens.push(Token.fromParams(_this4, params));
       });
 
       // attach heads and return validated parameter list
@@ -3927,6 +3995,13 @@ var Sentence = function () {
       return valid;
     }
   }], [{
+    key: 'fromNx',
+    value: function fromNx(serial, options) {
+      var sent = new Sentence(options);
+      sent.nx = serial;
+      return sent;
+    }
+  }, {
     key: 'fromText',
     value: function fromText(serial, options) {
       var sent = new Sentence(options);
@@ -4665,9 +4740,48 @@ var Token = function () {
       // serialize other data
       return {
         current: this.current,
+        isEmpty: this.isEmpty,
         analyses: analyses
       };
     }
+
+    /**
+     * deserialize an internal representation
+     *
+     * @param {(String|Object)} nx JSON string or object
+     * @return {undefined}
+     */
+    ,
+    set: function set(nx) {
+      var _this2 = this;
+
+      // parse the JSON if it's a string
+      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
+
+      this.analyses = nx.analyses.map(function (analysisNx) {
+
+        var analysis = Analysis.fromNx(_this2, analysisNx);
+        analysis.subTokens = analysisNx.subTokens.map(function (subTokenNx) {
+          return Token.fromNx(_this2.sentence, subTokenNx);
+        });
+        return analysis;
+      });
+      this.current = nx.current;
+      this._isEmpty = nx.isEmpty;
+    }
+
+    /**
+     * static method allowing us to construct a new Token directly from an
+     *   Nx string and bind it to a sentence
+     *
+     * @param {Sentence} sent
+     * @param {String} serial
+     * @return {Token}
+     */
+
+  }, {
+    key: 'text',
+
 
     /**
      * get a plain-text formatted string of the current analysis text
@@ -4676,9 +4790,6 @@ var Token = function () {
      *
      * @throws {NotatrixError} if no analysis
      */
-
-  }, {
-    key: 'text',
     get: function get() {
 
       if (this.analysis === null) throw new NotatrixError('no analysis to get text for');
@@ -4918,6 +5029,13 @@ var Token = function () {
       return this.length > 1;
     }
   }], [{
+    key: 'fromNx',
+    value: function fromNx(sent, serial) {
+      var token = new Token(sent);
+      token.nx = serial;
+      return token;
+    }
+  }, {
     key: 'fromConllu',
     value: function fromConllu(sent, serial) {
       var token = new Token(sent);

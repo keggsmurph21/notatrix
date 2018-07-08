@@ -494,6 +494,42 @@ class Sentence {
   }
 
   /**
+   * deserialize an internal representation
+   *
+   * @param {(String|Object)} nx JSON string or object
+   * @return {String}
+   */
+  set nx(nx) {
+
+    // parse the JSON if it's a string
+    nx = (typeof nx === 'string')
+      ? JSON.parse(nx)
+      : nx;
+
+    this.options = nx.options;
+    this.comments = nx.comments;
+    this.tokens = nx.tokens.map(tokenNx => {
+      return Token.fromNx(this, tokenNx);
+    });
+
+    return this.attach().nx;
+  }
+
+  /**
+   * static method allowing us to construct a new Sentence directly from an
+   *   Nx string
+   *
+   * @param {String} serial
+   * @param {Object} options (optional)
+   * @return {Sentence}
+   */
+  static fromNx(serial, options) {
+    let sent = new Sentence(options);
+    sent.nx = serial;
+    return sent;
+  }
+
+  /**
    * get a plain-text formatted string of the sentence's current analysis text
    *
    * @return {String}
