@@ -815,8 +815,12 @@ class Token {
     // iterate over the strings
     for (let i=1; i<tokenLines.length; i++) {
 
-      // ignore leading semicolons (TODO: determine what these are)
-      let line = tokenLines[i].replace(/^;/, '');
+      let line = tokenLines[i];
+      if (/^;/.test(line)) {
+        // strip leading semicolons
+        line = line.replace(/^;/, '');
+        // TODO: save this information somewhere
+      }
 
       // determine line indent
       let indent = getIndent(line);

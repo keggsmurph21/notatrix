@@ -4890,8 +4890,12 @@ var Token = function () {
       // iterate over the strings
       for (var i = 1; i < tokenLines.length; i++) {
 
-        // ignore leading semicolons (TODO: determine what these are)
-        var line = tokenLines[i].replace(/^;/, '');
+        var line = tokenLines[i];
+        if (/^;/.test(line)) {
+          // strip leading semicolons
+          line = line.replace(/^;/, '');
+          // TODO: save this information somewhere
+        }
 
         // determine line indent
         var indent = getIndent(line);
