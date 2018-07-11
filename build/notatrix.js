@@ -3492,9 +3492,9 @@ var Sentence = function () {
     // external formats
 
     /**
-     * get a serial version of the internal sentence representation
+     * returns the % (as a number in [0,1]) annotation of the sentence
      *
-     * @return {String}
+     * @return {Number}
      */
 
   }, {
@@ -3579,6 +3579,38 @@ var Sentence = function () {
       });
       return acc;
     }
+  }, {
+    key: 'progress',
+    get: function get() {
+
+      var done = 0,
+          total = 0;
+
+      this.forEach(function (token) {
+
+        total += 2;
+
+        if (!token.analysis) return;
+
+        if (token.analysis.head) done++;
+        if (token.analysis.pos) done++;
+
+        token.analysis.eachHead(function (head) {
+
+          total++;
+          if (!!head.deprel) done++;
+        });
+      });
+
+      return total ? done / total : 1;
+    }
+
+    /**
+     * get a serial version of the internal sentence representation
+     *
+     * @return {String}
+     */
+
   }, {
     key: 'nx',
     get: function get() {

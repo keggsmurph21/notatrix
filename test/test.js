@@ -1577,7 +1577,8 @@ describe('nx deserializer', () => {
       let s = Sentence.fromNx(nx);
 
       expect(s.nx).to.equal(nx);
-      expect(clean(s.cg3)).to.equal(clean(cg3));
+      // TODO: get rid of this semicolon hack
+      expect(clean(s.cg3).replace(/;/g, '')).to.equal(clean(cg3).replace(/;/g, ''));
     });
   });
 
@@ -1591,4 +1592,38 @@ describe('nx deserializer', () => {
     });
   });
 
+});
+
+describe('progress percentage', () => {
+
+  const options = {
+    help: {
+      upostag: false,
+      xpostag: false
+    }
+  };
+
+  _.each(data['CoNLL-U'], (conllu, name) => {
+    it(`calculate progress for CoNLL-U:${name}`, () => {
+      let s = Sentence.fromConllu(conllu, options);
+
+      expect(() => { s.progress }).to.not.throw();
+    });
+  });
+
+  _.each(data['CG3'], (cg3, name) => {
+    it(`calculate progress for CG3:${name}`, () => {
+      let s = Sentence.fromCG3(cg3, options);
+
+      expect(() => { s.progress }).to.not.throw();
+    });
+  });
+
+  _.each(data['Plain text'], (text, name) => {
+    it(`calculate progress for Plain text:${name}`, () => {
+      let s = Sentence.fromText(text, options);
+
+      expect(s.progress).to.equal(0);
+    });
+  });
 });

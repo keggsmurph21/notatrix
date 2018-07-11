@@ -471,6 +471,40 @@ class Sentence {
   // external formats
 
   /**
+   * returns the % (as a number in [0,1]) annotation of the sentence
+   *
+   * @return {Number}
+   */
+  get progress() {
+
+    let done = 0,
+      total = 0;
+
+    this.forEach(token => {
+
+      total += 2;
+
+      if (!token.analysis)
+        return;
+
+      if (token.analysis.head)
+        done++;
+      if (token.analysis.pos)
+        done++;
+
+      token.analysis.eachHead(head => {
+
+        total++;
+        if (!!head.deprel)
+          done++;
+
+      });
+    });
+
+    return total ? done / total : 1;
+  }
+
+  /**
    * get a serial version of the internal sentence representation
    *
    * @return {String}
