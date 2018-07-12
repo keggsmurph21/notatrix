@@ -19,6 +19,7 @@ const regex = {
   cg3TokenContent: /^;?\s+"(.|\\")*"/
 }
 
+const fallback = '_';
 
 /**
  * this class contains all the information associated with a sentence, including
@@ -487,15 +488,15 @@ class Sentence {
       if (!token.analysis)
         return;
 
-      if (token.analysis.head)
+      if (token.analysis.head && token.analysis.head !== fallback)
         done++;
-      if (token.analysis.pos)
+      if (token.analysis.pos && token.analysis.head !== fallback)
         done++;
 
       token.analysis.eachHead(head => {
 
         total++;
-        if (!!head.deprel)
+        if (head.deprel && head.deprel !== fallback)
           done++;
 
       });

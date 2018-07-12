@@ -3058,13 +3058,16 @@ var regex = {
   empty: /^\W*[0-9]+\.[0-9]+/,
   cg3TokenStart: /^"<(.|\\")*>"/,
   cg3TokenContent: /^;?\s+"(.|\\")*"/
-
-  /**
-   * this class contains all the information associated with a sentence, including
-   *   an comments array, a tokens array, and a list of options/settings that apply
-   *   to all subelements of this sentence
-   */
 };
+
+var fallback = '_';
+
+/**
+ * this class contains all the information associated with a sentence, including
+ *   an comments array, a tokens array, and a list of options/settings that apply
+ *   to all subelements of this sentence
+ */
+
 var Sentence = function () {
   function Sentence(paramsList, options) {
     _classCallCheck(this, Sentence);
@@ -3592,13 +3595,13 @@ var Sentence = function () {
 
         if (!token.analysis) return;
 
-        if (token.analysis.head) done++;
-        if (token.analysis.pos) done++;
+        if (token.analysis.head && token.analysis.head !== fallback) done++;
+        if (token.analysis.pos && token.analysis.head !== fallback) done++;
 
         token.analysis.eachHead(function (head) {
 
           total++;
-          if (!!head.deprel) done++;
+          if (head.deprel && head.deprel !== fallback) done++;
         });
       });
 
