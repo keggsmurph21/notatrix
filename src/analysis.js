@@ -577,6 +577,7 @@ class Analysis {
             clump: this.clump,
             name: `pos-node`,
             attr: `upostag`,
+            pos: this.pos,
             label: this.pos || '',
             length: `${(this.pos || '').length * 0.7 + 1}em`,
             analysis: this
@@ -588,6 +589,7 @@ class Analysis {
             num: this.num,
             clump: this.clump,
             name: `pos-edge`,
+            pos: this.pos,
             source: `form-${this.id}`,
             target: `pos-node-${this.id}`
           },
