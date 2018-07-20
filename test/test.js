@@ -1655,3 +1655,21 @@ describe('eles', () => {
     });
   });
 });
+
+describe('problem cases', () => {
+  _.each([data['CoNLL-U'].nested_2, data['CoNLL-U'].t, data['CoNLL-U'].from_cg3_with_spans], conllu => {
+    it('should set superToken and isSubToken correctly', () => {
+
+      let s = Sentence.fromConllu(conllu);
+      _.each(s.tokens, token => {
+        _.each(token.subTokens, subToken => {
+          expect(subToken.isSubToken).to.equal(true);
+          expect(subToken.superToken instanceof Analysis).to.equal(true);
+        });
+        expect(token.isSubToken).to.equal(false);
+        expect(token.superToken).to.equal(null);
+      });
+      console.log(s.eles.filter(ele => ele.data.name === 'number' || ele.data.name === 'multiword' || ele.data.name === 'form'));
+    });
+  });
+});
