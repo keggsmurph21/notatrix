@@ -2539,6 +2539,7 @@ var Analysis = function () {
                 id: 'dep_' + _this10.id + '_' + head.id,
                 name: 'dependency',
                 attr: 'deprel',
+                deprel: deprel,
                 source: 'form-' + _this10.id,
                 sourceAnalysis: _this10,
                 target: 'form-' + head.id,

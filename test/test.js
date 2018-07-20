@@ -1669,7 +1669,6 @@ describe('problem cases', () => {
         expect(token.isSubToken).to.equal(false);
         expect(token.superToken).to.equal(null);
       });
-      console.log(s.eles.filter(ele => ele.data.name === 'number' || ele.data.name === 'multiword' || ele.data.name === 'form'));
     });
   });
 });

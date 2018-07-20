@@ -605,6 +605,7 @@ class Analysis {
               id: `dep_${this.id}_${head.id}`,
               name: `dependency`,
               attr: `deprel`,
+              deprel: deprel,
               source: `form-${this.id}`,
               sourceAnalysis: this,
               target: `form-${head.id}`,
