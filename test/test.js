@@ -1627,3 +1627,31 @@ describe('progress percentage', () => {
     });
   });
 });
+
+describe('eles', () => {
+  _.each(data['CoNLL-U'], (conllu, name) => {
+    it(`should not have duplicate elements for CoNLL-U:${name}`, () => {
+      let s = Sentence.fromConllu(conllu);
+      let eles = new Set();
+
+      _.each(s.eles, ele => {
+        if (eles.has(ele.data.id))
+          throw new Error(`duplicate: ${ele.data.id}`);
+        eles.add(ele.data.id);
+      });
+    });
+  });
+
+  _.each(data['CG3'], (cg3, name) => {
+    it(`should not have duplicate elements for CG3:${name}`, () => {
+      let s = Sentence.fromCG3(cg3);
+      let eles = new Set();
+
+      _.each(s.eles, ele => {
+        if (eles.has(ele.data.id))
+          throw new Error(`duplicate: ${ele.data.id}`);
+        eles.add(ele.data.id);
+      });
+    });
+  });
+});

@@ -906,7 +906,7 @@ class Sentence {
     this.index();
 
     let eles = [];
-    this.forEach(token => {
+    _.each(this.tokens, token => {
       eles = eles.concat(token.eles);
     });
 

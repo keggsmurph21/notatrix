@@ -3586,6 +3586,7 @@ var Sentence = function () {
     key: 'progress',
     get: function get() {
 
+      // amount work done, amount total work
       var done = 0,
           total = 0;
 
@@ -3593,11 +3594,14 @@ var Sentence = function () {
 
         total += 2;
 
+        // if analysis is not set, can't compute other stuff
         if (!token.analysis) return;
 
+        // if these fields are filled out, increment work
         if (token.analysis.head && token.analysis.head !== fallback) done++;
         if (token.analysis.pos && token.analysis.head !== fallback) done++;
 
+        // each head increases amount of work to do
         token.analysis.eachHead(function (head) {
 
           total++;
@@ -3605,6 +3609,7 @@ var Sentence = function () {
         });
       });
 
+      // return a float in [0,1] and avoid dividing by zero
       return total ? done / total : 1;
     }
 
@@ -3990,7 +3995,7 @@ var Sentence = function () {
       this.index();
 
       var eles = [];
-      this.forEach(function (token) {
+      _.each(this.tokens, function (token) {
         eles = eles.concat(token.eles);
       });
 
