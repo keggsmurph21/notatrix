@@ -1670,4 +1670,18 @@ describe('problem cases', () => {
       });
     });
   });
+
+  _.each([data['CoNLL-U'][0], data['CoNLL-U'][1]], conllu => {
+
+    it('should not do the funky _;_ thing when converting between CG3', () => {
+
+      let s1 = Sentence.fromConllu(conllu);
+      let s2 = Sentence.fromCG3(s1.cg3);
+      let s3 = Sentence.fromConllu(s2.conllu);
+
+      expect(s1.conllu).to.equal(s3.conllu);
+      expect(s1.cg3).to.equal(s3.cg3);
+
+    });
+  });
 });
