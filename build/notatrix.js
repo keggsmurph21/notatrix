@@ -2345,7 +2345,6 @@ var Analysis = function () {
 
       this.params = nx.params;
       _.each(nx.values, function (value, key) {
-        console.log(key, value);
         _this8[key] = value;
       });
     }

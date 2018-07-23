@@ -406,7 +406,6 @@ class Analysis {
 
     this.params = nx.params;
     _.each(nx.values, (value, key) => {
-      console.log(key, value);
       this[key] = value;
     });
 
