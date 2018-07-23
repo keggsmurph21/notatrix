@@ -668,15 +668,10 @@ class Token {
   /**
    * deserialize an internal representation
    *
-   * @param {(String|Object)} nx JSON string or object
+   * @param {Object} nx
    * @return {undefined}
    */
   set nx(nx) {
-
-    // parse the JSON if it's a string
-    nx = (typeof nx === 'string')
-      ? JSON.parse(nx)
-      : nx;
 
     this.analyses = nx.analyses.map(analysisNx => {
 

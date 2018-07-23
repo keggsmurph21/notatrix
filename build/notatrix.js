@@ -1729,7 +1729,7 @@ function toSubscript(str) {
  * @return {String}
  */
 function sanitize(str) {
-  return (str || '').replace(/\s/g, '');
+  if (str) return str.replace(/\s/g, '');
 }
 
 /**
@@ -1775,6 +1775,8 @@ function parseEnhancedString(str) {
  * @return {undefined}
  */
 function evaluatePunctPos(ana, string) {
+  if (typeof string !== 'string') return;
+
   if (puncts.test(string)) {
     if (ana.sentence.options.help.upostag && !ana.upostag) ana.upostag = 'PUNCT';
 
@@ -2334,18 +2336,16 @@ var Analysis = function () {
     /**
      * deserialize an internal representation
      *
-     * @param {(String|Object)} nx JSON string or object
+     * @param {Object} nx
      * @return {undefined}
      */
     ,
     set: function set(nx) {
       var _this8 = this;
 
-      // parse the JSON if it's a string
-      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
-
       this.params = nx.params;
       _.each(nx.values, function (value, key) {
+        console.log(key, value);
         _this8[key] = value;
       });
     }
@@ -3091,7 +3091,6 @@ var Sentence = function () {
         head: true,
         deps: true
       },
-      prettyOutput: true,
       showEnhanced: true,
       showEmptyDependencies: true,
       catchInvalid: true,
@@ -3635,25 +3634,22 @@ var Sentence = function () {
       }
 
       // serialize other data
-      return JSON.stringify({
+      return {
         comments: this.comments,
         options: this.options,
         tokens: tokens
-      }, null, this.options.prettyOutput ? 2 : 0);
+      };
     }
 
     /**
      * deserialize an internal representation
      *
-     * @param {(String|Object)} nx JSON string or object
+     * @param {Object} nx
      * @return {String}
      */
     ,
     set: function set(nx) {
       var _this2 = this;
-
-      // parse the JSON if it's a string
-      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
 
       this.options = nx.options;
       this.comments = nx.comments;
@@ -4791,15 +4787,12 @@ var Token = function () {
     /**
      * deserialize an internal representation
      *
-     * @param {(String|Object)} nx JSON string or object
+     * @param {Object} nx
      * @return {undefined}
      */
     ,
     set: function set(nx) {
       var _this2 = this;
-
-      // parse the JSON if it's a string
-      nx = typeof nx === 'string' ? JSON.parse(nx) : nx;
 
       this.analyses = nx.analyses.map(function (analysisNx) {
 

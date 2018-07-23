@@ -26,7 +26,8 @@ function toSubscript(str) {
  * @return {String}
  */
 function sanitize(str) {
-  return (str || '').replace(/\s/g, '');
+  if (str)
+    return str.replace(/\s/g, '');
 }
 
 /**
@@ -73,6 +74,9 @@ function parseEnhancedString(str) {
  * @return {undefined}
  */
 function evaluatePunctPos(ana, string) {
+  if (typeof string !== 'string')
+    return;
+
   if (puncts.test(string)) {
     if (ana.sentence.options.help.upostag && !ana.upostag)
       ana.upostag = 'PUNCT';
@@ -395,18 +399,14 @@ class Analysis {
   /**
    * deserialize an internal representation
    *
-   * @param {(String|Object)} nx JSON string or object
+   * @param {Object} nx
    * @return {undefined}
    */
   set nx(nx) {
 
-    // parse the JSON if it's a string
-    nx = (typeof nx === 'string')
-      ? JSON.parse(nx)
-      : nx;
-
     this.params = nx.params;
     _.each(nx.values, (value, key) => {
+      console.log(key, value);
       this[key] = value;
     });
 

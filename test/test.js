@@ -1557,7 +1557,6 @@ describe('nx deserializer', () => {
       head: false,
       deps: false
     },
-    prettyOutput: false,
     showEmptyDependencies: false
   };
 
@@ -1566,7 +1565,7 @@ describe('nx deserializer', () => {
       let nx = Sentence.fromConllu(conllu, options).nx;
       let s = Sentence.fromNx(nx);
 
-      expect(s.nx).to.equal(nx);
+      expect(s.nx).to.deep.equal(nx);
       expect(clean(s.conllu)).to.equal(clean(conllu));
     });
   });
@@ -1576,7 +1575,7 @@ describe('nx deserializer', () => {
       let nx = Sentence.fromCG3(cg3, options).nx;
       let s = Sentence.fromNx(nx);
 
-      expect(s.nx).to.equal(nx);
+      expect(s.nx).to.deep.equal(nx);
       // TODO: get rid of this semicolon hack
       expect(clean(s.cg3).replace(/;/g, '')).to.equal(clean(cg3).replace(/;/g, ''));
     });
@@ -1587,7 +1586,7 @@ describe('nx deserializer', () => {
       let nx = Sentence.fromText(text, options).nx;
       let s = Sentence.fromNx(nx);
 
-      expect(s.nx).to.equal(nx);
+      expect(s.nx).to.deep.equal(nx);
       expect(s.text.replace(/\s*/g, '')).to.equal(text.replace(/\s*/g, ''));
     });
   });

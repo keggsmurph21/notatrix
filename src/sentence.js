@@ -46,7 +46,6 @@ class Sentence {
         head: true,
         deps: true
       },
-      prettyOutput: true,
       showEnhanced: true,
       showEmptyDependencies: true,
       catchInvalid: true,
@@ -526,25 +525,20 @@ class Sentence {
     }
 
     // serialize other data
-    return JSON.stringify({
+    return {
       comments: this.comments,
       options: this.options,
       tokens: tokens
-    }, null, this.options.prettyOutput ? 2 : 0);
+    };
   }
 
   /**
    * deserialize an internal representation
    *
-   * @param {(String|Object)} nx JSON string or object
+   * @param {Object} nx
    * @return {String}
    */
   set nx(nx) {
-
-    // parse the JSON if it's a string
-    nx = (typeof nx === 'string')
-      ? JSON.parse(nx)
-      : nx;
 
     this.options = nx.options;
     this.comments = nx.comments;
