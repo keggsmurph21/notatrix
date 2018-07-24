@@ -85,7 +85,7 @@ function cg3StringGetTags(line) {
       if (cg3Regex.dependency.test(chunks[j])) {
         head = chunks[j].match(cg3Regex.dependency)[2];
       } else {
-        head = chunks[j].match(cg3Regex.head)[1];
+        head = chunks[j].match(cg3Regex.id)[1];
       }
 
     // try to extract misc, track with array (can be multiple)
