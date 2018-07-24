@@ -81,8 +81,12 @@ function cg3StringGetTags(line) {
       deprel = chunks[j].match(cg3Regex.deprel)[1];
 
     // try to extract head
-    } else if (cg3Regex.dependency.test(chunks[j])) {
-      head = chunks[j].match(cg3Regex.dependency)[2];
+    } else if (cg3Regex.id.test(chunks[j])) {
+      if (cg3Regex.dependency.test(chunks[j])) {
+        head = chunks[j].match(cg3Regex.dependency)[2];
+      } else {
+        head = chunks[j].match(cg3Regex.head)[1];
+      }
 
     // try to extract misc, track with array (can be multiple)
     } else if (cg3Regex.misc.test(chunks[j])) {
@@ -145,8 +149,9 @@ function cg3StringParseAnalysis(token, lines) {
 const cg3Regex = {
   form: /^"<((.|\\")*)>"/,
   lemma: /["\]](.*)["\]](\s|$)/,
-  head: /->(.*)$/,
-  dependency: /^#(.+)->(.*)/,
+  head: /->(\d*)$/,
+  dependency: /^#(\d+)->(\d*)/,
+  id: /^#(\d+)/,
   deprel: /^@(.*)/,
   misc: /.+:.*/
 };
