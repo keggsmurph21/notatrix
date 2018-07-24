@@ -2623,7 +2623,7 @@ var Analysis = function () {
   }, {
     key: 'upostag',
     get: function get() {
-      return this.isSuperToken ? null : this._upostag;
+      return this.isSuperToken ? null : this._upostag === fallback ? null : this._upostag;
     }
 
     /**
@@ -2645,7 +2645,7 @@ var Analysis = function () {
   }, {
     key: 'xpostag',
     get: function get() {
-      return this.isSuperToken ? null : this._xpostag;
+      return this.isSuperToken ? null : this._xpostag === fallback ? null : this._xpostag;
     }
 
     /**
@@ -4208,7 +4208,7 @@ function cg3StringGetTags(line) {
 
       // try to extract tags (and save to xpostag), track with an array (can be multiple)
     } else {
-      xpostag.push(chunks[j]);
+      if (chunks[j] !== '_') xpostag.push(chunks[j]);
     }
   }
 

@@ -923,31 +923,35 @@ class Analysis {
    *
    * @return {(String|undefined)}
    */
-  get upostag() {
-    return this.isSuperToken
-      ? null
-      : this._upostag;
-  }
+   get upostag() {
+     return this.isSuperToken
+       ? null
+       : this._upostag === fallback
+         ? null
+         : this._upostag;
+   }
 
-  /**
-   * set the `upostag`
-   *
-   * @return {undefined}
-   */
-  set upostag(upostag) {
-    this._upostag = sanitize(upostag);
-  }
+   /**
+    * set the `upostag`
+    *
+    * @return {undefined}
+    */
+   set upostag(upostag) {
+     this._upostag = sanitize(upostag);
+   }
 
-  /**
-   * get the `xpostag`
-   *
-   * @return {(String|undefined)}
-   */
-  get xpostag() {
-    return this.isSuperToken
-      ? null
-      : this._xpostag;
-  }
+   /**
+    * get the `xpostag`
+    *
+    * @return {(String|undefined)}
+    */
+   get xpostag() {
+     return this.isSuperToken
+       ? null
+       : this._xpostag === fallback
+         ? null
+         : this._xpostag;
+   }
 
   /**
    * set the `xpostag`
