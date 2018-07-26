@@ -19,10 +19,32 @@ class InvalidCoNLLUError extends NotatrixError {
 }
 
 
+
+class SplitterError extends NotatrixError {
+  constructor(message, text, options) {
+    super(message);
+
+    this.text = text;
+    this.options = options;
+  }
+}
+
+class DetectorError extends NotatrixError {
+  constructor(message, text, options) {
+    super(message);
+
+    this.text = text;
+    this.options = options;
+  }
+}
+
+
 module.exports = {
 
-  NotatrixError: NotatrixError,
-  InvalidCG3Error: InvalidCG3Error,
-  InvalidCoNLLUError: InvalidCoNLLUError,
+  NotatrixError,
+  InvalidCG3Error,
+  InvalidCoNLLUError,
+  SplitterError,
+  DetectorError,
 
 };

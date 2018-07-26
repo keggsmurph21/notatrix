@@ -8,16 +8,16 @@ const onPunctuation = require('./on-punctuation');
 
 const detect = require('../detector');
 
-let as = {
+const as = {
 
 	Brackets: onDoubleNewlines,
 	CG3: onDoubleNewlines,
 	'CoNLL-U': onDoubleNewlines,
 	'notatrix serial': (text, options) => {
-  	throw new SplitterError('Can\'t split serial');
+  	throw new SplitterError('Can\'t split serial', text, options);
   },
 	Params: (text, options) => {
-  	throw new SplitterError('Can\'t split params');
+  	throw new SplitterError('Can\'t split params', text, options);
   },
 	'plain text': onPunctuation,
 	SD: onDoubleNewlines,

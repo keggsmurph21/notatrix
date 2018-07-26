@@ -9,7 +9,7 @@ module.exports = (text, options={}) => {
     trimChunks: true
   });
 
-  return text.split(re.punctuation).map(chunk => {
+  return text.split(re.sentenceThenPunctuation).map(chunk => {
     if (options.trimChunks) {
       return chunk.trim();
     } else {
