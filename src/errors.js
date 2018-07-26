@@ -18,18 +18,11 @@ class InvalidCoNLLUError extends NotatrixError {
   }
 }
 
-class TransformationError extends NotatrixError {
-  constructor(...args) {
-    super(...args);
-  }
-}
-
 
 module.exports = {
 
   NotatrixError: NotatrixError,
   InvalidCG3Error: InvalidCG3Error,
   InvalidCoNLLUError: InvalidCoNLLUError,
-  TransformationError: TransformationError
 
 };
