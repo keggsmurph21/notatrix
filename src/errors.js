@@ -38,6 +38,14 @@ class DetectorError extends NotatrixError {
   }
 }
 
+class ParserError extends NotatrixError {
+  constructor(message, text, options) {
+    super(message);
+
+    this.text = text;
+    this.options = options;
+  }
+}
 
 module.exports = {
 
@@ -46,5 +54,6 @@ module.exports = {
   InvalidCoNLLUError,
   SplitterError,
   DetectorError,
+  ParserError,
 
 };

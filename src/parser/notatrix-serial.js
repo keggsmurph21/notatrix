@@ -1,4 +1,7 @@
 'use strict';
 
+const ParserError = require('../errors').ParserError;
 
-throw new Error('not implemented');
+module.exports = (text, options) => {
+  throw new ParserError('not implemented');
+};
