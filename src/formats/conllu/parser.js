@@ -49,13 +49,6 @@ module.exports = (text, options) => {
     allowEmptyString: false,
     requireTenParams: false,
     allowWhiteLines: true,
-    /*
-    indentString: null,
-    useTabIndent: false,
-    spacesPerTab: null,
-    equalizeWhitespace: true,
-    coerceMultipleSpacesAfterSemicolonToTab: true,
-    */
   });
 
   try {
@@ -67,8 +60,8 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  console.log(text);
-  console.log();
+  //console.log();
+  //console.log(text);
 
   // "tokenize" into chunks
   let i = 0, chunks = [];
@@ -100,6 +93,7 @@ module.exports = (text, options) => {
 
         token = {
         	type: 'super-token',
+          index: tokenLine[1],
         	startIndex: tokenLine[2],
         	stopIndex: tokenLine[5],
         	form: utils.re.fallback.test(fields[0]) ? null : fields[0],
@@ -132,20 +126,22 @@ module.exports = (text, options) => {
     }
 
   });
-  console.log(chunks);
+
+  //console.log(chunks);
 
   let tokens = [];
   let comments = [];
   let expecting = ['comment', 'super-token', 'token'];
   let superToken = null;
 
-  chunks.forEach(chunk => {
+  chunks.filter(utils.thin).forEach(chunk => {
 
     if (expecting.indexOf(chunk.type) === -1)
       throw new ParserError(`expecting ${expecting.join('|')}, got ${chunk.type}`, text, options);
 
     if (chunk.type === 'comment') {
 
+      comments.push(chunk.body);
       expecting = ['comment', 'super-token', 'token'];
 
     } else if (chunk.type === 'super-token') {
@@ -153,7 +149,10 @@ module.exports = (text, options) => {
       superToken = {
         form: chunk.form,
         misc: chunk.misc,
-        subTokens: [],
+        analyses: [{
+          subTokens: []
+        }],
+        index: chunk.index,
         currentIndex: null,
         stopIndex: chunk.stopIndex
       };
@@ -167,7 +166,7 @@ module.exports = (text, options) => {
         assertNext(superToken.currentIndex, chunk.index);
         superToken.currentIndex = chunk.index;
 
-        superToken.subTokens.push(_.omit(chunk, ['type', 'index']));
+        superToken.analyses[0].subTokens.push(_.omit(chunk, ['type']));
 
         if (superToken.currentIndex === superToken.stopIndex) {
 
@@ -181,7 +180,7 @@ module.exports = (text, options) => {
 
       } else {
 
-        tokens.push(_.omit(chunk, ['type', 'index']));
+        tokens.push(_.omit(chunk, ['type']));
         expecting = ['super-token', 'token'];
 
       }
@@ -192,7 +191,13 @@ module.exports = (text, options) => {
     }
   });
 
-  console.log(tokens)
+  //console.log(comments);
+  //console.log(tokens);
 
-
+  return {
+    input: text,
+    options: options,
+    comments: comments,
+    tokens: tokens,
+  };
 };

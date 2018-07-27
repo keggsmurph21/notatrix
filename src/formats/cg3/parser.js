@@ -47,6 +47,7 @@ module.exports = (text, options) => {
     spacesPerTab: null,
     equalizeWhitespace: true,
     coerceMultipleSpacesAfterSemicolonToTab: true,
+    allowMissingIndices: true,
   });
 
   try {
@@ -58,8 +59,8 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  console.log(text);
-  console.log();
+  //console.log();
+  //console.log(text);
 
   // "tokenize" into chunks
   let i = 0, chunks = [];
@@ -115,7 +116,7 @@ module.exports = (text, options) => {
 
         const dependency = subChunk.match(utils.re.cg3Dependency),
           head = subChunk.match(utils.re.cg3Head),
-          id = subChunk.match(utils.re.cg3Id),
+          index = subChunk.match(utils.re.cg3Id),
           deprel = subChunk.match(utils.re.cg3Deprel),
           other = subChunk.match(utils.re.cg3Other);
 
@@ -128,11 +129,11 @@ module.exports = (text, options) => {
             chunk.head = head[1];
           }
 
-          if (id) {
-            if (chunk.id)
-              throw new ParserError('unexpected subChunk, id already set', text, options);
+          if (index) {
+            if (chunk.index)
+              throw new ParserError('unexpected subChunk, index already set', text, options);
 
-            chunk.id = id[1];
+            chunk.index = index[1];
           }
 
         } else if (deprel) {
@@ -184,8 +185,12 @@ module.exports = (text, options) => {
       if (analysis)
         token.analyses.push(analysis);
 
-      if (token)
-        tokens.push(token);
+      if (token) {
+        if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1)
+          token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+
+        tokens.push(_.omit(token, 'currentIndent'));
+      }
 
       token = {
         form: chunk.form,
@@ -208,27 +213,37 @@ module.exports = (text, options) => {
         if (analysis)
           token.analyses.push(analysis);
 
+        if (chunk.index === undefined && !options.allowMissingIndices)
+          throw new ParserError('cannot parse token without index', text, options);
+
         analysis = {
-          words: [{
-            semicolon: chunk.semicolon,
-            lemma: chunk.lemma,
-            head: chunk.head,
-            id: chunk.id,
-            deprel: chunk.deprel,
-            other: chunk.other,
-          }]
-        }
+          subTokens: [
+            {
+              semicolon: chunk.semicolon,
+              lemma: chunk.lemma || null,
+              head: chunk.head || null,
+              index: chunk.index || null,
+              deprel: chunk.deprel || null,
+              xpostag: chunk.other.pop() || null,
+              other: chunk.other || null,
+            }
+          ]
+        };
       } else {
         if (!analysis)
           throw new ParserError('cannot parse content chunk without an analysis', text, options);
 
-        analysis.words.push({
+        if (chunk.index === undefined && !options.allowMissingIndices)
+          throw new ParserError('cannot parse token without index', text, options);
+
+        analysis.subTokens.push({
           semicolon: chunk.semicolon,
-          lemma: chunk.lemma,
-          head: chunk.head,
-          id: chunk.id,
-          deprel: chunk.deprel,
-          other: chunk.other,
+          lemma: chunk.lemma || null,
+          head: chunk.head || null,
+          index: chunk.index || null,
+          deprel: chunk.deprel || null,
+          xpostag: chunk.other.pop() || null,
+          other: chunk.other || null,
         });
 
       }
@@ -243,265 +258,13 @@ module.exports = (text, options) => {
 
   });
 
-  const ret = {
-    chunks: chunks,
+  //console.log(comments);
+  //console.log(tokens);
+
+  return {
+    input: text,
+    options: options,
     comments: comments,
     tokens: tokens,
   };
-
-  console.log(ret);
-
-  let sent = new nx.Sentence(options);
-  sent.comments = comments;
-
-  /*tokens.forEach(token => {
-
-    let nxToken = new nx.Token(sent)
-  })*/
-
-  return ret;
-  /*
-  class Sentence {
-    constructor() {
-      this.parent = null;
-      this.root = [];
-      this.comments = [];
-    }
-
-    encode() {
-      let sent = new nx.Sentence();
-
-      sent = this.root.tokenize(sent);
-      sent.index();
-      sent = this.root.dependize(sent, 0);
-      sent.comments = this.comments;
-
-      return sent;
-    }
-
-    push(token) {
-      this.root = token;
-    }
-  }
-
-  class Token {
-    constructor(parent) {
-      this.parent = parent;
-
-      this.deprel = null;
-      this.before = [];
-      this.words  = [];
-      this.after  = [];
-    }
-
-    eachBefore(callback) {
-      for (let i=0; i<this.before.length; i++) {
-        callback(this.before[i], i);
-      }
-    }
-
-    eachAfter(callback) {
-      for (let i=0; i<this.after.length; i++) {
-        callback(this.after[i], i);
-      }
-    }
-
-    tokenize(sent) {
-
-      this.eachBefore(before => {
-        sent = before.tokenize(sent);
-      });
-
-      let token = nx.Token.fromParams(sent, {
-        form: this.words.join('-'),
-        deprel: this.deprel
-      });
-      sent.insertTokenAt(Infinity, token);
-
-      this.eachAfter(after => {
-        sent = after.tokenize(sent);
-      });
-
-      this.analysis = token.analysis;
-
-      return sent;
-    }
-
-    dependize(sent, id) {
-
-      this.eachBefore(before => {
-        sent = before.dependize(sent, this.analysis.id);
-      });
-
-      const head = sent.getById(id);
-      if (head)
-        this.analysis.addHead(head, this.deprel);
-
-      this.eachAfter(after => {
-        sent = after.dependize(sent, this.analysis.id);
-      });
-
-      return sent;
-    }
-
-    push(token) {
-      if (this.words.length) {
-        this.after.push(token);
-      } else {
-        this.before.push(token);
-      }
-    }
-
-    addWord(word) {
-      if (!word)
-        return;
-
-      if (this.deprel) {
-        this.words.push(word);
-      } else {
-        this.deprel = word;
-      }
-    }
-  }
-
-  let sent = new Sentence(),
-    parsing = sent,
-    parent = null,
-    word = '';
-
-  _.each(text, char => {
-    switch (char) {
-      case ('['):
-        parent = parsing;
-        parsing = new Token(parent);
-        if (parent && parent.push)
-          parent.push(parsing)
-        word = '';
-        break;
-
-      case (']'):
-        if (parsing.addWord)
-          parsing.addWord(word);
-        parsing = parsing.parent;
-        parent = parsing.parent;
-        word = '';
-        break;
-
-      case (' '):
-        if (parsing.addWord)
-          parsing.addWord(word);
-        word = '';
-        break;
-
-      default:
-        word += char;
-        break;
-    }
-  });
-
-  return sent.encode();
-  */
-
 };
-
-
-/*
-
-// TODO: Sentence
-this.comments = [];
-this.tokens = [];
-
-// since this parsing is more complicated than CoNLL-U parsing, keep this
-//   array of lines for the current token we're parsing
-// NOTE: CG3 tokens are separated by lines of the form `/^"<EXAMPLE>"/`
-//   and lines beginning with one/more indent give data for that token
-let tokenLines = [];
-
-// split on newlines
-const lines = cg3.trim().split('\n');
-for (let i=0; i<lines.length; i++) {
-
-  // decide what the current line is
-  let isToken = regex.cg3TokenStart.test(lines[i]);
-  let isContent = regex.cg3TokenContent.test(lines[i]);
-
-  // current line is the start of a new token
-  if (isToken) {
-
-    // if we already have stuff in our tokenLines buffer, parse it as a token
-    if (tokenLines.length)
-      this.tokens.push(Token.fromCG3(this, tokenLines));
-
-    // reset tokenLines buffer
-    tokenLines = [ lines[i] ];
-
-  } else {
-
-    // add content lines to tokenLines buffer
-    if (tokenLines.length && isContent) {
-      tokenLines.push(lines[i]);
-
-    // push comment
-    } else {
-      this.comments.push(lines[i].match(regex.commentContent)[1]);
-    }
-  }
-}
-
-// clear tokenLines buffer
-if (tokenLines.length)
-  this.tokens.push(Token.fromCG3(this, tokenLines));
-
-// attach heads and return CG3 string
-return this.attach().cg3;
-
-
-
-
-
-
-
-// TODO: Token
-set cg3(tokenLines) {
-  // again, we have complicated parsing here ... first make sure we get an
-  //   array of the important information (minimally the form on the first line)
-  let analysis = [ tokenLines[0] ];
-
-  // iterate over the strings
-  for (let i=1; i<tokenLines.length; i++) {
-
-    let line = tokenLines[i];
-    if (/^;/.test(line)) {
-      // strip leading semicolons
-      line = line.replace(/^;/, '');
-      // TODO: save this information somewhere
-    }
-
-    // determine line indent
-    let indent = getIndent(line);
-
-    // if we're back at indent=1 and we already have stuff in our analysis
-    //   buffer, parse it as an analysis
-    if (indent === 1 && i > 1) {
-      // parse as analysis
-      cg3StringParseAnalysis(this, analysis);
-      // reset buffer
-      analysis = [ tokenLines[0] ];
-    }
-
-    // add to buffer
-    analysis.push(line);
-  }
-
-  // parse and clear buffer
-  cg3StringParseAnalysis(this, analysis);
-}
-
-
-
-
-
-
-
-// TODO: Analysis
-*/

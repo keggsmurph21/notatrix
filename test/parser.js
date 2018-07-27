@@ -16,14 +16,22 @@ describe('parser', () => {
 
     const options = {};
 
-    utils.forEachText((text, format, name) => {
-      it(`should detect ${format}:${name} as ${format}`, () => {
+    let seen = new Set();
 
-        //expect(parse.as[format](text, options) instanceof nx.Sentence).to.equal(true);
+    utils.forEachText((text, format, name) => {
+      if (!seen.has(format))
+      it(`should parse ${format}:${name} to notatrix serial`, () => {
+
+        const parsed = parse.as[format](text, options);
+        console.log(parsed.tokens)
+        expect(() => {}).to.not.throw();
 
       });
+      seen.add(format)
     });
   });
+
+  return;
 
   describe('poop!', () => {
 

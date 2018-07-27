@@ -1,8 +1,9 @@
 module.exports = {
 
   multiNewlines: /\n{2,}/g,
-  punctuation: /[.,!?]+/g,
-  sentenceThenPunctuation: /([^.,!?]*[.,!?]*)/g,
+  punctuation: /[.,!?;]+/g,
+  allPunctuation: /^[.,!?;]+$/,
+  sentenceThenPunctuation: /([^.,!?;]*[.,!?;]*)/g,
   comment: /^(#\s*(.*))(\n|$)/,
   conlluTokenLine: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
   conlluTokenLineTenParams: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
@@ -11,7 +12,7 @@ module.exports = {
   cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#->]+)*)/,
   cg3Dependency: /#?\d+(->\d*)?$/,
   cg3Head: /#\d+->(\d*)$/,
-  cg3Id: /#(\d+)/,
+  cg3Index: /#(\d+)/,
   cg3Deprel: /^@(.*)/,
   cg3Other: /(.+(:.+)?)/,
   whitespace: /(\s+)/,

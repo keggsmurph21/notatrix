@@ -5,25 +5,42 @@ const _ = require('underscore');
 const nx = require('../../nx');
 const utils = require('../../utils');
 const ParserError = utils.ParserError;
+const detect = require('./detector');
 
 module.exports = (text, options) => {
 
+  //console.log();
+  //console.log(text);
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+  });
+
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError)
+      throw new ParserError(e.message);
+
+    throw e;
+  }
+
   class Sentence {
-    constructor() {
+    constructor(text, options) {
+      this.input = text;
+      this.options = options;
       this.parent = null;
       this.root = [];
       this.comments = [];
     }
 
-    encode() {
-      let sent = new nx.Sentence();
-
-      sent = this.root.tokenize(sent);
-      sent.index();
-      sent = this.root.dependize(sent, 0);
-      sent.comments = this.comments;
-
-      return sent;
+    serialize() {
+      return {
+        input: this.input,
+        options: this.options,
+        comments: this.comments,
+        tokens: this.root.serialize([])
+      };
     }
 
     push(token) {
@@ -53,42 +70,27 @@ module.exports = (text, options) => {
       }
     }
 
-    tokenize(sent) {
+    serialize(tokens) {
 
       this.eachBefore(before => {
-        sent = before.tokenize(sent);
+        before.serialize(tokens);
       });
 
-      let token = nx.Token.fromParams(sent, {
-        form: this.words.join('-'),
-        deprel: this.deprel
+      tokens.push({
+        form: this.form,
+        head: this.parent.form || 'ROOT',
+        deprel: this.deprel,
       });
-      sent.insertTokenAt(Infinity, token);
 
       this.eachAfter(after => {
-        sent = after.tokenize(sent);
+        after.serialize(tokens);
       });
 
-      this.analysis = token.analysis;
-
-      return sent;
+      return tokens;
     }
 
-    dependize(sent, id) {
-
-      this.eachBefore(before => {
-        sent = before.dependize(sent, this.analysis.id);
-      });
-
-      const head = sent.getById(id);
-      if (head)
-        this.analysis.addHead(head, this.deprel);
-
-      this.eachAfter(after => {
-        sent = after.dependize(sent, this.analysis.id);
-      });
-
-      return sent;
+    get form() {
+      return this.words.join('_');
     }
 
     push(token) {
@@ -111,7 +113,7 @@ module.exports = (text, options) => {
     }
   }
 
-  let sent = new Sentence(),
+  let sent = new Sentence(text, options),
     parsing = sent,
     parent = null,
     word = '';
@@ -146,6 +148,5 @@ module.exports = (text, options) => {
     }
   });
 
-  return sent.encode();
-
+  return sent.serialize();
 };
