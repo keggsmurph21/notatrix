@@ -111,10 +111,7 @@ module.exports = (text, options) => {
         lemma: tokenContent[3],
         other: [],
       };
-      tokenContent[5].split(/\s/).filter(subChunk => {
-        if (subChunk)
-          return subChunk;
-      }).forEach(subChunk => {
+      tokenContent[5].split(/\s/).filter(utils.thin).forEach(subChunk => {
 
         const dependency = subChunk.match(utils.re.cg3Dependency),
           head = subChunk.match(utils.re.cg3Head),
@@ -192,7 +189,7 @@ module.exports = (text, options) => {
 
       token = {
         form: chunk.form,
-        current_indent: 0,
+        currentIndent: 0,
         analyses: [],
       };
       analysis = null;
@@ -204,8 +201,8 @@ module.exports = (text, options) => {
       if (!token)
         throw new ParserError('cannot parse content chunk without a token', text, options);
 
-      if (chunk.indent > token.current_indent + 1)
-        throw new ParserError(`invalid indent change (${token.current_indent}=>${chunk.indent})`, text, options)
+      if (chunk.indent > token.currentIndent + 1)
+        throw new ParserError(`invalid indent change (${token.currentIndent}=>${chunk.indent})`, text, options)
 
       if (chunk.indent === 1) {
         if (analysis)
@@ -236,7 +233,7 @@ module.exports = (text, options) => {
 
       }
 
-      token.current_indent = chunk.indent;
+      token.currentIndent = chunk.indent;
       expecting = ['content', 'form'];
 
     } else {
@@ -257,10 +254,10 @@ module.exports = (text, options) => {
   let sent = new nx.Sentence(options);
   sent.comments = comments;
 
-  tokens.forEach(token => {
+  /*tokens.forEach(token => {
 
     let nxToken = new nx.Token(sent)
-  })
+  })*/
 
   return ret;
   /*

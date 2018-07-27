@@ -27,4 +27,6 @@ module.exports = {
 
   noop: arg => arg,
 
+  thin: arg => !!arg ? arg : undefined,
+
 };

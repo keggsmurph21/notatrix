@@ -4,8 +4,9 @@ module.exports = {
   punctuation: /[.,!?]+/g,
   sentenceThenPunctuation: /([^.,!?]*[.,!?]*)/g,
   comment: /^(#\s*(.*))(\n|$)/,
-  conlluTokenLine: /(\d+(\.\d)*(\-\d+(\.\d)*)?).+/,
-  conlluTokenLineTenParams: /(\d+(\.\d)*(\-\d+(\.\d)*)?)(\s+\S+){8,9}/,
+  conlluTokenLine: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
+  conlluTokenLineTenParams: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
+  conlluEmptyIndex: /(\d+)(\.\d+)?/,
   cg3TokenStart: /^["']<((.|\\")*)>["']/,
   cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#->]+)*)/,
   cg3Dependency: /#?\d+(->\d*)?$/,
@@ -17,5 +18,6 @@ module.exports = {
   whiteline: /^(\s*)(\n|$)/,
   sdDependency: /^\s*([\w.]+)\(([\w.]+),\s*([\w.]+)\)\s*$/,
   sdDependencyNoWhitespace: /^([\w.]+)\(([\w.]+),\s*([\w.]+)\)$/,
+  fallback: /^_$/,
 
 };

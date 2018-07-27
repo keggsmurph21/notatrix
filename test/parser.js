@@ -27,17 +27,35 @@ describe('parser', () => {
 
   describe('poop!', () => {
 
+
     utils.forEachText((text, format, name) => {
       it('fuckin around', () => {
-      if (format === 'CG3')
+        if (format === 'CG3')
         parse.as.CG3(text);
+      });
+
+      it('again', () => {
+        console.log('\n\n\n');
+        parse.as.CG3(data.CG3[0]);
+
+      });
+
+  });
+  utils.forEachText((text, format, name) => {
+    it(`fuckin around with ${format}:${name}`, () => {
+      if (format === 'CoNLL-U')
+      parse.as['CoNLL-U'](text);
     });
 
-    it('again', () => {
-      console.log('\n\n\n');
-      parse.as.CG3(data.CG3[0]);
+});
+it('again', () => {
+  console.log('\n\n\n');
+  parse.as['CoNLL-U'](data['CoNLL-U'].with_tabs);
+  console.log('\n\n\n');
+  parse.as['CoNLL-U'](data['CoNLL-U'].without_tabs);
+  console.log('\n\n\n');
+  parse.as['CoNLL-U'](data['CoNLL-U'].t)
 
 });
-
-  });});
+});
 });
