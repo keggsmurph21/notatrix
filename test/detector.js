@@ -8,7 +8,6 @@ const _ = require('underscore'),
 const data = require('./data');
 const detect = require('../src/detector');
 
-
 describe('detector', () => {
 
   describe('detect formats explicitly', () => {
@@ -26,15 +25,33 @@ describe('detector', () => {
     });
   });
 
-  return;
-  describe('detect formats implicitly', () => {
+  describe('avoid cross-detection', () => {
 
     const options = {};
 
     utils.forEachText((text, format, name) => {
+      utils.forEachFormat(castedFormat => {
+        if (format !== castedFormat)
+          it(`should not detect ${format}:${name} as ${castedFormat}`, () => {
+
+            expect(detect.as[castedFormat](text, options)).to.equal(undefined);
+
+          });
+      });
+    });
+  });
+
+  describe('detect formats implicitly', () => {
+
+    const options = {
+      returnAllMatches: true,
+    };
+
+    utils.forEachText((text, format, name) => {
       it(`should detect ${format}:${name} as ${format}`, () => {
 
-        expect(detect(text, options)).to.equal(format);
+        const possibilities = detect(text, options);
+        expect(possibilities.indexOf(format) > -1).to.equal(true);
 
       });
     });

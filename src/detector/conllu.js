@@ -2,14 +2,21 @@
 
 const _ = require('underscore');
 const re = require('../utils/regex');
+const funcs = require('../utils/funcs');
 
 module.exports = (text, options) => {
 
   options = _.defaults(options, {
     allowEmptyString: false,
     requireTenParams: false,
-    allowTrailingEmptyLines: true,
+    allowTrailingWhitespace: true,
   });
+
+  if (!text && !options.allowEmptyString)
+    return undefined;
+
+  if (funcs.isPlainObjOrStringified(text))
+    return undefined;
 
   // be more or less strict about the fields we require being set
   const tokenLine = options.requireTenParams
@@ -24,6 +31,10 @@ module.exports = (text, options) => {
   // iterate over the lines and check each one
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
+
+    if (!isConllu)
+      return;
+
     if (re.comment.test(line)) {
 
       // can only have comments at the beginning
@@ -45,7 +56,7 @@ module.exports = (text, options) => {
       } else {
 
         // only allow empty lines after we've looked at all the content
-        if (!options.allowTrailingEmptyLines)
+        if (!options.allowTrailingWhitespace)
           isConllu = false;
 
         doneContent = true;
@@ -53,9 +64,6 @@ module.exports = (text, options) => {
 
     }
   });
-
-  if (!text && !options.allowEmptyString)
-    return undefined;
 
   return isConllu ? 'CoNLL-U' : undefined;
 };

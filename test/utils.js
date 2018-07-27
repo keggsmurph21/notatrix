@@ -2,6 +2,7 @@
 
 const _ = require('underscore');
 
+const constants = require('../src/utils/constants');
 const data = require('./data');
 const noop = (arg) => arg;
 
@@ -19,7 +20,7 @@ module.exports = {
     'SD'
   ],
 
-  forEachText: (callback) => {
+  forEachText: callback => {
 
     callback = callback || noop;
 
@@ -36,6 +37,13 @@ module.exports = {
       min = 0;
     }
     return Math.floor(Math.random() * max) + min;
+  },
+
+  forEachFormat: callback => {
+
+    callback = callback || noop;
+    _.each(constants.formats, callback);
+
   },
 
 };
