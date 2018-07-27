@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 nested: `# sent_id = wikipedia:Poyvi_Paraguái:11
 # text = Poyvi peteĩha ñane retãmegua niko ojepuru’ypýkuri 15 jasypo guive 16 jasypoteĩ meve ary 1811-pe.

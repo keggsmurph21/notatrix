@@ -5,7 +5,7 @@ const _ = require('underscore'),
   sinon = require('sinon'),
   utils = require('./utils');
 
-const data = require('./data');
+const data = require('../data');
 const detect = require('../src/detector');
 const DetectorError = utils.DetectorError;
 

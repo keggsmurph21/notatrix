@@ -9,7 +9,7 @@ module.exports = (text, options={}) => {
     trimChunks: true
   });
 
-  return text.split(utils.utils.re.doubleNewlines).map(chunk => {
+  return text.split(utils.utils.re.multiNewlines).map(chunk => {
     if (options.trimChunks) {
       return chunk.trim();
     } else {

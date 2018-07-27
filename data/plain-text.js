@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 0: 'this is a test',
 1: 'this is a test.',

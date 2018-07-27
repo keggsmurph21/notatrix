@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 nested_2: `# text = ab cde f h
 1-2	ab	_	_	_	_	_	_	_	_

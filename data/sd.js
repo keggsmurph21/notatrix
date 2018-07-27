@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 0: `And Robert the fourth place .
 cc(Robert, And)
