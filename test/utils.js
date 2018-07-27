@@ -2,27 +2,14 @@
 
 const _ = require('underscore');
 
-const constants = require('../src/utils/constants');
+const srcUtils = require('../src/utils');
 const data = require('./data');
-const noop = (arg) => arg;
 
-module.exports = {
-
-  noop,
-
-  formats: [
-    'Brackets',
-    'CG3',
-    'CoNLL-U',
-    'notatrix serial',
-    'Params',
-    'plain text',
-    'SD'
-  ],
+module.exports = _.extend({
 
   forEachText: callback => {
 
-    callback = callback || noop;
+    callback = callback || srcUtils.noop;
 
     _.each(data, (texts, format) => {
       _.each(texts, (text, name) => {
@@ -41,9 +28,9 @@ module.exports = {
 
   forEachFormat: callback => {
 
-    callback = callback || noop;
-    _.each(constants.formats, callback);
+    callback = callback || srcUtils.noop;
+    _.each(srcUtils.formats, callback);
 
   },
 
-};
+}, srcUtils);

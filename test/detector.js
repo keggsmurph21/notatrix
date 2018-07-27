@@ -7,7 +7,7 @@ const _ = require('underscore'),
 
 const data = require('./data');
 const detect = require('../src/detector');
-const DetectorError = require('../src/errors').DetectorError;
+const DetectorError = utils.DetectorError;
 
 describe('detector', () => {
 

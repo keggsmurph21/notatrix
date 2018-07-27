@@ -2,9 +2,8 @@
 
 const _ = require('underscore');
 
-const DetectorError = require('./errors').DetectorError;
-const funcs = require('./utils/funcs');
-const constants = require('./utils/constants');
+const utils = require('./utils');
+const DetectorError = utils.DetectorError;
 
 let as = {
 
@@ -26,7 +25,7 @@ module.exports = (text, options) => {
 		returnAllMatches: true,
   });
 
-	const matches = constants.formats.map(format => {
+	const matches = utils.formats.map(format => {
 
 		try {
 			return as[format](text, options);
@@ -38,7 +37,7 @@ module.exports = (text, options) => {
 			throw e;
 		}
 
-	}).filter(funcs.noop);
+	}).filter(utils.noop);
 
 	if (!matches.length && !options.suppressDetectorErrors)
 		throw new DetectorError('Unable to detect format', text, options);

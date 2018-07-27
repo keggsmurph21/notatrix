@@ -1,10 +1,10 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
+
 
 module.exports = (text, options) => {
 
@@ -17,13 +17,13 @@ module.exports = (text, options) => {
   if (!text && !options.allowEmptyString)
     throw new DetectorError(`Illegal CoNLL-U: empty string`, text, options);
 
-  if (funcs.isJSONSerializable(text))
+  if (utils.isJSONSerializable(text))
     throw new DetectorError(`Illegal CoNLL-U: JSON object`, text, options);
 
   // be more or less strict about the fields we require being set
   const tokenLine = options.requireTenParams
-    ? re.conlluTokenLineTenParams
-    : re.conlluTokenLine;
+    ? utils.re.conlluTokenLineTenParams
+    : utils.re.conlluTokenLine;
 
   // internal stuff
   let doneComments = false;
@@ -33,7 +33,7 @@ module.exports = (text, options) => {
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
 
-    if (re.comment.test(line)) {
+    if (utils.re.comment.test(line)) {
 
       // can only have comments at the beginning
       if (doneComments)

@@ -1,21 +1,19 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
-const fields = require('../../utils/constants').fields;
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
 
   function isParam(obj) {
 
-    const omitted = _.omit(obj, fields);
+    const omitted = _.omit(obj, utils.fields);
     if (Object.keys(omitted).length)
       throw new DetectorError(`Illegal Params: contains illegal keys`, text, options);
 
-    const picked = _.pick(obj, fields);
+    const picked = _.pick(obj, utils.fields);
     if (!Object.keys(picked).length)
       throw new DetectorError(`Illegal Params: missing required keys`, text, options);
 
@@ -28,7 +26,7 @@ module.exports = (text, options) => {
     allowLeadingWhitespace: true
   });
 
-  if (!funcs.isJSONSerializable(text))
+  if (!utils.isJSONSerializable(text))
     throw new DetectorError(`Illegal Params: not JSON object`, text, options);
 
   const obj = typeof text === 'string' ? JSON.parse(text) : text;

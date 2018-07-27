@@ -1,10 +1,9 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
 
@@ -17,7 +16,7 @@ module.exports = (text, options) => {
   if (!text && !options.allowEmptyString)
     throw new DetectorError('Illegal CG3: empty string', text, options);
 
-  if (funcs.isJSONSerializable(text))
+  if (utils.isJSONSerializable(text))
     throw new DetectorError('Illegal CG3: JSON object', text, options);
 
   // internal stuff
@@ -26,7 +25,7 @@ module.exports = (text, options) => {
   // iterate over the lines and check each one
   text.split(/\n/).forEach(line => {
 
-    if (re.whiteline.test(line)) {
+    if (utils.re.whiteline.test(line)) {
 
       if (parsing === null) {
 
@@ -42,7 +41,7 @@ module.exports = (text, options) => {
 
       parsing = 'whitespace';
 
-    } else if (re.comment.test(line)) {
+    } else if (utils.re.comment.test(line)) {
 
       if ( parsing === 'token-start'
         || parsing === 'token-body')
@@ -50,14 +49,14 @@ module.exports = (text, options) => {
 
       parsing = 'comment';
 
-    } else if (re.cg3TokenStart.test(line)) {
+    } else if (utils.re.cg3TokenStart.test(line)) {
 
       if (parsing === 'token-start')
         throw new DetectorError(`Illegal CG3: invalid sequence ${parsing}=>token-start`, text, options);
 
       parsing = 'token-start';
 
-    } else if (re.cg3TokenContent.test(line)) {
+    } else if (utils.re.cg3TokenContent.test(line)) {
 
       if ( parsing === 'comment'
         || parsing === 'whitespace')

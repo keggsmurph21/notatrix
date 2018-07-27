@@ -1,10 +1,9 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
 
@@ -19,13 +18,13 @@ module.exports = (text, options) => {
   if (!text && !options.allowEmptyString)
     throw new DetectorError(`Illegal SD: empty string`, text, options);
 
-  if (funcs.isJSONSerializable(text))
+  if (utils.isJSONSerializable(text))
     throw new DetectorError(`Illegal SD: JSON object`, text, options);
 
   // be more or less strict about whitespace
   const dependencyRegex = options.allowBookendWhitespace
-    ? re.sdDependency
-    : re.sdDependencyNoWhitespace;
+    ? utils.re.sdDependency
+    : utils.re.sdDependencyNoWhitespace;
 
   // internal stuff
   let parsingDeps = false;
@@ -35,7 +34,7 @@ module.exports = (text, options) => {
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
 
-    if (re.whiteline.test(line)) {
+    if (utils.re.whiteline.test(line)) {
       if (parsingDeps) {
         if (!options.allowTrailingWhitespace)
           throw new DetectorError(`Illegal SD: contains trailing whitespace`, text, options);
@@ -47,7 +46,7 @@ module.exports = (text, options) => {
       }
     }
 
-    if (re.comment.test(line)) {
+    if (utils.re.comment.test(line)) {
 
     } else if (!parsingDeps) {
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
-const re = require('../../utils/regex');
+const utils = require('../../utils');
 
 module.exports = (text, options={}) => {
 
@@ -9,7 +9,7 @@ module.exports = (text, options={}) => {
     trimChunks: true
   });
 
-  return text.split(re.sentenceThenPunctuation).map(chunk => {
+  return text.split(utils.re.sentenceThenPunctuation).map(chunk => {
     if (options.trimChunks) {
       return chunk.trim();
     } else {

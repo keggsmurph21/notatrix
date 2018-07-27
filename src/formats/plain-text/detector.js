@@ -1,10 +1,9 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
 
@@ -17,7 +16,7 @@ module.exports = (text, options) => {
   if (!text && !options.allowEmptyString)
     throw new DetectorError(`Illegal plain text: empty string`, text, options);
 
-  if (funcs.isJSONSerializable(text))
+  if (utils.isJSONSerializable(text))
     throw new DetectorError(`Illegal plain text: JSON object`, text, options);
 
   if (/\n/.test(text) && !options.allowNewlines)
@@ -25,7 +24,7 @@ module.exports = (text, options) => {
 
   if (options.bracketsAllowanceTreshold >= 0) {
 
-    const numWords = text.split(re.whitespace).length;
+    const numWords = text.split(utils.re.whitespace).length;
     const numBrackets = (text.match(/[\[\]]/g) || []).length;
     const ratio = numBrackets / numWords;
 

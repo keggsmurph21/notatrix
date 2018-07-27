@@ -1,10 +1,9 @@
 'use strict';
 
-const DetectorError = require('../../errors').DetectorError;
-
 const _ = require('underscore');
-const re = require('../../utils/regex');
-const funcs = require('../../utils/funcs');
+
+const utils = require('../../utils');
+const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
 
@@ -19,7 +18,7 @@ module.exports = (text, options) => {
   if (!text && !options.allowEmptyString)
     throw new DetectorError('Illegal Brackets: empty string', text, options);
 
-  if (funcs.isJSONSerializable(text))
+  if (utils.isJSONSerializable(text))
     throw new DetectorError('Illegal Brackets: JSON object', text, options);
 
   if (/\n/.test(text) && !options.allowNewlines)
@@ -55,7 +54,7 @@ module.exports = (text, options) => {
       case ('\n'):
 
         if (!options.allowLeadingWhitespace) {
-          if (parsing !== null && !re.whitespace.test(parsing))
+          if (parsing !== null && !utils.re.whitespace.test(parsing))
             throw new DetectorError('Illegal Brackets: contains leading whitespace', text, options);
         }
         break;
@@ -70,7 +69,7 @@ module.exports = (text, options) => {
   if (depth !== 0)
     throw new DetectorError('Illegal Brackets: bracket mismatch', text, options);
 
-  if (re.whitespace.test(parsing) && !options.allowTrailingWhitespace)
+  if (utils.re.whitespace.test(parsing) && !options.allowTrailingWhitespace)
     throw new DetectorError('Illegal Brackets: contains trailing whitespace', text, options);
 
   return 'Brackets';
