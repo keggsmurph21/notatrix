@@ -2,7 +2,8 @@
 
 const _ = require('underscore');
 
-const NotatrixError = require('./errors').NotatrixError;
+const utils = require('../utils');
+const NotatrixError = utils.NotatrixError;
 
 /**
  * convert a string to subscripts (for ele labels)

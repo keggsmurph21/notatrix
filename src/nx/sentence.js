@@ -2,9 +2,10 @@
 
 const _ = require('underscore');
 
-const NotatrixError       = require('./errors').NotatrixError;
-const InvalidCG3Error     = require('./errors').InvalidCG3Error;
-const InvalidCoNLLUError  = require('./errors').InvalidCoNLLUError
+const utils = require('../utils');
+const NotatrixError = utils.NotatrixError;
+const InvalidCG3Error = utils.InvalidCG3Error;
+const InvalidCoNLLUError  = utils.InvalidCoNLLUError
 
 const Token = require('./token');
 const Analysis = require('./analysis');

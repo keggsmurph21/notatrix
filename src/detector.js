@@ -7,14 +7,14 @@ const DetectorError = utils.DetectorError;
 
 let as = {
 
-	'apertium stream': require('./formats/apertium-stream/detector'),
-	Brackets: require('./formats/brackets/detector'),
-	CG3: require('./formats/cg3/detector'),
-	'CoNLL-U': require('./formats/conllu/detector'),
-	'notatrix serial': require('./formats/notatrix-serial/detector'),
-	Params: require('./formats/params/detector'),
-	'plain text': require('./formats/plain-text/detector'),
-	SD: require('./formats/sd/detector'),
+	'apertium stream': require('./formats/apertium-stream').detect,
+	Brackets: require('./formats/brackets').detect,
+	CG3: require('./formats/cg3').detect,
+	'CoNLL-U': require('./formats/conllu').detect,
+	'notatrix serial': require('./formats/notatrix-serial').detect,
+	Params: require('./formats/params').detect,
+	'plain text': require('./formats/plain-text').detect,
+	SD: require('./formats/sd').detect,
 
 };
 

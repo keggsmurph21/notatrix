@@ -47,6 +47,15 @@ class ParserError extends NotatrixError {
   }
 }
 
+class GeneratorError extends NotatrixError {
+  constructor(message, nx, options) {
+    super(message);
+
+    this.nx = nx;
+    this.options = options;
+  }
+}
+
 module.exports = {
 
   NotatrixError,
@@ -55,5 +64,6 @@ module.exports = {
   SplitterError,
   DetectorError,
   ParserError,
+  GeneratorError,
 
 };

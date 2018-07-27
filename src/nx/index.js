@@ -1,10 +1,8 @@
-'use strict';
-
 module.exports = {
 
-  Error: require('./errors'),
+  Corpus: require('./corpus'),
   Sentence: require('./sentence'),
   Token: require('./token'),
-  Analysis: require('./analysis')
+  Analysis: require('./analysis'),
 
 };
