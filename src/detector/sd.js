@@ -1,5 +1,7 @@
 'use strict';
 
+const DetectorError = require('../errors').DetectorError;
+
 const _ = require('underscore');
 const re = require('../utils/regex');
 const funcs = require('../utils/funcs');
@@ -15,10 +17,10 @@ module.exports = (text, options) => {
   });
 
   if (!text && !options.allowEmptyString)
-    return undefined;
+    throw new DetectorError(`Illegal SD: empty string`, text, options);
 
-  if (funcs.isPlainObjOrStringified(text))
-    return undefined;
+  if (funcs.isJSONSerializable(text))
+    throw new DetectorError(`Illegal SD: JSON object`, text, options);
 
   // be more or less strict about whitespace
   const dependencyRegex = options.allowBookendWhitespace
@@ -26,7 +28,6 @@ module.exports = (text, options) => {
     : re.sdDependencyNoWhitespace;
 
   // internal stuff
-  let isSD = true;
   let parsingDeps = false;
   let parsingWhitespace = false;
   let parsedDeps = 0;
@@ -34,16 +35,15 @@ module.exports = (text, options) => {
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
 
-    if (!isSD)
-      return;
-
     if (re.whiteline.test(line)) {
       if (parsingDeps) {
         if (!options.allowTrailingWhitespace)
-          isSD = false;
+          throw new DetectorError(`Illegal SD: contains trailing whitespace`, text, options);
+
       } else {
         if (!options.allowLeadingWhitespace)
-          isSD = false;
+          throw new DetectorError(`Illegal SD: contains leading whitespace`, text, options);
+
       }
     }
 
@@ -52,13 +52,13 @@ module.exports = (text, options) => {
     } else if (!parsingDeps) {
 
       if (dependencyRegex.test(line))
-        isSD = false;
+        throw new DetectorError(`Illegal SD: missing text line`, text, options);
 
       parsingDeps = true;
 
     } else if (!dependencyRegex.test(line)) {
 
-      isSD = false;
+      throw new DetectorError(`Illegal SD: expected dependency line`, text, options);
 
     } else {
 
@@ -68,7 +68,7 @@ module.exports = (text, options) => {
   });
 
   if (parsedDeps === 0 && !options.allowNoDependencies)
-    isSD = false;
+    throw new DetectorError(`Illegal SD: contains no dependencies`, text, options);
 
-  return isSD ? 'SD' : undefined;
+  return 'SD';
 };

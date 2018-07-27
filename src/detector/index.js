@@ -8,7 +8,7 @@ const constants = require('../utils/constants');
 
 let as = {
 
-	'apertium-stream': require('./apertium-stream'),
+	'apertium stream': require('./apertium-stream'),
 	Brackets: require('./brackets'),
 	CG3: require('./cg3'),
 	'CoNLL-U': require('./conllu'),
@@ -27,12 +27,22 @@ module.exports = (text, options) => {
   });
 
 	const matches = constants.formats.map(format => {
-		return as[format](text, options);
+
+		try {
+			return as[format](text, options);
+		} catch (e) {
+
+			if (e instanceof DetectorError && options.suppressDetectorErrors)
+				return;
+
+			throw e;
+		}
+
 	}).filter(funcs.noop);
 
-	if (matches.length)
-		return options.returnAllMatches ? matches : matches[0];
+	if (!matches.length && !options.suppressDetectorErrors)
+		throw new DetectorError('Unable to detect format', text, options);
 
-	return undefined;
+	return options.returnAllMatches ? matches : matches[0];
 };
 module.exports.as = as;

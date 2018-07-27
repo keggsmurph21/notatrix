@@ -1,5 +1,7 @@
 'use strict';
 
+const DetectorError = require('../errors').DetectorError;
+
 const _ = require('underscore');
 const re = require('../utils/regex');
 const funcs = require('../utils/funcs');
@@ -15,30 +17,26 @@ module.exports = (text, options) => {
   });
 
   if (!text && !options.allowEmptyString)
-    return undefined;
+    throw new DetectorError('Illegal Brackets: empty string', text, options);
 
-  if (funcs.isPlainObjOrStringified(text))
-    return undefined;
+  if (funcs.isJSONSerializable(text))
+    throw new DetectorError('Illegal Brackets: JSON object', text, options);
 
   if (/\n/.test(text) && !options.allowNewlines)
-    return undefined;
+    throw new DetectorError('Illegal Brackets: contains newlines', text, options);
 
   // internal stuff
-  let isBrackets = true;
   let parsing = null;
   let depth = 0;
   let sawBracket = false;
 
   text.split('').forEach((char, i) => {
 
-    if (!isBrackets)
-      return;
-
     switch (char) {
 
       case ('['):
         if (parsing === ']')
-          isBrackets = false;
+          throw new DetectorError('Illegal Brackets: invalid sequence "]["', text, options);
 
         sawBracket = true;
         depth += 1;
@@ -46,7 +44,7 @@ module.exports = (text, options) => {
 
       case (']'):
         if (parsing === '[')
-          isBrackets = false;
+          throw new DetectorError('Illegal Brackets: invalid sequence "[]"', text, options);
 
         sawBracket = true;
         depth -= 1;
@@ -58,22 +56,22 @@ module.exports = (text, options) => {
 
         if (!options.allowLeadingWhitespace) {
           if (parsing !== null && !re.whitespace.test(parsing))
-            isBrackets = false;
+            throw new DetectorError('Illegal Brackets: contains leading whitespace', text, options);
         }
         break;
     }
-    parsing = char;
 
+    parsing = char;
   });
 
   if (!sawBracket && !options.allowNoDependencies)
-    isBrackets = false;
+    throw new DetectorError('Illegal Brackets: contains no dependencies', text, options);
 
   if (depth !== 0)
-    isBrackets = false;
+    throw new DetectorError('Illegal Brackets: bracket mismatch', text, options);
 
   if (re.whitespace.test(parsing) && !options.allowTrailingWhitespace)
-    isBrackets = false;
+    throw new DetectorError('Illegal Brackets: contains trailing whitespace', text, options);
 
-  return isBrackets ? 'Brackets' : undefined;
+  return 'Brackets';
 };

@@ -1,5 +1,7 @@
 'use strict';
 
+const DetectorError = require('../errors').DetectorError;
+
 const _ = require('underscore');
 const re = require('../utils/regex');
 const funcs = require('../utils/funcs');
@@ -13,32 +15,28 @@ module.exports = (text, options) => {
   });
 
   if (!text && !options.allowEmptyString)
-    return undefined;
+    throw new DetectorError('Illegal CG3: empty string', text, options);
 
-  if (funcs.isPlainObjOrStringified(text))
-    return undefined;
+  if (funcs.isJSONSerializable(text))
+    throw new DetectorError('Illegal CG3: JSON object', text, options);
 
   // internal stuff
-  let isCG3 = true;
   let parsing = null;
 
   // iterate over the lines and check each one
   text.split(/\n/).forEach(line => {
-
-    if (!isCG3)
-      return;
 
     if (re.whiteline.test(line)) {
 
       if (parsing === null) {
 
         if (!options.allowLeadingWhitespace)
-          isCG3 = false;
+          throw new DetectorError('Illegal CG3: contains leading whitespace', text, options);
 
       } else {
 
         if (parsing !== 'token-body' || !options.allowTrailingWhitespace)
-          isCG3 = false;
+          throw new DetectorError('Illegal CG3: contains trailing whitespace', text, options);
 
       }
 
@@ -48,14 +46,14 @@ module.exports = (text, options) => {
 
       if ( parsing === 'token-start'
         || parsing === 'token-body')
-        isCG3 = false;
+        throw new DetectorError(`Illegal CG3: invalid sequence ${parsing}=>comment`, text, options);
 
       parsing = 'comment';
 
     } else if (re.cg3TokenStart.test(line)) {
 
       if (parsing === 'token-start')
-        isCG3 = false;
+        throw new DetectorError(`Illegal CG3: invalid sequence ${parsing}=>token-start`, text, options);
 
       parsing = 'token-start';
 
@@ -63,16 +61,16 @@ module.exports = (text, options) => {
 
       if ( parsing === 'comment'
         || parsing === 'whitespace')
-        isCG3 = false;
+        throw new DetectorError(`Illegal CG3: invalid sequence ${parsing}=>token-body`, text, options);
 
       parsing = 'token-body';
 
     } else {
 
-      isCG3 = false;
+      throw new DetectorError(`Illegal CG3: unmatched line`, text, options);
 
     }
   });
 
-  return isCG3 ? 'CG3' : undefined;
+  return 'CG3';
 };

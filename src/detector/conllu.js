@@ -1,5 +1,7 @@
 'use strict';
 
+const DetectorError = require('../errors').DetectorError;
+
 const _ = require('underscore');
 const re = require('../utils/regex');
 const funcs = require('../utils/funcs');
@@ -13,10 +15,10 @@ module.exports = (text, options) => {
   });
 
   if (!text && !options.allowEmptyString)
-    return undefined;
+    throw new DetectorError(`Illegal CoNLL-U: empty string`, text, options);
 
-  if (funcs.isPlainObjOrStringified(text))
-    return undefined;
+  if (funcs.isJSONSerializable(text))
+    throw new DetectorError(`Illegal CoNLL-U: JSON object`, text, options);
 
   // be more or less strict about the fields we require being set
   const tokenLine = options.requireTenParams
@@ -24,7 +26,6 @@ module.exports = (text, options) => {
     : re.conlluTokenLine;
 
   // internal stuff
-  let isConllu = true;
   let doneComments = false;
   let doneContent = false;
 
@@ -32,14 +33,11 @@ module.exports = (text, options) => {
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
 
-    if (!isConllu)
-      return;
-
     if (re.comment.test(line)) {
 
       // can only have comments at the beginning
       if (doneComments)
-        isConllu = false;
+        throw new DetectorError(`Illegal CoNLL-U: misplaced comment`, text, options);
 
     } else {
 
@@ -48,16 +46,16 @@ module.exports = (text, options) => {
 
       if (line) {
         if (!tokenLine.test(line))
-          isConllu = false;
+          throw new DetectorError(`Illegal CoNLL-U: unmatched line`, text, options);
 
         if (doneContent)
-          isConllu = false;
+          throw new DetectorError(`Illegal CoNLL-U: misplaced whitespace`, text, options);
 
       } else {
 
         // only allow empty lines after we've looked at all the content
         if (!options.allowTrailingWhitespace)
-          isConllu = false;
+          throw new DetectorError(`Illegal CoNLL-U: contains trailing whitespace`, text, options);
 
         doneContent = true;
       }
@@ -65,5 +63,5 @@ module.exports = (text, options) => {
     }
   });
 
-  return isConllu ? 'CoNLL-U' : undefined;
+  return 'CoNLL-U';
 };

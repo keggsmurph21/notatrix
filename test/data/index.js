@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  //'apertium-stream': require('./apertium-stream'),
+  //'apertium stream': require('./apertium-stream'),
   'Brackets':   require('./brackets'),
   'CG3':        require('./cg3'),
   'CoNLL-U':    require('./conllu'),

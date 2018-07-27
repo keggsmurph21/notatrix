@@ -1,5 +1,7 @@
 'use strict';
 
+const DetectorError = require('../errors').DetectorError;
+
 const _ = require('underscore');
 const re = require('../utils/regex');
 const funcs = require('../utils/funcs');
@@ -13,21 +15,22 @@ module.exports = (text, options) => {
   });
 
   if (!text && !options.allowEmptyString)
-    return undefined;
+    throw new DetectorError(`Illegal plain text: empty string`, text, options);
 
-  if (funcs.isPlainObjOrStringified(text))
-    return undefined;
+  if (funcs.isJSONSerializable(text))
+    throw new DetectorError(`Illegal plain text: JSON object`, text, options);
 
   if (/\n/.test(text) && !options.allowNewlines)
-    return undefined;
+    throw new DetectorError(`Illegal plain text: contains newlines`, text, options);
 
   if (options.bracketsAllowanceTreshold >= 0) {
 
     const numWords = text.split(re.whitespace).length;
     const numBrackets = (text.match(/[\[\]]/g) || []).length;
+    const ratio = numBrackets / numWords;
 
-    if (numBrackets / numWords > options.bracketsAllowanceTreshold)
-      return undefined;
+    if (ratio > options.bracketsAllowanceTreshold)
+      throw new DetectorError(`Illegal plain text: contains too many brackets (${ratio})`, text, options);
   }
 
   return 'plain text';

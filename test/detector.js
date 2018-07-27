@@ -7,6 +7,7 @@ const _ = require('underscore'),
 
 const data = require('./data');
 const detect = require('../src/detector');
+const DetectorError = require('../src/errors').DetectorError;
 
 describe('detector', () => {
 
@@ -34,7 +35,8 @@ describe('detector', () => {
         if (format !== castedFormat)
           it(`should not detect ${format}:${name} as ${castedFormat}`, () => {
 
-            expect(detect.as[castedFormat](text, options)).to.equal(undefined);
+            const cast = detect.as[castedFormat];
+            expect(() => { cast(text, options); }).to.throw(DetectorError);
 
           });
       });
@@ -44,6 +46,7 @@ describe('detector', () => {
   describe('detect formats implicitly', () => {
 
     const options = {
+      suppressDetectorErrors: true,
       returnAllMatches: true,
     };
 

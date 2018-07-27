@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  isPlainObjOrStringified: obj => {
+  isJSONSerializable: obj => {
 
     if (typeof obj === 'string') {
 
