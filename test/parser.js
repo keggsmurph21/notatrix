@@ -57,5 +57,15 @@ it('again', () => {
   parse.as['CoNLL-U'](data['CoNLL-U'].t)
 
 });
+utils.forEachText((text, format, name) => {
+  it(`fuckin around with ${format}:${name}`, () => {
+    if (format === 'plain text')
+    parse.as['plain text'](text);
+  });
+
+});
+
+
+
 });
 });
