@@ -3,1031 +3,193 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const NotatrixError = utils.NotatrixError;
-const InvalidCG3Error = utils.InvalidCG3Error;
-const InvalidCoNLLUError  = utils.InvalidCoNLLUError
+const SentenceError = utils.SentenceError;
+const parse = require('../parser');
 
+const NxBaseClass = require('./base-class');
+const Comment = require('./comment');
 const Token = require('./token');
-const Analysis = require('./analysis');
+const RootToken = require('./root');
 
-// define all the regex we use in this module here
-const regex = {
-  comment: /^\W*\#/,
-  commentContent: /^\W*\#\W*(.*)/,
-  superToken: /^\W*[0-9.]+\-[0-9.]+/,
-  empty: /^\W*[0-9]+\.[0-9]+/,
-  cg3TokenStart: /^"<(.|\\")*>"/,
-  cg3TokenContent: /^;?\s+"(.|\\")*"/
-}
+class Sentence extends NxBaseClass {
+  constructor(serial, options) {
 
-const fallback = '_';
+    super('Sentence');
 
-/**
- * this class contains all the information associated with a sentence, including
- *   an comments array, a tokens array, and a list of options/settings that apply
- *   to all subelements of this sentence
- */
-class Sentence {
-
-  constructor(paramsList, options) {
-
-    // handle only receiving one arg better
-    if (options === undefined && !Array.isArray(paramsList)) {
-      options = paramsList;
-      paramsList = undefined;
-    }
-
-    // save sentence-wide settings here
-    this.options = _.defaults(options, {
-      help: {
-        form: true,
-        lemma: true,
-        upostag: true,
-        xpostag: true,
-        head: true,
-        deps: true
-      },
-      showEnhanced: true,
-      showEmptyDependencies: true,
-      catchInvalid: true,
-      fallbackOnText: false
+    options = _.defaults(options, {
+      interpretAs: null,
+      addHeadOnModifyFailure: true,
+      addDepOnModifyFailure: true,
     });
 
-    // the actual data
-    this.comments = [];
-    this.tokens = [];
+    if (options.interpretAs) {
 
-    // try parsing a list of parameters
-    if (paramsList)
-      this.params = paramsList;
+      // interpret as a particular format if passed option
+      serial = parse.as[options.interpretAs](serial, options);
 
-  }
-  /**
-   * @return {Number} total number of tokens/subTokens in this sentence
-   */
-  get length() {
-
-    let acc = 0;
-    this.forEach(token => {
-      acc++;
-    });
-    return acc;
-  }
-  /**
-   * loop through every token in the sentence and apply a callback
-   *
-   * @param {Function} callback function to be applied to every token
-   * @return {Sentence}
-   */
-  forEach(callback) {
-
-    let t = 0;
-    for (let i=0; i<this.tokens.length; i++) {
-      const token = this.tokens[i];
-      callback(token, t);
-      t++;
-      for (let j=0; j<token.subTokens.length; j++) {
-        callback(token.subTokens[j], t);
-        t++;
-      }
-    }
-
-    // chaining
-    return this;
-  }
-  /**
-   * loop through the tokens in the sentence and return the superToken and
-   *   subToken indices
-   * @param {Token} tok token to search for
-   * @return {(Object|null)}
-   */
-  getIndices(tok) {
-
-    let superTokenId = -1,
-      subTokenId = -1,
-      analysisId = 0,
-      found = false,
-      isSubToken = false;
-
-    tok.sentence.forEach(token => {
-
-      if (found)
-        return;
-
-
-      if (token.isSubToken) {
-        subTokenId++;
-        isSubToken = true;
-      } else {
-        superTokenId++;
-        subTokenId = -1;
-        isSubToken = false;
-      }
-
-      if (token === tok)
-        found = true;
-
-    });
-
-    return superTokenId === -1
-      ? null
-      : {
-          super: superTokenId,
-          sub: isSubToken ? subTokenId : null
-        };
-  }
-
-
-  /**
-   * return the comment at the given index, or null
-   *
-   * @param {Number} index
-   * @return {(String|null)}
-   */
-  getComment(index) {
-    return this.comments[index] || null;
-  }
-
-  /**
-   * return the token at the given index (note: this is regular token OR subToken),
-   *   or null.  to choose by superToken index, use Sentence[index] syntax.  this
-   *   function assumes only the current analysis is desired.
-   *
-   * @param {Number} index
-   * @return {(Token|null)}
-   */
-  getToken(index) {
-    let t = 0, token = null;
-    this.forEach((tok, t) => {
-      if (t === index)
-        token = tok;
-    });
-    return token;
-  }
-
-  /**
-   * return the current analysis of the token that matches a given index string
-   *
-   * NOTE: tokens outside the current analysis will have id=null and cannot be retrieved
-   *   with this function
-   *
-   * @param {String} index
-   * @return {(Analysis|null)}
-   */
-  getById(index) {
-    for (let i=0; i<this.tokens.length; i++) {
-      const token = this.tokens[i];
-      if (token.analysis.id == index)
-        return token.analysis;
-      for (let j=0; j<token.subTokens.length; j++) {
-        const subToken = token.subTokens[j];
-        if (subToken.analysis.id == index)
-          return subToken.analysis;
-      }
-    }
-    return null;
-  }
-
-  // manipulate token array
-
-  /**
-   * insert a token AFTER the given token
-   *
-   * NOTE: if only passed 1 arg, it will insert a token constructed from
-   *   the params { form: 'inserted' }
-   *
-   * @param {Token} atToken
-   * @param {(Token|null)} newToken
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid token for first param
-   */
-  insertTokenBefore(atToken, newToken) {
-
-    if (!(atToken instanceof Token))
-      throw new NotatrixError('unable to insert token: not instance of Token');
-
-    if (!(newToken instanceof Token))
-      newToken = Token.fromParams(this, { form: 'inserted' });
-
-    const indices = this.getIndices(atToken);
-    if (indices === null)
-      return null;
-
-    return indices.sub === null
-      ? this.insertTokenAt(indices.super, newToken)
-      : this[indices.super].insertSubTokenAt(indices.sub, newToken);
-  }
-
-  /**
-   * insert a token AFTER the given token
-   *
-   * NOTE: if only passed 1 arg, it will insert a token constructed from
-   *   the params { form: 'inserted' }
-   *
-   * @param {Token} atToken
-   * @param {(Token|null)} newToken
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid token for first param
-   */
-  insertTokenAfter(atToken, newToken) {
-
-    if (!(atToken instanceof Token))
-      throw new NotatrixError('unable to insert token: not instance of Token');
-
-    if (!(newToken instanceof Token))
-      newToken = Token.fromParams(this, { form: 'inserted' });
-
-    const indices = this.getIndices(atToken);
-    if (indices === null)
-      return null;
-
-    return indices.sub === null
-      ? this.insertTokenAt(indices.super + 1, newToken)
-      : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
-  }
-
-  /**
-   * insert an analysis BEFORE the given analysis
-   *
-   * NOTE: if only passed 1 arg, it will insert an analysis constructed from
-   *   the params { form: 'inserted' }
-   *
-   * @param {Analysis} atAnalysis
-   * @param {(Analysis|null)} newAnalysis
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid analysis for first param
-   */
-  insertAnalysisBefore(atAnalysis, newAnalysis) {
-
-    if (!(atAnalysis instanceof Analysis))
-      throw new NotatrixError('unable to insert analysis: not instance of Analysis');
-
-    if (!(newAnalysis instanceof Analysis))
-      newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
-
-    const indices = this.getIndices(atAnalysis.token);
-    if (indices === null)
-      return null;
-
-    const token = indices.sub === null
-      ? this[indices.super].token
-      : this[indices.super][indices.sub].token;
-
-    let analysisId = -1;
-    token.forEach((ana, i) => {
-      if (ana === atAnalysis)
-        analysisId = i;
-    });
-
-    if (analysisId > -1)
-      return token.insertAnalysisAt(analysisId, newAnalysis);
-  }
-
-  /**
-   * insert an analysis AFTER the given analysis
-   *
-   * NOTE: if only passed 1 arg, it will insert an analysis constructed from
-   *   the params { form: 'inserted' }
-   *
-   * @param {Analysis} atAnalysis
-   * @param {(Analysis|null)} newAnalysis
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid analysis for first param
-   */
-  insertAnalysisAfter(atAnalysis, newAnalysis) {
-
-    if (!(atAnalysis instanceof Analysis))
-      throw new NotatrixError('unable to insert analysis: not instance of Analysis');
-
-    if (!(newAnalysis instanceof Analysis))
-      newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
-
-    const indices = this.getIndices(atAnalysis.token);
-    if (indices === null)
-      return null;
-
-    const token = indices.sub === null
-      ? this[indices.super].token
-      : this[indices.super][indices.sub].token;
-
-    let analysisId = -1;
-    token.forEach((ana, i) => {
-      if (ana === atAnalysis)
-        analysisId = i;
-    });
-
-    if (analysisId > -1)
-      return token.insertAnalysisAt(analysisId + 1, newAnalysis);
-  }
-
-  /**
-   * insert a token BEFORE the given index
-   *
-   * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
-   *   to fit the bounds. this means that you can call this with `index=-Infinity`
-   *   to push to the front of the tokens array or with `index=Infinity` to push
-   *   to the end
-   *
-   * @param {Number} index
-   * @param {Token} token
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid index or token
-   */
-  insertTokenAt(index, token) {
-    index = parseFloat(index); // catch Infinity
-    if (isNaN(index))
-      throw new NotatrixError('unable to insert token: unable to cast index to int');
-
-    if (!(token instanceof Token))
-      throw new NotatrixError('unable to insert token: not instance of Token');
-
-    // bounds checking
-    index = index < 0 ? 0
-      : index > this.length ? this.length
-      : parseInt(index);
-
-    // array insertion
-    this.tokens = this.tokens.slice(0, index)
-      .concat(token)
-      .concat(this.tokens.slice(index));
-
-    // chaining
-    return this;
-  }
-
-  /**
-   * remove a token at the given index
-   *
-   * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
-   *   adjusted to fit the bounds. this means that you can call this with
-   *   `index=-Infinity` to remove the first element of the tokens array or
-   *   with `index=Infinity` to remove the last
-   *
-   * @param {Number} index
-   * @return {(Token|null)}
-   *
-   * @throws {NotatrixError} if given invalid index
-   */
-  removeTokenAt(index) {
-    // can't remove if we have an empty sentence
-    if (!this.tokens.length)
-      return null;
-
-    index = parseFloat(index); // catch Infinity
-    if (isNaN(index))
-      throw new NotatrixError('unable to remove token: unable to cast index to int');
-
-    // bounds checking
-    index = index < 0 ? 0
-      : index > this.tokens.length - 1 ? this.tokens.length - 1
-      : parseInt(index);
-
-    // unlink heads and deps from the token to be removed
-    this.forEach(token => {
-      token.analysis
-        .eachHead(head => {
-          if (head === this[index])
-            token.analysis.removeHead(head);
-        })
-        .eachDep(dep => {
-          if (dep === this[index])
-            token.analysis.removeDep(dep);
-        });
-    });
-
-    // array splicing, return spliced element
-    return this.tokens.splice(index, 1)[0];
-  }
-
-  /**
-   * move a token from sourceIndex to targetIndex
-   *
-   * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
-   *   be adjusted to fit the bounds. this means that you can call this with
-   *   `sourceIndex=-Infinity` to select the first element of the tokens array
-   *   or with `sourceIndex=Infinity` to select the last
-   *
-   * @param {Number} sourceIndex
-   * @param {Number} targetIndex
-   * @return {Sentence}
-   *
-   * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
-   */
-  moveTokenAt(sourceIndex, targetIndex) {
-    sourceIndex = parseFloat(sourceIndex);
-    targetIndex = parseFloat(targetIndex);
-    if (isNaN(sourceIndex) || isNaN(targetIndex))
-      throw new NotatrixError('unable to move token: unable to cast indices to ints');
-
-    // bounds checking
-    sourceIndex = sourceIndex < 0 ? 0
-      : sourceIndex > this.tokens.length - 1 ? this.tokens.length - 1
-      : parseInt(sourceIndex);
-    targetIndex = targetIndex < 0 ? 0
-      : targetIndex > this.tokens.length - 1 ? this.tokens.length - 1
-      : parseInt(targetIndex);
-
-    if (sourceIndex === targetIndex) {
-      // do nothing
     } else {
 
-      // array splice and insert
-      let token = this.tokens.splice(sourceIndex, 1);
-      this.tokens = this.tokens.slice(0, targetIndex)
-        .concat(token)
-        .concat(this.tokens.slice(targetIndex));
+      // otherwise, get an array of possible interpretations
+      serial = parse(serial, options);
+
+      // choose one of them if possible
+      if (serial.length === 0) {
+        throw new SentenceError('Unable to parse input', this);
+      } else if (serial.length === 1) {
+        serial = serial[0];
+      } else {
+        throw new SentenceError(
+          `Unable to disambiguate input interpretations (${serial.length})`, this);
+      }
 
     }
 
-    // chaining
-    return this;
+    this.input = serial.input;
+    this.options = serial.options;
+    this.comments = serial.comments.map(com => new Comment(com, options));
+    this.tokens = serial.tokens.map(tok => new Token(tok, options));
+
+    this.attach();
   }
 
-  /**
-   * push a token to the end of the tokens array ... sugar for
-   *   Sentence::insertTokenAt(Infinity, token)
-   *
-   * @param {Token} token
-   * @return {Sentence}
-   */
-  pushToken(token) {
-    return this.insertTokenAt(Infinity, token);
-  }
-
-  /**
-   * pop a token from the end of the tokens array ... sugar for
-   *   Sentence::removeTokenAt(Infinity)
-   *
-   * @return {(Token|null)}
-   */
-  popToken() {
-    return this.removeTokenAt(Infinity);
-  }
-
-  // external formats
-
-  /**
-   * returns the % (as a number in [0,1]) annotation of the sentence
-   *
-   * @return {Number}
-   */
-  get progress() {
-
-    // amount work done, amount total work
-    let done = 0,
-      total = 0;
-
-    this.forEach(token => {
-
-      total += 2;
-
-      // if analysis is not set, can't compute other stuff
-      if (!token.analysis)
-        return;
-
-      // if these fields are filled out, increment work
-      if (token.analysis.head && token.analysis.head !== fallback)
-        done++;
-      if (token.analysis.pos && token.analysis.head !== fallback)
-        done++;
-
-      // each head increases amount of work to do
-      token.analysis.eachHead(head => {
-
-        total++;
-        if (head.deprel && head.deprel !== fallback)
-          done++;
-
-      });
-    });
-
-    // return a float in [0,1] and avoid dividing by zero
-    return total ? done / total : 1;
-  }
-
-  /**
-   * get a serial version of the internal sentence representation
-   *
-   * @return {String}
-   */
-  get nx() {
-    // update indices
-    this.index();
-
-    // serialize tokens
-    let tokens = [];
+  iterate(callback) {
     for (let i=0; i<this.tokens.length; i++) {
-      tokens.push(this.tokens[i].nx);
-    }
 
-    // serialize other data
-    return {
-      comments: this.comments,
-      options: this.options,
-      tokens: tokens
-    };
-  }
+      const token = this.tokens[i];
+      callback(token, i, null, null);
 
-  /**
-   * deserialize an internal representation
-   *
-   * @param {Object} nx
-   * @return {String}
-   */
-  set nx(nx) {
+      for (let j=0; j<token._analyses.length; j++) {
+        for (let k=0; k<token._analyses[j]._subTokens.length; k++) {
 
-    this.options = nx.options;
-    this.comments = nx.comments;
-    this.tokens = nx.tokens.map(tokenNx => {
-      return Token.fromNx(this, tokenNx);
-    });
+          const subToken = token._analyses[j]._subTokens[k];
+          callback(subToken, i, j, k);
 
-    return this.attach().nx;
-  }
-
-  /**
-   * static method allowing us to construct a new Sentence directly from an
-   *   Nx string
-   *
-   * @param {String} serial
-   * @param {Object} options (optional)
-   * @return {Sentence}
-   */
-  static fromNx(serial, options) {
-    let sent = new Sentence(options);
-    sent.nx = serial;
-    return sent;
-  }
-
-  /**
-   * get a plain-text formatted string of the sentence's current analysis text
-   *
-   * @return {String}
-   */
-  get text() {
-    // only care about tokens (not comments or settings)
-    let tokens = [];
-    this.forEach(token => {
-      if (!token.isSubToken && !token.isEmpty)
-        tokens.push(token.text);
-    });
-    return tokens.join(' ');
-  }
-
-  /**
-   * parse a Plain text formatted string and save its contents to the sentence
-   *
-   * @param {String} text
-   * @return {String}
-   */
-  set text(text) {
-
-    // insert a space before final punctuation
-    text = text.trim().replace(/([.,?!]+)$/, ' $1');
-
-    // split on whitespace and add form-only tokens
-    _.map(text.split(/\s/), chunk => {
-      this.pushToken( Token.fromParams(this, { form: chunk }) );
-    });
-
-    return this.text;
-  }
-
-  /**
-   * static method allowing us to construct a new Sentence directly from a
-   *   text string
-   *
-   * @param {String} serial
-   * @param {Object} options (optional)
-   * @return {Sentence}
-   */
-  static fromText(serial, options) {
-    let sent = new Sentence(options);
-    sent.text = serial;
-    return sent;
-  }
-
-  /**
-   * get a CoNLL-U formatted string representing the sentence's current analysis
-   *
-   * @return {(String|null)}
-   */
-  get conllu() {
-    // comments first
-    const comments = _.map(this.comments, comment => {
-      return `# ${comment}`;
-    });
-
-    try {
-
-      let tokens = [];
-      this.forEach(token => {
-        tokens.push(token.conllu);
-      });
-      return comments.concat(tokens).join('\n');
-
-    } catch (e) {
-
-      // if the sentence contains ambiguous analyses, we will get an error,
-      // so catch only those types of errors here
-      if (!(e instanceof InvalidCoNLLUError) || !this.options.catchInvalid)
-        throw e;
-
-      // if sentence is ambiguous
-      return null;
-    }
-  }
-
-  /**
-   * parse a CoNLL-U formatted string and save its contents to the sentence
-   *
-   * @param {String} conllu
-   * @return {String}
-   */
-  set conllu(conllu) {
-    // clear existing data
-    this.comments = [];
-    this.tokens = [];
-
-    // split on newlines
-    const lines = conllu.trim().split('\n');
-    for (let i=0; i<lines.length; i++) {
-
-      // extract comments
-      if (regex.comment.test(lines[i])) {
-        this.comments.push(
-          lines[i].match(regex.commentContent)[1] );
-
-      // extract tokens
-      } else if (regex.superToken.test(lines[i])) {
-
-        // the top-level token
-        const superToken = Token.fromConllu(this, lines[i]);
-
-        // check which subTokens belong to this superToken
-        const k = i;
-        const subTokenIndices = lines[i]
-          .match(regex.superToken)[0]
-          .trim()
-          .split('-')
-          .map(str => { return parseInt(str); });
-
-        // push them all to the superToken's current analysis
-        for (let j=0; j<=(subTokenIndices[1] - subTokenIndices[0]); j++) {
-          superToken.analysis.pushSubToken( Token.fromConllu(this, lines[j + k + 1]) );
-          i++;
-        }
-
-        // push the superToken to the sentence
-        this.pushToken(superToken);
-
-      } else {
-
-        // regular (non-super) tokens pushed to sentence here
-        if (lines[i].trim().length)
-          this.pushToken( Token.fromConllu(this, lines[i]) );
-
-      }
-    }
-
-    // attach heads and return CoNLL-U string
-    return this.attach().conllu;
-  }
-
-  /**
-   * static method allowing us to construct a new Sentence directly from a
-   *   CoNLL-U string
-   *
-   * @param {String} serial
-   * @param {Object} options (optional)
-   * @return {Sentence}
-   */
-  static fromConllu(serial, options) {
-    let sent = new Sentence(options);
-    sent.conllu = serial;
-    return sent;
-  }
-
-  /**
-   * get a CG3 formatted string representing all of the sentence's analyses
-   *
-   * @return {(String|null)}
-   */
-  get cg3() {
-    // comments first
-    const comments = _.map(this.comments, comment => {
-      return `# ${comment}`;
-    });
-
-    try {
-
-      let tokens = [];
-      for (let i=0; i<this.tokens.length; i++) { // iterate over superTokens
-        tokens.push(this.tokens[i].cg3);
-      }
-      return comments.concat(tokens).join('\n');
-
-    } catch (e) {
-
-      // if the sentence is not analyzeable as CG3, we'll get an error
-      // NOTE: this doesn't currently happen under any circumstances
-      if (!(e instanceof InvalidCG3Error) || !this.options.catchInvalid)
-        throw e;
-
-      return null;
-    }
-  }
-
-  /**
-   * parse a CG3 formatted string and save its contents to the sentence
-   *
-   * @param {String} conllu
-   * @return {String}
-   */
-  set cg3(cg3) {
-    // clear existing data
-    this.comments = [];
-    this.tokens = [];
-
-    // since this parsing is more complicated than CoNLL-U parsing, keep this
-    //   array of lines for the current token we're parsing
-    // NOTE: CG3 tokens are separated by lines of the form `/^"<EXAMPLE>"/`
-    //   and lines beginning with one/more indent give data for that token
-    let tokenLines = [];
-
-    // split on newlines
-    const lines = cg3.trim().split('\n');
-    for (let i=0; i<lines.length; i++) {
-
-      // decide what the current line is
-      let isToken = regex.cg3TokenStart.test(lines[i]);
-      let isContent = regex.cg3TokenContent.test(lines[i]);
-
-      // current line is the start of a new token
-      if (isToken) {
-
-        // if we already have stuff in our tokenLines buffer, parse it as a token
-        if (tokenLines.length)
-          this.tokens.push(Token.fromCG3(this, tokenLines));
-
-        // reset tokenLines buffer
-        tokenLines = [ lines[i] ];
-
-      } else {
-
-        // add content lines to tokenLines buffer
-        if (tokenLines.length && isContent) {
-          tokenLines.push(lines[i]);
-
-        // push comment
-        } else {
-          this.comments.push(lines[i].match(regex.commentContent)[1]);
         }
       }
     }
-
-    // clear tokenLines buffer
-    if (tokenLines.length)
-      this.tokens.push(Token.fromCG3(this, tokenLines));
-
-    // attach heads and return CG3 string
-    return this.attach().cg3;
   }
 
-  /**
-   * static method allowing us to construct a new Sentence directly from a
-   *   CG3 string
-   *
-   * @param {String} serial
-   * @param {Object} options (optional)
-   * @return {Sentence}
-   */
-  static fromCG3(serial, options) {
-    let sent = new Sentence(options);
-    sent.cg3 = serial;
-    return sent;
+  query(comparator) {
+
+    let matches = [];
+    this.iterate(token => {
+      if (comparator(token))
+        matches.push(token);
+    });
+
+    return matches;
   }
 
-  /**
-   * get an array of token parameters representing the sentence
-   *
-   * NOTE: fails (returns null) if we have subTokens or ambiguous analyses
-   *
-   * @return {(Array|null)}
-   */
-  get params() {
-    try {
+  getByIndices(tokenId, analysisId=null, subTokenId=null) {
 
-      let params = [];
-      this.forEach(token => {
-
-        if (token.isSuperToken || token.isSubToken)
-          throw new InvalidCoNLLUError();
-        if (token.isAmbiguous)
-          throw new InvalidCG3Error();
-
-        params.push(token.params);
-      });
-      return params;
-
-    } catch (e) {
-      if (e instanceof InvalidCoNLLUError && this.options.catchInvalid) {
-        console.warn('cannot get params for this sentence: contains MultiWordTokens');
-        return null;
-
-      } else if (e instanceof InvalidCG3Error && this.options.catchInvalid) {
-        console.warn('cannot get params for this sentence: contains ambiguous analyses');
-        return null;
-
-      } else {
-        // throw other errors
-        throw e;
-      }
-    }
-  }
-
-  /**
-   * parse an array of token parameters and save contents to the sentence
-   *
-   * @param {Array} paramsList
-   * @return {(Array|null)}
-   */
-  set params(paramsList) {
-    // can only parse arrays
-    if (!(paramsList instanceof Array))
+    if (!this.tokens[tokenId])
       return null;
 
-    // clear existing data
-    this.comments = [];
-    this.tokens = [];
+    if (analysisId === null)
+      return this.tokens[tokenId];
 
-    // push a new token for each set of parameters
-    _.each(paramsList, params => {
-      this.tokens.push(Token.fromParams(this, params));
-    });
+    if (!this.tokens[tokenId]._analyses[analysisId])
+      return null;
 
-    // attach heads and return validated parameter list
-    return this.attach().params;
+    if (subTokenId === null)
+      return this.tokens[tokenId]._analyses[analysisId];
+
+    return this.tokens[tokenId]._analyses[analysisId]._subTokens[subTokenId] || null;
   }
 
-  /**
-   * static method allowing us to construct a new Sentence directly from an
-   *   array of parameters
-   *
-   * @param {Array} paramsList
-   * @param {Object} options (optional)
-   * @return {Sentence}
-   */
-  static fromParams(paramsList, options) {
-    let sent = new Sentence(options);
-    sent.params = paramsList;
-    return sent;
-  }
-
-  /**
-   * get an array of the elements of this sentence, useful for exporting the data
-   *   to visualization libraries such as Cytoscape or D3
-   *
-   * @return {Array}
-   */
-  get eles() {
-
-    // just in case, since it's critical
-    this.index();
-
-    let eles = [];
-    _.each(this.tokens, token => {
-      eles = eles.concat(token.eles);
-    });
-
-    return eles;
-  }
-
-  clean() {
-    throw new Error('Sentence::clean is not implemented'); // TODO
-  }
-
-  /**
-   * iterate through the tokens and set an appropriate index for each (following
-   *   CoNLL-U indexing scheme with, e.g. 1 for regular token, 1-2 for superToken,
-   *   1.1 for "empty" token)
-   *
-   * @return {Sentence}
-   */
   index() {
-    // track "overall" index number (id) and "empty" index number and "absolute" num
-    // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
-    //   index before using it (see Token::index)
-    let id = 0, empty = 0, num = 0, clump = 0;
-    _.each(this.tokens, token => {
-      // allow each token to return counters for the next guy
-      [id, empty, num, clump] = token.index(id, empty, num, clump);
-    });
 
-    // chaining
-    return this;
+    let majorToken = null,
+      superToken = null,
+      empty = 0,
+      conllu = 0,
+      cg3 = 0,
+      cytoscape = 0;
+
+    this.iterate((token, i, j, k) => {
+
+      token.indices.cg3 = ++cg3;
+
+      if (j === null || k === null) {
+
+        majorToken = token;
+
+        if (superToken) {
+          superToken.token.indices.conllu = superToken.start + '-' + superToken.stop;
+          superToken = null;
+        }
+
+        if (token.subTokens.length) {
+          superToken = {
+            token: token,
+            start: null,
+            stop: null
+          };
+        } else {
+
+          if (token.isEmpty) {
+            empty += 1;
+          } else {
+            empty = 0;
+            conllu += 1;
+          }
+
+          token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+        }
+
+      } else {
+
+        if (majorToken._i === j) {
+
+          if (token.isEmpty) {
+            empty += 1;
+          } else {
+            empty = 0;
+            conllu += 1;
+          }
+
+          token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+        }
+
+        if (superToken) {
+          if (superToken.start === null) {
+            superToken.start = empty ? conllu + '.' + empty : conllu;
+          } else {
+            superToken.stop = empty ? conllu + '.' + empty : conllu;
+          }
+        }
+      }
+    });
   }
 
-  /**
-   * iterate through the tokens and try to convert a plain string index to a
-   *   head to the actual token given by that index (called after parsing
-   *   CoNLL-U, CG3, or params)
-   *
-   * @return {Sentence}
-   */
   attach() {
-    // reindex in case we're out of date (valid index is crucial here)
+    this.iterate((token, i, j, k) => {
+
+      (token.serial.head || '').split('|').forEach(fullHead => {
+
+        fullHead = fullHead.split(':');
+        const head = fullHead[0];
+        const deprel = fullHead[1] || null;
+
+        if (head === '0') {
+
+          token.addHead(new RootToken(), 'ROOT');
+
+        } else if (head) {
+
+          const query = this.query(token => token.serial.index === head);
+          if (query.length !== 1)
+            throw new SentenceError(`cannot locate token with serial index ${head}`);
+
+          token.addHead(query[0], deprel);
+        }
+      });
+    });
+
+    this.iterate(token => { delete token.serial });
+
     this.index();
-    this.forEach(token => {
-      token.analysis.head = token.analysis.head;
-      token.analysis.deps = token.analysis.deps;
-    });
-
-    // chaining
-    return this;
-  }
-
-
-  /**
-   * iterate through the tokens and determine if they could be converted into
-   *   a CoNLL-U formatted string
-   *
-   * NOTE: currently, only returns false if it contains one/more ambiguous analyses
-   *
-   * @return {Boolean}
-   */
-  get isValidConllu() {
-    let valid = true;
-    this.forEach(token => {
-      if (token.isAmbiguous)
-        valid = false;
-    });
-    return valid;
-  }
-
-  /**
-   * iterate through the tokens and determine if they could be converted into
-   *   a CG3 formatted string
-   *
-   * NOTE: currently, always returns true (see update below)
-   *
-   * @return {Boolean}
-   */
-  get isValidCG3() {
-    let valid = true;
-    this.forEach(token => {
-      /*
-      UPDATE 6/9/18: apparently CG3 can handle all this stuff, it's just a bit lossy
-        (e.g. subTokens won't have their own `form` and `empty` tokens won't show up)
-
-      if (token.isSubToken || token.isSuperToken || token.isEmpty)
-        valid = false;
-      */
-    });
-    return valid;
   }
 }
 
-/**
- * Proxy so that we can get tokens using Array-like syntax
- *
- * NOTE: usage: `sent[8]` would return the analysis of the token at index 8
- * NOTE: if `name` is not a Number, fall through to normal object
- *
- * @return {Mixed}
- * @name Sentence#get
- */
-Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
-
-  // default getter, called any time we use Sentence.name or Sentence[name]
-  get(target, name, receiver) {
-
-    // Symbols can't be cast to floats, so check here to avoid errors
-    if (typeof name === 'symbol')
-      return this[name];
-
-    // cast, catch Infinity
-    let id = parseFloat(name);
-    if (!isNaN(id)) {
-
-      // if we got a number, return analysis at that index
-      id = parseInt(id);
-      let token = receiver.tokens[id];
-      return token ? token.analysis : null;
-
-    } else {
-
-      // fall through to normal getting
-      return this[name];
-
-    }
-  }
-});
-
-// expose to application
 module.exports = Sentence;

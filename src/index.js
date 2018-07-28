@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
-const nx = require('./xx');
+const nx = require('./nx');
 const errors = require('./utils/errors');
 
 module.exports = _.extend({

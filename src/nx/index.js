@@ -1,9 +1,14 @@
 module.exports = {
 
+  NxBaseClass: require('./base-class'),
   Corpus: require('./corpus'),
   Sentence: require('./sentence'),
+  Comment: require('./comment'),
+  BaseToken: require('./base-token'),
+  RootToken: require('./root'),
   Token: require('./token'),
   Analysis: require('./analysis'),
-  Comment: require('./comment'),
+  SubToken: require('./sub-token'),
+  DependencySet: require('./dep-set'),
 
 };
