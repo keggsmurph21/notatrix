@@ -2,7 +2,6 @@
 
 const _ = require('underscore');
 
-const nx = require('../../nx');
 const utils = require('../../utils');
 const ParserError = utils.ParserError;
 const detect = require('./detector');
@@ -35,6 +34,9 @@ module.exports = (text, options) => {
     }
 
     serialize() {
+
+      this.root.index(0);
+
       return {
         input: this.input,
         options: this.options,
@@ -70,6 +72,18 @@ module.exports = (text, options) => {
       }
     }
 
+    index(num) {
+      this.eachBefore(before => {
+        num = before.index(num);
+      });
+      this.num = ++num;
+      this.eachAfter(after => {
+        num = after.index(num)
+      });
+
+      return num;
+    }
+
     serialize(tokens) {
 
       this.eachBefore(before => {
@@ -78,7 +92,8 @@ module.exports = (text, options) => {
 
       tokens.push({
         form: this.form,
-        head: this.parent.form || 'ROOT',
+        head: `${this.parent.num || 0}`,
+        index: `${this.num}`,
         deprel: this.deprel,
       });
 
@@ -148,5 +163,6 @@ module.exports = (text, options) => {
     }
   });
 
+  //console.log(sent.serialize())
   return sent.serialize();
 };

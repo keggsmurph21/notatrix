@@ -53,8 +53,11 @@ module.exports = (text, options) => {
 
   //console.log(chunks);
 
-  let tokens = chunks.filter(utils.thin).map(chunk => {
-    return { form: chunk };
+  let tokens = chunks.filter(utils.thin).map((chunk, i) => {
+    return {
+      form: chunk,
+      index: `${i}`,
+    };
   });
 
   //console.log(comments);

@@ -8,14 +8,19 @@ const _ = require('underscore'),
 
 describe('generator', () => {
 
-  describe('generate formats from nx.Sentence instance', () => {
-
-    const options = {};
-
+  describe('generate nx.Sentence instance from explicit formats', () => {
     utils.forEachText((text, format, name) => {
-      it(`should parse ${format}:${name} to notatrix serial`, () => {
 
-        //const s = new nx.Sentence(text, options);
+      const options = {
+        interpretAs: format,
+        suppressDetectorErrors: true,
+        suppressParserErrors: true,
+      };
+
+      it(`should generate nx.Sentence from ${format}:${name}`, () => {
+
+        new nx.Sentence(text, options);
+        //expect(() => { new nx.Sentence(text, options) }).to.not.throw();
 
       });
     });

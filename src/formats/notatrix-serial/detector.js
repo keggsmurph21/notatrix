@@ -19,6 +19,12 @@ module.exports = (obj, options) => {
       const value = obj[fieldName];
 
       switch (fieldType) {
+        case ('number'):
+          if (value !== undefined || !allowUndefined)
+            if (isNaN(parseFloat(value)))
+              throw new DetectorError(`Illegal notatrix serial: could not parse ${value} as float`, obj, options);
+          break;
+
         case ('string'):
           if (value !== undefined || !allowUndefined)
             if (typeof value !== 'string')
@@ -59,7 +65,9 @@ module.exports = (obj, options) => {
     if (typeof comment !== 'string')
       throw new DetectorError(`Illegal notatrix serial: comments should be strings`, obj, options);
   });
-  restrict(obj.tokens, utils.nxSentenceTokensFields, true);
+  _.each(obj.tokens, token => {
+    restrict(token, utils.nxSentenceTokensFields, true);
+  });
   if (obj.tokens.length === 0 && !options.allowZeroTokens)
     throw new DetectorError(`Illegal notatrix serial: cannot have empty token list`, obj, options);
 

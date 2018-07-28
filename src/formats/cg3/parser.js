@@ -116,7 +116,7 @@ module.exports = (text, options) => {
 
         const dependency = subChunk.match(utils.re.cg3Dependency),
           head = subChunk.match(utils.re.cg3Head),
-          index = subChunk.match(utils.re.cg3Id),
+          index = subChunk.match(utils.re.cg3Index),
           deprel = subChunk.match(utils.re.cg3Deprel),
           other = subChunk.match(utils.re.cg3Other);
 
@@ -167,6 +167,7 @@ module.exports = (text, options) => {
   let expecting = ['comment', 'form'];
   let token = null;
   let analysis = null;
+  let missingIndices = false;
 
   chunks.forEach(chunk => {
 
@@ -213,8 +214,16 @@ module.exports = (text, options) => {
         if (analysis)
           token.analyses.push(analysis);
 
-        if (chunk.index === undefined && !options.allowMissingIndices)
-          throw new ParserError('cannot parse token without index', text, options);
+        if (chunk.index === undefined) {
+          if (!options.allowMissingIndices)
+            throw new ParserError('cannot parse token without index', text, options);
+
+          missingIndices = true;
+
+        } else {
+          if (missingIndices)
+            throw new ParserError('cannot parse partially indexed CG3', text, options);
+        }
 
         analysis = {
           subTokens: [
@@ -257,6 +266,33 @@ module.exports = (text, options) => {
     }
 
   });
+
+  if (analysis)
+    token.analyses.push(analysis);
+
+  if (token) {
+    if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1)
+      token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+
+    tokens.push(_.omit(token, 'currentIndent'));
+  }
+
+  if (missingIndices) {
+
+    let index = 0;
+    tokens.forEach(token => {
+      if (token.analyses) {
+        token.analyses.forEach(analysis => {
+          analysis.subTokens.forEach(subToken => {
+            subToken.index = `${++index}`;
+          });
+        });
+      } else {
+        token.index = `${++index}`;
+      }
+    });
+
+  }
 
   //console.log(comments);
   //console.log(tokens);

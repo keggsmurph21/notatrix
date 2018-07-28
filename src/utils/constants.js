@@ -35,7 +35,7 @@ module.exports = {
   nxSentenceTokensFields: {
     semicolon: 'boolean',
     isEmpty: 'boolean',
-    index: 'string*',
+    index: 'number',
     form: 'string*',
     lemma: 'string*',
     upostag: 'string*',

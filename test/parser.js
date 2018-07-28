@@ -27,7 +27,7 @@ describe('parser', () => {
     const options = {};
 
     utils.forEachText((text, format, name) => {
-      it(`should detect ${format}:${name} as ${format}`, () => {
+      it(`should parse ${format}:${name} to notatrix serial`, () => {
 
         const possibilities = nx.parse(text, options);
         _.each(possibilities, possibility => {

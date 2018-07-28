@@ -165,6 +165,8 @@ class Sentence extends NxBaseClass {
   attach() {
     this.iterate((token, i, j, k) => {
 
+      if (token.serial.head && isNaN(parseFloat(token.serial.head)))
+        console.log(token.form, token.serial);
       (token.serial.head || '').split('|').forEach(fullHead => {
 
         fullHead = fullHead.split(':');
@@ -179,7 +181,7 @@ class Sentence extends NxBaseClass {
 
           const query = this.query(token => token.serial.index === head);
           if (query.length !== 1)
-            throw new SentenceError(`cannot locate token with serial index ${head}`);
+            throw new SentenceError(`cannot locate token with serial index "${head}"`);
 
           token.addHead(query[0], deprel);
         }
