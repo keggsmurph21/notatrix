@@ -3,6 +3,7 @@
 module.exports = {
 
   fields: [
+    'index',
     'form',
     'lemma',
     'upostag',

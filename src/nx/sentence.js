@@ -34,6 +34,7 @@ class Sentence extends NxBaseClass {
 
       // choose one of them if possible
       if (serial.length === 0) {
+        console.log(serial);
         throw new SentenceError('Unable to parse input', this);
       } else if (serial.length === 1) {
         serial = serial[0];

@@ -2,7 +2,6 @@
 
 const _ = require('underscore');
 
-const nx = require('../../nx');
 const utils = require('../../utils');
 const ParserError = utils.ParserError;
 const detect = require('./detector');

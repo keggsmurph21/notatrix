@@ -9,12 +9,12 @@ module.exports = (text, options) => {
 
   function isParam(obj) {
 
-    const omitted = _.omit(obj, utils.fields);
-    if (Object.keys(omitted).length)
-      throw new DetectorError(`Illegal Params: contains illegal keys`, text, options);
+    const omitted = Object.keys(_.omit(obj, utils.fields));
+    if (omitted.length)
+      throw new DetectorError(`Illegal Params: contains illegal keys (${omitted.join(', ')})`, text, options);
 
-    const picked = _.pick(obj, utils.fields);
-    if (!Object.keys(picked).length)
+    const picked = Object.keys(_.pick(obj, utils.fields));
+    if (!picked.length)
       throw new DetectorError(`Illegal Params: missing required keys`, text, options);
 
     return true;
