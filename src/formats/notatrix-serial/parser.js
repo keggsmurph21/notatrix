@@ -19,5 +19,4 @@ module.exports = (text, options) => {
   }
 
   throw new ParserError('not implemented');
-  return text;
 };

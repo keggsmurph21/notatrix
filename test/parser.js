@@ -9,6 +9,7 @@ const data = require('../data');
 const parse = require('../src/parser');
 const ParserError = utils.ParserError;
 const nx = require('../src/nx');
+const nxDetector = require('../src/formats/notatrix-serial').detect;
 
 describe('parser', () => {
 
@@ -16,18 +17,14 @@ describe('parser', () => {
 
     const options = {};
 
-    let seen = new Set();
-
     utils.forEachText((text, format, name) => {
-      if (!seen.has(format))
       it(`should parse ${format}:${name} to notatrix serial`, () => {
 
         const parsed = parse.as[format](text, options);
-        console.log(parsed.tokens)
-        expect(() => {}).to.not.throw();
+        //console.log(parsed)
+        expect(() => nxDetector(parsed)).to.not.throw();
 
       });
-      seen.add(format)
     });
   });
 

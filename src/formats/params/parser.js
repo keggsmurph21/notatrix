@@ -19,7 +19,7 @@ module.exports = (text, options) => {
   }
 
   return {
-    input: text,
+    input: JSON.stringify(text),
     options: options,
     comments: [],
     tokens: text,
