@@ -12,8 +12,8 @@ class Analysis extends NxBaseClass {
   constructor(serial, options) {
 
     super('Analysis');
-    this._subTokens = (serial.subTokens || []).map(sub => new SubToken(sub));
-    
+    this._subTokens = (serial.subTokens || []).map(sub => new SubToken(sub, options));
+
   }
 
   get subTokens() {

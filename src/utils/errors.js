@@ -141,11 +141,13 @@ module.exports = {
   InvalidCG3Error,
   InvalidCoNLLUError,
 
+  ToolError,
   SplitterError,
   DetectorError,
   ParserError,
   GeneratorError,
 
+  NxError,
   CorpusError,
   SentenceError,
   BaseTokenError,

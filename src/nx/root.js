@@ -10,7 +10,7 @@ class RootToken extends BaseToken {
 
     super('RootToken', {});
 
-    this.form = 'ROOT';
+    this.form = 'root';
     this.indices = {
       conllu: 0,
       cg3: 0,

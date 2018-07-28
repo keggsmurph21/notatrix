@@ -23,10 +23,9 @@ class Token extends BaseToken {
     this.xpostag = serial.xpostag; // split on "|" ?
     this.feats = serial.feats;
     this.deprel = serial.deprel;
-    this.misc = serial.misc;
-    this.other = serial.other;
+    this.misc = [(serial.misc || ''), (serial.other || []).join('|')].join('|');
 
-    this._analyses = (serial.analyses || []).map(ana => new Analysis(ana));
+    this._analyses = (serial.analyses || []).map(ana => new Analysis(ana, options));
     this._i = (this._analyses.length ? 0 : null);
 
     this.serial = {

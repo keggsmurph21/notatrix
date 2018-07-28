@@ -27,7 +27,7 @@ class DependencySet extends NxBaseClass {
 
     if (token.isSuperToken)
       throw new DependencyError('superTokens cannot have dependency relations');
-      
+
     let found = false;
     for (let i=0; i<this.length; i++) {
       const item = this.items[i];
@@ -69,17 +69,28 @@ class DependencySet extends NxBaseClass {
     return false;
   }
 
-  toString(indexName) {
+  toString(index, type) {
 
-    indexName = indexName || 'conllu';
+    const items = type === 'head' && !this.options.showEnhancedDependencies
+      ? this.items.slice(0)
+      : this.items;
 
-    return this.items.map(item => {
+    const showDeprel = type === 'head'
+        ? this.options.headsShowDeprel
+        : type === 'deps'
+          ? this.options.depsShowDeprel
+          : true;
 
-      return item.deprel
-        ? item.token.indices[indexName] + ':' + item.deprel
-        : item.token.indices[indexName];
+    const print = item => {
+      //console.log(item.deprel, this.options.showRootDeprel, item.deprel !== 'root' || this.options.showRootDeprel)
+      return item.token.indices[index] == undefined
+        ? null
+        : showDeprel && item.deprel && (item.deprel !== 'root' || this.options.showRootDeprel)
+          ? `${ item.token.indices[index] }:${ item.deprel }`
+          : `${ item.token.indices[index] }`;
+    }
 
-    }).join('|');
+    return items.map(print).filter(utils.thin).join('|') || null;
   }
 }
 

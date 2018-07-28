@@ -19,7 +19,13 @@ class Sentence extends NxBaseClass {
     options = _.defaults(options, {
       interpretAs: null,
       addHeadOnModifyFailure: true,
+      addHeadsWhenAddingDeps: true,
+      headsShowDeprel: true,
       addDepOnModifyFailure: true,
+      addDepsWhenAddingHeads: true,
+      depsShowDeprel: true,
+      showRootDeprel: true,
+      showEnhancedDependencies: true,
     });
 
     if (options.interpretAs) {
@@ -34,7 +40,6 @@ class Sentence extends NxBaseClass {
 
       // choose one of them if possible
       if (serial.length === 0) {
-        console.log(serial);
         throw new SentenceError('Unable to parse input', this);
       } else if (serial.length === 1) {
         serial = serial[0];
@@ -166,8 +171,6 @@ class Sentence extends NxBaseClass {
   attach() {
     this.iterate((token, i, j, k) => {
 
-      if (token.serial.head && isNaN(parseFloat(token.serial.head)))
-        console.log(token.form, token.serial);
       (token.serial.head || '').split('|').forEach(fullHead => {
 
         fullHead = fullHead.split(':');
@@ -176,17 +179,38 @@ class Sentence extends NxBaseClass {
 
         if (head === '0') {
 
-          token.addHead(new RootToken(), 'ROOT');
+          token.addHead(new RootToken(), 'root');
 
         } else if (head) {
 
           const query = this.query(token => token.serial.index === head);
-          if (query.length !== 1)
+          if (query.length !== 1) {
+            console.log(token.serial)
             throw new SentenceError(`cannot locate token with serial index "${head}"`);
+          }
 
           token.addHead(query[0], deprel);
         }
       });
+
+      (token.serial.deps || '').split('|').forEach(fullDep => {
+
+        fullDep = fullDep.split(':');
+        const dep = fullDep[0];
+        const deprel = fullDep[1] || null;
+
+        if (dep === '0') {
+
+        } else if (dep) {
+
+          const query = this.query(token => token.serial.index === dep);
+          if (query.length !== 1)
+            throw new SentenceError(`cannot locate token with serial index "${dep}"`);
+
+          token.addDep(query[0], deprel);
+        }
+      });
+
     });
 
     this.iterate(token => { delete token.serial });
