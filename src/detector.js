@@ -8,13 +8,21 @@ const DetectorError = utils.DetectorError;
 let as = {
 
 	'apertium stream': require('./formats/apertium-stream').detect,
-	Brackets: require('./formats/brackets').detect,
-	CG3: require('./formats/cg3').detect,
-	'CoNLL-U': require('./formats/conllu').detect,
-	'notatrix serial': require('./formats/notatrix-serial').detect,
-	Params: require('./formats/params').detect,
-	'plain text': require('./formats/plain-text').detect,
+  apertiumStream: require('./formats/apertium-stream').detect,
+  Brackets: require('./formats/brackets').detect,
+  brackets: require('./formats/brackets').detect,
+  CG3: require('./formats/cg3').detect,
+  cg3: require('./formats/cg3').detect,
+  'CoNLL-U': require('./formats/conllu').detect,
+  conllu: require('./formats/conllu').detect,
+  'notatrix serial': require('./formats/notatrix-serial').detect,
+  notatrixSerial: require('./formats/notatrix-serial').detect,
+  Params: require('./formats/params').detect,
+  params: require('./formats/params').detect,
+  'plain text': require('./formats/plain-text').detect,
+  plainText: require('./formats/plain-text').detect,
 	SD: require('./formats/sd').detect,
+  sd: require('./formats/sd').detect,
 
 };
 
