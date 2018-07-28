@@ -7,10 +7,10 @@ const utils = require('../../utils');
 const ParserError = utils.ParserError;
 const detect = require('./detector');
 
-module.exports = (text, options) => {
+module.exports = (obj, options) => {
 
   try {
-    detect(text, options);
+    detect(obj, options);
   } catch (e) {
     if (e instanceof utils.DetectorError)
       throw new ParserError(e.message);
@@ -18,5 +18,5 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  throw new ParserError('not implemented');
+  return obj;
 };

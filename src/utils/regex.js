@@ -20,5 +20,7 @@ module.exports = {
   sdDependency: /^\s*([\w.]+)\(([\w.]+),\s*([\w.]+)\)\s*$/,
   sdDependencyNoWhitespace: /^([\w.]+)\(([\w.]+),\s*([\w.]+)\)$/,
   fallback: /^_$/,
+  commentLabel: /(\s*)(labels?|tags?)\s*=\s*(\w.*)/,
+  commentSentId: /(\s*)sent.?id\s*=\s*(\w*)/i,
 
 };

@@ -19,8 +19,13 @@ class InvalidCoNLLUError extends NotatrixError {
 }
 
 
+class ToolError extends NotatrixError {
+  constructor(...args) {
+    super(...args);
+  }
+}
 
-class SplitterError extends NotatrixError {
+class SplitterError extends ToolError {
   constructor(message, text, options) {
     super(message);
 
@@ -30,7 +35,7 @@ class SplitterError extends NotatrixError {
   }
 }
 
-class DetectorError extends NotatrixError {
+class DetectorError extends ToolError {
   constructor(message, text, options) {
     super(message);
 
@@ -40,7 +45,7 @@ class DetectorError extends NotatrixError {
   }
 }
 
-class ParserError extends NotatrixError {
+class ParserError extends ToolError {
   constructor(message, text, options) {
     super(message);
 
@@ -50,7 +55,7 @@ class ParserError extends NotatrixError {
   }
 }
 
-class GeneratorError extends NotatrixError {
+class GeneratorError extends ToolError {
   constructor(message, nx, options) {
     super(message);
 
@@ -60,14 +65,93 @@ class GeneratorError extends NotatrixError {
   }
 }
 
+
+
+class NxError extends NotatrixError {
+  constructor(...args) {
+    super(...args);
+  }
+}
+
+class CorpusError extends NxError {
+  constructor(message, nx) {
+    super(message);
+
+    this.name = 'CorpusError';
+    this.nx = nx;
+  }
+}
+
+class SentenceError extends NxError {
+  constructor(message, nx) {
+    super(message);
+
+    this.name = 'SentenceError';
+    this.nx = nx;
+  }
+}
+
+class BaseTokenError extends NxError {
+  constructor(...args) {
+    super(...args);
+    this.name = 'BaseTokenError';
+  }
+}
+
+class TokenError extends BaseTokenError {
+  constructor(message, nx) {
+    super(message);
+
+    this.name = 'TokenError';
+    this.nx = nx;
+  }
+}
+
+class AnalysisError extends NxError {
+  constructor(message, nx) {
+    super(message);
+
+    this.name = 'AnalysisError';
+    this.nx = nx;
+  }
+}
+
+class SubTokenError extends BaseTokenError {
+  constructor(message, nx) {
+    super(message);
+
+    this.name = 'SubTokenError';
+    this.nx = nx;
+  }
+}
+
+class DependencyError extends NxError {
+  constructor(message) {
+    super(message);
+
+    this.name = 'DependencyError';
+  }
+}
+
+
+
 module.exports = {
 
   NotatrixError,
   InvalidCG3Error,
   InvalidCoNLLUError,
+
   SplitterError,
   DetectorError,
   ParserError,
   GeneratorError,
+
+  CorpusError,
+  SentenceError,
+  BaseTokenError,
+  TokenError,
+  AnalysisError,
+  SubTokenError,
+  DependencyError,
 
 };
