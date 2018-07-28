@@ -8,12 +8,12 @@ const _ = require('underscore'),
 
 describe('parser', () => {
 
-  describe('parse formats explicitly to nx.Sentence instance', () => {
+  describe('parse formats explicitly to notatrix serial', () => {
 
     const options = {};
 
     utils.forEachText((text, format, name) => {
-      it(`should parse ${format}:${name} to notatrix serial`, () => {
+      it(`${format}:${name}`, () => {
 
         const parsed = nx.parse.as[format](text, options);
         expect(() => nx.detect.as.notatrixSerial(parsed)).to.not.throw();
@@ -22,12 +22,12 @@ describe('parser', () => {
     });
   });
 
-  describe('parse formats implicitly to nx.Sentence instance', () => {
+  describe('parse formats implicitly to notatrix serial', () => {
 
     const options = {};
 
     utils.forEachText((text, format, name) => {
-      it(`should parse ${format}:${name} to notatrix serial`, () => {
+      it(`${format}:${name}`, () => {
 
         const possibilities = nx.parse(text, options);
         _.each(possibilities, possibility => {

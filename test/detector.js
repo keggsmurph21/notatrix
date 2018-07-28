@@ -15,7 +15,7 @@ describe('detector', () => {
     };
 
     utils.forEachText((text, format, name) => {
-      it(`should detect ${format}:${name} as ${format}`, () => {
+      it(`${format}:${name} is ${format}`, () => {
 
         expect(nx.detect.as[format](text, options)).to.equal(format);
 
@@ -30,7 +30,7 @@ describe('detector', () => {
     utils.forEachText((text, format, name) => {
       utils.forEachFormat(castedFormat => {
         if (format !== castedFormat)
-          it(`should not detect ${format}:${name} as ${castedFormat}`, () => {
+          it(`${format}:${name} is not ${castedFormat}`, () => {
 
             const cast = nx.detect.as[castedFormat];
             expect(() => { cast(text, options); }).to.throw(nx.DetectorError);
@@ -48,7 +48,7 @@ describe('detector', () => {
     };
 
     utils.forEachText((text, format, name) => {
-      it(`should detect ${format}:${name} as ${format}`, () => {
+      it(`${format}:${name} is ${format}`, () => {
 
         const possibilities = nx.detect(text, options);
         expect(possibilities.indexOf(format) > -1).to.equal(true);

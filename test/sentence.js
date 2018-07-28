@@ -27,7 +27,6 @@ describe('Sentence', () => {
     utils.forEachText((text, format, name) => {
       it(`${format}:${name}`, () => {
 
-        new nx.Sentence(text);
         expect(() => { new nx.Sentence(text) }).to.not.throw();
 
       });
