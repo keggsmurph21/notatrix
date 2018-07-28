@@ -30,6 +30,9 @@ describe('generator', () => {
           case ('Params'):
             clean = obj => obj.forEach(token => _.omit(token, 'index'));
             break;
+          case ('plain text'):
+            clean = str => str.trim();
+            break;
         }
 
         let options = {

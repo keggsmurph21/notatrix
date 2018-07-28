@@ -26,5 +26,5 @@ module.exports = (sent, options) => {
     } else {
       return token.form;
     }
-  }).join(' ');
+  }).join(' ').replace(/\s+([.,!?;]+)/g, '$1');
 };
