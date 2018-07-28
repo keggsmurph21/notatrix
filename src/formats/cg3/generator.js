@@ -1,9 +1,47 @@
 'use strict';
 
+const _ = require('underscore');
+
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
 
-module.exports = (text, options) => {
-  throw new GeneratorError('not implemented');
-};
+module.exports = (sent, options) => {
 
+  if (!sent || sent.name !== 'Sentence')
+    throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
+
+  options = _.extend(options, sent.options);
+  options = _.defaults(options, {
+
+  });
+
+  sent.index();
+  return [].concat(
+    sent.comments.map(comment => '# ' + comment.body),
+    sent.tokens.map(token => {
+
+      /*
+      const toString = token => {
+        return [
+
+          token.indices.conllu,
+          token.form || utils.fallback,
+          token.lemma || utils.fallback,
+          token.upostag || utils.fallback,
+          token.xpostag || utils.fallback,
+          token.feats || utils.fallback,
+          token.getHead('cg3') || utils.fallback,
+          token.deprel || utils.fallback,
+          token.getDeps('cg3') || utils.fallback,
+          token.misc || utils.fallback,
+
+        ].join('\t');
+      };
+
+
+      return [ token ].concat(token.subTokens).map(toString).join('\n');
+      */
+
+    })
+  ).join('\n');
+};
