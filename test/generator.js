@@ -14,13 +14,21 @@ describe('generator', () => {
       it(`${format}:${name}`, () => {
 
         // massage the inputs and outputs to not break at pointless places
-        let maps = [];
+        let clean = str => utils.clean(str, []);
         switch (format) {
           case ('CoNLL-U'):
-            maps = [
+            clean = str => utils.clean(str, [
               utils.spacesToTabs,
               line => line.trim(),
-            ];
+            ]);
+            break;
+          case ('CG3'):
+            clean = str => utils.clean(str, [
+              utils.spacesToTabs,
+            ]);
+            break;
+          case ('Params'):
+            clean = obj => obj.forEach(token => _.omit(token, 'index'));
             break;
         }
 
@@ -36,6 +44,12 @@ describe('generator', () => {
 
         // some data has weird stuff that needs to be set
         switch (`${format}:${name}`) {
+          case ('CG3:nested'):
+          case ('CG3:with_semicolumn'):
+          case ('CG3:apertium_kaz_1'):
+          case ('CG3:apertium_kaz_2'):
+            options.omitIndices = true;
+            break;
           case ('CoNLL-U:ud_example_modified'):
             options.headsShowDeprel = true;
             options.depsShowDeprel = true;
@@ -47,8 +61,9 @@ describe('generator', () => {
             options.showRootDeprel = false;
             options.showEnhancedDependencies = true;
             break;
-          default:
-            return;
+          case ('CoNLL-U:ud_example_tabs'):
+            options.depsShowDeprel = true;
+            break;
         }
 
         const sent = new nx.Sentence(text, options);
@@ -56,11 +71,7 @@ describe('generator', () => {
         const detected = nx.detect.as[format](generated);
 
         expect(detected).to.equal(format);
-        expect(
-          utils.clean(generated, maps)
-        ).to.equal(
-          utils.clean(text, maps)
-        );
+        expect(clean(generated)).to.equal(clean(text));
 
       });
     });

@@ -51,16 +51,10 @@ class BaseToken extends NxBaseClass {
   }
 
   getHead(format) {
-    if (!this.indices[format])
-      throw new BaseTokenError(`cannot get head for format ${format}`);
-
     return this._heads.toString(format, 'head');
   }
 
   getDeps(format) {
-    if (!this.indices[format])
-      throw new BaseTokenError(`cannot get deps for format ${format}`);
-
     return this._deps.toString(format, 'deps');
   }
 

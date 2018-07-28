@@ -69,28 +69,43 @@ class DependencySet extends NxBaseClass {
     return false;
   }
 
-  toString(index, type) {
+  toString(format, type) {
 
-    const items = type === 'head' && !this.options.showEnhancedDependencies
-      ? this.items.slice(0)
-      : this.items;
+    if (format === 'CoNLL-U') {
 
-    const showDeprel = type === 'head'
-        ? this.options.headsShowDeprel
-        : type === 'deps'
-          ? this.options.depsShowDeprel
-          : true;
+      const items = type === 'head' && !this.options.showEnhancedDependencies
+        ? this.items.slice(0)
+        : this.items;
 
-    const print = item => {
-      //console.log(item.deprel, this.options.showRootDeprel, item.deprel !== 'root' || this.options.showRootDeprel)
-      return item.token.indices[index] == undefined
-        ? null
-        : showDeprel && item.deprel && (item.deprel !== 'root' || this.options.showRootDeprel)
-          ? `${ item.token.indices[index] }:${ item.deprel }`
-          : `${ item.token.indices[index] }`;
+      const showDeprel = type === 'head'
+          ? this.options.headsShowDeprel
+          : type === 'deps'
+            ? this.options.depsShowDeprel
+            : true;
+
+      const print = item => {
+        //console.log(item.deprel, this.options.showRootDeprel, item.deprel !== 'root' || this.options.showRootDeprel)
+        return item.token.indices.conllu == undefined
+          ? null
+          : showDeprel && item.deprel && (item.deprel !== 'root' || this.options.showRootDeprel)
+            ? `${ item.token.indices.conllu }:${ item.deprel }`
+            : `${ item.token.indices.conllu }`;
+      }
+
+      return items.map(print).filter(utils.thin).join('|') || null;
+
+    } else if (format === 'cytoscape') {
+      throw new Error('not implemented');
+
+    } else {
+
+      const item = this.items.slice(0)[0];
+      if (item == undefined)
+        return null;
+
+      return item.token.indices.cg3;
+
     }
-
-    return items.map(print).filter(utils.thin).join('|') || null;
   }
 }
 

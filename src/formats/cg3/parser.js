@@ -111,7 +111,7 @@ module.exports = (text, options) => {
         lemma: tokenContent[3],
         other: [],
       };
-      tokenContent[5].split(/\s/).filter(utils.thin).forEach(subChunk => {
+      tokenContent[5].split(/\s+/).filter(utils.thin).forEach(subChunk => {
 
         const dependency = subChunk.match(utils.re.cg3Dependency),
           head = subChunk.match(utils.re.cg3Head),
@@ -119,7 +119,7 @@ module.exports = (text, options) => {
           deprel = subChunk.match(utils.re.cg3Deprel),
           other = subChunk.match(utils.re.cg3Other);
 
-        if (dependency) {
+        if (dependency && (head || index)) {
 
           if (head) {
             if (chunk.head)
@@ -232,7 +232,7 @@ module.exports = (text, options) => {
               head: chunk.head || null,
               index: chunk.index || null,
               deprel: chunk.deprel || null,
-              xpostag: chunk.other.pop() || null,
+              xpostag: chunk.other.shift() || null,
               other: chunk.other || null,
             }
           ]
@@ -250,7 +250,7 @@ module.exports = (text, options) => {
           head: chunk.head || null,
           index: chunk.index || null,
           deprel: chunk.deprel || null,
-          xpostag: chunk.other.pop() || null,
+          xpostag: chunk.other.shift() || null,
           other: chunk.other || null,
         });
 

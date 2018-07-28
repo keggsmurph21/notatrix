@@ -29,17 +29,15 @@ module.exports = (sent, options) => {
           token.upostag || utils.fallback,
           token.xpostag || utils.fallback,
           token.feats || utils.fallback,
-          token.getHead('conllu') || utils.fallback,
+          token.getHead('CoNLL-U') || utils.fallback,
           token.deprel || utils.fallback,
-          token.getDeps('conllu') || utils.fallback,
+          token.getDeps('CoNLL-U') || utils.fallback,
           token.misc || utils.fallback,
 
         ].join('\t');
       };
 
-
       return [ token ].concat(token.subTokens).map(toString).join('\n');
-
     })
   ).join('\n');
 };

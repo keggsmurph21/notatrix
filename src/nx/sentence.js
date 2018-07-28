@@ -114,7 +114,8 @@ class Sentence extends NxBaseClass {
 
     this.iterate((token, i, j, k) => {
 
-      token.indices.cg3 = ++cg3;
+      if (!token._analyses || !token._analyses.length)
+        token.indices.cg3 = ++cg3;
 
       if (j === null || k === null) {
 

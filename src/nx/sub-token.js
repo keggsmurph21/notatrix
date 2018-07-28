@@ -22,8 +22,7 @@ class SubToken extends BaseToken {
     this.xpostag = serial.xpostag; // split on "|" ?
     this.feats = serial.feats;
     this.deprel = serial.deprel;
-    this.misc = serial.misc;
-    this.other = serial.other;
+    this.misc = [(serial.misc || ''), (serial.other || []).join('|')].join('|');
 
     this.serial = {
       index: serial.index,

@@ -367,9 +367,9 @@ katya_aplonova_long: `# sent_id = html/meyer_gorog-contes_bambara_10amadu_tara.d
 128	.	.	PUNCT	_	_	_	_	_	Gloss=.`,
 
 ud_example_tabs: `1	They	they	PRON	PRP	Case=Nom|Number=Plur	2	nsubj	2:nsubj|4:nsubj	_
-2	buy	buy	VERB	VBP	Number=Plur|Person=3|Tense=Pres	0	root	0:root	_
+2	buy	buy	VERB	VBP	Number=Plur|Person=3|Tense=Pres	0	root	_	_
 3	and	and	CONJ	CC	_	4	cc	4:cc	_
-4	sell	sell	VERB	VBP	Number=Plur|Person=3|Tense=Pres	2	conj	0:root|2:conj	_
+4	sell	sell	VERB	VBP	Number=Plur|Person=3|Tense=Pres	2	conj	2:conj	_
 5	books	book	NOUN	NNS	Number=Plur	2	obj	2:obj|4:obj	_
 6	.	.	PUNCT	.	_	2	punct	2:punct	_`,
 
