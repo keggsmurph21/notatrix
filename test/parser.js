@@ -3,13 +3,8 @@
 const _ = require('underscore'),
   expect = require('chai').expect,
   sinon = require('sinon'),
-  utils = require('./utils');
-
-const data = require('../data');
-const parse = require('../src/parser');
-const ParserError = utils.ParserError;
-const nx = require('../src/nx');
-const nxDetector = require('../src/formats/notatrix-serial').detect;
+  utils = require('./utils'),
+  nx = require('..');
 
 describe('parser', () => {
 
@@ -20,8 +15,8 @@ describe('parser', () => {
     utils.forEachText((text, format, name) => {
       it(`should parse ${format}:${name} to notatrix serial`, () => {
 
-        const parsed = parse.as[format](text, options);
-        expect(() => nxDetector(parsed)).to.not.throw();
+        const parsed = nx.parse.as[format](text, options);
+        expect(() => nx.detect.as.notatrixSerial(parsed)).to.not.throw();
 
       });
     });
@@ -34,9 +29,9 @@ describe('parser', () => {
     utils.forEachText((text, format, name) => {
       it(`should detect ${format}:${name} as ${format}`, () => {
 
-        const possibilities = parse(text, options);
+        const possibilities = nx.parse(text, options);
         _.each(possibilities, possibility => {
-          expect(() => nxDetector(possibility)).to.not.throw();
+          expect(() => nx.detect.as.notatrixSerial(possibility)).to.not.throw();
         });
 
       });

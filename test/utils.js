@@ -12,9 +12,10 @@ module.exports = _.extend({
     callback = callback || srcUtils.noop;
 
     _.each(data, (texts, format) => {
-      _.each(texts, (text, name) => {
-        callback(text, format, name);
-      });
+      if (srcUtils.formats.indexOf(format) > -1)
+        _.each(texts, (text, name) => {
+          callback(text, format, name);
+        });
     });
   },
 

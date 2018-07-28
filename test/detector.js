@@ -3,11 +3,8 @@
 const _ = require('underscore'),
   expect = require('chai').expect,
   sinon = require('sinon'),
-  utils = require('./utils');
-
-const data = require('../data');
-const detect = require('../src/detector');
-const DetectorError = utils.DetectorError;
+  utils = require('./utils'),
+  nx = require('..');
 
 describe('detector', () => {
 
@@ -20,7 +17,7 @@ describe('detector', () => {
     utils.forEachText((text, format, name) => {
       it(`should detect ${format}:${name} as ${format}`, () => {
 
-        expect(detect.as[format](text, options)).to.equal(format);
+        expect(nx.detect.as[format](text, options)).to.equal(format);
 
       });
     });
@@ -35,8 +32,8 @@ describe('detector', () => {
         if (format !== castedFormat)
           it(`should not detect ${format}:${name} as ${castedFormat}`, () => {
 
-            const cast = detect.as[castedFormat];
-            expect(() => { cast(text, options); }).to.throw(DetectorError);
+            const cast = nx.detect.as[castedFormat];
+            expect(() => { cast(text, options); }).to.throw(nx.DetectorError);
 
           });
       });
@@ -53,7 +50,7 @@ describe('detector', () => {
     utils.forEachText((text, format, name) => {
       it(`should detect ${format}:${name} as ${format}`, () => {
 
-        const possibilities = detect(text, options);
+        const possibilities = nx.detect(text, options);
         expect(possibilities.indexOf(format) > -1).to.equal(true);
 
       });
