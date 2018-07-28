@@ -28,7 +28,30 @@ let as = {
 
 module.exports = (text, options) => {
 
-  throw new ParserError('not implemented');
+	options = _.defaults(options, {
+    suppressDetectorErrors: true,
+		suppressParserErrors: true,
+		returnAllPossibilities: true,
+  });
+
+	const possibilities = utils.formats.map(format => {
+
+		try {
+			return as[format](text, options);
+		} catch (e) {
+
+			if (e instanceof ParserError && options.suppressParserErrors)
+				return;
+
+			throw e;
+		}
+
+	}).filter(utils.thin);
+
+	if (!possibilities.length && !options.suppressDetectorErrors)
+		throw new DetectorError('Unable to detect format', text, options);
+
+	return options.returnAllPossibilities ? possibilities : possibilities[0];
 
 };
 module.exports.as = as;

@@ -45,7 +45,7 @@ module.exports = (text, options) => {
 			throw e;
 		}
 
-	}).filter(utils.noop);
+	}).filter(utils.thin);
 
 	if (!matches.length && !options.suppressDetectorErrors)
 		throw new DetectorError('Unable to detect format', text, options);

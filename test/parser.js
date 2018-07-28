@@ -13,7 +13,7 @@ const nxDetector = require('../src/formats/notatrix-serial').detect;
 
 describe('parser', () => {
 
-  describe('parse formats to nx.Sentence instance', () => {
+  describe('parse formats explicitly to nx.Sentence instance', () => {
 
     const options = {};
 
@@ -21,56 +21,26 @@ describe('parser', () => {
       it(`should parse ${format}:${name} to notatrix serial`, () => {
 
         const parsed = parse.as[format](text, options);
-        //console.log(parsed)
         expect(() => nxDetector(parsed)).to.not.throw();
 
       });
     });
   });
 
-  return;
+  describe('parse formats implicitly to nx.Sentence instance', () => {
 
-  describe('poop!', () => {
-
+    const options = {};
 
     utils.forEachText((text, format, name) => {
-      it('fuckin around', () => {
-        if (format === 'CG3')
-        parse.as.CG3(text);
-      });
+      it(`should detect ${format}:${name} as ${format}`, () => {
 
-      it('again', () => {
-        console.log('\n\n\n');
-        parse.as.CG3(data.CG3[0]);
+        const possibilities = parse(text, options);
+        _.each(possibilities, possibility => {
+          expect(() => nxDetector(possibility)).to.not.throw();
+        });
 
       });
-
-  });
-  utils.forEachText((text, format, name) => {
-    it(`fuckin around with ${format}:${name}`, () => {
-      if (format === 'CoNLL-U')
-      parse.as['CoNLL-U'](text);
     });
-
-});
-it('again', () => {
-  console.log('\n\n\n');
-  parse.as['CoNLL-U'](data['CoNLL-U'].with_tabs);
-  console.log('\n\n\n');
-  parse.as['CoNLL-U'](data['CoNLL-U'].without_tabs);
-  console.log('\n\n\n');
-  parse.as['CoNLL-U'](data['CoNLL-U'].t)
-
-});
-utils.forEachText((text, format, name) => {
-  it(`fuckin around with ${format}:${name}`, () => {
-    if (format === 'plain text')
-    parse.as['plain text'](text);
   });
 
-});
-
-
-
-});
 });

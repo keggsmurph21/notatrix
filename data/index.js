@@ -1,12 +1,20 @@
 module.exports = {
 
   'apertium stream': require('./apertium-stream'),
-  'Brackets':   require('./brackets'),
-  'CG3':        require('./cg3'),
-  'CoNLL-U':    require('./conllu'),
+  apertiumStream: require('./apertium-stream'),
+  Brackets: require('./brackets'),
+  brackets: require('./brackets'),
+  CG3: require('./cg3'),
+  cg3: require('./cg3'),
+  'CoNLL-U': require('./conllu'),
+  conllu: require('./conllu'),
   'notatrix serial': require('./notatrix-serial'),
-  'Params': 	  require('./params'),
+  notatrixSerial: require('./notatrix-serial'),
+  Params: require('./params'),
+  params: require('./params'),
   'plain text': require('./plain-text'),
-  'SD':         require('./sd')
+  plainText: require('./plain-text'),
+  SD: require('./sd'),
+  sd: require('./sd'),
 
 };
