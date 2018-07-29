@@ -101,17 +101,27 @@ describe('generator', () => {
     });
   });
 
-  if (false)
-  describe('generate output in input format from any format', () => {
-
-    const options = {};
-
+  describe('generate outputs in different formats if possible', () => {
     utils.forEachText((text, format, name) => {
-      it(`${format}:${name}`, () => {
+      utils.forEachFormat(castedFormat => {
+        if (format !== castedFormat)
+          it(`${format}:${name} => ${castedFormat}`, () => {
 
-        if (format === 'CoNLL-U')
-          nx.generate[format](text, options);
+            try {
 
+              const generated = (new nx.Sentence(text)).to(castedFormat);
+
+            } catch (e) {
+              if (e instanceof utils.GeneratorError) {
+                console.log(e.message);
+              } else if (e instanceof utils.Loss) {
+                console.log(e.message);
+              } else {
+                throw e;
+              }
+            }
+
+          });
       });
     });
   });

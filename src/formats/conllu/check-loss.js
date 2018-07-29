@@ -9,11 +9,10 @@ const fields = require('./fields');
 module.exports = (sent, output) => {
 
   const serial = sent.serialize();
+  let losses = new Set();
 
   if (!fields.hasComments && serial.comments.length)
-    throw new Loss(['comments'], output);
-
-  let losses = [];
+    losses.add('comments');
 
   const tokenCalcLoss = token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
@@ -23,19 +22,19 @@ module.exports = (sent, output) => {
 
         case ('other'):
           if (token.misc !== token.other)
-            losses.push(field);
+            losses.add(field);
           break;
 
         case ('analyses'):
           if (token.analyses.length > 1) {
-            losses.push('analyses');
+            losses.add('analyses');
           } else {
 
             const analysis = token.analyses[0],
               analysisKeys = Object.keys(analysis);
 
             if (analysisKeys.length > 1 || analysisKeys[0] !== 'subTokens') {
-              losses.push('analyses');
+              losses.add('analyses');
             } else {
               analysis.subTokens.map(tokenCalcLoss);
             }
@@ -43,13 +42,13 @@ module.exports = (sent, output) => {
           break;
 
         default:
-          losses.push(field);
+          losses.add(field);
       }
     });
   };
 
   serial.tokens.map(tokenCalcLoss);
 
-  if (losses.length)
-    throw new Loss(losses, output);
+  if (losses.size)
+    throw new Loss(Array.from(losses), output);
 };

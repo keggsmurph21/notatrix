@@ -20,14 +20,10 @@ module.exports = (sent, options) => {
 
   const output = sent.tokens.map(token => {
 
-    if (token.analysis && token.analyses.length > 1)
-      throw new GeneratorError('Unable to generate, contains ambiguous analyses');
+    return token.isSuperToken
+      ? token.subTokens.map(subToken => subToken.value).join(' ')
+      : token.form;
 
-    if (token.isSuperToken) {
-      return token.subTokens.map(subToken => subToken.form).join(' ');
-    } else {
-      return token.form;
-    }
   }).join(' ').replace(utils.re.spaceBeforePunctuation, '$1');
 
   if (options.checkLoss)

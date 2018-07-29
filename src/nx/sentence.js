@@ -5,6 +5,7 @@ const _ = require('underscore');
 const utils = require('../utils');
 const SentenceError = utils.SentenceError;
 const parse = require('../parser');
+const generate = require('../generator');
 
 const NxBaseClass = require('./base-class');
 const Comment = require('./comment');
@@ -15,6 +16,8 @@ class Sentence extends NxBaseClass {
   constructor(serial, options) {
 
     super('Sentence');
+
+    this.to = format => generate[format](this, this.options);
 
     options = _.defaults(options, {
       interpretAs: null,
@@ -180,6 +183,11 @@ class Sentence extends NxBaseClass {
         }
       }
     });
+
+    if (superToken) {
+      superToken.token.indices.conllu = `${superToken.start}-${superToken.stop}`;
+      superToken = null;
+    }
 
     this.size = absolute;
   }

@@ -11,11 +11,11 @@ module.exports = (sent, output) => {
   throw new Error('not implemented');
   const serial = sent.serialize();
 
-  if (!fields.hasComments && serial.comments.length)
-    throw new Loss(['comments'], output);
+  let losses = new Set();
 
-  console.log('apertium-stream')
-  let losses = [];
+  if (!fields.hasComments && serial.comments.length)
+    losses.add('comments');
+
   serial.tokens.forEach(token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
@@ -23,11 +23,11 @@ module.exports = (sent, output) => {
           break;
 
         default:
-          losses.push(field);
+          losses.add(field);
       }
     })
 
-    if (losses.length)
-      throw new Loss(losses, output);
+    if (losses.size)
+      throw new Loss(Array.from(losses), output);
   });
 };

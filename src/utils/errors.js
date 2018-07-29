@@ -67,8 +67,9 @@ class GeneratorError extends ToolError {
 
 class Loss extends ToolError {
   constructor(fields, output) {
-    super(`Conversion is lossy on fields ${fields.join(', ')}`);
+    super(`Conversion is lossy on: ${fields.join(', ')}`);
 
+    this.name = 'ConversionError';
     this.fields = fields;
     this.output = output;
   }
