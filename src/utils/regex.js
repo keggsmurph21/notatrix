@@ -4,6 +4,7 @@ module.exports = {
   punctuation: /[.,!?;]+/g,
   allPunctuation: /^[.,!?;]+$/,
   sentenceThenPunctuation: /([^.,!?;]*[.,!?;]*)/g,
+  spaceBeforePunctuation: /\s+([.,!?;]+)/g,
   comment: /^(#\s*(.*))(\n|$)/,
   conlluTokenLine: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
   conlluTokenLineTenParams: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,

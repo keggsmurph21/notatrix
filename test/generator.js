@@ -33,6 +33,19 @@ describe('generator', () => {
           case ('plain text'):
             clean = str => str.trim();
             break;
+          case ('SD'):
+            clean = str => str
+              .split('\n')
+              .sort((x, y) => { // reorder the lines
+                if (x[0] < y[0])
+                  return -1;
+                if (x[0] > y[0])
+                  return 1;
+                return 0;
+              })
+              .join('\n')
+              .replace(utils.re.spaceBeforePunctuation, '$1');
+            break;
         }
 
         let options = {
@@ -43,6 +56,7 @@ describe('generator', () => {
           addDepsWhenAddingHeads: false,
           depsShowDeprel: false,
           showEnhancedDependencies: false,
+          useTokenDeprel: false,
         };
 
         // some data has weird stuff that needs to be set
@@ -67,6 +81,10 @@ describe('generator', () => {
           case ('CoNLL-U:ud_example_tabs'):
             options.depsShowDeprel = true;
             break;
+        }
+        if (format === 'SD') {
+          options.addDepsWhenAddingHeads = true;
+          options.useTokenDeprel = true;
         }
 
         const sent = new nx.Sentence(text, options);

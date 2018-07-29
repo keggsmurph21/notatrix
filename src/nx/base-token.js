@@ -66,6 +66,9 @@ class BaseToken extends NxBaseClass {
     if (token === this)
       throw new BaseTokenError('token cannot be its own head');
 
+    if (this.options.useTokenDeprel)
+      deprel = deprel || this.deprel;
+
     this._heads.add(token, deprel);
 
     if (this.options.addDepsWhenAddingHeads)
@@ -109,6 +112,9 @@ class BaseToken extends NxBaseClass {
 
     if (token === this)
       throw new BaseTokenError('token cannot be its own dep');
+
+    if (this.options.useTokenDeprel)
+      deprel = deprel || this.deprel;
 
     this._deps.add(token, deprel);
 

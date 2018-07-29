@@ -26,6 +26,7 @@ class Sentence extends NxBaseClass {
       depsShowDeprel: true,
       showRootDeprel: true,
       showEnhancedDependencies: true,
+      useTokenDeprel: true,
     });
 
     if (options.interpretAs) {
@@ -75,11 +76,11 @@ class Sentence extends NxBaseClass {
     }
   }
 
-  query(comparator) {
+  query(predicate) {
 
     let matches = [];
     this.iterate(token => {
-      if (comparator(token))
+      if (predicate(token))
         matches.push(token);
     });
 
