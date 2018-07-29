@@ -106,7 +106,8 @@ class Sentence extends NxBaseClass {
 
   index() {
 
-    let majorToken = null,
+    let absolute = 0,
+      majorToken = null,
       superToken = null,
       empty = 0,
       conllu = 0,
@@ -114,6 +115,8 @@ class Sentence extends NxBaseClass {
       cytoscape = 0;
 
     this.iterate((token, i, j, k) => {
+
+      token.indices.absolute = ++absolute;
 
       if (!token._analyses || !token._analyses.length)
         token.indices.cg3 = ++cg3;
@@ -168,6 +171,8 @@ class Sentence extends NxBaseClass {
         }
       }
     });
+
+    this.size = absolute;
   }
 
   attach() {

@@ -82,7 +82,10 @@ describe('generator', () => {
             options.depsShowDeprel = true;
             break;
         }
-        if (format === 'SD') {
+        if (format === 'Brackets') {
+          options.addDepsWhenAddingHeads = true;
+          options.useTokenDeprel = true;
+        } else if (format === 'SD') {
           options.addDepsWhenAddingHeads = true;
           options.useTokenDeprel = true;
         }
