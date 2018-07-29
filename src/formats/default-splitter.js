@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
-const utils = require('../../utils');
+const utils = require('../utils');
 
 module.exports = (text, options={}) => {
 

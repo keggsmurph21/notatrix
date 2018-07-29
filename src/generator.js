@@ -26,8 +26,4 @@ let as = {
 
 };
 
-module.exports = _.extend((text, options) => {
-
-  throw new GeneratorError('not implemented');
-
-}, as);
+module.exports = as;

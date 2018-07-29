@@ -32,3 +32,4 @@ module.exports = (text, options) => {
 
 };
 module.exports.as = as;
+module.exports.onNewlines = require('./formats/default-splitter');
