@@ -3,7 +3,7 @@
 module.exports = {
 
   name: 'apertium stream',
-  fields: null,
+  fields: require('./fields'),
   split: require('./splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

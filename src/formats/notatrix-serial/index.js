@@ -3,7 +3,7 @@
 module.exports = {
 
   name: 'notatrix serial',
-  fields: null,
+  fields: require('./fields'),
   split: require('./splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

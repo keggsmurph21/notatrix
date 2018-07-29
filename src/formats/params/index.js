@@ -3,20 +3,7 @@
 module.exports = {
 
   name: 'Params',
-  fields: [
-    'isEmpty',
-    'index',
-    'form',
-    'lemma',
-    'upostag',
-    'xpostag',
-    'feats',
-    'head',
-    'deprel',
-    'deps',
-    'misc',
-    'subTokens',
-  ],
+  fields: require('./fields'),
   split: require('./splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

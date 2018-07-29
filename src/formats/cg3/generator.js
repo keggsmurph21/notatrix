@@ -4,6 +4,8 @@ const _ = require('underscore');
 
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
+const checkLoss = require('../_core/check-loss');
+const fields = require('./fields');
 
 module.exports = (sent, options) => {
 
@@ -12,6 +14,7 @@ module.exports = (sent, options) => {
 
   options = _.extend(options, sent.options);
   options = _.defaults(options, {
+    allowLossyOutputs: true,
     omitIndices: false,
   });
 
@@ -20,6 +23,9 @@ module.exports = (sent, options) => {
 
   sent.comments.forEach(comment => lines.push('# ' + comment.body));
   sent.tokens.forEach(token => {
+
+    if (!options.allowLossyOutputs)
+      checkLoss(token, fields);
 
     const push = (token, indent) => {
 

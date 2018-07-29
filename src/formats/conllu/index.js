@@ -3,20 +3,7 @@
 module.exports = {
 
   name: 'CoNLL-U',
-  fields: [
-    'isEmpty',
-    'index',
-    'form',
-    'lemma',
-    'upostag',
-    'xpostag',
-    'feats',
-    'head',
-    'deprel',
-    'deps',
-    'misc',
-    'subTokens',
-  ],
+  fields: require('./fields'),
   split: require('../_core/default-splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

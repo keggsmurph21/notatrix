@@ -4,6 +4,8 @@ const _ = require('underscore');
 
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
+const checkLoss = require('../_core/check-loss');
+const fields = require('./fields');
 
 module.exports = (sent, options) => {
 
@@ -37,22 +39,28 @@ module.exports = (sent, options) => {
     deps: [],
   };
 
-  const visit = node => node.token.eachDep(dep => {
+  const visit = node => {
 
-    if (seen.has(dep.token))
-      throw new GeneratorError('Unable to generate, dependency structure non-linear');
+    if (!options.allowLossyOutputs)
+      checkLoss(node.token, fields);
 
-    node.deps.push({
-      token: dep.token,
-      deprel: dep.deprel,
-      deps: [],
+    node.token.eachDep(dep => {
+
+      if (seen.has(dep.token))
+        throw new GeneratorError('Unable to generate, dependency structure non-linear');
+
+      node.deps.push({
+        token: dep.token,
+        deprel: dep.deprel,
+        deps: [],
+      });
+      seen.add(dep.token);
+
+      const next = node.deps.slice(-1)[0];
+      if (next)
+        visit(next);
     });
-    seen.add(dep.token);
-
-    const next = node.deps.slice(-1)[0];
-    if (next)
-      visit(next);
-  });
+  }
   visit(root);
 
   //console.log(root);

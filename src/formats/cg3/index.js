@@ -3,17 +3,7 @@
 module.exports = {
 
   name: 'CG3',
-  fields: [
-    'semicolon',
-    'index',
-    'form',
-    'lemma',
-    'head',
-    'deprel',
-    'xpostag',
-    'other',
-    'analyses',
-  ],
+  fields: require('./fields'),
   split: require('../_core/default-splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

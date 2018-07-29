@@ -3,11 +3,7 @@
 module.exports = {
 
   name: 'SD',
-  fields: [
-    'form',
-    'head',
-    'deprel',
-  ],
+  fields: require('./fields'),
   split: require('../_core/default-splitter'),
   detect: require('./detector'),
   parse: require('./parser'),

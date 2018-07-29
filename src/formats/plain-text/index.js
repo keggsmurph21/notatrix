@@ -3,9 +3,7 @@
 module.exports = {
 
   name: 'plain text',
-  fields: [
-    'form',
-  ],
+  fields: require('./fields'),
   split: require('./splitter'),
   detect: require('./detector'),
   parse: require('./parser'),
