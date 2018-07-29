@@ -48,9 +48,11 @@ class BaseToken extends NxBaseClass {
 
     };
 
-    if (this._analyses.length)
+    if (this._analyses && this._analyses.length)
       serial.analyses = this._analyses.map(analysis => {
-        return analysis._subTokens.map(subToken => subToken.dump);
+        return {
+          subTokens: analysis._subTokens.map(subToken => subToken.serialize()),
+        };
       });
 
     serial = _.pick(serial, value => value !== undefined);

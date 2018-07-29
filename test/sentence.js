@@ -33,4 +33,26 @@ describe('Sentence', () => {
     });
   });
 
+  describe('serialize and nx.Sentence back into notatrix-serial format', () => {
+    utils.forEachText((text, format, name) => {
+      it(`${format}:${name}`, () => {
+
+        const parsed = nx.parse(text, { returnAllPossibilities: false });
+        const serial = (new nx.Sentence(parsed)).serialize();
+
+        // get some sort of notatrix serial output
+        expect(() => {
+          nx.detect.as.notatrixSerial(serial);
+        }).to.not.throw();
+
+        // in fact, get the same exact notatrix serial
+        const clean = serial => {
+          serial.tokens = serial.tokens.map(token => _.omit(token, 'index'));
+        };
+        expect(clean(serial)).to.equal(clean(parsed));
+
+      });
+    });
+  });
+
 });
