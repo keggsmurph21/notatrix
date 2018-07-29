@@ -33,6 +33,10 @@ class Comment extends NxBaseClass {
 
     }
   }
+
+  serialize() {
+    return this.body;
+  }
 }
 
 module.exports = Comment;

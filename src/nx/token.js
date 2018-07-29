@@ -15,15 +15,16 @@ class Token extends BaseToken {
 
     super('Token', options);
 
-    this.semicolon = serial.semicolon || false;
-    this.isEmpty = serial.isEmpty || false;
+    this.semicolon = serial.semicolon;
+    this.isEmpty = serial.isEmpty;
     this.form = serial.form;
     this.lemma = serial.lemma;
     this.upostag = serial.upostag;
-    this.xpostag = serial.xpostag; // split on "|" ?
+    this.xpostag = serial.xpostag;
     this.feats = serial.feats;
     this.deprel = serial.deprel;
-    this.misc = [(serial.misc || ''), (serial.other || []).join('|')].join('|');
+    this.misc = serial.misc;
+    this.other = serial.other;
 
     this._analyses = (serial.analyses || []).map(ana => new Analysis(ana, options));
     this._i = (this._analyses.length ? 0 : null);

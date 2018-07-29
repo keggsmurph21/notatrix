@@ -59,6 +59,15 @@ class Sentence extends NxBaseClass {
     this.attach();
   }
 
+  serialize() {
+    return {
+      input: this.input,
+      options: this.options,
+      comments: this.comments.map(com => com.serialize()),
+      tokens: this.tokens.map(token => token.serialize()),
+    };
+  }
+
   iterate(callback) {
     for (let i=0; i<this.tokens.length; i++) {
 

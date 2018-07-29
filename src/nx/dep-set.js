@@ -71,7 +71,7 @@ class DependencySet extends NxBaseClass {
 
   toString(format, type) {
 
-    if (format === 'CoNLL-U') {
+    const standard = index => {
 
       const items = type === 'head' && !this.options.showEnhancedDependencies
         ? this.items.slice(0)
@@ -83,19 +83,26 @@ class DependencySet extends NxBaseClass {
             ? this.options.depsShowDeprel
             : true;
 
-      const print = item => {
-        //console.log(item.deprel, this.options.showRootDeprel, item.deprel !== 'root' || this.options.showRootDeprel)
-        return item.token.indices.conllu == undefined
-          ? null
-          : showDeprel && item.deprel && (item.deprel !== 'root' || this.options.showRootDeprel)
-            ? `${ item.token.indices.conllu }:${ item.deprel }`
-            : `${ item.token.indices.conllu }`;
-      }
+      const print = item => item.token.indices.conllu == undefined
+        ? null
+        : showDeprel && item.deprel && (item.deprel !== 'root' || this.options.showRootDeprel)
+          ? `${ item.token.indices[index] }:${ item.deprel }`
+          : `${ item.token.indices[index] }`;
 
-      return items.map(print).filter(utils.thin).join('|') || null;
+      return items.map(print).filter(utils.thin).join('|');
+    };
+
+    if (format === 'CoNLL-U') {
+
+      return standard('conllu') || null;
 
     } else if (format === 'cytoscape') {
+
       throw new Error('not implemented');
+
+    } else if (format === 'serial') {
+
+      return standard('absolute') || undefined;
 
     } else {
 

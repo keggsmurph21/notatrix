@@ -14,6 +14,10 @@ class BaseToken extends NxBaseClass {
     super(name);
 
     this.options = options;
+
+    this._feats_init = false;
+    this._misc_init = false;
+
     this._heads = new DependencySet(options);
     this._deps = new DependencySet(options);
 
@@ -24,6 +28,36 @@ class BaseToken extends NxBaseClass {
     };
   }
 
+  serialize() {
+    let serial = {
+
+      form: this.form,
+      index: this.indices.absolute,
+
+      semicolon: this.semicolon,
+      isEmpty: this.isEmpty,
+      lemma: this.lemma,
+      upostag: this.upostag,
+      xpostag: this.xpostag,
+      feats: this.feats,
+      deprel: this.deprel,
+      misc: this.misc,
+
+      head: this.getHead('serial'),
+      deps: this.getDeps('serial'),
+
+    };
+
+    if (this._analyses.length)
+      serial.analyses = this._analyses.map(analysis => {
+        return analysis._subTokens.map(subToken => subToken.dump);
+      });
+
+    serial = _.pick(serial, value => value !== undefined);
+
+    return serial;
+  }
+
   get isSuperToken() {
     return !!(this._analyses || []).reduce((total, analysis) => {
       return total += analysis._subTokens.length;
@@ -31,23 +65,43 @@ class BaseToken extends NxBaseClass {
   }
 
   get feats() {
-    return this._feats.length
-      ? this._feats.join('|')
-      : null;
+    return this._feats_init
+      ? this._feats.length
+        ? this._feats.join('|')
+        : null
+      : undefined;
   }
 
   set feats(feats) {
+    if (feats === undefined)
+      return;
+
+    this._feats_init = true;
     this._feats = (feats || '').split('|').filter(utils.thin);
   }
 
   get misc() {
-    return this._misc.length
-      ? this._misc.join('|')
-      : null;
+    return this._misc_init
+      ? this._misc.length
+        ? this._misc.join('|')
+        : null
+      : undefined;
   }
 
-  set misc(misc) {
+  set misc(misc) { // [(serial.misc || ''), (serial.other || []).join('|')].join('|');
+    if (misc === undefined)
+      return;
+
+    this._misc_init = true;
     this._misc = (misc || '').split('|').filter(utils.thin);
+  }
+
+  set other(other) {
+    if (other === undefined)
+      return;
+
+    this._misc_init = true;
+    this._misc = (other || []).filter(utils.thin);
   }
 
   getHead(format) {
