@@ -4,28 +4,23 @@ const _ = require('underscore');
 
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
-const checkLoss = require('../_core/check-loss');
-const fields = require('./fields');
+const checkLoss = require('./check-loss')
 
 module.exports = (sent, options) => {
 
   if (!sent || sent.name !== 'Sentence')
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 
-  options = _.extend(options, sent.options);
-  options = _.defaults(options, {
-    allowLossyOutputs: true,
+  options = _.defaults(options, sent.options, {
+    checkLoss: true,
     omitIndices: false,
   });
 
   sent.index();
-  let lines = [];
 
+  let lines = [];
   sent.comments.forEach(comment => lines.push('# ' + comment.body));
   sent.tokens.forEach(token => {
-
-    if (!options.allowLossyOutputs)
-      checkLoss(token, fields);
 
     const push = (token, indent) => {
 
@@ -69,50 +64,9 @@ module.exports = (sent, options) => {
 
   });
 
-  /*
-  return [].concat(
-    sent.comments.map(comment => '# ' + comment.body),
-    sent.tokens.map(token => {
+  const output = lines.join('\n');
+  if (options.checkLoss)
+    checkLoss(sent, output);
 
-      const toString = (token, i) => {
-
-        if (i === 0) {
-
-          return `"<${token.form || utils.fallback}>"`;
-
-        } else {
-
-          return 'tmp';
-        }
-      };
-
-      const tokens = token.analyses && token.analyses.length
-        ? []
-        : [ token ];
-
-      return tokens.map(toString).join('\n');
-
-      /*
-      const toString = token => {
-        return [
-
-          token.indices.conllu,
-          token.form || utils.fallback,
-          token.lemma || utils.fallback,
-          token.upostag || utils.fallback,
-          token.xpostag || utils.fallback,
-          token.feats || utils.fallback,
-          token.getHead('cg3') || utils.fallback,
-          token.deprel || utils.fallback,
-          token.getDeps('cg3') || utils.fallback,
-          token.misc || utils.fallback,
-
-        ].join('\t');
-      };
-
-
-      return [ token ].concat(token.subTokens).map(toString).join('\n');
-      */
-
-  return lines.join('\n');
+  return output;
 };

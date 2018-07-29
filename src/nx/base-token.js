@@ -42,6 +42,7 @@ class BaseToken extends NxBaseClass {
       feats: this.feats,
       deprel: this.deprel,
       misc: this.misc,
+      other: this.misc,
 
       head: this.getHead('serial'),
       deps: this.getDeps('serial'),

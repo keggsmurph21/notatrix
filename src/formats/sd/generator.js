@@ -5,17 +5,15 @@ const _ = require('underscore');
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
 const generateText = require('../plain-text').generate;
-const checkLoss = require('../_core/check-loss');
-const fields = require('./fields');
+const checkLoss = require('./check-loss')
 
 module.exports = (sent, options) => {
 
   if (!sent || sent.name !== 'Sentence')
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 
-  options = _.extend(options, sent.options);
-  options = _.defaults(options, {
-    allowLossyOutputs: true,
+  options = _.defaults(options, sent.options, {
+    checkLoss: true,
   });
 
   sent.index();
@@ -25,12 +23,9 @@ module.exports = (sent, options) => {
     lines.push('# ' + comment.body);
   });
 
-  lines.push(generateText(sent, options));
+  lines.push(generateText(sent, { checkLoss: false }));
 
   sent.tokens.forEach(token => {
-
-    if (!options.allowLossyOutputs)
-      checkLoss(token, fields);
 
     token.eachHead(head => {
       if (head.token.name === 'RootToken')
@@ -47,5 +42,9 @@ module.exports = (sent, options) => {
       lines.push(deps.pop());
   });
 
-  return lines.join('\n');
+  const output = lines.join('\n');
+  if (options.checkLoss)
+    checkLoss(sent, output);
+
+  return output;
 };

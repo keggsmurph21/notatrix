@@ -9,3 +9,4 @@ module.exports = [
   'other',
   'analyses',
 ];
+module.exports.hasComments = true;

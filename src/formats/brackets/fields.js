@@ -3,3 +3,4 @@ module.exports = [
   'head',
   'deprel',
 ];
+module.exports.hasComments = false;

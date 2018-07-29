@@ -12,3 +12,4 @@ module.exports = [
   'misc',
   'subTokens',
 ];
+module.exports.hasComments = true;

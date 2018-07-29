@@ -11,3 +11,4 @@ module.exports = [
   'deps',
   'misc',
 ];
+module.exports.hasComments = false;

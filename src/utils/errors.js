@@ -65,6 +65,15 @@ class GeneratorError extends ToolError {
   }
 }
 
+class Loss extends ToolError {
+  constructor(fields, output) {
+    super(`Conversion is lossy on fields ${fields.join(', ')}`);
+
+    this.fields = fields;
+    this.output = output;
+  }
+}
+
 
 
 class NxError extends NotatrixError {
@@ -146,6 +155,7 @@ module.exports = {
   DetectorError,
   ParserError,
   GeneratorError,
+  Loss,
 
   NxError,
   CorpusError,
