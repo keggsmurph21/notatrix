@@ -9,7 +9,7 @@ const detect = require('./detector');
 module.exports = (text, options) => {
 
   options = _.defaults(options, {
-    allowEmptyString: false,
+    allowEmptyString: true,
   });
 
   if (options.allowEmptyString && !text)
