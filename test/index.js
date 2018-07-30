@@ -9,3 +9,6 @@ require('./sentence');
 
 // then externalizers
 require('./generator');
+
+// then editing stuff
+require('./updater');

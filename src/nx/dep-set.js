@@ -19,8 +19,8 @@ class DependencySet extends NxBaseClass {
     return this.items.length;
   }
 
-  forEach(callback) {
-    this.items.forEach(callback);
+  map(callback) {
+    return this.items.map(callback);
   }
 
   add(token, deprel=null) {

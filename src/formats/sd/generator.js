@@ -27,14 +27,14 @@ module.exports = (sent, options) => {
 
   sent.tokens.forEach(token => {
 
-    token.eachHead(head => {
+    token.mapHeads(head => {
       if (head.token.name === 'RootToken')
         lines.push(`root(ROOT, ${token.form})`);
     });
   });
   sent.tokens.forEach(token => {
     let deps = [];
-    token.eachDep(dep => {
+    token.mapDeps(dep => {
       if (dep.deprel)
         deps.push(`${dep.deprel}(${token.form}, ${dep.token.form})`);
     });

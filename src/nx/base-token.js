@@ -30,6 +30,49 @@ class BaseToken extends NxBaseClass {
     };
   }
 
+  walk(callback) {
+    let i = 0;
+    if (this._analyses)
+      return this._analyses.map(analysis => {
+        return analysis._subTokens.map(subToken => {
+          return callback(subToken, ++i);
+        });
+      });
+
+    return null;
+  }
+
+  hashFields(...fields) {
+
+    fields = _.flatten(fields);
+
+    let hash = _.intersection(fields, [
+      'form',
+      'lemma',
+      'upostag',
+      'xpostag',
+      'feats',
+      'deprel',
+      'misc',
+      'isEmpty',
+      'semicolon',
+    ]).map(field => `<${this[field] || field}>`).join('|');
+
+    if (fields.indexOf('indices') > -1)
+      hash += `|${_.map(this.indices, index => `{${index}}`).join('')}`;
+
+    if (fields.indexOf('head') > -1)
+      hash += `|(h:${this.mapHeads(h => `${h.token.indices.absolute}:${h.deprel}`).join('|') || ''})`;
+
+    if (fields.indexOf('deps') > -1)
+      hash += `|(d:${this.mapDeps(d => `${d.token.indices.absolute}:${d.deprel}`).join('|') || ''})`;
+
+    if (fields.indexOf('analyses') > -1 || fields.indexOf('subTokens') > -1)
+      hash += `|[s:${this.walk(t => t.hashFields(fields)) || ''}]`;
+
+    return hash;
+  }
+
   serialize() {
     let serial = {
 
@@ -165,8 +208,8 @@ class BaseToken extends NxBaseClass {
     return false;
   }
 
-  eachHead(callback) {
-    this._heads.forEach(callback);
+  mapHeads(callback) {
+    return this._heads.map(callback);
   }
 
   addDep(token, deprel) {
@@ -212,8 +255,8 @@ class BaseToken extends NxBaseClass {
     return false;
   }
 
-  eachDep(callback) {
-    this._deps.forEach(callback);
+  mapDeps(callback) {
+    return this._deps.map(callback);
   }
 }
 

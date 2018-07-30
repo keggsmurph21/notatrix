@@ -11,13 +11,14 @@ const NxBaseClass = require('./base-class');
 const Comment = require('./comment');
 const Token = require('./token');
 const RootToken = require('./root');
+const update = require('./update');
 
 class Sentence extends NxBaseClass {
   constructor(serial, options) {
 
     super('Sentence');
 
-    this.to = format => generate[format](this, this.options);
+    this.to = (format, options) => generate[format](this, options);
 
     options = _.defaults(options, {
       interpretAs: null,
@@ -30,6 +31,7 @@ class Sentence extends NxBaseClass {
       showRootDeprel: true,
       showEnhancedDependencies: true,
       useTokenDeprel: true,
+      debugUpdates: false,
     });
 
     if (options.interpretAs) {
@@ -240,6 +242,21 @@ class Sentence extends NxBaseClass {
     this.iterate(token => { delete token.serial });
 
     this.index();
+  }
+
+  update(serial, options) {
+    try {
+
+      const sent = new Sentence(serial, options);
+      update(this, sent, options);
+
+    } catch(e) {
+
+      if (e instanceof utils.ToolError || utils.NxError)
+        throw new SentenceError('Unable to update: ' + e.message);
+
+      throw e;
+    }
   }
 }
 

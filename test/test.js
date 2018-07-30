@@ -30,14 +30,14 @@ function ignoreAfterLemma(str) {
 }
 function countHeads(ana) {
   let acc = 0;
-  ana.eachHead(() => {
+  ana.mapHeads(() => {
     acc++;
   });
   return acc;
 }
 function countDeps(ana) {
   let acc = 0;
-  ana.eachDep(() => {
+  ana.mapDeps(() => {
     acc++;
   });
   return acc;

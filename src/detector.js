@@ -31,6 +31,7 @@ module.exports = (text, options) => {
   options = _.defaults(options, {
     suppressDetectorErrors: true,
 		returnAllMatches: true,
+		requireOneMatch: false,
   });
 
 	const matches = utils.formats.map(format => {
@@ -39,7 +40,7 @@ module.exports = (text, options) => {
 			return as[format](text, options);
 		} catch (e) {
 
-			if (e instanceof DetectorError && options.suppressDetectorErrors)
+			if (e instanceof DetectorError)
 				return;
 
 			throw e;
@@ -49,6 +50,9 @@ module.exports = (text, options) => {
 
 	if (!matches.length && !options.suppressDetectorErrors)
 		throw new DetectorError('Unable to detect format', text, options);
+
+	if (matches.length > 1 && !options.suppressDetectorErrors && options.requireOneMatch)
+		throw new DetectorError('Detected multiple formats', text, options);
 
 	return options.returnAllMatches ? matches : matches[0];
 };

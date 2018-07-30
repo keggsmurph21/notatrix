@@ -20,7 +20,7 @@ module.exports = (sent, options) => {
   // get the root of the tree;
   let root = null;
   sent.tokens.forEach(token => {
-    token.eachHead(head => {
+    token.mapHeads(head => {
       if (head.token.name === 'RootToken')
         root = token;
     });
@@ -39,7 +39,7 @@ module.exports = (sent, options) => {
 
   const visit = node => {
 
-    node.token.eachDep(dep => {
+    node.token.mapDeps(dep => {
 
       if (seen.has(dep.token))
         throw new GeneratorError('Unable to generate, dependency structure non-linear');
