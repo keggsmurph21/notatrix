@@ -245,14 +245,14 @@ function updateMatches(s_key, t_key, matches, fields) {
 
     const s_token = s_key[match[0]];
     const t_token = t_key[match[1]];
-    console.log('updating', match[0], match[1]);
+    //console.log('updating', match[0], match[1]);
 
     fields.forEach(field => {
 
       switch (field) {
         case ('analyses'):
 
-          console.log('begin analyses evaluations');
+          //console.log('begin analyses evaluations');
           if (s_token._analyses === undefined || t_token.analyses === undefined)
             break;
 
@@ -266,26 +266,26 @@ function updateMatches(s_key, t_key, matches, fields) {
               t_key,
               t_analyses[i]._subTokens,
               fields);
-          console.log('end anlyses evaluations');
+          //console.log('end anlyses evaluations');
 
           break;
 
         case ('subTokens'):
 
-          console.log('begin subToken evaluations');
+          //console.log('begin subToken evaluations');
           if (s_token._analyses === undefined || t_token.analyses === undefined)
             break;
 
           let s = s_token.subTokens.slice();
           let t = t_token.subTokens.slice();
           matchAndUpdate(s_key, s, t_key, t, fields);
-          console.log('end subToken evaluations');
+          //console.log('end subToken evaluations');
 
           break;
 
         default:
-          if (s_token[field] !== t_token[field])
-            console.log('change!!!', field, s_token[field], t_token[field]);
+          //if (s_token[field] !== t_token[field])
+            //console.log('change!!!', field, s_token[field], t_token[field]);
           s_token[field] = t_token[field];
       }
     });
@@ -294,9 +294,9 @@ function updateMatches(s_key, t_key, matches, fields) {
 
 function matchAndUpdate(s_key, s, t_key, t, fields) {
 
-  console.log('matching on fields');
+  //console.log('matching on fields');
   let m = getMatches(s, t, fields);
-  console.log(m);
+  //console.log(m);
   updateMatches(s_key, t_key, m.matches, fields);
 
   if (m.s_unmatched.size || m.t_unmatched.size) {
@@ -306,9 +306,9 @@ function matchAndUpdate(s_key, s, t_key, t, fields) {
     m.s_unmatched.forEach(i => s.push(s_key[i]));
     m.t_unmatched.forEach(i => t.push(t_key[i]));
 
-    console.log('matching on fields and indices')
+    //console.log('matching on fields and indices')
     const m2 = getMatches(s, t, fields, 'indices');
-    console.log(m2);
+    //console.log(m2);
     updateMatches(s_key, t_key, m2.matches, fields);
 
     if (m2.s_unmatched.size || m2.t_unmatched.size) {
@@ -374,7 +374,7 @@ module.exports = (original, update, options) => {
 
 
   // build a hash table and a list of tokens for each sentence
-  let s_key = {}, s = [], t_key = [], t = [];
+  let s_key = {}, s = [], t_key = {}, t = [];
 
   original.iterate(token => {
 
