@@ -20,6 +20,8 @@ class Sentence extends NxBaseClass {
 
     this.to = (format, options) => generate[format](this, options);
 
+    serial = serial || '';
+    options = options || {};
     options = _.defaults(options, {
       interpretAs: null,
       addHeadOnModifyFailure: true,
