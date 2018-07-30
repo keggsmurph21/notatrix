@@ -116,7 +116,7 @@ class BaseToken extends NxBaseClass {
   get value() {
     return this.form || this.lemma;
   }
-
+  
   get feats() {
     return this._feats_init
       ? this._feats.length

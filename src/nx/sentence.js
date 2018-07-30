@@ -126,7 +126,7 @@ class Sentence extends NxBaseClass {
       empty = 0,
       conllu = 0,
       cg3 = 0,
-      cytoscape = 0;
+      cytoscape = -1;
 
     this.iterate((token, i, j, k) => {
 
@@ -134,6 +134,12 @@ class Sentence extends NxBaseClass {
 
       if (!token._analyses || !token._analyses.length)
         token.indices.cg3 = ++cg3;
+
+      if (!token.isSuperToken && superToken && superToken.analysis === j)
+        token.indices.cytoscape = ++cytoscape;
+
+      if (token.subTokens && token.subTokens.length === 0)
+        token.indices.cytoscape = ++cytoscape;
 
       if (j === null || k === null) {
 
@@ -148,7 +154,8 @@ class Sentence extends NxBaseClass {
           superToken = {
             token: token,
             start: null,
-            stop: null
+            stop: null,
+            analysis: token._i,
           };
         } else {
 
@@ -257,6 +264,147 @@ class Sentence extends NxBaseClass {
 
       throw e;
     }
+  }
+
+  getCytoscapeEles(format) {
+    this.index();
+
+    let eles = [];
+
+    this.iterate(token => {
+
+      if (token.indices.cytoscape == null)
+        return;
+
+      let id = format === 'CoNLL-U'
+        ? token.indices.conllu
+        : format === 'CG3'
+          ? token.indices.cg3
+          : token.indices.absolute;
+      let num = token.indices.absolute;
+      let clump = token.indices.cytoscape;
+      let pos = format === 'CG3'
+        ? token.xpostag || token.upostag
+        : token.upostag || token.xpostag;
+      let isRoot = false;
+      token.mapHeads(head => {
+        if (head.token.name === 'RootToken')
+          isRoot = true;
+      });
+
+      if (token.isSuperToken) {
+
+        eles.push({ // multiword label
+          data: {
+            id: 'test',//`multiword-${this.id}`,
+            num: 'test',//this.num,
+            clump: 'test',//this.clump,
+            name: 'test',//`multiword`,
+            label: 'test',//`${this.form} ${toSubscript(this.id)}`,
+            /*length: `${this.form.length > 3
+              ? this.form.length * 0.7
+              : this.form.length}em`*/
+          },
+          classes: 'multiword'
+        });
+
+        //_.each(this.subTokens, subToken => {
+          //eles = eles.concat(subToken.eles);
+        //});
+
+      } else {
+
+        eles.push({ // "number" node
+          data: {
+            id: `num-${id}`,
+            num: num,
+            clump: clump,
+            name: 'number',
+            label: id,
+            pos: pos,
+            parent: `multiword-${id}`,
+            token: token,
+          },
+          classes: 'number'
+        }, { // "form" node
+          data: {
+            id: `form-${id}`,
+            num: num,
+            clump: clump,
+            name: 'form',
+            attr: 'form',
+            form: token.form,
+            label: token.form,
+            length: `${(token.form || '').length > 3
+              ? (token.form || '').length * 0.7
+              : (token.form || '').length}em`,
+            state: `normal`,
+            parent: `num-${id}`,
+            token: token,
+          },
+          classes: `form${isRoot ? ' root' : ''}`,
+        }, { // "pos" node
+          data: {
+            id: `pos-node-${id}`,
+            num: num,
+            clump: clump,
+            name: `pos-node`,
+            attr: format === 'CG3' ? `xpostag` : `upostag`,
+            pos: pos,
+            label: pos,
+            length: `${(pos || '').length * 0.7 + 1}em`,
+            token: token,
+          },
+          classes: 'pos'
+        }, { // "pos" edge
+          data: {
+            id: `pos-edge-${id}`,
+            num: num,
+            clump: clump,
+            name: `pos-edge`,
+            pos: pos,
+            source: `form-${id}`,
+            target: `pos-node-${id}`
+          },
+          classes: 'pos'
+        });
+
+        token.mapHeads(head => {
+
+          if (head.token.name === 'RootToken')
+            return;
+
+          let headId = format === 'CoNLL-U'
+            ? head.token.indices.conllu
+            : format === 'CG3'
+              ? head.token.indices.cg3
+              : head.token.indices.absolute;
+
+          eles.push({
+            data: {
+              id: `dep_${id}_${headId}`,
+              name: `dependency`,
+              attr: `deprel`,
+              deprel: (head.deprel || ''),
+              source: `form-${id}`,
+              sourceToken: token,
+              target: `form-${headId}`,
+              targetToken: head.token,
+              length: `${(head.deprel || '').length / 3}em`,
+              label: null, // NB overwrite this before use
+              ctrl: null   // NB overwrite this before use
+            },
+            classes: null  // NB overwrite this before use
+          });
+
+        })
+
+      }
+
+
+    });
+
+    return eles;
   }
 }
 
