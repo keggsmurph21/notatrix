@@ -17,6 +17,7 @@ module.exports = (sent, output) => {
   serial.tokens.forEach(token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
+        case ('uuid'):
         case ('index'):
         case ('deps'):
           break;

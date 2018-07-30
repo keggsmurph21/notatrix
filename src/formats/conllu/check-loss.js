@@ -17,6 +17,7 @@ module.exports = (sent, output) => {
   const tokenCalcLoss = token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
+        case ('uuid'):
         case ('index'):
           break;
 

@@ -14,6 +14,7 @@ class Token extends BaseToken {
   constructor(serial, options) {
 
     super('Token', options);
+    this.uuid = serial.uuid || this.uuid;
 
     this.semicolon = serial.semicolon;
     this.isEmpty = serial.isEmpty;

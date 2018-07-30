@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
+const uuid = require('uuid/v4');
 
 const utils = require('../utils');
 const BaseTokenError = utils.BaseTokenError;
@@ -13,6 +14,7 @@ class BaseToken extends NxBaseClass {
 
     super(name);
 
+    this.uuid = uuid();
     this.options = options;
 
     this._feats_init = false;
@@ -31,6 +33,7 @@ class BaseToken extends NxBaseClass {
   serialize() {
     let serial = {
 
+      uuid: this.uuid,
       form: this.form,
       index: this.indices.absolute,
 
