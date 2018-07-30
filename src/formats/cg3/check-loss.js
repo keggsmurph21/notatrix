@@ -43,7 +43,12 @@ module.exports = (sent, output) => {
         losses.add('analyses');
       } else {
         analysis.subTokens.map(subToken => {
+
           tokenCalcLoss(subToken);
+
+          if (subToken.form != undefined)
+            losses.add('form');
+            
         });
       }
 

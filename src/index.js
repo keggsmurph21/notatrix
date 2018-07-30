@@ -2,18 +2,19 @@
 
 const _ = require('underscore');
 const nx = require('./nx');
-const errors = require('./utils/errors');
+const utils = require('./utils');
 
 module.exports = _.extend({
 
-  constants: require('./utils/constants'),
+  constants: utils.constants,
   formats: require('./formats'),
-  regex: require('./utils/regex'),
+  regex: utils.regex,
   data: require('../data'),
 
   detect: require('./detector'),
   generate: require('./generator'),
   parse: require('./parser'),
   split: require('./splitter'),
+  convert: require('./converter'),
 
-}, nx, errors);
+}, nx, utils.errors);

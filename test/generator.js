@@ -113,9 +113,9 @@ describe('generator', () => {
 
             } catch (e) {
               if (e instanceof utils.GeneratorError) {
-                console.log(e.message);
+                //console.log(e.message);
               } else if (e instanceof utils.Loss) {
-                console.log(e.message);
+                //console.log(e.message);
               } else {
                 throw e;
               }

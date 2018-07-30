@@ -33,7 +33,7 @@ describe('Sentence', () => {
     });
   });
 
-  describe('serialize and nx.Sentence back into notatrix-serial format', () => {
+  describe('serialize nx.Sentence back into notatrix-serial format', () => {
     utils.forEachText((text, format, name) => {
       it(`${format}:${name}`, () => {
 

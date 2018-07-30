@@ -75,6 +75,14 @@ class Loss extends ToolError {
   }
 }
 
+class ConverterError extends ToolError {
+  constructor(message) {
+    super(message);
+
+    this.name = 'ConverterError';
+  }
+}
+
 
 
 class NxError extends NotatrixError {
@@ -157,6 +165,7 @@ module.exports = {
   ParserError,
   GeneratorError,
   Loss,
+  ConverterError,
 
   NxError,
   CorpusError,
