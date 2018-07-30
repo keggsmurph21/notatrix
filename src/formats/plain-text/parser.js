@@ -12,6 +12,9 @@ module.exports = (text, options) => {
     allowEmptyString: false,
   });
 
+  if (options.allowEmptyString && !text)
+    text = '';
+
   try {
     detect(text, options);
   } catch (e) {

@@ -269,11 +269,23 @@ class Sentence extends NxBaseClass {
   getCytoscapeEles(format) {
     this.index();
 
+    function toSubscript(str) {
+      const subscripts = { 0:'₀', 1:'₁', 2:'₂', 3:'₃', 4:'₄', 5:'₅',
+        6:'₆', 7:'₇', 8:'₈', 9:'₉', '-':'₋', '(':'₍', ')':'₎' };
+
+      if (str == null)
+        return '';
+
+      return str.split('').map((char) => {
+        return (subscripts[char] || char);
+      }).join('');
+    }
+
     let eles = [];
 
     this.iterate(token => {
 
-      if (token.indices.cytoscape == null)
+      if (token.indices.cytoscape == null && !token.isSuperToken)
         return;
 
       let id = format === 'CoNLL-U'
@@ -281,7 +293,7 @@ class Sentence extends NxBaseClass {
         : format === 'CG3'
           ? token.indices.cg3
           : token.indices.absolute;
-      let num = token.indices.absolute;
+      let num = token.indices.absolute - 1;
       let clump = token.indices.cytoscape;
       let pos = format === 'CG3'
         ? token.xpostag || token.upostag
@@ -296,21 +308,17 @@ class Sentence extends NxBaseClass {
 
         eles.push({ // multiword label
           data: {
-            id: 'test',//`multiword-${this.id}`,
-            num: 'test',//this.num,
-            clump: 'test',//this.clump,
-            name: 'test',//`multiword`,
-            label: 'test',//`${this.form} ${toSubscript(this.id)}`,
-            /*length: `${this.form.length > 3
-              ? this.form.length * 0.7
-              : this.form.length}em`*/
+            id: `multiword-${id}`,
+            num: num,
+            clump: clump,
+            name: `multiword`,
+            label: `${token.form} ${toSubscript(id)}`,
+            /*length: `${token.form.length > 3
+              ? token.form.length * 0.7
+              : token.form.length}em`*/
           },
           classes: 'multiword'
         });
-
-        //_.each(this.subTokens, subToken => {
-          //eles = eles.concat(subToken.eles);
-        //});
 
       } else {
 
@@ -322,7 +330,7 @@ class Sentence extends NxBaseClass {
             name: 'number',
             label: id,
             pos: pos,
-            parent: `multiword-${id}`,
+            parent: token.name === 'SubToken' ? `multiword-${id}` : undefined,
             token: token,
           },
           classes: 'number'
@@ -351,7 +359,7 @@ class Sentence extends NxBaseClass {
             name: `pos-node`,
             attr: format === 'CG3' ? `xpostag` : `upostag`,
             pos: pos,
-            label: pos,
+            label: pos || '',
             length: `${(pos || '').length * 0.7 + 1}em`,
             token: token,
           },
@@ -397,11 +405,8 @@ class Sentence extends NxBaseClass {
             classes: null  // NB overwrite this before use
           });
 
-        })
-
+        });
       }
-
-
     });
 
     return eles;

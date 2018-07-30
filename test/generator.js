@@ -102,14 +102,15 @@ describe('generator', () => {
   });
 
   describe('generate outputs in different formats if possible', () => {
-    utils.forEachText((text, format, name) => {
+
+    const test = (text, format, name, options={}) => {
       utils.forEachFormat(castedFormat => {
         if (format !== castedFormat)
           it(`${format}:${name} => ${castedFormat}`, () => {
 
             try {
 
-              const generated = (new nx.Sentence(text)).to(castedFormat);
+              const generated = (new nx.Sentence(text, options)).to(castedFormat);
 
             } catch (e) {
               if (e instanceof utils.GeneratorError) {
@@ -123,7 +124,22 @@ describe('generator', () => {
 
           });
       });
+    };
+
+    utils.forEachText(test);
+    test('', 'plain text', 'empty string', {
+      interpretAs: 'plain text',
+      allowEmptyString: true
     });
+    test(null, 'plain text', 'null', {
+      interpretAs: 'plain text',
+      allowEmptyString: true
+    });
+    test(undefined, 'plain text', 'undefined', {
+      interpretAs: 'plain text',
+      allowEmptyString: true
+    });
+
   });
 
   /*

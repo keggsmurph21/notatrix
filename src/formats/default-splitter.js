@@ -15,5 +15,5 @@ module.exports = (text, options={}) => {
     } else {
       return chunk;
     }
-  });
+  }).filter(utils.thin);
 };
