@@ -1,4 +1,35 @@
 module.exports = {
+x_and_u_postag: `# text = Ñe'ẽnguéra iñe'ẽrapoambuéva (lenguas de flexión), umi ñe'ẽte indoeuropeo-icha.
+# text[spa] = Las lenguas de flexión, aquellas lenguas como indoeuropeas.
+# labels =
+"<Ñeʼẽnguéra>"
+	"ñeʼẽ" n @nsubj #1->
+		"kuéra" det pl @det #2->1
+"<iñeʼẽrapoambuéva>"
+	"iñeʼẽrapoambuéva" adj @amod #3->1
+"<(>"
+	"(" lpar @punct #4->5
+"<lenguas>"
+	"lenguas" barb @appos #5->1
+"<de>"
+	"de" barb @foreign #6->7
+"<flexión>"
+	"flexión" barb @foreign #7->5
+"<)>"
+	")" rpar @punct #8->5
+"<,>"
+	"," cm @punct #9->
+"<umi>"
+	"umi" adj dem pl @amod #10->11
+"<ñeʼẽte>"
+	"ñeʼẽ" n @obl #11->
+		"te" post @case #12->11
+"<indoeuropeo-icha>"
+	"indoeuropeo" barb @amod #13->11
+		"icha" comp @dep #14->13
+"<.>"
+	"." sent @punct #15->`,
+
 nested: `# sent_id = wikipedia:Poyvi_Paraguái:11
 # text = Poyvi peteĩha ñane retãmegua niko ojepuru’ypýkuri 15 jasypo guive 16 jasypoteĩ meve ary 1811-pe.
 # text[spa] = Bandera uno nosotros de-de _ él-se-utilizó-_ 15 maio desde 16 junio hasta año 1811-en.
