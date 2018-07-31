@@ -3,7 +3,7 @@ module.exports = {
   multiNewlines: /\n{2,}/g,
   punctuation: /[.,!?;]+/g,
   allPunctuation: /^[.,!?;]+$/,
-  sentenceThenPunctuation: /([^.,!?;]*[.,!?;]*)/g,
+  sentenceThenPunctuation: /([^.!?]*[.!?]*)/g,
   spaceBeforePunctuation: /\s+([.,!?;]+)/g,
   comment: /^(#\s*(.*))(\n|$)/,
   conlluTokenLine: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
