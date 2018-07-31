@@ -1,4 +1,13 @@
 module.exports = {
+equals: `# sent_id = mst-0001
+# text = Peşreve başlamalı.
+"<Peşreve>"
+	"peşrev" Noun @obl #1->2
+"<başlamalı>"
+	"başla" Verb SpaceAfter=No @root #2->0
+"<.>"
+	"." Punc @punct #3->2`,
+
 x_and_u_postag: `# text = Ñe'ẽnguéra iñe'ẽrapoambuéva (lenguas de flexión), umi ñe'ẽte indoeuropeo-icha.
 # text[spa] = Las lenguas de flexión, aquellas lenguas como indoeuropeas.
 # labels =

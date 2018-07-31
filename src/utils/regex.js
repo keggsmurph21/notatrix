@@ -10,7 +10,7 @@ module.exports = {
   conlluTokenLineTenParams: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
   conlluEmptyIndex: /(\d+)(\.\d+)?/,
   cg3TokenStart: /^["']<((.|\\")*)>["']/,
-  cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#\->:]+)*)/,
+  cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#\->:=]+)*)/,
   cg3Dependency: /#?\d+(->\d*)?$/,
   cg3Head: /#\d+->(\d*)$/,
   cg3Index: /#(\d+)/,
