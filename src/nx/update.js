@@ -177,8 +177,8 @@ function getMatches(s, t, ...fields) {
 
   fields = _.flatten(fields);
 
-  let s_unmatched = new Set();
-  let t_unmatched = new Set();
+  let s_unmatched = new Set((s.map(token => `${token.indices.absolute}`)));
+  let t_unmatched = new Set((t.map(token => `${token.indices.absolute}`)));
 
   // build distances between nodes
   let rawDistances = {};
@@ -186,13 +186,11 @@ function getMatches(s, t, ...fields) {
 
     const i1 = t1.indices.absolute;
     rawDistances[i1] = {};
-    s_unmatched.add(`${i1}`);
 
     t.forEach(t2 => {
 
       const i2 = t2.indices.absolute;
       rawDistances[i1][i2] = getDistance(fields, t1, t2);
-      t_unmatched.add(`${i2}`);
 
     });
   });
