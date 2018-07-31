@@ -3,6 +3,7 @@
 const _ = require('underscore');
 const nx = require('./nx');
 const utils = require('./utils');
+const errors = require('./utils/errors');
 
 module.exports = _.extend({
 
@@ -17,4 +18,4 @@ module.exports = _.extend({
   split: require('./splitter'),
   convert: require('./converter'),
 
-}, nx, utils.errors);
+}, nx, errors);

@@ -7,7 +7,7 @@ module.exports = {
   spaceBeforePunctuation: /\s+([.,!?;]+)/g,
   comment: /^(#\s*(.*))(\n|$)/,
   conlluTokenLine: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
-  conlluTokenLineTenParams: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
+  conlluTokenLineTenParams: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
   conlluEmptyIndex: /(\d+)(\.\d+)?/,
   cg3TokenStart: /^["']<((.|\\")*)>["']/,
   cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#\->:]+)*)/,
