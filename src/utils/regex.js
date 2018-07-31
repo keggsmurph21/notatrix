@@ -6,7 +6,7 @@ module.exports = {
   sentenceThenPunctuation: /([^.!?]*[.!?]*)/g,
   spaceBeforePunctuation: /\s+([.,!?;]+)/g,
   comment: /^(#\s*(.*))(\n|$)/,
-  conlluTokenLine: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
+  conlluTokenLine: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
   conlluTokenLineTenParams: /((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
   conlluEmptyIndex: /(\d+)(\.\d+)?/,
   cg3TokenStart: /^["']<((.|\\")*)>["']/,
