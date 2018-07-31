@@ -12,8 +12,7 @@ module.exports = (text, options) => {
     allowEmptyString: true,
   });
 
-  if (options.allowEmptyString && !text)
-    text = '';
+  text = text || '';
 
   try {
     detect(text, options);

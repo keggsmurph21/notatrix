@@ -8,13 +8,15 @@ const DetectorError = utils.DetectorError;
 module.exports = (text, options) => {
 
   options = _.defaults(options, {
-    allowEmptyString: false,
+    allowEmptyString: true,
     allowNewlines: false,
     bracketsAllowanceTreshold: 0.2, // set to <0 or >1 to avoid
   });
 
+  /*
   if (!text && !options.allowEmptyString)
     throw new DetectorError(`Illegal plain text: empty string`, text, options);
+    */
 
   if (utils.isJSONSerializable(text))
     throw new DetectorError(`Illegal plain text: JSON object`, text, options);
