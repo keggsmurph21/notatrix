@@ -603,14 +603,14 @@ class Analysis {
 
           eles.push({
             data: {
-              id: `dep_${head.id}_${this.id}`,
+              id: `dep_${this.id}_${head.id}`,
               name: `dependency`,
               attr: `deprel`,
               deprel: deprel,
-              source: `form-${head.id}`,
-              sourceAnalysis: head,
-              target: `form-${this.id}`,
-              targetAnalysis: this,
+              source: `form-${this.id}`,
+              sourceAnalysis: this,
+              target: `form-${head.id}`,
+              targetAnalysis: head,
               length: `${deprel.length / 3}em`,
               label: null, // NB overwrite this before use
               ctrl: null   // NB overwrite this before use
