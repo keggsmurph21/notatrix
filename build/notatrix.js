@@ -2537,14 +2537,14 @@ var Analysis = function () {
 
             eles.push({
               data: {
-                id: 'dep_' + _this10.id + '_' + head.id,
+                id: 'dep_' + head.id + '_' + _this10.id,
                 name: 'dependency',
                 attr: 'deprel',
                 deprel: deprel,
-                source: 'form-' + _this10.id,
-                sourceAnalysis: _this10,
-                target: 'form-' + head.id,
-                targetAnalysis: head,
+                source: 'form-' + head.id,
+                sourceAnalysis: head,
+                target: 'form-' + _this10.id,
+                targetAnalysis: _this10,
                 length: deprel.length / 3 + 'em',
                 label: null, // NB overwrite this before use
                 ctrl: null // NB overwrite this before use
