@@ -455,7 +455,7 @@ class Sentence extends NxBaseClass {
       if (!tok._analyses)
         return;
 
-      token._analyses.forEach(ana => {
+      tok._analyses.forEach(ana => {
         if (!ana._subTokens)
           return;
 
