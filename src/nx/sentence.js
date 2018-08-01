@@ -336,6 +336,10 @@ class Sentence extends NxBaseClass {
 
       } else {
 
+        let parent = token.name === 'SubToken'
+          ? this.getSuperToken(token)
+          : undefined;
+
         eles.push({ // "number" node
           data: {
             id: `num-${id}`,
@@ -344,7 +348,7 @@ class Sentence extends NxBaseClass {
             name: 'number',
             label: id,
             pos: pos,
-            parent: token.name === 'SubToken' ? `multiword-${id}` : undefined,
+            parent: parent,
             token: token,
           },
           classes: 'number'
@@ -441,6 +445,29 @@ class Sentence extends NxBaseClass {
       token.addDep(token._head, token.deprel);
 
     })
+  }
+
+  getSuperToken(token) {
+
+    let superToken = null;
+
+    this.iterate(tok => {
+      if (!tok._analyses)
+        return;
+
+      token._analyses.forEach(ana => {
+        if (!ana._subTokens)
+          return;
+
+        ana._subTokens.forEach(sub => {
+          if (sub === token)
+            superToken = tok;
+
+        });
+      });
+    });
+
+    return superToken;
   }
 }
 
