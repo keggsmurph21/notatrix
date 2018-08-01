@@ -393,26 +393,26 @@ class Sentence extends NxBaseClass {
 
         const getDependencyEdges = (token, deprel) => {
 
-          if (head.token.name === 'RootToken')
+          if (token.name === 'RootToken')
             return;
 
           let headId = format === 'CoNLL-U'
-            ? head.token.indices.conllu
+            ? token.indices.conllu
             : format === 'CG3'
-              ? head.token.indices.cg3
-              : head.token.indices.absolute;
+              ? token.indices.cg3
+              : token.indices.absolute;
 
           eles.push({
             data: {
               id: `dep_${id}_${headId}`,
               name: `dependency`,
               attr: `deprel`,
-              deprel: (head.deprel || ''),
+              deprel: (deprel || ''),
               source: `form-${id}`,
               sourceToken: token,
               target: `form-${headId}`,
-              targetToken: head.token,
-              length: `${(head.deprel || '').length / 3}em`,
+              targetToken: token,
+              length: `${(deprel || '').length / 3}em`,
               label: null, // NB overwrite this before use
               ctrl: null   // NB overwrite this before use
             },
@@ -422,8 +422,8 @@ class Sentence extends NxBaseClass {
 
         if (this.options.enhanced) {
           token.mapDeps(getDependencyEdges);
-        } else {
-          getDependencyEdges(token.getHead(format), token.deprel);
+        } else if (token._head) {
+          getDependencyEdges(token._head, token.deprel);
         }
       }
     });
