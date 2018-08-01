@@ -55,4 +55,6 @@ module.exports = {
 
   combine,
 
+  guessDeprel: (dependent, head, context) => undefined,
+
 };

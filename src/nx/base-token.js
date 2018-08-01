@@ -20,7 +20,7 @@ class BaseToken extends NxBaseClass {
     this._feats_init = false;
     this._misc_init = false;
 
-    this._heads = new DependencySet(options);
+    this._head = undefined;
     this._deps = new DependencySet(options);
 
     this.indices = {
@@ -62,7 +62,7 @@ class BaseToken extends NxBaseClass {
       hash += `|${_.map(this.indices, index => `{${index}}`).join('')}`;
 
     if (fields.indexOf('head') > -1)
-      hash += `|(h:${this.mapHeads(h => `${h.token.indices.absolute}:${h.deprel}`).join('|') || ''})`;
+      hash += `|(h:${this.head.token.indices.absolute}:${h.deprel})`;
 
     if (fields.indexOf('deps') > -1)
       hash += `|(d:${this.mapDeps(d => `${d.token.indices.absolute}:${d.deprel}`).join('|') || ''})`;
@@ -116,7 +116,7 @@ class BaseToken extends NxBaseClass {
   get value() {
     return this.form || this.lemma;
   }
-  
+
   get feats() {
     return this._feats_init
       ? this._feats.length
@@ -158,58 +158,17 @@ class BaseToken extends NxBaseClass {
   }
 
   getHead(format) {
-    return this._heads.toString(format, 'head');
+    if (format === 'CoNLL-U') {
+      return this._head ? `${this._head.indices.conllu}` : null;
+    } else if (format === 'CG3') {
+      return this._head ? `${this._head.indices.cg3}` : null;
+    } else {
+      return this._head ? `${this._head.indices.absolute}` : undefined;
+    }
   }
 
   getDeps(format) {
     return this._deps.toString(format, 'deps');
-  }
-
-  addHead(token, deprel) {
-
-    if (!(token instanceof BaseToken))
-      throw new BaseTokenError('cannot add head unless it is a token');
-
-    if (token === this)
-      throw new BaseTokenError('token cannot be its own head');
-
-    if (this.options.useTokenDeprel)
-      deprel = deprel || this.deprel;
-
-    this._heads.add(token, deprel);
-
-    if (this.options.addDepsWhenAddingHeads)
-      token._deps.add(this, deprel);
-  }
-
-  removeHead(token) {
-
-    if (!(token instanceof BaseToken))
-      throw new BaseTokenError('cannot remove head unless it is a token');
-
-    if (token === this)
-      throw new BaseTokenError('token cannot remove its own head');
-
-    this._heads.remove(token);
-    token._deps.remove(this);
-  }
-
-  modifyHead(token, deprel) {
-    const done = this._heads.modify(token, deprel);
-
-    if (done) {
-      token.modifyDep(this, deprel);
-      return true;
-    }
-
-    if (this.options.addHeadOnModifyFailure)
-      return this.addHead(token, deprel);
-
-    return false;
-  }
-
-  mapHeads(callback) {
-    return this._heads.map(callback);
   }
 
   addDep(token, deprel) {
@@ -225,8 +184,6 @@ class BaseToken extends NxBaseClass {
 
     this._deps.add(token, deprel);
 
-    if (this.options.addHeadsWhenAddingDeps)
-      token._heads.add(this, deprel);
   }
 
   removeDep(token) {
@@ -238,7 +195,6 @@ class BaseToken extends NxBaseClass {
       throw new BaseTokenError('token cannot remove its own dep');
 
     this._deps.remove(token);
-    token._heads.remove(this);
   }
 
   modifyDep(token, deprel) {
@@ -248,9 +204,6 @@ class BaseToken extends NxBaseClass {
       token.modifyHead(this, deprel);
       return true;
     }
-
-    if (this.options.addDepOnModifyFailure)
-      return this.addDep(token, deprel);
 
     return false;
   }

@@ -29,7 +29,7 @@ module.exports = (sent, options) => {
 
       indent = (token.semicolon ? ';' : '') + '\t'.repeat(indent);
 
-      const head = token.getHead();
+      const head = token.getHead('CG3');
       const dependency = options.omitIndices
         ? null
         : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head);

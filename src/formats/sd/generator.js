@@ -25,21 +25,14 @@ module.exports = (sent, options) => {
 
   lines.push(generateText(sent, { checkLoss: false }));
 
+  if (sent.root)
+    lines.push(`root(ROOT, ${sent.root.form})`);
+
   sent.tokens.forEach(token => {
 
-    token.mapHeads(head => {
-      if (head.token.name === 'RootToken')
-        lines.push(`root(ROOT, ${token.form})`);
-    });
-  });
-  sent.tokens.forEach(token => {
-    let deps = [];
-    token.mapDeps(dep => {
-      if (dep.deprel)
-        deps.push(`${dep.deprel}(${token.form}, ${dep.token.form})`);
-    });
-    while (deps.length)
-      lines.push(deps.pop());
+    if (token._head && token.deprel && token._head.name !== 'RootToken')
+      lines.push(`${token.deprel}(${token._head.form}, ${token.form})`);
+
   });
 
   const output = lines.join('\n');

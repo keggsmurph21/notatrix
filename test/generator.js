@@ -51,8 +51,6 @@ describe('generator', () => {
         let options = {
           addHeadOnModifyFailure: false,
           addHeadsWhenAddingDeps: false,
-          headsShowDeprel: false,
-          addDepOnModifyFailure: false,
           addDepsWhenAddingHeads: false,
           depsShowDeprel: false,
           showEnhancedDependencies: false,
@@ -68,12 +66,10 @@ describe('generator', () => {
             options.omitIndices = true;
             break;
           case ('CoNLL-U:ud_example_modified'):
-            options.headsShowDeprel = true;
             options.depsShowDeprel = true;
             options.showEnhancedDependencies = true;
             break;
           case ('CoNLL-U:ud_example_spaces'):
-            options.headsShowDeprel = true;
             options.depsShowDeprel = true;
             options.showRootDeprel = false;
             options.showEnhancedDependencies = true;

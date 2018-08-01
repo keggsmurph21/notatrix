@@ -9,6 +9,7 @@ const generate = require('../generator');
 
 const NxBaseClass = require('./base-class');
 const Comment = require('./comment');
+const BaseToken = require('./base-token');
 const Token = require('./token');
 const RootToken = require('./root');
 const update = require('./update');
@@ -25,15 +26,10 @@ class Sentence extends NxBaseClass {
     options = _.defaults(options, {
       interpretAs: null,
       addHeadOnModifyFailure: true,
-      addHeadsWhenAddingDeps: true,
-      headsShowDeprel: true,
-      addDepOnModifyFailure: true,
-      addDepsWhenAddingHeads: true,
       depsShowDeprel: true,
       showRootDeprel: true,
-      showEnhancedDependencies: true,
+      enhanced: false,
       useTokenDeprel: true,
-      debugUpdates: false,
     });
 
     if (options.interpretAs) {
@@ -62,6 +58,7 @@ class Sentence extends NxBaseClass {
     this.options = serial.options;
     this.comments = serial.comments.map(com => new Comment(com, options));
     this.tokens = serial.tokens.map(tok => new Token(tok, options));
+    this.root = undefined;
 
     this.attach();
   }
@@ -101,6 +98,17 @@ class Sentence extends NxBaseClass {
     });
 
     return matches;
+  }
+
+  getDependents(token) {
+    return this.query(t => {
+
+      if (!t._head)
+        return;
+
+      return t._head.indices.absolute === token.indices.absolute;
+
+    });
   }
 
   getByIndices(tokenId, analysisId=null, subTokenId=null) {
@@ -203,30 +211,39 @@ class Sentence extends NxBaseClass {
     this.size = absolute;
   }
 
+  setRoot(token) {
+    if (!(token instanceof BaseToken))
+      throw new SentenceError(`cannot set ${token} as root`);
+
+    if (this.root)
+      throw new SentenceError(`root is already set`);
+
+    this.root = token;
+  }
+
   attach() {
     this.iterate((token, i, j, k) => {
 
-      (token.serial.head || '').split('|').forEach(fullHead => {
+      const head = token.serial.head;
 
-        fullHead = fullHead.split(':');
-        const head = fullHead[0];
-        const deprel = fullHead[1] || null;
+      if (head === '0' || head === 0) {
 
-        if (head === '0') {
+        token._head = new RootToken();
+        token.deprel = 'root';
+        this.setRoot(token);
 
-          token.addHead(new RootToken(), 'root');
+      } else if (head) {
 
-        } else if (head) {
-
-          const query = this.query(token => token.serial.index === head);
-          if (query.length !== 1) {
-            console.log(token.serial)
-            throw new SentenceError(`cannot locate token with serial index "${head}"`);
-          }
-
-          token.addHead(query[0], deprel);
+        const query = this.query(token => token.serial.index === head);
+        if (query.length !== 1) {
+          console.log(token.serial)
+          throw new SentenceError(`cannot locate token with serial index "${head}"`);
         }
-      });
+
+        token._head = query[0];
+        token.deprel = token.deprel || utils.guessDeprel(head, token);
+
+      }
 
       (token.serial.deps || '').split('|').forEach(fullDep => {
 
@@ -379,7 +396,7 @@ class Sentence extends NxBaseClass {
           classes: 'pos'
         });
 
-        token.mapHeads(head => {
+        const getDependencyEdges = (token, deprel) => {
 
           if (head.token.name === 'RootToken')
             return;
@@ -406,8 +423,13 @@ class Sentence extends NxBaseClass {
             },
             classes: null  // NB overwrite this before use
           });
+        };
 
-        });
+        if (this.options.enhanced) {
+          token.mapDeps(getDependencyEdges);
+        } else {
+          getDependencyEdges(token.getHead(format), token.deprel);
+        }
       }
     });
 

@@ -77,11 +77,7 @@ class DependencySet extends NxBaseClass {
         ? this.items.slice(0)
         : this.items;
 
-      const showDeprel = type === 'head'
-          ? this.options.headsShowDeprel
-          : type === 'deps'
-            ? this.options.depsShowDeprel
-            : true;
+      const showDeprel = (type === 'deps');
 
       const print = item => item.token.indices.conllu == undefined
         ? null

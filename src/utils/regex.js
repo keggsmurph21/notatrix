@@ -8,7 +8,7 @@ module.exports = {
   comment: /^(#\s*(.*))(\n|$)/,
   conlluTokenLine: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
   conlluTokenLineTenParams: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
-  conlluEmptyIndex: /(\d+)(\.\d+)?/,
+  conlluEmptyIndex: /^(\d+)(\.\d+)?/,
   cg3TokenStart: /^["']<((.|\\")*)>["']/,
   cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#\->:=]+)*)/,
   cg3Dependency: /#?\d+(->\d*)?$/,

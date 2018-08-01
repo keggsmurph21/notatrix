@@ -17,39 +17,30 @@ module.exports = (sent, options) => {
 
   sent.index();
 
-  // get the root of the tree;
-  let root = null;
-  sent.tokens.forEach(token => {
-    token.mapHeads(head => {
-      if (head.token.name === 'RootToken')
-        root = token;
-    });
-  });
-
-  if (root == null)
+  if (!sent.root)
     throw new GeneratorError('Unable to generate, could not find root');
 
   // build the tree structure
-  let seen = new Set([ root ]);
-  root = {
-    token: root,
+  let seen = new Set([ sent.root ]);
+  let root = {
+    token: sent.root,
     deprel: 'root',
     deps: [],
   };
 
   const visit = node => {
 
-    node.token.mapDeps(dep => {
+    sent.getDependents(node.token).forEach(dep => {
 
-      if (seen.has(dep.token))
+      if (seen.has(dep))
         throw new GeneratorError('Unable to generate, dependency structure non-linear');
 
       node.deps.push({
-        token: dep.token,
+        token: dep,
         deprel: dep.deprel,
         deps: [],
       });
-      seen.add(dep.token);
+      seen.add(dep);
 
       const next = node.deps.slice(-1)[0];
       if (next)
