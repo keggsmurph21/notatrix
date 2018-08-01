@@ -292,6 +292,7 @@ class Sentence extends NxBaseClass {
       const subscripts = { 0:'₀', 1:'₁', 2:'₂', 3:'₃', 4:'₄', 5:'₅',
         6:'₆', 7:'₇', 8:'₈', 9:'₉', '-':'₋', '(':'₍', ')':'₎' };
 
+      console.log(str)
       if (str == null)
         return '';
 
@@ -307,17 +308,14 @@ class Sentence extends NxBaseClass {
       if (token.indices.cytoscape == null && !token.isSuperToken)
         return;
 
-      let id = format === 'CoNLL-U'
-        ? token.indices.conllu
-        : format === 'CG3'
-          ? token.indices.cg3
-          : token.indices.absolute;
+      let id = token.getHead(format);
       let num = token.indices.absolute - 1;
       let clump = token.indices.cytoscape;
       let pos = format === 'CG3'
         ? token.xpostag || token.upostag
         : token.upostag || token.xpostag;
 
+      console.log(format)
       if (token.isSuperToken) {
 
         eles.push({ // multiword label
@@ -391,16 +389,15 @@ class Sentence extends NxBaseClass {
           classes: 'pos'
         });
 
-        const getDependencyEdges = (token, deprel) => {
+        const getDependencyEdges = (format, token, deprel) => {
 
           if (token.name === 'RootToken')
             return;
 
-          let headId = format === 'CoNLL-U'
-            ? token._head.indices.conllu
-            : format === 'CG3'
-              ? token._head.indices.cg3
-              : token._head.indices.absolute;
+          console.log(token, format)
+          let headId = token.getHead(format);
+          console.log(headId);
+          console.log();
 
           eles.push({
             data: {
@@ -421,9 +418,9 @@ class Sentence extends NxBaseClass {
         };
 
         if (this.options.enhanced) {
-          token.mapDeps(getDependencyEdges);
+          token.mapDeps((h, d) => getDependencyEdges(format, h, d));
         } else if (token._head) {
-          getDependencyEdges(token._head, token.deprel);
+          getDependencyEdges(format, token._head, token.deprel);
         }
       }
     });
