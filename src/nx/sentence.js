@@ -317,7 +317,7 @@ class Sentence extends NxBaseClass {
       let pos = format === 'CG3'
         ? token.xpostag || token.upostag
         : token.upostag || token.xpostag;
-      
+
       if (token.isSuperToken) {
 
         eles.push({ // multiword label
@@ -364,7 +364,7 @@ class Sentence extends NxBaseClass {
             parent: `num-${id}`,
             token: token,
           },
-          classes: `form${sent.root === token ? ' root' : ''}`,
+          classes: `form${this.root === token ? ' root' : ''}`,
         }, { // "pos" node
           data: {
             id: `pos-node-${id}`,
