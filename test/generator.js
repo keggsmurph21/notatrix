@@ -92,6 +92,7 @@ describe('generator', () => {
 
         expect(detected).to.equal(format);
         expect(clean(generated.output)).to.equal(clean(text));
+        expect(Array.isArray(generated.loss)).to.equal(true);
 
       });
     });
@@ -107,6 +108,7 @@ describe('generator', () => {
             try {
 
               const generated = (new nx.Sentence(text, options)).to(castedFormat);
+              expect(Array.isArray(generated.loss)).to.equal(true);
 
             } catch (e) {
               if (e instanceof utils.GeneratorError) {

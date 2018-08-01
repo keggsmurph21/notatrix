@@ -22,7 +22,7 @@ module.exports = sent => {
           losses.add(field);
       }
     })
-
-    return Array.from(losses);
   });
+
+  return Array.from(losses);
 };

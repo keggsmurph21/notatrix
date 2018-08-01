@@ -16,7 +16,7 @@ module.exports = {
   ],
 
   formats: [
-    'apertium stream',
+    //'apertium stream',
     'Brackets',
     'CG3',
     'CoNLL-U',
