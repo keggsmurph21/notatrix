@@ -24,16 +24,16 @@ describe('relation sets', () => {
     const tok0 = sent.tokens[0];
     const tok1 = sent.tokens[1];
 
-    expect(() => tok0._addHead()).to.throw(nx.NxError);
-    expect(() => tok0._addHead(1)).to.throw(nx.NxError);
-    expect(() => tok0._addHead('1')).to.throw(nx.NxError);
-    expect(() => tok0._addHead(tok0)).to.throw(nx.NxError);
-    expect(() => tok0._addHead(tok1, 1)).to.throw(nx.NxError);
+    expect(() => tok0.addHead()).to.throw(nx.NxError);
+    expect(() => tok0.addHead(1)).to.throw(nx.NxError);
+    expect(() => tok0.addHead('1')).to.throw(nx.NxError);
+    expect(() => tok0.addHead(tok0)).to.throw(nx.NxError);
+    expect(() => tok0.addHead(tok1, 1)).to.throw(nx.NxError);
 
-    expect(() => tok0._modifyHead()).to.throw(nx.NxError);
-    expect(() => tok0._modifyHead(1)).to.throw(nx.NxError);
-    expect(() => tok0._modifyHead('1')).to.throw(nx.NxError);
-    expect(() => tok0._modifyHead(tok1, 1)).to.throw(nx.NxError);
+    expect(() => tok0.modifyHead()).to.throw(nx.NxError);
+    expect(() => tok0.modifyHead(1)).to.throw(nx.NxError);
+    expect(() => tok0.modifyHead('1')).to.throw(nx.NxError);
+    expect(() => tok0.modifyHead(tok1, 1)).to.throw(nx.NxError);
 
   });
 
@@ -44,7 +44,7 @@ describe('relation sets', () => {
     const tok1 = sent.tokens[1];
     const deprel = 'deprel_0_1';
 
-    tok0._addHead(tok1, deprel);
+    tok0.addHead(tok1, deprel);
 
     expect(tok0.heads.length).to.equal(1);
     expect(tok0.heads.first).to.deep.equal({
@@ -73,9 +73,9 @@ describe('relation sets', () => {
     const deprel01 = 'deprel_0_1';
     const deprel02 = 'deprel_0_2';
 
-    tok0._addHead(tok1, deprel01);
-    const ret1 = tok0._addHead(tok2, deprel02);
-    const ret2 = tok0._addHead(tok2, deprel02);
+    tok0.addHead(tok1, deprel01);
+    const ret1 = tok0.addHead(tok2, deprel02);
+    const ret2 = tok0.addHead(tok2, deprel02);
 
     expect(tok0.heads.length).to.equal(1);
     expect(tok0.heads.first).to.deep.equal({
@@ -112,9 +112,9 @@ describe('relation sets', () => {
     const deprel01 = 'deprel_0_1';
     const deprel02 = 'deprel_0_2';
 
-    tok0._addHead(tok1, deprel01);
-    const ret1 = tok0._addHead(tok2, deprel02);
-    const ret2 = tok0._addHead(tok2, deprel02);
+    tok0.addHead(tok1, deprel01);
+    const ret1 = tok0.addHead(tok2, deprel02);
+    const ret2 = tok0.addHead(tok2, deprel02);
 
     expect(tok0.heads.length).to.equal(2);
     expect(tok0.heads.map(utils.noop)).to.deep.equal([
@@ -163,9 +163,9 @@ describe('relation sets', () => {
     const deprel1 = 'deprel1';
     const deprel2 = 'deprel2';
 
-    tok0._addHead(tok1, deprel1);
-    const ret1 = tok0._modifyHead(tok1, deprel2);
-    const ret2 = tok0._modifyHead(tok1, deprel2);
+    tok0.addHead(tok1, deprel1);
+    const ret1 = tok0.modifyHead(tok1, deprel2);
+    const ret2 = tok0.modifyHead(tok1, deprel2);
 
     expect(tok0.heads.length).to.equal(1);
     expect(tok0.heads.first).to.deep.equal({
@@ -197,8 +197,8 @@ describe('relation sets', () => {
     const deprel1 = 'deprel1';
     const deprel2 = 'deprel2';
 
-    tok0._addHead(tok1, deprel1);
-    const ret = tok0._modifyHead(tok2, deprel2);
+    tok0.addHead(tok1, deprel1);
+    const ret = tok0.modifyHead(tok2, deprel2);
 
     expect(tok0.heads.length).to.equal(1);
     expect(tok0.heads.first).to.deep.equal({
@@ -230,8 +230,8 @@ describe('relation sets', () => {
     const tok1 = sent.tokens[1];
     const deprel = 'deprel';
 
-    tok0._addHead(tok1, deprel);
-    const ret = tok0._removeHead(tok1);
+    tok0.addHead(tok1, deprel);
+    const ret = tok0.removeHead(tok1);
 
     expect(tok0.heads.length).to.equal(0);
     expect(tok0.heads.first).to.equal(null);
@@ -255,8 +255,8 @@ describe('relation sets', () => {
       const tok2 = sent.tokens[2];
       const deprel = 'deprel';
 
-      tok0._addHead(tok1, deprel);
-      const ret = tok0._removeHead(tok2);
+      tok0.addHead(tok1, deprel);
+      const ret = tok0.removeHead(tok2);
 
       expect(tok0.heads.length).to.equal(1);
       expect(tok0.heads.first).to.deep.equal({
@@ -290,8 +290,8 @@ describe('relation sets', () => {
     const deprel01 = 'deprel_0_1';
     const deprel02 = 'deprel_0_2';
 
-    tok0._addHead(tok1, deprel01);
-    tok0._addHead(tok2, deprel02);
+    tok0.addHead(tok1, deprel01);
+    tok0.addHead(tok2, deprel02);
 
     sent.unenhance();
 
@@ -305,19 +305,19 @@ describe('relation sets', () => {
         deprel: deprel02,
       }
     ]);
-    expect(tok0._mapHeads(head => head.deprel)).to.deep.equal([
+    expect(tok0.mapHeads(head => head.deprel)).to.deep.equal([
       deprel01
     ]);
 
     expect(tok1.heads.length).to.equal(0);
     expect(tok1.dependents.length).to.equal(1);
-    expect(tok1._mapDependents(dependent => dependent.deprel)).to.deep.equal([
+    expect(tok1.mapDependents(dependent => dependent.deprel)).to.deep.equal([
       deprel01
     ]);
 
     expect(tok2.heads.length).to.equal(0);
     expect(tok2.dependents.length).to.equal(1);
-    expect(tok2._mapDependents(dependent => dependent.deprel)).to.deep.equal([
+    expect(tok2.mapDependents(dependent => dependent.deprel)).to.deep.equal([
       deprel02
     ]);
 
@@ -332,8 +332,8 @@ describe('relation sets', () => {
     const deprel01 = 'deprel_0_1';
     const deprel02 = 'deprel_0_2';
 
-    tok0._addHead(tok1, deprel01);
-    tok0._addHead(tok2, deprel02);
+    tok0.addHead(tok1, deprel01);
+    tok0.addHead(tok2, deprel02);
 
     expect(tok0.heads.map(utils.noop)).to.deep.equal([
       {
@@ -345,20 +345,20 @@ describe('relation sets', () => {
         deprel: deprel02,
       }
     ]);
-    expect(tok0._mapHeads(head => head.deprel)).to.deep.equal([
+    expect(tok0.mapHeads(head => head.deprel)).to.deep.equal([
       deprel01,
       deprel02,
     ]);
 
     expect(tok1.heads.length).to.equal(0);
     expect(tok1.dependents.length).to.equal(1);
-    expect(tok1._mapDependents(dependent => dependent.deprel)).to.deep.equal([
+    expect(tok1.mapDependents(dependent => dependent.deprel)).to.deep.equal([
       deprel01
     ]);
 
     expect(tok2.heads.length).to.equal(0);
     expect(tok2.dependents.length).to.equal(1);
-    expect(tok2._mapDependents(dependent => dependent.deprel)).to.deep.equal([
+    expect(tok2.mapDependents(dependent => dependent.deprel)).to.deep.equal([
       deprel02
     ]);
 
@@ -376,26 +376,26 @@ describe('relation sets', () => {
     const deprel14 = 'dep14';
     const deprel14b = 'dep14b';
 
-    tok1._addHead(tok3, deprel13);
-    tok1._addHead(tok2, deprel12);
-    tok1._addHead(tok4, deprel14);
-    tok1._modifyHead(tok4, deprel14b);
+    tok1.addHead(tok3, deprel13);
+    tok1.addHead(tok2, deprel12);
+    tok1.addHead(tok4, deprel14);
+    tok1.modifyHead(tok4, deprel14b);
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('4');
+      expect(tok1.getHead(format)).to.equal('4');
       expect(tok1._getDeprel()).to.equal(deprel14b);
       expect(tok1._getDeps(format).join('|')).to.equal('');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps(format).join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps(format).join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps(format).join('|')).to.equal('');
 
@@ -415,26 +415,26 @@ describe('relation sets', () => {
     const deprel14 = 'dep14';
     const deprel14b = 'dep14b';
 
-    tok1._addHead(tok3, deprel13);
-    tok1._addHead(tok2, deprel12);
-    tok1._addHead(tok4, deprel14);
-    tok1._modifyHead(tok4, deprel14b);
+    tok1.addHead(tok3, deprel13);
+    tok1.addHead(tok2, deprel12);
+    tok1.addHead(tok4, deprel14);
+    tok1.modifyHead(tok4, deprel14b);
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('3');
+      expect(tok1.getHead(format)).to.equal('3');
       expect(tok1._getDeprel()).to.equal(deprel13);
       expect(tok1._getDeps(format).join('|')).to.equal('2:dep12|3:dep13|4:dep14b');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps().join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps().join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps().join('|')).to.equal('');
 
@@ -454,26 +454,26 @@ describe('relation sets', () => {
     const deprel14 = 'dep14';
     const deprel14b = 'dep14b';
 
-    tok1._addHead(tok3, deprel13);
-    tok1._addHead(tok2, deprel12);
-    tok1._addHead(tok4, deprel14);
-    tok1._modifyHead(tok4, deprel14b);
+    tok1.addHead(tok3, deprel13);
+    tok1.addHead(tok2, deprel12);
+    tok1.addHead(tok4, deprel14);
+    tok1.modifyHead(tok4, deprel14b);
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('4');
+      expect(tok1.getHead(format)).to.equal('4');
       expect(tok1._getDeprel()).to.equal(deprel14b);
       expect(tok1._getDeps(format).join('|')).to.equal('');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps(format).join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps(format).join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps(format).join('|')).to.equal('');
 
@@ -483,41 +483,41 @@ describe('relation sets', () => {
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('4');
+      expect(tok1.getHead(format)).to.equal('4');
       expect(tok1._getDeprel()).to.equal(deprel14b);
       expect(tok1._getDeps(format).join('|')).to.equal('4:dep14b');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps().join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps().join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps().join('|')).to.equal('');
 
     });
 
-    tok1._addHead(tok3, deprel13);
+    tok1.addHead(tok3, deprel13);
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('4');
+      expect(tok1.getHead(format)).to.equal('4');
       expect(tok1._getDeprel()).to.equal(deprel14b);
       expect(tok1._getDeps(format).join('|')).to.equal('3:dep13|4:dep14b');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps().join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps().join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps().join('|')).to.equal('');
 
@@ -527,19 +527,19 @@ describe('relation sets', () => {
 
     ['CoNLL-U', 'CG3', 'Brackets'].forEach(format => {
 
-      expect(tok1._getHead(format)).to.equal('4');
+      expect(tok1.getHead(format)).to.equal('4');
       expect(tok1._getDeprel()).to.equal(deprel14b);
       expect(tok1._getDeps(format).join('|')).to.equal('');
 
-      expect(tok2._getHead(format)).to.equal(null);
+      expect(tok2.getHead(format)).to.equal(null);
       expect(tok2._getDeprel()).to.equal(null);
       expect(tok2._getDeps().join('|')).to.equal('');
 
-      expect(tok3._getHead(format)).to.equal(null);
+      expect(tok3.getHead(format)).to.equal(null);
       expect(tok3._getDeprel()).to.equal(null);
       expect(tok3._getDeps().join('|')).to.equal('');
 
-      expect(tok4._getHead(format)).to.equal(null);
+      expect(tok4.getHead(format)).to.equal(null);
       expect(tok4._getDeprel()).to.equal(null);
       expect(tok4._getDeps().join('|')).to.equal('');
 

@@ -30,7 +30,7 @@ class BaseToken extends NxBaseClass {
     };
   }
 
-  _addHead(head, deprel) {
+  addHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
       throw new BaseTokenError('cannot add head unless it is a token');
@@ -49,7 +49,7 @@ class BaseToken extends NxBaseClass {
 
   }
 
-  _modifyHead(head, deprel) {
+  modifyHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
       throw new BaseTokenError('cannot add head unless it is a token');
@@ -61,7 +61,7 @@ class BaseToken extends NxBaseClass {
 
   }
 
-  _removeHead(head) {
+  removeHead(head) {
 
     if (!(head instanceof BaseToken))
       throw new BaseTokenError('cannot add head unless it is a token');
@@ -70,7 +70,7 @@ class BaseToken extends NxBaseClass {
 
   }
 
-  _mapHeads(callback) {
+  mapHeads(callback) {
 
     if (this.sent.options.enhanced) {
       return this.heads.map(callback);
@@ -82,13 +82,13 @@ class BaseToken extends NxBaseClass {
 
   }
 
-  _mapDependents(callback) {
+  mapDependents(callback) {
 
     return this.dependents.map(callback);
 
   }
 
-  _getHead(format) {
+  getHead(format) {
 
     if (!this.heads.length)
       return null;
@@ -125,7 +125,7 @@ class BaseToken extends NxBaseClass {
     if (!this.heads.length || !this.sent.options.enhanced)
       return [];
 
-    return this._mapHeads(utils.noop).sort((x,y) => {
+    return this.mapHeads(utils.noop).sort((x,y) => {
 
       if (getIndex(x.token) < getIndex(y.token))
         return -1;
@@ -204,7 +204,7 @@ class BaseToken extends NxBaseClass {
       misc: this.misc,
       other: this.misc,
 
-      head: this._getHead('serial'),
+      head: this.getHead('serial'),
       deps: this._getDeps('serial').join('|'),
 
     };

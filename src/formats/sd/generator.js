@@ -27,14 +27,14 @@ module.exports = (sent, options) => {
 
   [sent.root].concat(sent.tokens).forEach(token => {
 
-    token._mapDependents(dependent => {
+    token.mapDependents(dependent => {
       lines.push(`${dependent.deprel}(${token.form}, ${dependent.token.form})`);
     });
 
   });
 
   /*
-  sent.root._mapDependents(dependent => lines.push(`${dependent.deprel}(${})`))
+  sent.root.mapDependents(dependent => lines.push(`${dependent.deprel}(${})`))
   if (sent.root)
     lines.push(`root(ROOT, ${sent.root.form})`);
 

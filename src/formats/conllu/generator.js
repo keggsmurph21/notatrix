@@ -33,7 +33,7 @@ module.exports = (sent, options) => {
         token.upostag || utils.fallback,
         token.xpostag || utils.fallback,
         token.feats || utils.fallback,
-        token._getHead('CoNLL-U') || utils.fallback,
+        token.getHead('CoNLL-U') || utils.fallback,
         token._getDeprel() || utils.fallback,
         token._getDeps('CoNLL-U').join('|') || utils.fallback,
         token.misc || utils.fallback,

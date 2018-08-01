@@ -220,7 +220,7 @@ class Sentence extends NxBaseClass {
       throw new SentenceError(`root is already set`);
 
     this.root = token;
-    token._addHead(new RootToken(this), 'root');
+    token.addHead(new RootToken(this), 'root');
   }
 
   attach() {
@@ -263,7 +263,7 @@ class Sentence extends NxBaseClass {
       const dependency = getHeadAndDeprel(token);
 
       if (dependency)
-        token._addHead(dependency.head, dependency.deprel);
+        token.addHead(dependency.head, dependency.deprel);
 
       (token.serial.deps || '').split('|').filter(utils.thin).forEach(dep => {
 
@@ -272,7 +272,7 @@ class Sentence extends NxBaseClass {
         const [head, deprel] = dep.split(':');
         const dependency = getHeadAndDeprel(token, head, deprel);
         if (dependency)
-          token._addHead(dependency.head, dependency.deprel);
+          token.addHead(dependency.head, dependency.deprel);
 
       });
 

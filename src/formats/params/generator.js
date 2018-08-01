@@ -24,7 +24,7 @@ module.exports = (sent, options) => {
       throw new GeneratorError('Unable to generate, contains ambiguous analyses or multiword tokens');
 
     let params = _.pick(token, utils.fields);
-    params.head = token._getHead();
+    params.head = token.getHead();
     params.deps = token._getDeps();
 
     return _.pick(params, value => value != undefined);

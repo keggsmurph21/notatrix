@@ -29,7 +29,7 @@ module.exports = (sent, options) => {
   };
 
   const visit = node => {
-    node.token._mapDependents(dep => {
+    node.token.mapDependents(dep => {
 
       if (seen.has(dep.token))
         throw new GeneratorError('Unable to generate, dependency structure non-linear');
