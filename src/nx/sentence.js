@@ -292,7 +292,6 @@ class Sentence extends NxBaseClass {
       const subscripts = { 0:'₀', 1:'₁', 2:'₂', 3:'₃', 4:'₄', 5:'₅',
         6:'₆', 7:'₇', 8:'₈', 9:'₉', '-':'₋', '(':'₍', ')':'₎' };
 
-      console.log(str)
       if (str == null)
         return '';
 
@@ -315,7 +314,6 @@ class Sentence extends NxBaseClass {
         ? token.xpostag || token.upostag
         : token.upostag || token.xpostag;
 
-      console.log(format)
       if (token.isSuperToken) {
 
         eles.push({ // multiword label
@@ -354,7 +352,7 @@ class Sentence extends NxBaseClass {
             name: 'form',
             attr: 'form',
             form: token.form,
-            label: token.form,
+            label: token.form || '',
             length: `${(token.form || '').length > 3
               ? (token.form || '').length * 0.7
               : (token.form || '').length}em`,
@@ -394,17 +392,14 @@ class Sentence extends NxBaseClass {
           if (token.name === 'RootToken')
             return;
 
-          console.log(token, format)
           let headId = token.getHead(format);
-          console.log(headId);
-          console.log();
 
           eles.push({
             data: {
               id: `dep_${id}_${headId}`,
               name: `dependency`,
               attr: `deprel`,
-              deprel: (deprel || ''),
+              deprel: deprel,
               source: `form-${headId}`,
               sourceToken: token._head,
               target: `form-${id}`,
