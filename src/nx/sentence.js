@@ -341,7 +341,7 @@ class Sentence extends NxBaseClass {
       } else {
 
         let parent = token.name === 'SubToken'
-          ? 'multiword' + getIndex(this.getSuperToken(token), format)
+          ? 'multiword-' + getIndex(this.getSuperToken(token), format)
           : undefined;
 
         eles.push({ // "number" node
