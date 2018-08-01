@@ -397,10 +397,10 @@ class Sentence extends NxBaseClass {
             return;
 
           let headId = format === 'CoNLL-U'
-            ? token.indices.conllu
+            ? token._head.indices.conllu
             : format === 'CG3'
-              ? token.indices.cg3
-              : token.indices.absolute;
+              ? token._head.indices.cg3
+              : token._head.indices.absolute;
 
           eles.push({
             data: {
@@ -408,9 +408,9 @@ class Sentence extends NxBaseClass {
               name: `dependency`,
               attr: `deprel`,
               deprel: (deprel || ''),
-              source: `form-${id}`,
-              sourceToken: token,
-              target: `form-${headId}`,
+              source: `form-${headId}`,
+              sourceToken: token._head,
+              target: `form-${id}`,
               targetToken: token,
               length: `${(deprel || '').length / 3}em`,
               label: null, // NB overwrite this before use
