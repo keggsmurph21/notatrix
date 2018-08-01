@@ -317,12 +317,7 @@ class Sentence extends NxBaseClass {
       let pos = format === 'CG3'
         ? token.xpostag || token.upostag
         : token.upostag || token.xpostag;
-      let isRoot = false;
-      token.mapHeads(head => {
-        if (head.token.name === 'RootToken')
-          isRoot = true;
-      });
-
+      
       if (token.isSuperToken) {
 
         eles.push({ // multiword label
@@ -369,7 +364,7 @@ class Sentence extends NxBaseClass {
             parent: `num-${id}`,
             token: token,
           },
-          classes: `form${isRoot ? ' root' : ''}`,
+          classes: `form${sent.root === token ? ' root' : ''}`,
         }, { // "pos" node
           data: {
             id: `pos-node-${id}`,
@@ -444,7 +439,7 @@ class Sentence extends NxBaseClass {
         return;
 
       token.addDep(token._head, token.deprel);
-      
+
     })
   }
 }
