@@ -4,7 +4,7 @@ const _ = require('underscore');
 
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
-const checkLoss = require('./check-loss')
+const getLoss = require('./get-loss')
 
 module.exports = (sent, options) => {
 
@@ -12,7 +12,6 @@ module.exports = (sent, options) => {
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 
   options = _.defaults(options, sent.options, {
-    checkLoss: true,
     omitIndices: false,
   });
 
@@ -35,7 +34,8 @@ module.exports = (sent, options) => {
         : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head);
 
       let line = [ `"${token.lemma}"` ]
-        .concat(token.xpostag)
+        .concat(token.xpostag || token.upostag)
+        .concat((token.feats || '').split('|'))
         .concat(token._misc)
         .concat(token.deprel ? '@' + token.deprel : null)
         .concat(dependency);
@@ -64,9 +64,8 @@ module.exports = (sent, options) => {
 
   });
 
-  const output = lines.join('\n');
-  if (options.checkLoss)
-    checkLoss(sent, output);
-
-  return output;
+  return {
+    output: lines.join('\n'),
+    loss: getLoss(sent),
+  };
 };

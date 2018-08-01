@@ -6,7 +6,7 @@ const _ = require('underscore'),
   utils = require('./utils'),
   nx = require('..');
 
-describe('updater', () => {
+describe('update', () => {
 
   describe('case: CG3:simple // plain text', () => {
 
@@ -22,13 +22,13 @@ describe('updater', () => {
       const text = `Патшамен соғыс ашқанда, ел-жұрт, отанымды қорғауға, біз соғысқа бардық.`
 
       // sanity check
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('plain text')).to.equal(text);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('plain text').output).to.equal(text);
 
       // now try the update
       sent.update(text);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('plain text')).to.equal(text);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('plain text').output).to.equal(text);
 
     });
 
@@ -38,13 +38,13 @@ describe('updater', () => {
       const text = `Патшамен TEST ашқанда, ел-жұрт, отанымды қорғауға, біз соғысқа бардық.`
 
       // sanity check
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('plain text')).to.not.equal(cg3);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('plain text').output).to.not.equal(cg3);
 
       // now try the update
       sent.update(text);
-      expect(sent.to('CG3')).to.not.equal(cg3);
-      expect(sent.to('plain text')).to.equal(text);
+      expect(sent.to('CG3').output).to.not.equal(cg3);
+      expect(sent.to('plain text').output).to.equal(text);
 
     });
 
@@ -55,13 +55,13 @@ describe('updater', () => {
       const text = `Патшамен TEST ашқанда, ел-жұрт, отанымды қорғауға, біз соғысқа бардық.`
 
       // sanity check
-      expect(sent.to('CG3')).to.equal(orig);
-      expect(sent.to('plain text')).to.not.equal(orig);
+      expect(sent.to('CG3').output).to.equal(orig);
+      expect(sent.to('plain text').output).to.not.equal(orig);
 
       // now try the update
       sent.update(text);
-      expect(sent.to('CG3')).to.not.equal(orig);
-      expect(sent.to('plain text')).to.equal(text);
+      expect(sent.to('CG3').output).to.not.equal(orig);
+      expect(sent.to('plain text').output).to.equal(text);
 
     });
     */
@@ -79,45 +79,45 @@ describe('updater', () => {
 
     it(`should be identical if we make no changes`, () => {
 
-      const conllu = sent.to('CoNLL-U');
+      const conllu = sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should be identical if we update a upostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].upostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should update if we update an xpostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].xpostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
@@ -125,8 +125,8 @@ describe('updater', () => {
         return str.replace('"патша" TEST ins @nmod #1->3', '"патша" n ins @nmod #1->3');
       };
 
-      expect(clean(sent.to('CG3'))).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(clean(sent.to('CG3').output)).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
   });
@@ -142,12 +142,12 @@ describe('updater', () => {
       const cg3 = nx.data.cg3.kdt_tagged_3;
       const sent = new nx.Sentence(cg3, options);
 
-      const cg4 = sent.to('CG3');
+      const cg4 = sent.to('CG3').output;
 
       // now try the update
       sent.update(cg4);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CG3')).to.equal(cg4);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CG3').output).to.equal(cg4);
 
     });
 
@@ -160,15 +160,15 @@ describe('updater', () => {
       const cg3 = nx.data.cg3.kdt_tagged_3;
       const sent = new nx.Sentence(cg3, options);
 
-      let cg4 = sent.to('CG3');
+      let cg4 = sent.to('CG3').output;
       let c_sent = new nx.Sentence(cg4, options);
 
       // sanity check
-      expect(c_sent.to('CG3')).to.equal(cg4);
+      expect(c_sent.to('CG3').output).to.equal(cg4);
 
       // change a upostag
       c_sent.tokens[0].xpostag = 'TEST';
-      cg4 = c_sent.to('CG3');
+      cg4 = c_sent.to('CG3').output;
 
       // now try the update
       sent.update(cg4);
@@ -176,8 +176,8 @@ describe('updater', () => {
         return str.replace('"манағы" TEST dem @det #1->3', '"манағы" det dem @det #1->3');
       };
 
-      expect(clean(sent.to('CG3'))).to.equal(cg3);
-      expect(sent.to('CG3')).to.equal(cg4);
+      expect(clean(sent.to('CG3').output)).to.equal(cg3);
+      expect(sent.to('CG3').output).to.equal(cg4);
 
     });
 
@@ -190,15 +190,15 @@ describe('updater', () => {
       const cg3 = nx.data.cg3.kdt_tagged_3;
       const sent = new nx.Sentence(cg3, options);
 
-      let cg4 = sent.to('CG3');
+      let cg4 = sent.to('CG3').output;
       let c_sent = new nx.Sentence(cg4, options);
 
       // sanity check
-      expect(c_sent.to('CG3')).to.equal(cg4);
+      expect(c_sent.to('CG3').output).to.equal(cg4);
 
       // change a upostag
       c_sent.tokens[3].subTokens[0].xpostag = 'TEST';
-      cg4 = c_sent.to('CG3');
+      cg4 = c_sent.to('CG3').output;
 
       // now try the update
       sent.update(cg4);
@@ -206,8 +206,8 @@ describe('updater', () => {
         return str.replace('"кім" TEST itg nom @root #4->0', '"кім" prn itg nom @root #4->0');
       };
 
-      expect(clean(sent.to('CG3'))).to.equal(cg3);
-      expect(sent.to('CG3')).to.equal(cg4);
+      expect(clean(sent.to('CG3').output)).to.equal(cg3);
+      expect(sent.to('CG3').output).to.equal(cg4);
 
     });
   });
@@ -223,45 +223,45 @@ describe('updater', () => {
 
     it(`should be identical if we make no changes`, () => {
 
-      const conllu = sent.to('CoNLL-U');
+      const conllu = sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should be identical if we update a upostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].upostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should update if we update an xpostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].xpostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
@@ -269,8 +269,8 @@ describe('updater', () => {
         return str.replace('"манағы" TEST dem @det #1->3', '"манағы" det dem @det #1->3');
       };
 
-      expect(clean(sent.to('CG3'))).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(clean(sent.to('CG3').output)).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
   });
@@ -287,45 +287,45 @@ describe('updater', () => {
 
     it(`should be identical if we make no changes`, () => {
 
-      const conllu = sent.to('CoNLL-U');
+      const conllu = sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should be identical if we update a upostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].upostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
-      expect(sent.to('CG3')).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(sent.to('CG3').output).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
 
     it(`should update if we update an xpostag`, () => {
 
-      let conllu = sent.to('CoNLL-U');
+      let conllu = sent.to('CoNLL-U').output;
       let c_sent = new nx.Sentence(conllu, options);
 
       // sanity check
-      expect(c_sent.to('CoNLL-U')).to.equal(conllu);
+      expect(c_sent.to('CoNLL-U').output).to.equal(conllu);
 
       // change a upostag
       c_sent.tokens[0].xpostag = 'TEST';
-      conllu = c_sent.to('CoNLL-U');
+      conllu = c_sent.to('CoNLL-U').output;
 
       // now try the update
       sent.update(conllu);
@@ -333,8 +333,8 @@ describe('updater', () => {
         return str.replace('"патша" TEST ins @nmod #1->3', '"патша" n ins @nmod #1->3');
       };
 
-      expect(clean(sent.to('CG3'))).to.equal(cg3);
-      expect(sent.to('CoNLL-U')).to.equal(conllu);
+      expect(clean(sent.to('CG3').output)).to.equal(cg3);
+      expect(sent.to('CoNLL-U').output).to.equal(conllu);
 
     });
   });*/
@@ -352,13 +352,13 @@ console.log('>>> original CG3 => plain text:\n')
 console.log(toText)
 
 textSent = new nx.Sentence(toText);
-//toCG3 = textSent.to('CG3');
+//toCG3 = textSent.to('CG3').output;
 console.log('-'.repeat(30))
 console.log('>>> original CG3 => plain text => CG3:\n<ERROR>')
 //console.log(toCG3)
 
 cg3Sent.update(toText, { debugUpdates: true });
-updated = cg3Sent.to('cg3');
+updated = cg3Sent.to('cg3').output;
 console.log('-'.repeat(30))
 console.log('>>> original CG3 updated from (original CG3 => plain text)');
 console.log(updated)

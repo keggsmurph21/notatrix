@@ -88,10 +88,10 @@ describe('generator', () => {
 
         const sent = new nx.Sentence(text, options);
         const generated = nx.generate[format](sent, options);
-        const detected = nx.detect.as[format](generated);
+        const detected = nx.detect.as[format](generated.output);
 
         expect(detected).to.equal(format);
-        expect(clean(generated)).to.equal(clean(text));
+        expect(clean(generated.output)).to.equal(clean(text));
 
       });
     });
@@ -110,8 +110,6 @@ describe('generator', () => {
 
             } catch (e) {
               if (e instanceof utils.GeneratorError) {
-                //console.log(e.message);
-              } else if (e instanceof utils.Loss) {
                 //console.log(e.message);
               } else {
                 throw e;

@@ -4,7 +4,7 @@ const _ = require('underscore');
 
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
-const checkLoss = require('./check-loss')
+const getLoss = require('./get-loss')
 
 module.exports = (sent, options) => {
 
@@ -12,7 +12,7 @@ module.exports = (sent, options) => {
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 
   options = _.defaults(options, sent.options, {
-    checkLoss: true,
+
   });
 
   sent.index();
@@ -84,8 +84,8 @@ module.exports = (sent, options) => {
 
   // console.log(output);
 
-  if (options.checkLoss)
-    checkLoss(sent, output);
-
-  return output;
+  return {
+    output: output,
+    loss: getLoss(sent),
+  };
 };

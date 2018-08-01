@@ -3,16 +3,12 @@
 const _ = require('underscore');
 
 const utils = require('../../utils');
-const Loss = utils.Loss;
 const fields = require('./fields');
 
-module.exports = (sent, output) => {
+module.exports = sent => {
 
   const serial = sent.serialize();
   let losses = new Set();
-
-  if (!fields.hasComments && serial.comments.length)
-    losses.add('comments');
 
   const tokenCalcLoss = token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
@@ -20,10 +16,17 @@ module.exports = (sent, output) => {
         case ('uuid'):
         case ('index'):
         case ('deps'):
+        case ('feats'):
+        case ('misc'):
           break;
 
-        case ('misc'):
-          if (token.misc !== token.other)
+        case ('upostag'):
+          if (token.xpostag && token.upostag)
+            losses.add(field);
+          break;
+
+        case ('isEmpty'):
+          if (token.isEmpty)
             losses.add(field);
           break;
 
@@ -56,6 +59,5 @@ module.exports = (sent, output) => {
     });
   });
 
-  if (losses.size)
-    throw new Loss(Array.from(losses), output);
+  return Array.from(losses);
 };

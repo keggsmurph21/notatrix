@@ -3,15 +3,14 @@
 const _ = require('underscore');
 
 const utils = require('../../utils');
-const Loss = utils.Loss;
 const fields = require('./fields');
 
-module.exports = (sent, output) => {
+module.exports = sent => {
 
   const serial = sent.serialize();
   let losses = new Set();
 
-  if (!fields.hasComments && serial.comments.length)
+  if (serial.comments.length)
     losses.add('comments');
 
   serial.tokens.forEach(token => {
@@ -26,7 +25,6 @@ module.exports = (sent, output) => {
       }
     })
 
-    if (losses.size)
-      throw new Loss(Array.from(losses), output);
+    return Array.from(losses);
   });
 };

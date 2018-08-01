@@ -435,6 +435,18 @@ class Sentence extends NxBaseClass {
 
     return eles;
   }
+
+  enhance() {
+    this.options.enhanced = true;
+
+    this.iterate(token => {
+      if (!token._head)
+        return;
+
+      token.addDep(token._head, token.deprel);
+      
+    })
+  }
 }
 
 module.exports = Sentence;

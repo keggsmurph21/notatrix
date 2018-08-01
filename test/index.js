@@ -11,4 +11,5 @@ require('./sentence');
 require('./generator');
 
 // then editing stuff
-require('./updater');
+require('./update');
+require('./enhance');

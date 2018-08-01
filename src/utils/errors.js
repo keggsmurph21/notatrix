@@ -65,16 +65,6 @@ class GeneratorError extends ToolError {
   }
 }
 
-class Loss extends ToolError {
-  constructor(fields, output) {
-    super(`Conversion is lossy on: ${fields.join(', ')}`);
-
-    this.name = 'ConversionError';
-    this.fields = fields;
-    this.output = output;
-  }
-}
-
 class ConverterError extends ToolError {
   constructor(message) {
     super(message);
@@ -164,7 +154,6 @@ module.exports = {
   DetectorError,
   ParserError,
   GeneratorError,
-  Loss,
   ConverterError,
 
   NxError,

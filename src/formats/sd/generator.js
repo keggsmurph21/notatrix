@@ -5,7 +5,7 @@ const _ = require('underscore');
 const utils = require('../../utils');
 const GeneratorError = utils.GeneratorError;
 const generateText = require('../plain-text').generate;
-const checkLoss = require('./check-loss')
+const getLoss = require('./get-loss')
 
 module.exports = (sent, options) => {
 
@@ -13,7 +13,7 @@ module.exports = (sent, options) => {
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 
   options = _.defaults(options, sent.options, {
-    checkLoss: true,
+
   });
 
   sent.index();
@@ -23,7 +23,7 @@ module.exports = (sent, options) => {
     lines.push('# ' + comment.body);
   });
 
-  lines.push(generateText(sent, { checkLoss: false }));
+  lines.push(generateText(sent).output);
 
   if (sent.root)
     lines.push(`root(ROOT, ${sent.root.form})`);
@@ -35,9 +35,8 @@ module.exports = (sent, options) => {
 
   });
 
-  const output = lines.join('\n');
-  if (options.checkLoss)
-    checkLoss(sent, output);
-
-  return output;
+  return {
+    output: lines.join('\n'),
+    loss: getLoss(sent),
+  };
 };

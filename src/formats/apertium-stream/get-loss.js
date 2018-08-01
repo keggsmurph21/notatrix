@@ -6,9 +6,11 @@ const utils = require('../../utils');
 const Loss = utils.Loss;
 const fields = require('./fields');
 
-module.exports = (sent, output) => {
+module.exports = sent => {
 
+  throw new Error('not implemented');
   const serial = sent.serialize();
+
   let losses = new Set();
 
   if (!fields.hasComments && serial.comments.length)
@@ -17,9 +19,7 @@ module.exports = (sent, output) => {
   serial.tokens.forEach(token => {
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
-        case ('uuid'):
         case ('index'):
-        case ('deps'):
           break;
 
         default:
