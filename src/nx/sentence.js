@@ -300,6 +300,14 @@ class Sentence extends NxBaseClass {
       }).join('');
     }
 
+    function getIndex(token, format) {
+      return format === 'CoNLL-U'
+        ? token.indices.conllu
+        : format === 'CG3'
+          ? token.indices.cg3
+          : token.indices.absolute;
+    }
+
     let eles = [];
 
     this.iterate(token => {
@@ -307,11 +315,7 @@ class Sentence extends NxBaseClass {
       if (token.indices.cytoscape == null && !token.isSuperToken)
         return;
 
-      let id = format === 'CoNLL-U'
-        ? token.indices.conllu
-        : format === 'CG3'
-          ? token.indices.cg3
-          : token.indices.absolute;
+      let id = getIndex(token, format);
       let num = token.indices.absolute - 1;
       let clump = token.indices.cytoscape;
       let pos = format === 'CG3'
@@ -337,7 +341,7 @@ class Sentence extends NxBaseClass {
       } else {
 
         let parent = token.name === 'SubToken'
-          ? this.getSuperToken(token)
+          ? 'multiword' + getIndex(this.getSuperToken(token), format)
           : undefined;
 
         eles.push({ // "number" node
@@ -400,11 +404,7 @@ class Sentence extends NxBaseClass {
           if (head.name === 'RootToken')
             return;
 
-          let headId = format === 'CoNLL-U'
-            ? head.indices.conllu
-            : format === 'CG3'
-              ? head.indices.cg3
-              : head.absolute;
+          let headId = getIndex(head, format);
 
           eles.push({
             data: {
