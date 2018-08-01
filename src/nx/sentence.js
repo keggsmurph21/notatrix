@@ -391,16 +391,16 @@ class Sentence extends NxBaseClass {
           classes: 'pos'
         });
 
-        const getDependencyEdges = (format, token, deprel) => {
+        const getDependencyEdges = (format, head, token, deprel) => {
 
-          if (token.name === 'RootToken')
+          if (head.name === 'RootToken')
             return;
 
           let headId = format === 'CoNLL-U'
-            ? token.indices.conllu
+            ? head.indices.conllu
             : format === 'CG3'
-              ? token.indices.cg3
-              : token.absolute;
+              ? head.indices.cg3
+              : head.absolute;
 
           eles.push({
             data: {
@@ -409,7 +409,7 @@ class Sentence extends NxBaseClass {
               attr: `deprel`,
               deprel: deprel,
               source: `form-${headId}`,
-              sourceToken: token._head,
+              sourceToken: head,
               target: `form-${id}`,
               targetToken: token,
               length: `${(deprel || '').length / 3}em`,
@@ -421,9 +421,9 @@ class Sentence extends NxBaseClass {
         };
 
         if (this.options.enhanced) {
-          token.mapDeps((h, d) => getDependencyEdges(format, h, d));
+          token.mapDeps((h, d) => getDependencyEdges(format, h, token, d));
         } else if (token._head) {
-          getDependencyEdges(format, token._head, token.deprel);
+          getDependencyEdges(format, token._head, token, token.deprel);
         }
       }
     });
