@@ -5,6 +5,7 @@ require('./detector');
 require('./parser');
 
 // then internal stuff
+require('./relation-sets');
 require('./sentence');
 
 // then externalizers

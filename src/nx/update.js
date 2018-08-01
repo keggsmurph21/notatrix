@@ -393,6 +393,7 @@ module.exports = (original, update, options) => {
   return;
 
 
+};
 
 
 
@@ -403,8 +404,7 @@ module.exports = (original, update, options) => {
 
 
 
-
-
+/*
 
   const iterate = (predicate, dist) => {
     debug(true, 'iterating at distance', dist);

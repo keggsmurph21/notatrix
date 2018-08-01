@@ -6,10 +6,11 @@ const utils = require('../utils');
 const BaseToken = require('./base-token');
 
 class RootToken extends BaseToken {
-  constructor() {
+  constructor(sent) {
 
-    super('RootToken', {});
+    super(sent, 'RootToken');
 
+    this.form = 'ROOT';
     this.indices = {
       conllu: 0,
       cg3: 0,

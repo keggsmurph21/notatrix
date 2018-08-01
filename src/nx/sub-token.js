@@ -6,13 +6,11 @@ const utils = require('../utils');
 const SubTokenError = utils.SubTokenError;
 
 const BaseToken = require('./base-token');
-const DependencySet = require('./dep-set');
-const RootToken = require('./root');
 
 class SubToken extends BaseToken {
-  constructor(serial, options) {
+  constructor(sent, serial) {
 
-    super('SubToken', options);
+    super(sent, 'SubToken');
     this.uuid = serial.uuid || this.uuid;
 
     this.semicolon = serial.semicolon;
@@ -29,6 +27,7 @@ class SubToken extends BaseToken {
     this.serial = {
       index: serial.index,
       head: serial.head,
+      deprel: serial.deprel,
       deps: serial.deps
     };
   }

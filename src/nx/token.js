@@ -7,13 +7,11 @@ const TokenError = utils.TokenError;
 
 const BaseToken = require('./base-token');
 const Analysis = require('./analysis');
-const DependencySet = require('./dep-set');
-const RootToken = require('./root');
 
 class Token extends BaseToken {
-  constructor(serial, options) {
+  constructor(sent, serial) {
 
-    super('Token', options);
+    super(sent, 'Token');
     this.uuid = serial.uuid || this.uuid;
 
     this.semicolon = serial.semicolon;
@@ -27,12 +25,13 @@ class Token extends BaseToken {
     this.misc = serial.misc;
     this.other = serial.other;
 
-    this._analyses = (serial.analyses || []).map(ana => new Analysis(ana, options));
+    this._analyses = (serial.analyses || []).map(ana => new Analysis(sent, ana));
     this._i = (this._analyses.length ? 0 : null);
 
     this.serial = {
       index: serial.index,
       head: serial.head,
+      deprel: serial.deprel,
       deps: serial.deps
     };
   }

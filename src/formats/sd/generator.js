@@ -25,6 +25,16 @@ module.exports = (sent, options) => {
 
   lines.push(generateText(sent).output);
 
+  [sent.root].concat(sent.tokens).forEach(token => {
+
+    token._mapDependents(dependent => {
+      lines.push(`${dependent.deprel}(${token.form}, ${dependent.token.form})`);
+    });
+
+  });
+
+  /*
+  sent.root._mapDependents(dependent => lines.push(`${dependent.deprel}(${})`))
   if (sent.root)
     lines.push(`root(ROOT, ${sent.root.form})`);
 
@@ -34,6 +44,7 @@ module.exports = (sent, options) => {
       lines.push(`${token.deprel}(${token._head.form}, ${token.form})`);
 
   });
+  */
 
   return {
     output: lines.join('\n'),

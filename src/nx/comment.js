@@ -6,8 +6,9 @@ const utils = require('../utils');
 const NxBaseClass = require('./base-class');
 
 class Comment extends NxBaseClass {
-  constructor(body) {
-    super('Comment');
+  constructor(sent, body) {
+
+    super(sent, 'Comment');
 
     this.type = 'normal';
     this.body = body;

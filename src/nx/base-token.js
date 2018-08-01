@@ -7,27 +7,141 @@ const utils = require('../utils');
 const BaseTokenError = utils.BaseTokenError;
 
 const NxBaseClass = require('./base-class');
-const DependencySet = require('./dep-set');
+const RelationSet = require('./relation-set');
 
 class BaseToken extends NxBaseClass {
-  constructor(name, options) {
+  constructor(sent, name) {
 
     super(name);
 
+    this.sent = sent;
     this.uuid = uuid();
-    this.options = options;
 
     this._feats_init = false;
     this._misc_init = false;
 
-    this._head = undefined;
-    this._deps = new DependencySet(options);
+    this.heads = new RelationSet(this, 'dependents');
+    this.dependents = new RelationSet(this, 'heads');
 
     this.indices = {
       conllu: null,
       cg3: null,
       cytoscape: null,
     };
+  }
+
+  _addHead(head, deprel) {
+
+    if (!(head instanceof BaseToken))
+      throw new BaseTokenError('cannot add head unless it is a token');
+
+    if (head === this)
+      throw new BaseTokenError('token cannot be its own head');
+
+    if (typeof deprel !== 'string' && deprel != null)
+      throw new BaseTokenError('deprel must be a string, null, or undefined');
+
+    // if we're not enhanced, only can have 1 head at a time
+    if (!this.sent.options.enhanced)
+      this.heads.clear();
+
+    return this.heads.add(head, deprel);
+
+  }
+
+  _modifyHead(head, deprel) {
+
+    if (!(head instanceof BaseToken))
+      throw new BaseTokenError('cannot add head unless it is a token');
+
+    if (typeof deprel !== 'string' && deprel != null)
+      throw new BaseTokenError('deprel must be a string, null, or undefined');
+
+    return this.heads.modify(head, deprel);
+
+  }
+
+  _removeHead(head) {
+
+    if (!(head instanceof BaseToken))
+      throw new BaseTokenError('cannot add head unless it is a token');
+
+    return this.heads.remove(head);
+
+  }
+
+  _mapHeads(callback) {
+
+    if (this.sent.options.enhanced) {
+      return this.heads.map(callback);
+    } else {
+      return this.heads.first
+        ? [ callback(this.heads.first) ]
+        : [];
+    }
+
+  }
+
+  _mapDependents(callback) {
+
+    return this.dependents.map(callback);
+
+  }
+
+  _getHead(format) {
+
+    if (!this.heads.length)
+      return null;
+
+    if (format === 'CoNLL-U')
+      return `${this.heads.first.token.indices.conllu}`;
+
+    if (format === 'CG3')
+      return `${this.heads.first.token.indices.cg3}`;
+
+    return `${this.heads.first.token.indices.absolute}`;
+  }
+
+  _getDeprel() {
+
+    if (!this.heads.length)
+      return null;
+
+    return this.heads.first.deprel;
+  }
+
+  _getDeps(format) {
+
+    function getIndex(token) {
+      if (format === 'CoNLL-U')
+        return token.indices.conllu;
+
+      if (format === 'CG3')
+        return token.indices.cg3;
+
+      return token.indices.absolute;
+    }
+
+    if (!this.heads.length || !this.sent.options.enhanced)
+      return [];
+
+    return this._mapHeads(utils.noop).sort((x,y) => {
+
+      if (getIndex(x.token) < getIndex(y.token))
+        return -1;
+
+      if (getIndex(x.token) > getIndex(y.token))
+        return 1;
+
+      return 0;
+
+    }).map(head => {
+
+      return head.deprel
+        ? `${getIndex(head.token)}:${head.deprel}`
+        : `${getIndex(head.token)}`;
+
+    });
   }
 
   walk(callback) {
@@ -90,8 +204,8 @@ class BaseToken extends NxBaseClass {
       misc: this.misc,
       other: this.misc,
 
-      head: this.getHead('serial'),
-      deps: this.getDeps('serial'),
+      head: this._getHead('serial'),
+      deps: this._getDeps('serial').join('|'),
 
     };
 
@@ -155,61 +269,6 @@ class BaseToken extends NxBaseClass {
 
     this._misc_init = true;
     this._misc = (other || []).filter(utils.thin);
-  }
-
-  getHead(format) {
-    if (format === 'CoNLL-U') {
-      return this._head ? `${this._head.indices.conllu}` : null;
-    } else if (format === 'CG3') {
-      return this._head ? `${this._head.indices.cg3}` : null;
-    } else {
-      return this._head ? `${this._head.indices.absolute}` : undefined;
-    }
-  }
-
-  getDeps(format) {
-    return this._deps.toString(format, 'deps');
-  }
-
-  addDep(token, deprel) {
-
-    if (!(token instanceof BaseToken))
-      throw new BaseTokenError('cannot add dep unless it is a token');
-
-    if (token === this)
-      throw new BaseTokenError('token cannot be its own dep');
-
-    if (this.options.useTokenDeprel)
-      deprel = deprel || this.deprel;
-
-    this._deps.add(token, deprel);
-
-  }
-
-  removeDep(token) {
-
-    if (!(token instanceof BaseToken))
-      throw new BaseTokenError('cannot remove dep unless it is a token');
-
-    if (token === this)
-      throw new BaseTokenError('token cannot remove its own dep');
-
-    this._deps.remove(token);
-  }
-
-  modifyDep(token, deprel) {
-    const done = this._deps.modify(token, deprel);
-
-    if (done) {
-      token.modifyHead(this, deprel);
-      return true;
-    }
-
-    return false;
-  }
-
-  mapDeps(callback) {
-    return this._deps.map(callback);
   }
 }
 

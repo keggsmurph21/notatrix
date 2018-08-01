@@ -9,6 +9,6 @@ module.exports = {
   Token: require('./token'),
   Analysis: require('./analysis'),
   SubToken: require('./sub-token'),
-  DependencySet: require('./dep-set'),
-
+  RelationSet: require('./relation-set'),
+  
 };

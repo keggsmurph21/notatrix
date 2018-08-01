@@ -24,39 +24,34 @@ module.exports = (sent, options) => {
   let seen = new Set([ sent.root ]);
   let root = {
     token: sent.root,
-    deprel: 'root',
+    deprel: null,
     deps: [],
   };
 
   const visit = node => {
+    node.token._mapDependents(dep => {
 
-    sent.getDependents(node.token).forEach(dep => {
-
-      if (seen.has(dep))
+      if (seen.has(dep.token))
         throw new GeneratorError('Unable to generate, dependency structure non-linear');
 
-      node.deps.push({
-        token: dep,
-        deprel: dep.deprel,
-        deps: [],
-      });
-      seen.add(dep);
+      dep.deps = [];
+      node.deps.push(dep);
+      seen.add(dep.token);
+      visit(dep);
 
-      const next = node.deps.slice(-1)[0];
-      if (next)
-        visit(next);
     });
   }
   visit(root);
 
   //console.log(root);
 
-  if (seen.size < sent.size)
+  if (seen.size < sent.size + 1)
     throw new GeneratorError('Unable to generate, sentence not fully connected');
 
   // parse the tree into a string
   let output = '';
   const walk = node => {
+
     output += '[' + (node.deprel || '') + ' ';
 
     node.deps.forEach(dep => {
@@ -73,7 +68,7 @@ module.exports = (sent, options) => {
 
     output += ' ] ';
   }
-  walk(root);
+  root.deps.forEach(dep => walk(dep));
 
   // clean up the output
   output = output

@@ -9,10 +9,10 @@ const NxBaseClass = require('./base-class');
 const SubToken = require('./sub-token');
 
 class Analysis extends NxBaseClass {
-  constructor(serial, options) {
+  constructor(sent, serial) {
 
-    super('Analysis');
-    this._subTokens = (serial.subTokens || []).map(sub => new SubToken(sub, options));
+    super(sent, 'Analysis');
+    this._subTokens = (serial.subTokens || []).map(sub => new SubToken(sent, sub));
 
   }
 

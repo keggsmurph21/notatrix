@@ -30,6 +30,7 @@ class Sentence extends NxBaseClass {
       showRootDeprel: true,
       enhanced: false,
       useTokenDeprel: true,
+      autoAddPunct: true,
     });
 
     if (options.interpretAs) {
@@ -56,9 +57,9 @@ class Sentence extends NxBaseClass {
 
     this.input = serial.input;
     this.options = serial.options;
-    this.comments = serial.comments.map(com => new Comment(com, options));
-    this.tokens = serial.tokens.map(tok => new Token(tok, options));
-    this.root = undefined;
+    this.comments = serial.comments.map(com => new Comment(this, com));
+    this.tokens = serial.tokens.map(tok => new Token(this, tok));
+    this.root = new RootToken(this);
 
     this.attach();
   }
@@ -219,48 +220,60 @@ class Sentence extends NxBaseClass {
       throw new SentenceError(`root is already set`);
 
     this.root = token;
+    token._addHead(new RootToken(this), 'root');
   }
 
   attach() {
-    this.iterate((token, i, j, k) => {
 
-      const head = token.serial.head;
+    function getHeadAndDeprel(token, head, deprel) {
 
-      if (head === '0' || head === 0) {
+      head = head || token.serial.head;
+      deprel = deprel || token.serial.deprel;
 
-        token._head = new RootToken();
-        token.deprel = 'root';
-        this.setRoot(token);
+      if (head) {
 
-      } else if (head) {
+        if (head == '0') {
 
-        const query = this.query(token => token.serial.index === head);
-        if (query.length !== 1) {
-          console.log(token.serial)
-          throw new SentenceError(`cannot locate token with serial index "${head}"`);
+          return {
+            head: token.sent.root,
+            deprel: 'root',
+          };
+
+        } else {
+
+          const query = token.sent.query(token => token.serial.index === head);
+          if (query.length !== 1) {
+            console.log(token.serial)
+            throw new SentenceError(`cannot locate token with serial index "${head}"`);
+          }
+
+          return {
+            head: query[0],
+            deprel: deprel || utils.guessDeprel(query[0], token),
+          };
+
         }
-
-        token._head = query[0];
-        token.deprel = token.deprel || utils.guessDeprel(head, token);
-
       }
 
-      (token.serial.deps || '').split('|').forEach(fullDep => {
+      return null;
+    }
 
-        fullDep = fullDep.split(':');
-        const dep = fullDep[0];
-        const deprel = fullDep[1] || null;
+    this.iterate(token => {
 
-        if (dep === '0') {
+      const dependency = getHeadAndDeprel(token);
 
-        } else if (dep) {
+      if (dependency)
+        token._addHead(dependency.head, dependency.deprel);
 
-          const query = this.query(token => token.serial.index === dep);
-          if (query.length !== 1)
-            throw new SentenceError(`cannot locate token with serial index "${dep}"`);
+      (token.serial.deps || '').split('|').filter(utils.thin).forEach(dep => {
 
-          token.addDep(query[0], deprel);
-        }
+        this.options.enhanced = true;
+
+        const [head, deprel] = dep.split(':');
+        const dependency = getHeadAndDeprel(token, head, deprel);
+        if (dependency)
+          token._addHead(dependency.head, dependency.deprel);
+
       });
 
     });
@@ -285,156 +298,6 @@ class Sentence extends NxBaseClass {
     }
   }
 
-  getCytoscapeEles(format) {
-    this.index();
-
-    function toSubscript(str) {
-      const subscripts = { 0:'₀', 1:'₁', 2:'₂', 3:'₃', 4:'₄', 5:'₅',
-        6:'₆', 7:'₇', 8:'₈', 9:'₉', '-':'₋', '(':'₍', ')':'₎' };
-
-      if (str == null)
-        return '';
-
-      return str.split('').map((char) => {
-        return (subscripts[char] || char);
-      }).join('');
-    }
-
-    function getIndex(token, format) {
-      return format === 'CoNLL-U'
-        ? token.indices.conllu
-        : format === 'CG3'
-          ? token.indices.cg3
-          : token.indices.absolute;
-    }
-
-    let eles = [];
-
-    this.iterate(token => {
-
-      if (token.indices.cytoscape == null && !token.isSuperToken)
-        return;
-
-      let id = getIndex(token, format);
-      let num = token.indices.absolute - 1;
-      let clump = token.indices.cytoscape;
-      let pos = format === 'CG3'
-        ? token.xpostag || token.upostag
-        : token.upostag || token.xpostag;
-
-      if (token.isSuperToken) {
-
-        eles.push({ // multiword label
-          data: {
-            id: `multiword-${id}`,
-            num: num,
-            clump: clump,
-            name: `multiword`,
-            label: `${token.form} ${toSubscript(`${id}`)}`,
-            /*length: `${token.form.length > 3
-              ? token.form.length * 0.7
-              : token.form.length}em`*/
-          },
-          classes: 'multiword'
-        });
-
-      } else {
-
-        let parent = token.name === 'SubToken'
-          ? 'multiword-' + getIndex(this.getSuperToken(token), format)
-          : undefined;
-
-        eles.push({ // "number" node
-          data: {
-            id: `num-${id}`,
-            num: num,
-            clump: clump,
-            name: 'number',
-            label: id,
-            pos: pos,
-            parent: parent,
-            token: token,
-          },
-          classes: 'number'
-        }, { // "form" node
-          data: {
-            id: `form-${id}`,
-            num: num,
-            clump: clump,
-            name: 'form',
-            attr: 'form',
-            form: token.form,
-            label: token.form || '',
-            length: `${(token.form || '').length > 3
-              ? (token.form || '').length * 0.7
-              : (token.form || '').length}em`,
-            state: `normal`,
-            parent: `num-${id}`,
-            token: token,
-          },
-          classes: `form${this.root === token ? ' root' : ''}`,
-        }, { // "pos" node
-          data: {
-            id: `pos-node-${id}`,
-            num: num,
-            clump: clump,
-            name: `pos-node`,
-            attr: format === 'CG3' ? `xpostag` : `upostag`,
-            pos: pos,
-            label: pos || '',
-            length: `${(pos || '').length * 0.7 + 1}em`,
-            token: token,
-          },
-          classes: 'pos'
-        }, { // "pos" edge
-          data: {
-            id: `pos-edge-${id}`,
-            num: num,
-            clump: clump,
-            name: `pos-edge`,
-            pos: pos,
-            source: `form-${id}`,
-            target: `pos-node-${id}`
-          },
-          classes: 'pos'
-        });
-
-        const getDependencyEdges = (format, head, token, deprel) => {
-
-          if (head.name === 'RootToken')
-            return;
-
-          let headId = getIndex(head, format);
-
-          eles.push({
-            data: {
-              id: `dep_${id}_${headId}`,
-              name: `dependency`,
-              attr: `deprel`,
-              deprel: deprel,
-              source: `form-${headId}`,
-              sourceToken: head,
-              target: `form-${id}`,
-              targetToken: token,
-              length: `${(deprel || '').length / 3}em`,
-              label: null, // NB overwrite this before use
-              ctrl: null   // NB overwrite this before use
-            },
-            classes: null  // NB overwrite this before use
-          });
-        };
-
-        if (this.options.enhanced) {
-          token.mapDeps((h, d) => getDependencyEdges(format, h, token, d));
-        } else if (token._head) {
-          getDependencyEdges(format, token._head, token, token.deprel);
-        }
-      }
-    });
-
-    return eles;
-  }
-
   enhance() {
     this.options.enhanced = true;
 
@@ -444,7 +307,11 @@ class Sentence extends NxBaseClass {
 
       token.addDep(token._head, token.deprel);
 
-    })
+    });
+  }
+
+  unenhance() {
+    this.options.enhanced = false;
   }
 
   getSuperToken(token) {
