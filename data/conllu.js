@@ -1,4 +1,34 @@
 module.exports = {
+turkic: `# sent_id = mst-0008
+# text = Ercan Tezer, iç pazarda bu yıl seksen bin otomobil ve toplam yuzotuz bin araç satılmasının beklendiğini kaydederek, " onalti yıl geriden gidiyoruz " dedi.
+1	Ercan	Ercan	PROPN	Prop	Case=Nom|Number=Sing|Person=3	26	nsubj	_	_
+2	Tezer	Tezer	PROPN	Prop	Case=Nom|Number=Sing|Person=3	1	flat	_	SpaceAfter=No
+3	,	,	PUNCT	Punc	_	26	punct	_	_
+4	iç	iç	ADJ	Adj	_	16	amod	_	_
+5	pazarda	pazar	NOUN	Noun	Case=Loc|Number=Sing|Person=3	4	compound	_	_
+6	bu	bu	DET	Det	_	7	det	_	_
+7	yıl	yıl	NOUN	Noun	Case=Nom|Number=Sing|Person=3	16	obl	_	_
+8	seksen	seksen	NUM	ANum	NumType=Card	10	nummod	_	_
+9	bin	bin	NUM	ANum	NumType=Card	8	flat	_	_
+10	otomobil	otomobil	NOUN	Noun	Case=Nom|Number=Sing|Person=3	16	nsubj	_	_
+11	ve	ve	CCONJ	Conj	_	15	cc	_	_
+12	toplam	toplam	NOUN	Noun	Case=Nom|Number=Sing|Person=3	13	obl	_	_
+13	yuzotuz	yuzotuz	NUM	ANum	NumType=Card	15	nummod	_	_
+14	bin	bin	NUM	ANum	NumType=Card	13	flat	_	_
+15	araç	araç	NOUN	Noun	Case=Nom|Number=Sing|Person=3	10	conj	_	_
+16	satılmasının	sat	VERB	Verb	Aspect=Perf|Case=Gen|Mood=Ind|Number[psor]=Sing|Person[psor]=3|Polarity=Pos|Tense=Pres|VerbForm=Vnoun|Voice=Pass	17	nmod:poss	_	_
+17	beklendiğini	bekle	VERB	Verb	Aspect=Perf|Case=Acc|Mood=Ind|Number[psor]=Sing|Person[psor]=3|Polarity=Pos|Tense=Past|VerbForm=Part|Voice=Pass	18	obj	_	_
+18	kaydederek	kaydet	VERB	Verb	Aspect=Perf|Mood=Ind|Polarity=Pos|Tense=Pres|VerbForm=Conv	26	nmod	_	SpaceAfter=No
+19	,	,	PUNCT	Punc	_	18	punct	_	_
+20	"	"	PUNCT	Punc	_	24	punct	_	_
+21	onalti	onalti	NUM	ANum	NumType=Card	22	nummod	_	_
+22	yıl	yıl	NOUN	Noun	Case=Nom|Number=Sing|Person=3	23	nmod	_	_
+23	geriden	geri	ADJ	NAdj	Case=Abl|Number=Sing|Person=3	24	amod	_	_
+24	gidiyoruz	git	VERB	Verb	Aspect=Prog|Mood=Ind|Number=Plur|Person=1|Polarity=Pos|Polite=Infm|Tense=Pres	26	obj	_	_
+25	"	"	PUNCT	Punc	_	24	punct	_	_
+26	dedi	de	VERB	Verb	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	0	root	_	SpaceAfter=No
+27	.	.	PUNCT	Punc	_	26	punct	_	_`,
+
 labels_1: `# text = "This is a simple sentence."
 # labels = label1 another_label a-third-label
 1	This	This	_	_	_	_	_	_	_

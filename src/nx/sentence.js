@@ -307,7 +307,11 @@ class Sentence extends NxBaseClass {
       if (token.indices.cytoscape == null && !token.isSuperToken)
         return;
 
-      let id = token.getHead(format);
+      let id = format === 'CoNLL-U'
+        ? token.indices.conllu
+        : format === 'CG3'
+          ? token.indices.cg3
+          : token.indices.absolute;
       let num = token.indices.absolute - 1;
       let clump = token.indices.cytoscape;
       let pos = format === 'CG3'
@@ -322,7 +326,7 @@ class Sentence extends NxBaseClass {
             num: num,
             clump: clump,
             name: `multiword`,
-            label: `${token.form} ${toSubscript(id)}`,
+            label: `${token.form} ${toSubscript(`${id}`)}`,
             /*length: `${token.form.length > 3
               ? token.form.length * 0.7
               : token.form.length}em`*/
@@ -392,7 +396,11 @@ class Sentence extends NxBaseClass {
           if (token.name === 'RootToken')
             return;
 
-          let headId = token.getHead(format);
+          let headId = format === 'CoNLL-U'
+            ? token.indices.conllu
+            : format === 'CG3'
+              ? token.indices.cg3
+              : token.absolute;
 
           eles.push({
             data: {
