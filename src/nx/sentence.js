@@ -386,8 +386,8 @@ class Sentence extends NxBaseClass {
     // basic copying
     _src.semicolon = src.semicolon;
     _src.isEmpty = src.isEmpty;
-    _src.lemma = src.lemma || src.form;
-    _src.form = undefined;
+    _src.form = src.form;
+    _src.lemma = src.lemma;
     _src.upostag = src.upostag;
     _src.xpostag = src.xpostag;
 
@@ -403,8 +403,8 @@ class Sentence extends NxBaseClass {
     // basic copying
     _tar.semicolon = tar.semicolon;
     _tar.isEmpty = tar.isEmpty;
-    _tar.lemma = tar.lemma || tar.form;
-    _tar.form = undefined;
+    _tar.form = tar.form;
+    _tar.lemma = tar.lemma;
     _tar.upostag = tar.upostag;
     _tar.xpostag = tar.xpostag;
 
