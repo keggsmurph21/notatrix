@@ -11,7 +11,7 @@ const NxBaseClass = require('./base-class');
 const Comment = require('./comment');
 const BaseToken = require('./base-token');
 const Token = require('./token');
-const RootToken = require('./root');
+const RootToken = require('./root-token');
 const update = require('./update');
 
 class Sentence extends NxBaseClass {
