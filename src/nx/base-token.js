@@ -4,8 +4,7 @@ const _ = require('underscore');
 const uuid = require('uuid/v4');
 
 const utils = require('../utils');
-const BaseTokenError = utils.BaseTokenError;
-
+const NxError = utils.NxError;
 const NxBaseClass = require('./base-class');
 const RelationSet = require('./relation-set');
 
@@ -33,13 +32,13 @@ class BaseToken extends NxBaseClass {
   addHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
-      throw new BaseTokenError('cannot add head unless it is a token');
+      throw new NxError('cannot add head unless it is a token');
 
     if (head === this)
-      throw new BaseTokenError('token cannot be its own head');
+      throw new NxError('token cannot be its own head');
 
     if (typeof deprel !== 'string' && deprel != null)
-      throw new BaseTokenError('deprel must be a string, null, or undefined');
+      throw new NxError('deprel must be a string, null, or undefined');
 
     // if we're not enhanced, only can have 1 head at a time
     if (!this.sent.options.enhanced)
@@ -52,10 +51,10 @@ class BaseToken extends NxBaseClass {
   modifyHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
-      throw new BaseTokenError('cannot add head unless it is a token');
+      throw new NxError('cannot add head unless it is a token');
 
     if (typeof deprel !== 'string' && deprel != null)
-      throw new BaseTokenError('deprel must be a string, null, or undefined');
+      throw new NxError('deprel must be a string, null, or undefined');
 
     return this.heads.modify(head, deprel);
 
@@ -64,7 +63,7 @@ class BaseToken extends NxBaseClass {
   removeHead(head) {
 
     if (!(head instanceof BaseToken))
-      throw new BaseTokenError('cannot add head unless it is a token');
+      throw new NxError('cannot add head unless it is a token');
 
     return this.heads.remove(head);
 

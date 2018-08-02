@@ -3,8 +3,6 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const TokenError = utils.TokenError;
-
 const BaseToken = require('./base-token');
 const Analysis = require('./analysis');
 

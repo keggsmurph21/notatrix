@@ -3,7 +3,7 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const SentenceError = utils.SentenceError;
+const NxError = utils.NxError;
 const parse = require('../parser');
 const generate = require('../generator');
 
@@ -45,11 +45,11 @@ class Sentence extends NxBaseClass {
 
       // choose one of them if possible
       if (serial.length === 0) {
-        throw new SentenceError('Unable to parse input', this);
+        throw new NxError('Unable to parse input', this);
       } else if (serial.length === 1) {
         serial = serial[0];
       } else {
-        throw new SentenceError(
+        throw new NxError(
           `Unable to disambiguate input interpretations (${serial.length})`, this);
       }
 
@@ -214,10 +214,10 @@ class Sentence extends NxBaseClass {
 
   setRoot(token) {
     if (!(token instanceof BaseToken))
-      throw new SentenceError(`cannot set ${token} as root`);
+      throw new NxError(`cannot set ${token} as root`);
 
     if (this.root)
-      throw new SentenceError(`root is already set`);
+      throw new NxError(`root is already set`);
 
     this.root = token;
     token.addHead(new RootToken(this), 'root');
@@ -244,7 +244,7 @@ class Sentence extends NxBaseClass {
           const query = token.sent.query(token => token.serial.index === head);
           if (query.length !== 1) {
             console.log(token.serial)
-            throw new SentenceError(`cannot locate token with serial index "${head}"`);
+            throw new NxError(`cannot locate token with serial index "${head}"`);
           }
 
           return {
@@ -292,7 +292,7 @@ class Sentence extends NxBaseClass {
     } catch(e) {
 
       if (e instanceof utils.ToolError || utils.NxError)
-        throw new SentenceError('Unable to update: ' + e.message);
+        throw new NxError('Unable to update: ' + e.message);
 
       throw e;
     }

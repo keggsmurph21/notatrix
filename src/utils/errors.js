@@ -81,66 +81,6 @@ class NxError extends NotatrixError {
   }
 }
 
-class CorpusError extends NxError {
-  constructor(message, nx) {
-    super(message);
-
-    this.name = 'CorpusError';
-    this.nx = nx;
-  }
-}
-
-class SentenceError extends NxError {
-  constructor(message, nx) {
-    super(message);
-
-    this.name = 'SentenceError';
-    this.nx = nx;
-  }
-}
-
-class BaseTokenError extends NxError {
-  constructor(...args) {
-    super(...args);
-    this.name = 'BaseTokenError';
-  }
-}
-
-class TokenError extends BaseTokenError {
-  constructor(message, nx) {
-    super(message);
-
-    this.name = 'TokenError';
-    this.nx = nx;
-  }
-}
-
-class AnalysisError extends NxError {
-  constructor(message, nx) {
-    super(message);
-
-    this.name = 'AnalysisError';
-    this.nx = nx;
-  }
-}
-
-class SubTokenError extends BaseTokenError {
-  constructor(message, nx) {
-    super(message);
-
-    this.name = 'SubTokenError';
-    this.nx = nx;
-  }
-}
-
-class DependencyError extends NxError {
-  constructor(message) {
-    super(message);
-
-    this.name = 'DependencyError';
-  }
-}
-
 
 
 module.exports = {
@@ -157,12 +97,5 @@ module.exports = {
   ConverterError,
 
   NxError,
-  CorpusError,
-  SentenceError,
-  BaseTokenError,
-  TokenError,
-  AnalysisError,
-  SubTokenError,
-  DependencyError,
 
 };

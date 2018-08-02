@@ -3,7 +3,7 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const SentenceError = utils.SentenceError;
+const NxError = utils.NxError;
 const formats = require('../formats');
 const detect = require('../detector');
 

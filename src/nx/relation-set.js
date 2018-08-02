@@ -3,7 +3,6 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const DependencyError = utils.DependencyError;
 const NxBaseClass = require('./base-class');
 
 

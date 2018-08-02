@@ -3,8 +3,6 @@
 const _ = require('underscore');
 
 const utils = require('../utils');
-const SubTokenError = utils.SubTokenError;
-
 const BaseToken = require('./base-token');
 
 class SubToken extends BaseToken {
