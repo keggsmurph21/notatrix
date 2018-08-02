@@ -13,6 +13,7 @@ module.exports = (sent, options) => {
 
   options = _.defaults(options, sent.options, {
     omitIndices: false,
+    allowMissingLemma: true,
   });
 
   sent.index();
@@ -23,7 +24,7 @@ module.exports = (sent, options) => {
 
     const push = (token, indent) => {
 
-      if (!token.lemma)
+      if (!token.lemma && !options.allowMissingLemma)
         throw new GeneratorError(`Unable to generate, token has no lemma`, sent, options);
 
       indent = (token.semicolon ? ';' : '') + '\t'.repeat(indent);
@@ -33,7 +34,7 @@ module.exports = (sent, options) => {
         ? null
         : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head);
 
-      let line = [ `"${token.lemma}"` ]
+      let line = [ `"${token.lemma || '_'}"` ]
         .concat(token.xpostag || token.upostag)
         .concat((token.feats || '').split('|'))
         .concat(token._misc)

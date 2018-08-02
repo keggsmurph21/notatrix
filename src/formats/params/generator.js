@@ -25,7 +25,6 @@ module.exports = (sent, options) => {
 
     let params = _.pick(token, utils.fields);
     params.head = token.getHead();
-    params.deps = token._getDeps();
 
     return _.pick(params, value => value != undefined);
   });
