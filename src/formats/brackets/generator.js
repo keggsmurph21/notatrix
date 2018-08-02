@@ -52,7 +52,7 @@ module.exports = (sent, options) => {
   let output = '';
   const walk = node => {
 
-    output += '[' + (node.deprel || '') + ' ';
+    output += '[' + (node.deprel || '_') + ' ';
 
     node.deps.forEach(dep => {
       if (dep.token.indices.absolute < node.token.indices.absolute)
@@ -74,6 +74,7 @@ module.exports = (sent, options) => {
   output = output
     .replace(/\s+/g, ' ')
     .replace(/ \]/g, ']')
+    .replace(/\[ /g, '[')
     .replace(/(\w)_(\w)/, '$1 $2')
     .trim();
 
