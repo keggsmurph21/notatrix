@@ -13,6 +13,8 @@ const BaseToken = require('./base-token');
 const Token = require('./token');
 const RootToken = require('./root-token');
 const update = require('./update');
+const Analysis = require('./analysis');
+const SubToken = require('./sub-token');
 
 class Sentence extends NxBaseClass {
   constructor(serial, options) {
@@ -367,7 +369,9 @@ class Sentence extends NxBaseClass {
       throw new NxError('unable to merge: tokens too far apart');
 
     // get a new token to put things into
-    let superToken = new Token(this, { analyses: [ { subTokens: [] } ] });
+    let superToken = new Token(this, {});
+    superToken._analyses = [ new Analysis(this, { subTokens: [] }) ];
+    superToken._i = 0;
 
     // mess around with some form/lemma stuff
     superToken.form = (src.form || '') + (tar.form || '') || null;
@@ -376,17 +380,47 @@ class Sentence extends NxBaseClass {
     tar.lemma = tar.lemma || tar.form;
     tar.form = undefined;
 
-    // add the src and tar as the subTokens
-    let _src, _tar;
+    // make new subToken objects from src and tar
+    let _src = new SubToken(this, {});
+
+    // basic copying
+    _src.semicolon = src.semicolon;
+    _src.isEmpty = src.isEmpty;
+    _src.lemma = src.lemma || src.form;
+    _src.form = undefined;
+    _src.upostag = src.upostag;
+    _src.xpostag = src.xpostag;
+
+    // array-type copying
+    _src._feats_init = src._feats_init;
+    _src._feats = src._feats.slice();
+    _src._misc_init = src._misc_init;
+    _src._misc = src._misc.slice();
+
+    // make new subToken objects from src and tar
+    let _tar = new SubToken(this, {});
+
+    // basic copying
+    _tar.semicolon = tar.semicolon;
+    _tar.isEmpty = tar.isEmpty;
+    _tar.lemma = tar.lemma || tar.form;
+    _tar.form = undefined;
+    _tar.upostag = tar.upostag;
+    _tar.xpostag = tar.xpostag;
+
+    // array-type copying
+    _tar._feats_init = tar._feats_init;
+    _tar._feats = tar._feats.slice();
+    _tar._misc_init = tar._misc_init;
+    _tar._misc = tar._misc.slice();
+
     if (src.indices.absolute < tar.indices.absolute) {
 
-      superToken._analyses[0]._subTokens = [ src, tar ];
-      [_src, _tar] = superToken.subTokens;
+      superToken.analysis._subTokens.push(_src, _tar);
 
     } else {
 
-      superToken._analyses[0]._subTokens = [ tar, src ];
-      [_tar, _src] = superToken.subTokens;
+      superToken.analysis._subTokens.push(_tar, _src);
 
     }
 
@@ -395,22 +429,22 @@ class Sentence extends NxBaseClass {
     tar.removeHead(src);
 
     // transfer all the heads and dependents to the new subTokens
-    _src.mapHeads(head => {
+    src.mapHeads(head => {
       src.removeHead(head.token);
       _src.addHead(head.token, head.deprel);
     });
 
-    _src.mapDependents(dep => {
+    src.mapDependents(dep => {
       dep.token.removeHead(src);
       dep.token.addHead(_src, dep.deprel);
     });
 
-    _tar.mapHeads(head => {
+    tar.mapHeads(head => {
       tar.removeHead(head.token);
       _tar.addHead(head.token, head.deprel);
     });
 
-    _tar.mapDependents(dep => {
+    tar.mapDependents(dep => {
       dep.token.removeHead(tar);
       dep.token.addHead(_tar, dep.deprel);
     });
