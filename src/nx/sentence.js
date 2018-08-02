@@ -357,28 +357,24 @@ class Sentence extends NxBaseClass {
   combine(src, tar) {
 
     if (!(src instanceof BaseToken) || !(tar instanceof BaseToken))
-      throw new NxError('unable to merge: src and tar must both be tokens');
+      throw new NxError('unable to combine: src and tar must both be tokens');
 
     if (src.isSuperToken || tar.isSuperToken)
-      throw new NxError('unable to merge: cannot merge superTokens');
+      throw new NxError('unable to combine: cannot combine superTokens');
 
     if (src.name === 'SubToken' || tar.name === 'SuperToken')
-      throw new NxError('unable to merge: cannot merge subTokens');
+      throw new NxError('unable to combine: cannot combine subTokens');
 
     if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1)
-      throw new NxError('unable to merge: tokens too far apart');
+      throw new NxError('unable to combine: tokens too far apart');
 
     // get a new token to put things into
     let superToken = new Token(this, {});
     superToken._analyses = [ new Analysis(this, { subTokens: [] }) ];
     superToken._i = 0;
 
-    // mess around with some form/lemma stuff
+    // get the new superToken form from the subTokens
     superToken.form = (src.form || '') + (tar.form || '') || null;
-    src.lemma = src.lemma || src.form;
-    src.form = undefined;
-    tar.lemma = tar.lemma || tar.form;
-    tar.form = undefined;
 
     // make new subToken objects from src and tar
     let _src = new SubToken(this, {});
