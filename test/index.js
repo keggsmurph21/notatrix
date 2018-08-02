@@ -7,6 +7,9 @@ require('./parser');
 // then internal stuff
 require('./relation-sets');
 require('./sentence');
+require('./merge');
+require('./combine');
+require('./split');
 
 // then externalizers
 require('./generator');

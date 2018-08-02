@@ -18,6 +18,8 @@ class BaseToken extends NxBaseClass {
 
     this._feats_init = false;
     this._misc_init = false;
+    this._feats = [];
+    this._misc = [];
 
     this.heads = new RelationSet(this, 'dependents');
     this.dependents = new RelationSet(this, 'heads');
@@ -67,6 +69,10 @@ class BaseToken extends NxBaseClass {
 
     return this.heads.remove(head);
 
+  }
+
+  removeAllHeads() {
+    return this.heads.clear();
   }
 
   mapHeads(callback) {
