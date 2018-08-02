@@ -32,6 +32,7 @@ module.exports = (text, options) => {
     suppressDetectorErrors: true,
 		suppressParserErrors: true,
 		returnAllPossibilities: true,
+		requireOne: false,
   });
 
 	const possibilities = utils.formats.map(format => {
@@ -51,6 +52,9 @@ module.exports = (text, options) => {
 	if (!possibilities.length && !options.suppressDetectorErrors)
 		throw new DetectorError('Unable to detect format', text, options);
 
+	if (options.requireOne && possibilities.length > 1)
+		throw new DetectorError('Unable to detect, ambiguous input');
+		
 	return options.returnAllPossibilities ? possibilities : possibilities[0];
 
 };

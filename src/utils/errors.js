@@ -78,6 +78,7 @@ class ConverterError extends ToolError {
 class NxError extends NotatrixError {
   constructor(...args) {
     super(...args);
+    this.name = 'NxError';
   }
 }
 
