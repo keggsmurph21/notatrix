@@ -454,8 +454,106 @@ class Sentence extends NxBaseClass {
     return this.index();
   }
 
-  split(src, tar) {
+  split(src, splitAtIndex) {
 
+    if (!(src instanceof BaseToken))
+      throw new NxError('unable to split: src must be a token');
+
+    if (src.isSuperToken) {
+
+      const tokens = src.subTokens.map(subToken => {
+
+        let token = new Token(this, {});
+
+        // basic copying
+        token.semicolon = subToken.semicolon;
+        token.isEmpty = subToken.isEmpty;
+        token.form = subToken.form;
+        token.lemma = subToken.lemma;
+        token.upostag = subToken.upostag;
+        token.xpostag = subToken.xpostag;
+
+        // array-type copying
+        token._feats_init = subToken._feats_init;
+        token._feats = subToken._feats.slice();
+        token._misc_init = subToken._misc_init;
+        token._misc = subToken._misc.slice();
+
+        // transfer all the heads and dependents from subToken to token
+        subToken.mapHeads(head => {
+          subToken.removeHead(head.token);
+          token.addHead(head.token, head.deprel);
+        });
+
+        subToken.mapDependents(dep => {
+          dep.token.removeHead(subToken);
+          dep.token.addHead(token, dep.deprel);
+        });
+
+        return token;
+
+      });
+
+      const index = src.indices.sup;
+
+      // splice out the old superToken
+      this.tokens.splice(index, 1);
+
+      // insert the new tokens into its place
+      this.tokens = this.tokens
+        .slice(0, index)
+        .concat(tokens)
+        .concat(this.tokens.slice(index));
+
+    } else if (src.name === 'SubToken') {
+
+      splitAtIndex = parseInt(splitAtIndex);
+      if (isNaN(splitAtIndex))
+        throw new NxError(`unable to split: cannot split at index ${splitAtIndex}`);
+
+      let subToken = new SubToken(this, {});
+
+      const beginning = (src.form || '').slice(0, splitAtIndex);
+      const ending = (src.form || '').slice(splitAtIndex);
+
+      src.form = beginning;
+      subToken.form = ending;
+
+      const superToken = this.getSuperToken(src);
+      const subTokens = superToken._analyses[src.indices.ana]._subTokens;
+      const index = src.indices.sub;
+
+      // insert the new subToken after it
+      superToken._analyses[src.indices.ana]._subTokens = subTokens
+        .slice(0, index + 1)
+        .concat(subToken)
+        .concat(subTokens.slice(index + 1));
+
+    } else {
+
+      splitAtIndex = parseInt(splitAtIndex);
+      if (isNaN(splitAtIndex))
+        throw new NxError(`unable to split: cannot split at index ${splitAtIndex}`);
+
+      let token = new Token(this, {});
+
+      const beginning = (src.form || '').slice(0, splitAtIndex);
+      const ending = (src.form || '').slice(splitAtIndex);
+
+      src.form = beginning;
+      token.form = ending;
+
+      const index = src.indices.sup;
+
+      // insert the new token after it
+      this.tokens = this.tokens
+        .slice(0, index + 1)
+        .concat(token)
+        .concat(this.tokens.slice(index + 1));
+
+    }
+
+    return this.index();
   }
 }
 

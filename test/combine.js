@@ -90,8 +90,8 @@ describe('combine', () => {
     expect(sent.size).to.equal(6);
     expect(sent.tokens.length).to.equal(4);
     expect(sent.to('conllu').output).to.equal(`1-2	thisis	_	_	_	_	_	_	_	_
-1	_	this	_	_	_	_	_	_	_
-2	_	is	_	_	_	_	_	_	_
+1	this	_	_	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
 3	a	_	_	_	_	_	_	_	_
 4	simple	_	_	_	_	_	_	_	_
 5	sentence	_	_	_	_	_	_	_	_`);
@@ -123,8 +123,8 @@ describe('combine', () => {
     expect(sent.size).to.equal(6);
     expect(sent.tokens.length).to.equal(4);
     expect(sent.to('conllu').output).to.equal(`1-2	isthis	_	_	_	_	_	_	_	_
-1	_	this	_	_	_	_	_	_	_
-2	_	is	_	_	_	_	_	_	_
+1	this	_	_	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
 3	a	_	_	_	_	_	_	_	_
 4	simple	_	_	_	_	_	_	_	_
 5	sentence	_	_	_	_	_	_	_	_`);
@@ -157,8 +157,8 @@ describe('combine', () => {
 3	c	_	_	_	_	_	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	_	_	_	_
-2	_	b	_	_	_	_	_	_	_
+1	a	_	_	_	_	_	_	_	_
+2	b	_	_	_	_	_	_	_	_
 3	c	_	_	_	_	_	_	_	_`);
 
     reset(); // tar depends on src
@@ -169,8 +169,8 @@ describe('combine', () => {
 3	c	_	_	_	_	_	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	_	_	_	_
-2	_	b	_	_	_	_	_	_	_
+1	a	_	_	_	_	_	_	_	_
+2	b	_	_	_	_	_	_	_	_
 3	c	_	_	_	_	_	_	_	_`);
 
     reset(); // src depends on other
@@ -181,8 +181,8 @@ describe('combine', () => {
 3	c	_	_	_	_	_	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	3	_	_	_
-2	_	b	_	_	_	_	_	_	_
+1	a	_	_	_	_	3	_	_	_
+2	b	_	_	_	_	_	_	_	_
 3	c	_	_	_	_	_	_	_	_`);
 
     reset(); // other depends on src
@@ -193,8 +193,8 @@ describe('combine', () => {
 3	c	_	_	_	_	1	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	_	_	_	_
-2	_	b	_	_	_	_	_	_	_
+1	a	_	_	_	_	_	_	_	_
+2	b	_	_	_	_	_	_	_	_
 3	c	_	_	_	_	1	_	_	_`);
 
     reset(); // tar depends on other
@@ -205,8 +205,8 @@ describe('combine', () => {
 3	c	_	_	_	_	_	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	_	_	_	_
-2	_	b	_	_	_	3	_	_	_
+1	a	_	_	_	_	_	_	_	_
+2	b	_	_	_	_	3	_	_	_
 3	c	_	_	_	_	_	_	_	_`);
 
     reset(); // other depends on tar
@@ -217,8 +217,8 @@ describe('combine', () => {
 3	c	_	_	_	_	2	_	_	_`);
     sent.combine(tok0, tok1);
     expect(sent.to('conllu').output).to.equal(`1-2	ab	_	_	_	_	_	_	_	_
-1	_	a	_	_	_	_	_	_	_
-2	_	b	_	_	_	_	_	_	_
+1	a	_	_	_	_	_	_	_	_
+2	b	_	_	_	_	_	_	_	_
 3	c	_	_	_	_	2	_	_	_`);
 
   });
@@ -254,8 +254,8 @@ describe('combine', () => {
 6	_	e	pr	_	_	8	case	_	_
 7	_	an	det	_	def|sp	8	det	_	_
 8-9	.gegin	_	_	_	_	_	_	_	_
-8	_	kegin	n	_	f|sg	4	obl	_	_
-9	_	.	sent	_	_	4	punct	_	_`);
+8	gegin	kegin	n	_	f|sg	4	obl	_	_
+9	.	.	sent	_	_	4	punct	_	_`);
 
   });
 });
