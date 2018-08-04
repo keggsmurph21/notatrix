@@ -33,6 +33,7 @@ class Corpus extends NxBaseClass {
     this._labeler = new Labeler(this);
     this._sentences = [];
     this._index = null;
+    this._meta = {};
 
   }
 
@@ -50,7 +51,7 @@ class Corpus extends NxBaseClass {
 
   serialize() {
     return {
-      meta: {},
+      meta: this._meta,
       options: this.options,
       labeler: this._labeler.serialize(),
       sentences: this._sentences.map(sent => sent.serialize(this.options)),
