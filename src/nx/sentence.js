@@ -22,6 +22,7 @@ class Sentence extends NxBaseClass {
     super('Sentence');
 
     this.to = (format, options) => generate[format](this, options);
+    this._meta = {};
 
     serial = serial || '';
     options = options || {};
@@ -68,7 +69,7 @@ class Sentence extends NxBaseClass {
 
   serialize(master = {}) {
     return {
-      meta: {},
+      meta: this._meta,
       input: this.input,
       options: utils.dedup(master, this.options),
       comments: this.comments.map(com => com.serialize()),
