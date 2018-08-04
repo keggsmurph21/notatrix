@@ -1968,9 +1968,9 @@ var Analysis = function () {
 
       // unlink heads and deps from the token to be removed
       this.sentence.forEach(function (token) {
-        token.analysis.eachHead(function (head) {
+        token.analysis.mapHeads(function (head) {
           if (head === _this2[index]) token.analysis.removeHead(head);
-        }).eachDep(function (dep) {
+        }).mapDeps(function (dep) {
           if (dep === _this2[index]) token.analysis.removeDep(dep);
         });
       });
@@ -2058,7 +2058,7 @@ var Analysis = function () {
      */
 
   }, {
-    key: 'eachHead',
+    key: 'mapHeads',
 
 
     // array-field (heads & deps) manipulators
@@ -2069,7 +2069,7 @@ var Analysis = function () {
      * @param {Function} callback
      * @return {Analysis}
      */
-    value: function eachHead(callback) {
+    value: function mapHeads(callback) {
       _.each(this._heads, function (head, i) {
         callback(head.token, head.deprel, i);
       });
@@ -2129,14 +2129,14 @@ var Analysis = function () {
 
       // remove from _heads
       var removing = -1;
-      this.eachHead(function (token, deprel, i) {
+      this.mapHeads(function (token, deprel, i) {
         if (token === head) removing = i;
       });
       if (removing > -1) this._heads.splice(removing, 1);
 
       // if applicable, also remove from head's _deps
       removing = -1;
-      if (this.sentence.options.help.head) head.eachDep(function (token, deprel, i) {
+      if (this.sentence.options.help.head) head.mapDeps(function (token, deprel, i) {
         if (token === _this3) removing = i;
       });
       if (removing > -1) head._deps.splice(removing, 1);
@@ -2163,7 +2163,7 @@ var Analysis = function () {
 
       // change for this head
       var done = false;
-      this.eachHead(function (token, _deprel, i) {
+      this.mapHeads(function (token, _deprel, i) {
         if (token === head) {
           _this4._heads[i].deprel = deprel || _deprel;
           done = true;
@@ -2171,7 +2171,7 @@ var Analysis = function () {
       });
 
       // if applicable, change for the head's dep too
-      if (this.sentence.options.help.head) head.eachDep(function (token, _deprel, i) {
+      if (this.sentence.options.help.head) head.mapDeps(function (token, _deprel, i) {
         if (token === _this4) head._deps[i].deprel = deprel || _deprel;
       });
 
@@ -2186,8 +2186,8 @@ var Analysis = function () {
      */
 
   }, {
-    key: 'eachDep',
-    value: function eachDep(callback) {
+    key: 'mapDeps',
+    value: function mapDeps(callback) {
       _.each(this._deps, function (dep, i) {
         callback(dep.token, dep.deprel, i);
       });
@@ -2247,14 +2247,14 @@ var Analysis = function () {
 
       // remove from _deps
       var removing = -1;
-      this.eachDep(function (token, deprel, i) {
+      this.mapDeps(function (token, deprel, i) {
         if (token === dep) removing = i;
       });
       if (removing > -1) this._deps.splice(removing, 1);
 
       // if applicable, also remove from dep's _heads
       removing = -1;
-      if (this.sentence.options.help.deps) dep.eachHead(function (token, deprel, i) {
+      if (this.sentence.options.help.deps) dep.mapHeads(function (token, deprel, i) {
         if (token === _this5) removing = i;
       });
       if (removing > -1) dep._heads.splice(removing, 1);
@@ -2281,7 +2281,7 @@ var Analysis = function () {
 
       // change for this dep
       var done = false;
-      this.eachDep(function (token, _deprel, i) {
+      this.mapDeps(function (token, _deprel, i) {
         if (token === dep) {
           _this6._deps[i].deprel = deprel || _deprel;
           done = true;
@@ -2289,7 +2289,7 @@ var Analysis = function () {
       });
 
       // if applicable, change for the dep's head too
-      if (this.sentence.options.help.deps) dep.eachHead(function (token, _deprel, i) {
+      if (this.sentence.options.help.deps) dep.mapHeads(function (token, _deprel, i) {
         if (token === _this6) dep._heads[i].deprel = deprel || _deprel;
       });
 
@@ -2529,7 +2529,7 @@ var Analysis = function () {
             classes: 'pos'
           });
 
-          this.eachHead(function (head, deprel) {
+          this.mapHeads(function (head, deprel) {
             deprel = deprel || '';
 
             if (!head || !head.id) // ROOT
@@ -2696,7 +2696,7 @@ var Analysis = function () {
 
       if (this.sentence.options.showEnhanced) {
         var heads = [];
-        this.eachHead(function (token, deprel) {
+        this.mapHeads(function (token, deprel) {
           if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.head) {
             heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
           } else {
@@ -2772,7 +2772,7 @@ var Analysis = function () {
 
       // don't worry about enhanced stuff for deps (always can be multiple)
       var deps = [];
-      this.eachDep(function (token, deprel) {
+      this.mapDeps(function (token, deprel) {
         if (token === _this13.sentence.getById(token.id) || !_this13.sentence.options.help.deps) {
           deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
         } else {
@@ -3416,9 +3416,9 @@ var Sentence = function () {
 
       // unlink heads and deps from the token to be removed
       this.forEach(function (token) {
-        token.analysis.eachHead(function (head) {
+        token.analysis.mapHeads(function (head) {
           if (head === _this[index]) token.analysis.removeHead(head);
-        }).eachDep(function (dep) {
+        }).mapDeps(function (dep) {
           if (dep === _this[index]) token.analysis.removeDep(dep);
         });
       });
@@ -3603,7 +3603,7 @@ var Sentence = function () {
         if (token.analysis.pos && token.analysis.head !== fallback) done++;
 
         // each head increases amount of work to do
-        token.analysis.eachHead(function (head) {
+        token.analysis.mapHeads(function (head) {
 
           total++;
           if (head.deprel && head.deprel !== fallback) done++;

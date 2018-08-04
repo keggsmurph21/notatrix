@@ -3,7 +3,7 @@
 const _ = require('underscore');
 const expect = require('chai').expect;
 
-const data = require('./data/index');
+const data = require('./data');
 const Sentence = require('../src/sentence');
 const Token = require('../src/token');
 const Analysis = require('../src/analysis');
@@ -30,14 +30,14 @@ function ignoreAfterLemma(str) {
 }
 function countHeads(ana) {
   let acc = 0;
-  ana.eachHead(() => {
+  ana.mapHeads(() => {
     acc++;
   });
   return acc;
 }
 function countDeps(ana) {
   let acc = 0;
-  ana.eachDep(() => {
+  ana.mapDeps(() => {
     acc++;
   });
   return acc;
@@ -1685,3 +1685,8 @@ describe('problem cases', () => {
     });
   });
 });
+
+require('./detector');
+require('./splitter');
+require('./parser');
+require('./generator');

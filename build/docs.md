@@ -104,11 +104,11 @@ this class contains all the information associated with an analysis, including
     * [.moveSubTokenAt(sourceIndex, targetIndex)](#Analysis+moveSubTokenAt) ⇒ [<code>Analysis</code>](#Analysis)
     * [.pushSubToken(token)](#Analysis+pushSubToken) ⇒ [<code>Analysis</code>](#Analysis)
     * [.popSubToken()](#Analysis+popSubToken) ⇒ <code>null</code> \| [<code>Analysis</code>](#Analysis)
-    * [.eachHead(callback)](#Analysis+eachHead) ⇒ [<code>Analysis</code>](#Analysis)
+    * [.mapHeads(callback)](#Analysis+mapHeads) ⇒ [<code>Analysis</code>](#Analysis)
     * [.addHead(head, deprel)](#Analysis+addHead) ⇒ [<code>Analysis</code>](#Analysis)
     * [.removeHead(head)](#Analysis+removeHead) ⇒ [<code>Analysis</code>](#Analysis)
     * [.changeHead(head, deprel)](#Analysis+changeHead) ⇒ [<code>Analysis</code>](#Analysis) \| <code>null</code>
-    * [.eachDep(callback)](#Analysis+eachDep) ⇒ [<code>Analysis</code>](#Analysis)
+    * [.mapDeps(callback)](#Analysis+mapDeps) ⇒ [<code>Analysis</code>](#Analysis)
     * [.addDep(dep, deprel)](#Analysis+addDep) ⇒ [<code>Analysis</code>](#Analysis)
     * [.removeDep(dep)](#Analysis+removeDep) ⇒ [<code>Analysis</code>](#Analysis)
     * [.changeDep(dep, deprel)](#Analysis+changeDep) ⇒ [<code>Analysis</code>](#Analysis) \| <code>null</code>
@@ -399,9 +399,9 @@ pop a subToken from the end of the subTokens array ... sugar for
   Analysis::removeSubTokenAt(Infinity)
 
 **Kind**: instance method of [<code>Analysis</code>](#Analysis)  
-<a name="Analysis+eachHead"></a>
+<a name="Analysis+mapHeads"></a>
 
-### analysis.eachHead(callback) ⇒ [<code>Analysis</code>](#Analysis)
+### analysis.mapHeads(callback) ⇒ [<code>Analysis</code>](#Analysis)
 iterate over the `head`s for this analysis and apply a callback to each
 
 **Kind**: instance method of [<code>Analysis</code>](#Analysis)  
@@ -446,9 +446,9 @@ change the dependency relation for a given head ... returns null if unable
 | head | [<code>Analysis</code>](#Analysis) | 
 | deprel | <code>String</code> | 
 
-<a name="Analysis+eachDep"></a>
+<a name="Analysis+mapDeps"></a>
 
-### analysis.eachDep(callback) ⇒ [<code>Analysis</code>](#Analysis)
+### analysis.mapDeps(callback) ⇒ [<code>Analysis</code>](#Analysis)
 iterate over the `deps`s for this analysis and apply a callback to each
 
 **Kind**: instance method of [<code>Analysis</code>](#Analysis)  
