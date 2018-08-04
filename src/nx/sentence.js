@@ -209,7 +209,7 @@ class Sentence extends NxBaseClass {
 
         } else {
 
-          const query = token.sent.query(token => token.serial.index === head);
+          const query = token.sent.query(token => token.serial.index == head);
           if (query.length !== 1) {
             console.log(token.serial)
             throw new NxError(`cannot locate token with serial index "${head}"`);
