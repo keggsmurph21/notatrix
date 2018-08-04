@@ -66,7 +66,7 @@ class Corpus extends NxBaseClass {
     if (this.index === null)
       return null;
 
-    return this._sentences[this.index] || null;
+    return this._sentences[index] || null;
   }
 
   setSentence(index, text, write=true) {
@@ -83,7 +83,7 @@ class Corpus extends NxBaseClass {
     if (write)
       this.writeFile();
 
-    return this;
+    return getSentence(index);
   }
 
   insertSentence(index, text, write) {
@@ -111,7 +111,7 @@ class Corpus extends NxBaseClass {
     if (write)
       this.writeFile();
 
-    return this;
+    return sent;
   }
 
   removeSentence(index) {
