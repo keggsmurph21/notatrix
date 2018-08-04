@@ -154,7 +154,7 @@ class Corpus extends NxBaseClass {
 
 
 
-  readString(string) {
+  readString(string, write=false) {
 
     const splitted = split(string, this.options); // might throw errors
     const index = this.index || 0;
@@ -163,14 +163,15 @@ class Corpus extends NxBaseClass {
       this.insertSentence(index + i, split, false);
     });
 
-    this.writeFile();
+    if (write)
+      this.writeFile();
     return this;
   }
 
-  static fromString(string, options) {
+  static fromString(string, options, write=false) {
 
     const corpus = new Corpus(options);
-    corpus.readString(string);
+    corpus.readString(string, write);
     return corpus;
 
   }
