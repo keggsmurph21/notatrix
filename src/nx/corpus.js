@@ -2,6 +2,7 @@
 
 const _ = require('underscore');
 const fs = require('fs');
+const uuid = require('uuid/v4');
 
 const utils = require('../utils');
 const NxError = utils.NxError;
@@ -13,6 +14,7 @@ const generate = require('../generator');
 const convert = require('../converter');
 
 const NxBaseClass = require('./base-class');
+const Labeler = require('./labeler');
 const Sentence = require('./sentence');
 
 
@@ -20,6 +22,7 @@ class Corpus extends NxBaseClass {
   constructor(options) {
 
     super('Corpus');
+    this.treebank_id = uuid();
 
     options = _.defaults(options, {
       requireOne: true,
@@ -27,6 +30,7 @@ class Corpus extends NxBaseClass {
     this.options = options;
     this.sources = [];
 
+    this._labeler = new Labeler(this);
     this._sentences = [];
     this._index = null;
 
@@ -43,6 +47,17 @@ class Corpus extends NxBaseClass {
   map(next) {
     return this._sentences.map(next);
   }
+
+  serialize() {
+    return {
+      meta: {},
+      options: this.options,
+      labeler: this._labeler.serialize(),
+      sentences: this._sentences.map(sent => sent.serialize(this.options)),
+      index: this._index,
+    };
+  }
+
 
 
 
@@ -87,6 +102,7 @@ class Corpus extends NxBaseClass {
         : parseInt(index);
 
     const sent = new Sentence(text, this.options);
+    sent.corpus = this;
     this._sentences = this._sentences
       .slice(0, index)
       .concat(sent)
@@ -157,26 +173,6 @@ class Corpus extends NxBaseClass {
     corpus.readString(string);
     return corpus;
 
-  }
-
-  serialize() {
-
-    const data = {
-
-      options: this.options,
-      sents: this.map(sent => {
-
-        // remove duplicate stuff
-        sent.options = _.filter(sent.options, (value, key) => {
-          return this.options[key] !== value;
-        });
-
-        return sent.serialize();
-      }),
-
-    }
-
-    return JSON.stringify(data);
   }
 
 

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/keggsmurph21/notatrix#readme",
   "dependencies": {
+    "minimist": "^1.2.0",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2"
   },

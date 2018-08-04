@@ -66,10 +66,11 @@ class Sentence extends NxBaseClass {
     this.attach();
   }
 
-  serialize() {
+  serialize(master = {}) {
     return {
+      meta: {},
       input: this.input,
-      options: this.options,
+      options: utils.dedup(master, this.options),
       comments: this.comments.map(com => com.serialize()),
       tokens: this.tokens.map(token => token.serialize()),
     };

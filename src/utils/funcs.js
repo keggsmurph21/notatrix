@@ -1,5 +1,7 @@
 'use strict';
 
+const _ = require('underscore');
+
 function combine(arr, k) {
 
   if (k > arr.length || k <= 0)
@@ -56,5 +58,17 @@ module.exports = {
   combine,
 
   guessDeprel: (dependent, head, context) => undefined,
+
+  dedup: (master, slave) => {
+
+    let dedup = {};
+
+    _.each(slave, (value, key) => {
+      if (master[key] !== value)
+        dedup[key] = value;
+    });
+
+    return dedup;
+  },
 
 };
