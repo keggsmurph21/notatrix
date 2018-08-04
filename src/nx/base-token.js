@@ -272,6 +272,9 @@ class BaseToken extends NxBaseClass {
     if (other === undefined)
       return;
 
+    if (typeof other === 'string')
+      other = [other];
+      
     this._misc_init = true;
     this._misc = (other || []).filter(utils.thin);
   }
