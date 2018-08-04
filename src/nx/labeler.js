@@ -12,13 +12,16 @@ class Labeler extends NxBaseClass {
     super('Labeler');
     this.corpus = corpus;
 
-    this._labels = {};
+    this._labels = [];
     this._filter = new Set();
 
   }
 
   serialize() {
-    return {};
+    return {
+      labels: this._labels.map(label => label.state),
+      filter: Array.from(this._filter)
+    };
   }
 }
 

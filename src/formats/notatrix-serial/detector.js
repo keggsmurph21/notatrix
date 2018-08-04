@@ -88,5 +88,7 @@ module.exports = (obj, options) => {
             throw new DetectorError(`Illegal notatrix serial: subTokens can only have one analysis`, obj, options);
         });
       });
-  })
+  });
+
+  return 'notatrix serial';
 };
