@@ -51,8 +51,8 @@ module.exports = (obj, options) => {
   }
 
   options = _.defaults(options, {
-    allowZeroTokens: false,
-    allowZeroFields: false,
+    allowZeroTokens: true,
+    allowZeroFields: true,
   });
 
   if (!utils.isJSONSerializable(obj))
