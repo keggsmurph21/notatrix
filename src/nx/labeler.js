@@ -20,9 +20,18 @@ class Labeler extends NxBaseClass {
 
   serialize() {
     return {
-      labels: this._labels.map(label => label.state),
+      labels: _.map(this._labels, label => label._label.serialize()),
       filter: Array.from(this._filter)
     };
+  }
+
+  static deserialize(corpus, serial) {
+
+    const labeler = new Labeler(corpus);
+    serial.labels.forEach(label => labeler.addLabel(label.name));
+    serial._filter = new Set(...serial.filter);
+
+    return labeler;
   }
 
   get(name) {

@@ -26,6 +26,16 @@ class Label extends NxBaseClass {
     };
   }
 
+  static deserialize(serial) {
+
+    const label = new Label(serial.name);
+    label.desc = serial.desc;
+    label.bColor = serial.bColor;
+    label.tColor = serial.tColor;
+
+    return label;
+  }
+
 
   /*
 

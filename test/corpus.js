@@ -218,4 +218,51 @@ describe('corpus', () => {
 		expect(text(3)).to.equal(null);
 
 	});
+
+  it(`should serialize`, () => {
+
+    var corpus = nx.Corpus.fromString('test0');
+
+    expect(() => corpus.serialize()).to.not.throw();
+
+    // preserve _meta stuff
+
+    corpus._meta.test = 'testing';
+    let serialized = corpus.serialize();
+    expect(serialized.meta.test).to.equal('testing');
+
+    // preserve sentence _meta stuff
+
+    corpus._sentences[0]._meta.test = 'testing';
+    serialized = corpus.serialize();
+    expect(serialized.sentences[0].meta.test).to.equal('testing');
+
+  });
+
+  it(`should deserialize`, () => {
+
+    let corpus, serialized, clone;
+
+    corpus = nx.Corpus.fromString('test');
+    serialized = corpus.serialize();
+
+    expect(() => nx.Corpus.deserialize(serialized)).to.not.throw();
+
+    corpus._meta.test = 'testing';
+    serialized = corpus.serialize();
+    clone = nx.Corpus.deserialize(serialized);
+    clone._meta.test = 'testing';
+    serialized = corpus.serialize();
+    expect(serialized.meta.test).to.equal('testing');
+
+    // preserve sentence _meta stuff
+
+    corpus._sentences[0]._meta.test = 'testing';
+    serialized = corpus.serialize();
+    clone = nx.Corpus.deserialize(serialized);
+    clone._meta.test = 'testing';
+    serialized = corpus.serialize();
+    expect(serialized.sentences[0].meta.test).to.equal('testing');
+
+  });
 });

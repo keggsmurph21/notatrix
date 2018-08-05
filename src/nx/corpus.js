@@ -52,6 +52,28 @@ class Corpus extends NxBaseClass {
     };
   }
 
+  static deserialize(serial) {
+
+    const corpus = new Corpus(serial.options);
+    corpus._meta = serial.meta;
+    corpus._labeler = Labeler.deserialize(corpus, serial.labeler);
+    corpus._sentences = serial.sentences.map(s => {
+
+      const sent = new Sentence(s, _.defaults(s.options, serial.options));
+      sent._meta = s.meta;
+
+      _.each(corpus._labeler._labels, (label, name) => {
+        if (corpus._labeler.sentenceHasLabel(sent, name))
+          label.sents.add(sent);
+      });
+
+      return sent;
+    });
+    corpus.index = serial.index;
+
+    return corpus;
+  }
+
   get sentence() {
     return this.index < 0 ? null : this._sentences[this.index];
   }
