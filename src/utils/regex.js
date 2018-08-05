@@ -24,4 +24,7 @@ module.exports = {
   commentLabel: /(\s*)(labels?|tags?)\s*=\s*(\w.*)/,
   commentSentId: /(\s*)sent.?id\s*=\s*(\w*)/i,
 
+  hexColor: /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i,
+  hexColorSixDigit: /^#?([a-f\d]{6})/i,
+
 };

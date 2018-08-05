@@ -54,4 +54,6 @@ module.exports = {
 
   fallback: '_',
 
+  hexConstant: 16777215, // = 0xffffff
+
 };
