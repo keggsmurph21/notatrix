@@ -32,17 +32,14 @@ class Corpus extends NxBaseClass {
 
     this._labeler = new Labeler(this);
     this._sentences = [];
-    this._index = null;
+    this._index = -1;
     this._meta = {};
+    this._filterIndex = -1;
 
   }
 
   get length() {
     return this._sentences.length;
-  }
-
-  get index() {
-    return this.length ? this._index : null;
   }
 
   serialize() {
@@ -55,18 +52,109 @@ class Corpus extends NxBaseClass {
     };
   }
 
-  get filtered() {
-    return this._labeler._filter.size
-      ? this._sentences.filter(sent => this._labeler.inFilter(sent))
-      : this._sentences;
+  get sentence() {
+    return this.index < 0 ? null : this._sentences[this.index];
   }
 
+  get filtered() {
+    return this._labeler._filter.size
+      ? this._sentences.filter(sent => this._labeler.sentenceInFilter(sent))
+      : [];
+  }
+
+  get index() {
+    return this._index;
+  }
+
+  set index(index) {
+
+    const filtered = this.filtered,
+      total = filtered.length || this.length;
+
+    index = parseInt(index);
+    if (isNaN(index)) {
+      index = filtered.length ? this._filterIndex : this.index;
+
+    } else if (index < 0 && total) {
+      index = 0;
+
+    } else if (index > total - 1) {
+      index = total - 1;
+    }
+
+    if (filtered.length) {
+      this._filterIndex = index;
+      this._index = filtered[index]._index;
+    } else {
+      this._filterIndex = -1;
+      this._index = index;
+    }
+
+    return this.index;
+  }
+
+  reindex() {
+    this._sentences.forEach((sent, i) => { sent._index = i; });
+  }
+
+  first() {
+
+    this.index = this.length ? 0 : -1;
+    return this;
+  }
+  prev() {
+
+    if (!this.length)
+      return null;
+
+    const filtered = this.filtered;
+    let index = filtered.length
+      ? this._filterIndex
+      : this._index;
+
+    if (index === 0)
+      return null;
+
+    this.index = --index;
+    return this;
+  }
+  next() {
+
+    if (!this.length)
+      return null;
+
+    const filtered = this.filtered;
+    let index = filtered.length
+      ? this._filterIndex
+      : this._index;
+    let total = filtered.length
+      ? filtered.length - 1
+      : this._length - 1;
+
+    if (index === total)
+      return null;
+
+    this.index = ++index;
+    return this;
+  }
+  last() {
+
+    const filtered = this.filtered;
+    this.index = filtered.length
+      ? filtered.length - 1
+      : this.length - 1;
+
+    return this;
+  }
 
 
 
   getSentence(index) {
 
-    if (this.index === null)
+    if (index == undefined)
+      index = this.index;
+
+    if (0 > index || index > this.length - 1)
       return null;
 
     return this._sentences[index] || null;
@@ -74,26 +162,32 @@ class Corpus extends NxBaseClass {
 
   setSentence(index, text) {
 
-    if (index == undefined || text == undefined)
-      throw new NxError('cannot set sentence: missing required args index, text');
+    if (text === null || text === undefined) { // if only passed 1 arg
+      text = index || '';
+      index = this.index;
+    }
 
     index = parseInt(index)
-    if (isNaN(index) || getSentence(index) === null)
+    if (isNaN(index) || this.getSentence(index) === null)
       throw new NxError(`cannot set sentence at index ${index}`);
 
-    this._labeler.onRemove(sent);
+    this._labeler.onRemove(this.getSentence(index));
     const sent = new Sentence(text, this.options);
     sent.corpus = this;
+
     this._sentences[index] = sent;
     this._labeler.onAdd(sent);
+    this.reindex();
 
     return sent;
   }
 
   insertSentence(index, text) {
 
-    if (index == undefined || text == undefined)
-      throw new NxError('cannot insert sentece: missing required args index, text');
+    if (text === null || text === undefined) { // if only passed 1 arg
+      text = index || '';
+      index = this.index + 1;
+    }
 
     index = parseFloat(index);
     if (isNaN(index))
@@ -107,12 +201,15 @@ class Corpus extends NxBaseClass {
 
     const sent = new Sentence(text, this.options);
     sent.corpus = this;
+
     this._sentences = this._sentences
       .slice(0, index)
       .concat(sent)
       .concat(this._sentences.slice(index));
     this._labeler.onAdd(sent);
 
+    this.index = index;
+    this.reindex();
     return sent;
   }
 
@@ -121,12 +218,12 @@ class Corpus extends NxBaseClass {
     if (!this.length)
       return null;
 
-    if (index == undefined)
-      throw new NxError('cannot insert sentece: missing required arg index');
+    if (index === undefined) // if not passed args
+      index = this.index;
 
     index = parseFloat(index);
     if (isNaN(index))
-      throw new errors.AnnotatrixError('cannot insert at NaN');
+      throw new NxError(`cannot remove sentence at index ${index}`);
 
     index = index < 0
       ? 0
@@ -137,15 +234,26 @@ class Corpus extends NxBaseClass {
     const removed = this._sentences.splice(index, 1)[0];
     if (!this.length)
       this.insertSentence();
-    this.index--;
+
     this._labeler.onRemove(removed);
 
+    if (index <= this.index)
+      this.index--;
+    this.reindex();
     return removed;
+  }
+
+  pushSentence(text) {
+    return this.insertSentence(Infinity, text);
+  }
+
+  popSentence(text) {
+    return this.removeSentence(Infinity);
   }
 
 
 
-  readString(string) {
+  parse(string) {
 
     const splitted = split(string, this.options); // might throw errors
     const index = this.index || 0;
@@ -160,12 +268,10 @@ class Corpus extends NxBaseClass {
   static fromString(string, options) {
 
     const corpus = new Corpus(options);
-    corpus.readString(string);
+    corpus.parse(string);
     return corpus;
 
   }
-
-
 
   readFile(filepath, next) {
 
@@ -178,7 +284,7 @@ class Corpus extends NxBaseClass {
           throw err;
 
         data = data.toString();
-        this.readString(data);
+        this.parse(data);
         this.sources.push(filepath);
 
         if (next)
