@@ -45,10 +45,6 @@ class Corpus extends NxBaseClass {
     return this.length ? this._index : null;
   }
 
-  map(next) {
-    return this._sentences.map(next);
-  }
-
   serialize() {
     return {
       meta: this._meta,
@@ -57,6 +53,12 @@ class Corpus extends NxBaseClass {
       sentences: this._sentences.map(sent => sent.serialize(this.options)),
       index: this._index,
     };
+  }
+
+  get filtered() {
+    return this._labeler._filter.size
+      ? this._sentences.filter(sent => this._labeler.inFilter(sent))
+      : this._sentences;
   }
 
 
@@ -70,7 +72,7 @@ class Corpus extends NxBaseClass {
     return this._sentences[index] || null;
   }
 
-  setSentence(index, text, write=true) {
+  setSentence(index, text) {
 
     if (index == undefined || text == undefined)
       throw new NxError('cannot set sentence: missing required args index, text');
@@ -79,15 +81,16 @@ class Corpus extends NxBaseClass {
     if (isNaN(index) || getSentence(index) === null)
       throw new NxError(`cannot set sentence at index ${index}`);
 
-    this._sentences[index] = parse(text, this.options);
+    this._labeler.onRemove(sent);
+    const sent = new Sentence(text, this.options);
+    sent.corpus = this;
+    this._sentences[index] = sent;
+    this._labeler.onAdd(sent);
 
-    if (write)
-      this.writeFile();
-
-    return getSentence(index);
+    return sent;
   }
 
-  insertSentence(index, text, write) {
+  insertSentence(index, text) {
 
     if (index == undefined || text == undefined)
       throw new NxError('cannot insert sentece: missing required args index, text');
@@ -108,9 +111,7 @@ class Corpus extends NxBaseClass {
       .slice(0, index)
       .concat(sent)
       .concat(this._sentences.slice(index));
-
-    if (write)
-      this.writeFile();
+    this._labeler.onAdd(sent);
 
     return sent;
   }
@@ -120,42 +121,31 @@ class Corpus extends NxBaseClass {
     if (!this.length)
       return null;
 
-    if (index === undefined) // if not passed args
-      index = this.index;
+    if (index == undefined)
+      throw new NxError('cannot insert sentece: missing required arg index');
 
     index = parseFloat(index);
     if (isNaN(index))
       throw new errors.AnnotatrixError('cannot insert at NaN');
 
-    index = index < 0 ? 0
-      : index > this.length - 1 ? this.length - 1
-      : parseInt(index);
+    index = index < 0
+      ? 0
+      : index > this.length - 1
+        ? this.length - 1
+        : parseInt(index);
 
     const removed = this._sentences.splice(index, 1)[0];
     if (!this.length)
       this.insertSentence();
     this.index--;
-
-    this.emit('update', {
-      type: 'remove',
-      index: index,
-      format: removed.format,
-      nx: null
-    });
-    gui.update();
+    this._labeler.onRemove(removed);
 
     return removed;
   }
-  pushSentence(text) {
-    return this.insertSentence(Infinity, text);
-  }
-  popSentence(text) {
-    return this.removeSentence(Infinity);
-  }
 
 
 
-  readString(string, write=false) {
+  readString(string) {
 
     const splitted = split(string, this.options); // might throw errors
     const index = this.index || 0;
@@ -164,15 +154,13 @@ class Corpus extends NxBaseClass {
       this.insertSentence(index + i, split, false);
     });
 
-    if (write)
-      this.writeFile();
     return this;
   }
 
-  static fromString(string, options, write=false) {
+  static fromString(string, options) {
 
     const corpus = new Corpus(options);
-    corpus.readString(string, write);
+    corpus.readString(string);
     return corpus;
 
   }

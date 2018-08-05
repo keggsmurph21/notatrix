@@ -4,6 +4,7 @@ const _ = require('underscore');
 
 const utils = require('../utils');
 const NxBaseClass = require('./base-class');
+const Label = require('./label');
 
 class Comment extends NxBaseClass {
   constructor(sent, body) {
