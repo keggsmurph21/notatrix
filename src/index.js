@@ -9,6 +9,7 @@ module.exports = _.extend({
 
   constants: utils.constants,
   formats: require('./formats'),
+  funcs: utils.funcs,
   regex: utils.regex,
   data: require('../data'),
 
