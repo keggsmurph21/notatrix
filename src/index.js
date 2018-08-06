@@ -2,15 +2,14 @@
 
 const _ = require('underscore');
 const nx = require('./nx');
-const utils = require('./utils');
 const errors = require('./utils/errors');
 
 module.exports = _.extend({
 
-  constants: utils.constants,
+  constants: require('./utils/constants'),
   formats: require('./formats'),
-  funcs: utils.funcs,
-  regex: utils.regex,
+  funcs: require('./utils/funcs'),
+  regex: require('./utils/regex'),
   data: require('../data'),
 
   detect: require('./detector'),
