@@ -9,18 +9,25 @@ const NxBaseClass = require('./base-class');
 const RelationSet = require('./relation-set');
 
 class BaseToken extends NxBaseClass {
-  constructor(sent, name) {
+  constructor(sent, name, serial={}) {
 
     super(name);
 
     this.sent = sent;
     this.uuid = uuid();
 
-    this._feats_init = false;
-    this._misc_init = false;
-    this._feats = [];
-    this._misc = [];
+    this.uuid = serial.uuid || this.uuid;
 
+    this.semicolon = serial.semicolon;
+    this.isEmpty = serial.isEmpty;
+    this.form = serial.form;
+    this.lemma = serial.lemma;
+    this.upostag = serial.upostag;
+    this.xpostag = serial.xpostag;
+    this.feats = serial.feats;
+    this.misc = serial.misc;
+
+    this._heads = serial.heads;
     this.heads = new RelationSet(this, 'dependents');
     this.dependents = new RelationSet(this, 'heads');
 
@@ -28,6 +35,7 @@ class BaseToken extends NxBaseClass {
       conllu: null,
       cg3: null,
       cytoscape: null,
+      serial: serial.index,
     };
   }
 
@@ -204,14 +212,14 @@ class BaseToken extends NxBaseClass {
       lemma: this.lemma,
       upostag: this.upostag,
       xpostag: this.xpostag,
-      feats: this.feats,
-      deprel: this.deprel,
-      misc: this.misc,
-      other: this.misc,
-
-      head: this.getHead('serial'),
-      deps: this._getDeps('serial').join('|'),
-
+      feats: this._feats,
+      misc: this._misc,
+      heads: this.mapHeads(head => {
+        return {
+          index: head.token.indices.absolute,
+          deprel: head.deprel,
+        };
+      }),
     };
 
     if (this._analyses && this._analyses.length)
@@ -249,7 +257,7 @@ class BaseToken extends NxBaseClass {
       return;
 
     this._feats_init = true;
-    this._feats = (feats || '').split('|').filter(utils.thin);
+    this._feats = feats || [];
   }
 
   get misc() {
@@ -265,7 +273,7 @@ class BaseToken extends NxBaseClass {
       return;
 
     this._misc_init = true;
-    this._misc = (misc || '').split('|').filter(utils.thin);
+    this._misc = misc || [];
   }
 
   set other(other) {
@@ -274,7 +282,7 @@ class BaseToken extends NxBaseClass {
 
     if (typeof other === 'string')
       other = [other];
-      
+
     this._misc_init = true;
     this._misc = (other || []).filter(utils.thin);
   }

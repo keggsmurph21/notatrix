@@ -42,7 +42,7 @@ module.exports = (obj, options) => {
           break;
 
         case ('array'):
-          if (value !== undefined || !allowUndefined)
+          if (value != undefined || !allowUndefined)
             if (!Array.isArray(value))
               throw new DetectorError(`Illegal notatrix serial: expected Array, got ${typeof value}`, obj, options);
           break;

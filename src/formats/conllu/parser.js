@@ -10,8 +10,12 @@ module.exports = (text, options) => {
 
   function assertNext(supStr, subStr) {
 
-    const parseIndex = str => {
-      const match = str.match(utils.re.conlluEmptyIndex);
+    function parseIndex(str) {
+
+      const match = (str || '').match(utils.re.conlluEmptyIndex);
+      if (!match)
+        return null;
+
       return match[2]
         ? {
             major: parseInt(match[1]),
@@ -86,7 +90,17 @@ module.exports = (text, options) => {
     } else if (tokenLine) {
 
       let token;
-      const fields = tokenLine[7].split(/\s/).filter(utils.thin);
+
+      let fields = tokenLine[7];
+      if (/(\t|[ ]{2,})/g.test(fields)) {
+
+        fields = fields.replace(/[ ]{2,}/g, '\t').split(/\t/g).filter(utils.thin);
+
+      } else {
+
+        fields = fields.split(/[\t ]+/g).filter(utils.thin);
+
+      }
 
       if (tokenLine[4]) {
 
@@ -101,6 +115,42 @@ module.exports = (text, options) => {
 
       } else {
 
+        function getHeads(head, deprel, deps) {
+
+          head = utils.re.fallback.test(head) ? null : head;
+          deprel = utils.re.fallback.test(deprel) ? null : deprel;
+          deps = utils.re.fallback.test(deps) ? null : deps;
+
+          let heads = [];
+          let seen = new Set();
+
+          if (!head)
+            return null;
+
+          heads.push({
+            index: head,
+            deprel: deprel || null,
+          });
+
+          seen.add(head);
+
+          if (deps)
+            deps.split('|').forEach(dep => {
+
+              dep = dep.split(':');
+
+              if (!seen.has(dep[0]))
+                heads.push({
+                  index: dep[0],
+                  deprel: dep[1] || null,
+                });
+
+              seen.add(dep[0]);
+            });
+
+          return heads;
+        }
+
         token = {
         	type: 'token',
           index: tokenLine[1],
@@ -109,11 +159,9 @@ module.exports = (text, options) => {
         	lemma: utils.re.fallback.test(fields[1]) ? null : fields[1],
         	upostag: utils.re.fallback.test(fields[2]) ? null : fields[2],
         	xpostag: utils.re.fallback.test(fields[3]) ? null : fields[3],
-        	feats: utils.re.fallback.test(fields[4]) ? null : fields[4],
-        	head: utils.re.fallback.test(fields[5]) ? null : fields[5],
-        	deprel: utils.re.fallback.test(fields[6]) ? null : fields[6],
-        	deps: utils.re.fallback.test(fields[7]) ? null : fields[7],
-        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8],
+        	feats: utils.re.fallback.test(fields[4]) ? null : fields[4].split('|'),
+          heads: getHeads(fields[5], fields[6], fields[7]),
+        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|'),
         };
 
       }

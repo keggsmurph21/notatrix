@@ -57,7 +57,7 @@ module.exports = (text, options) => {
   let tokens = chunks.filter(utils.thin).map((chunk, i) => {
     return {
       form: chunk,
-      index: `${i}`,
+      index: i,
     };
   });
 

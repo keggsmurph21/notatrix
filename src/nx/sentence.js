@@ -194,60 +194,30 @@ class Sentence extends NxBaseClass {
 
   attach() {
 
-    function getHeadAndDeprel(token, head, deprel) {
+    this.iterate(token => {
+      (token._heads || []).forEach((dependency, i) => {
 
-      head = head || token.serial.head;
-      deprel = deprel || token.serial.deprel;
+        if (i)
+          token.sent.options.enhanced = true;
 
-      if (head) {
+        if (dependency.index == '0') {
 
-        if (head == '0') {
-
-          return {
-            head: token.sent.root,
-            deprel: 'root',
-          };
+          token.addHead(token.sent.root, 'root');
 
         } else {
 
-          const query = token.sent.query(token => token.serial.index == head);
+          const query = token.sent.query(token => token.indices.serial === dependency.index);
           if (query.length !== 1) {
-            console.log(token.serial)
-            throw new NxError(`cannot locate token with serial index "${head}"`);
+            throw new NxError(`cannot locate token with serial index "${dependency.index}"`);
           }
 
-          return {
-            head: query[0],
-            deprel: deprel || utils.guessDeprel(query[0], token),
-          };
+          token.addHead(query[0], dependency.deprel);
 
         }
-      }
-
-      return null;
-    }
-
-    this.iterate(token => {
-
-      const dependency = getHeadAndDeprel(token);
-
-      if (dependency)
-        token.addHead(dependency.head, dependency.deprel);
-
-      (token.serial.deps || '').split('|').filter(utils.thin).forEach(dep => {
-
-        this.options.enhanced = true;
-
-        const [head, deprel] = dep.split(':');
-        const dependency = getHeadAndDeprel(token, head, deprel);
-        if (dependency)
-          token.addHead(dependency.head, dependency.deprel);
-
       });
 
+      delete token._heads;
     });
-
-    this.iterate(token => { delete token.serial });
 
     return this.index();
   }
@@ -333,9 +303,13 @@ class Sentence extends NxBaseClass {
 
     // array-type copying
     src._feats_init = src._feats_init || tar._feats_init;
-    src._feats.push(...tar._feats);
+    src._feats = src._feats_init
+      ? (src._feats || []).concat(tar._feats || [])
+      : undefined;
     src._misc_init = src._misc_init || tar._misc_init;
-    src._misc.push(...tar._misc);
+    src._misc = src._misc_init
+      ? (src._misc || []).concat(tar._misc || [])
+      : undefined;
 
     // make sure they don't depend on each other
     src.removeHead(tar);
@@ -391,9 +365,9 @@ class Sentence extends NxBaseClass {
 
     // array-type copying
     _src._feats_init = src._feats_init;
-    _src._feats = src._feats.slice();
+    _src._feats = _src._feats_init ? src._feats.slice() : undefined;
     _src._misc_init = src._misc_init;
-    _src._misc = src._misc.slice();
+    _src._misc = _src._misc_init ? src._misc.slice() : undefined;
 
     // make new subToken objects from src and tar
     let _tar = new SubToken(this, {});
@@ -408,9 +382,9 @@ class Sentence extends NxBaseClass {
 
     // array-type copying
     _tar._feats_init = tar._feats_init;
-    _tar._feats = tar._feats.slice();
+    _tar._feats = _tar._feats_init ? tar._feats.slice() : undefined;
     _tar._misc_init = tar._misc_init;
-    _tar._misc = tar._misc.slice();
+    _tar._misc = _tar._misc_init ? tar._misc.slice() : undefined;
 
     if (src.indices.absolute < tar.indices.absolute) {
 

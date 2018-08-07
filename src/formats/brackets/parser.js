@@ -92,9 +92,11 @@ module.exports = (text, options) => {
 
       tokens.push({
         form: this.form,
-        head: `${this.parent.num || 0}`,
-        index: `${this.num}`,
-        deprel: this.deprel,
+        heads: [{
+          index: this.parent.num || 0,
+          deprel: this.deprel,
+        }],
+        index: this.num,
       });
 
       this.eachAfter(after => {

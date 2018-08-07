@@ -25,6 +25,9 @@ module.exports = (sent, options) => {
   sent.tokens.forEach(token => {
 
     const toString = token => {
+
+      const head = token.heads.first;
+
       return [
 
         token.indices.conllu,
@@ -33,8 +36,8 @@ module.exports = (sent, options) => {
         token.upostag || utils.fallback,
         token.xpostag || utils.fallback,
         token.feats || utils.fallback,
-        token.getHead('CoNLL-U') || utils.fallback,
-        token._getDeprel() || utils.fallback,
+        head ? head.token.indices.conllu : utils.fallback,
+        head && head.deprel ? head.deprel : utils.fallback,
         token._getDeps('CoNLL-U').join('|') || utils.fallback,
         token.misc || utils.fallback,
 

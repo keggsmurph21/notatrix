@@ -109,45 +109,52 @@ module.exports = (text, options) => {
         semicolon: !!tokenContent[1],
         indent: getIndentNum(indent, options),
         lemma: tokenContent[3],
-        other: [],
+        misc: [],
       };
+
+      const deprel = tokenContent[5].match(utils.re.cg3Deprel);
+
       tokenContent[5].split(/\s+/).filter(utils.thin).forEach(subChunk => {
 
-        const dependency = subChunk.match(utils.re.cg3Dependency),
+        let dependency = subChunk.match(utils.re.cg3Dependency),
           head = subChunk.match(utils.re.cg3Head),
           index = subChunk.match(utils.re.cg3Index),
-          deprel = subChunk.match(utils.re.cg3Deprel),
-          other = subChunk.match(utils.re.cg3Other);
+          misc = subChunk.match(utils.re.cg3Other);
 
         if (dependency && (head || index)) {
 
           if (head) {
-            if (chunk.head)
-              throw new ParserError('unexpected subChunk, head already set', text, options);
 
-            chunk.head = head[1];
-          }
+            if (chunk.heads)
+              throw new ParserError('unexpected subChunk, heads already set', text, options);
 
-          if (index) {
+            head = parseInt(head[1]);
+
+            if (!isNaN(head))
+              chunk.heads = [{
+                index: head,
+                deprel: deprel && deprel[1] ? deprel[1] : null,
+              }];
+
+          } else if (index) {
+
             if (chunk.index)
               throw new ParserError('unexpected subChunk, index already set', text, options);
 
-            chunk.index = index[1];
+            chunk.index = parseInt(index[1]);
+
           }
 
-        } else if (deprel) {
+        } else if (misc) {
 
-          if (chunk.deprel)
-            throw new ParserError('unexpected subChunk, deprel already set', text, options);
-
-          chunk.deprel = deprel[1];
-
-        } else if (other) {
-
-          chunk.other.push(other[0]);
+          if (!misc[0].startsWith('@'))
+            chunk.misc.push(misc[0]);
 
         }
       });
+
+      if (deprel && deprel[1] && !chunk.heads)
+        chunk.misc.push('@' + deprel[1]);
 
       chunks.push(chunk);
       i += tokenContent[0].length;
@@ -229,11 +236,10 @@ module.exports = (text, options) => {
             {
               semicolon: chunk.semicolon,
               lemma: chunk.lemma || null,
-              head: chunk.head || null,
+              heads: chunk.heads || null,
               index: chunk.index || null,
-              deprel: chunk.deprel || null,
-              xpostag: chunk.other.shift() || null,
-              other: chunk.other || null,
+              xpostag: chunk.misc.shift() || null,
+              misc: chunk.misc || null,
             }
           ]
         };
@@ -247,11 +253,10 @@ module.exports = (text, options) => {
         analysis.subTokens.push({
           semicolon: chunk.semicolon,
           lemma: chunk.lemma || null,
-          head: chunk.head || null,
+          heads: chunk.heads || null,
           index: chunk.index || null,
-          deprel: chunk.deprel || null,
-          xpostag: chunk.other.shift() || null,
-          other: chunk.other || null,
+          xpostag: chunk.misc.shift() || null,
+          misc: chunk.misc || null,
         });
 
       }
@@ -283,11 +288,11 @@ module.exports = (text, options) => {
       if (token.analyses) {
         token.analyses.forEach(analysis => {
           analysis.subTokens.forEach(subToken => {
-            subToken.index = `${++index}`;
+            subToken.index = ++index;
           });
         });
       } else {
-        token.index = `${++index}`;
+        token.index = ++index;
       }
     });
 

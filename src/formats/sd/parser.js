@@ -104,8 +104,10 @@ module.exports = (text, options) => {
       if (index === null)
         throw new ParserError(`unable to find token with form ${chunk.dep}`, text, options);
 
-      tokens[index].head = '' + getTokenIndexFromString(tokens, chunk.head); // get the index, cast to str
-      tokens[index].deprel = chunk.deprel;
+      tokens[index].heads = [{
+        index: getTokenIndexFromString(tokens, chunk.head),
+        deprel: chunk.deprel,
+      }];
       expecting = ['dependency'];
 
     } else {

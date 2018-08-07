@@ -41,10 +41,8 @@ module.exports = {
     lemma: 'string*',
     upostag: 'string*',
     xpostag: 'string*',
-    feats: 'string*',
-    head: 'string*',
-    deprel: 'string*',
-    deps: 'string*',
+    feats: 'array',
+    heads: 'array',
     analyses: 'array',
   },
 

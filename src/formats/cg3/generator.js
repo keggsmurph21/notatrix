@@ -29,16 +29,16 @@ module.exports = (sent, options) => {
 
       indent = (token.semicolon ? ';' : '') + '\t'.repeat(indent);
 
-      const head = token.getHead('CG3');
+      const head = token.heads.first;
       const dependency = options.omitIndices
         ? null
-        : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head);
+        : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head.token.indices.cg3);
 
       let line = [ `"${token.lemma || '_'}"` ]
         .concat(token.xpostag || token.upostag)
-        .concat((token.feats || '').split('|'))
-        .concat(token._misc)
-        .concat(token.deprel ? '@' + token.deprel : null)
+        .concat((token._feats || []).join(' '))
+        .concat((token._misc || []).join(' '))
+        .concat(head ? '@' + head.deprel : null)
         .concat(dependency);
 
       line = indent + line.filter(utils.thin).join(' ');
