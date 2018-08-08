@@ -489,8 +489,8 @@ class Sentence extends NxBaseClass {
 
       let subToken = new SubToken(this, {});
 
-      const beginning = (src.form || '').slice(0, splitAtIndex);
-      const ending = (src.form || '').slice(splitAtIndex);
+      const beginning = (src.form || '').slice(0, splitAtIndex) || '_';
+      const ending = (src.form || '').slice(splitAtIndex) || '_';
 
       src.form = beginning;
       subToken.form = ending;
@@ -513,8 +513,8 @@ class Sentence extends NxBaseClass {
 
       let token = new Token(this, {});
 
-      const beginning = (src.form || '').slice(0, splitAtIndex);
-      const ending = (src.form || '').slice(splitAtIndex);
+      const beginning = (src.form || '').slice(0, splitAtIndex) || '_';
+      const ending = (src.form || '').slice(splitAtIndex) || '_';
 
       src.form = beginning;
       token.form = ending;
