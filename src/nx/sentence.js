@@ -451,9 +451,9 @@ class Sentence extends NxBaseClass {
 
         // array-type copying
         token._feats_init = subToken._feats_init;
-        token._feats = subToken._feats.slice();
+        token._feats = (subToken._feats || []).slice();
         token._misc_init = subToken._misc_init;
-        token._misc = subToken._misc.slice();
+        token._misc = (subToken._misc || []).slice();
 
         // transfer all the heads and dependents from subToken to token
         subToken.mapHeads(head => {
