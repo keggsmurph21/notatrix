@@ -110,7 +110,7 @@ module.exports = (text, options) => {
         	startIndex: tokenLine[2],
         	stopIndex: tokenLine[5],
         	form: utils.re.fallback.test(fields[0]) ? null : fields[0],
-        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8],
+        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|'),
         };
 
       } else {
