@@ -42,7 +42,9 @@ module.exports = (text, options) => {
 		detector(line, options).forEach(format => fromPlainText.add(format));
 	});
 
-	if (fromPlainText.size === 1 && fromPlainText.has('plain text'))
+	if (fromDefault.size !== 1
+		&& fromPlainText.size === 1
+		&& fromPlainText.has('plain text'))
 		return splitAsPlainText;
 
 	return splitAsDefault;
