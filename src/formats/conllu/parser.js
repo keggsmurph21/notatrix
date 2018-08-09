@@ -161,7 +161,11 @@ module.exports = (text, options) => {
         	xpostag: utils.re.fallback.test(fields[3]) ? null : fields[3],
         	feats: utils.re.fallback.test(fields[4]) ? null : fields[4].split('|'),
           heads: getHeads(fields[5], fields[6], fields[7]),
-        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|'),
+        	misc: fields[8]
+            ? utils.re.fallback.test(fields[8])
+              ? null
+              : fields[8].split('|')
+            : null,
         };
 
       }
