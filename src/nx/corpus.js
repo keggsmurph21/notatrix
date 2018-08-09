@@ -64,7 +64,7 @@ class Corpus extends NxBaseClass {
 
       _.each(corpus._labeler._labels, (label, name) => {
         if (corpus._labeler.sentenceHasLabel(sent, name))
-          label.sents.add(sent);
+          label._sents.add(sent);
       });
 
       return sent;
