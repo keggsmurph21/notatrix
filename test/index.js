@@ -16,5 +16,5 @@ require('./corpus');
 require('./generator');
 
 // then editing stuff
-require('./update');
+//require('./update');
 require('./enhance');

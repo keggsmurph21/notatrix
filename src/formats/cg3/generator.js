@@ -8,6 +8,12 @@ const getLoss = require('./get-loss')
 
 module.exports = (sent, options) => {
 
+  if (!sent.is_parsed)
+    return {
+      output: null,
+      loss: undefined,
+    };
+
   if (!sent || sent.name !== 'Sentence')
     throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
 

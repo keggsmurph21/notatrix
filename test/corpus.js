@@ -6,6 +6,9 @@ const _ = require('underscore'),
   utils = require('./utils'),
   nx = require('..');
 
+const fs = require('fs');
+const treepath = '/tmp/treebanks/'
+
 describe('corpus', () => {
 	it(`should navigate between sentences correctly`, () => {
 
@@ -264,5 +267,71 @@ describe('corpus', () => {
     serialized = corpus.serialize();
     expect(serialized.sentences[0].meta.test).to.equal('testing');
 
+  });
+
+  _.each(nx.data.corpora, (filename, name) => {
+    it(`should load, serialize, deserialize ${name}`, (done) => {
+
+      if (name === 'czech_train')
+        return done(); // this one is just too big lmao
+
+      nx.Corpus.fromFile(filename, corpus => {
+
+        const serial = corpus.serialize();
+        nx.Corpus.deserialize(serial);
+
+        done();
+      });
+
+    });
+  });
+
+  /*
+  fs.readdir(treepath +, (err, filenames) => {
+    if (err)
+      throw err;
+
+    filenames.forEach(filename => {
+
+      const filepath = treepath + + filename;
+
+      it(`should be able to load the corpus from ${filepath}`, done => {
+
+        nx.Corpus.fromFile(filepath, corpus => {
+
+          done();
+
+        });
+
+      }).timeout(5 * 60 * 1000); // allow this to take a long time
+    });
+  });
+  */
+
+  [
+    'myv-ud-dev.conllu',
+    'myv_ChetvergovJevgenij_Velenj-vajgeljtj_1992_UD-dev-2011.conllu',
+    'myv_jr-ud-dev.conllu'
+  ].forEach(path => {
+
+    it(`should handle parse errors from ${path}`, done => {
+
+      path = treepath + path;
+      nx.Corpus.fromFile(path, corpus => {
+
+        corpus._sentences.forEach(sent => {
+
+          expect(sent.is_parsed).to.equal(!sent.ParseError);
+
+          if (!sent.is_parsed)
+            utils.forEachFormat(format => {
+              expect(sent.to(format).output).to.equal(null);
+            });
+
+        });
+        done();
+
+      });
+    });
   });
 });

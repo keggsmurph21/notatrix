@@ -4,6 +4,7 @@ const _ = require('underscore');
 
 const utils = require('../utils');
 const NxError = utils.NxError;
+const ToolError = utils.ToolError;
 const parse = require('../parser');
 const generate = require('../generator');
 
@@ -36,35 +37,56 @@ class Sentence extends NxBaseClass {
       autoAddPunct: true,
     });
 
-    if (options.interpretAs) {
+    this.input = serial.input || serial;
+    this.is_parsed = false;
+    this.ParseError = null;
+    this.options = options;
+    this.comments = [];
+    this.tokens = [];
 
-      // interpret as a particular format if passed option
-      serial = parse.as[options.interpretAs](serial, options);
+    try {
 
-    } else {
+      if (options.interpretAs) {
 
-      // otherwise, get an array of possible interpretations
-      serial = parse(serial, options);
+        // interpret as a particular format if passed option
+        serial = parse.as[options.interpretAs](serial, options);
 
-      // choose one of them if possible
-      if (serial.length === 0) {
-        throw new NxError('Unable to parse input', this);
-      } else if (serial.length === 1) {
-        serial = serial[0];
       } else {
-        throw new NxError(
-          `Unable to disambiguate input interpretations (${serial.length})`, this);
+
+        // otherwise, get an array of possible interpretations
+        serial = parse(serial, options);
+
+        // choose one of them if possible
+        if (serial.length === 0) {
+          throw new NxError('Unable to parse: unrecognized format', this);
+        } else if (serial.length === 1) {
+          serial = serial[0];
+        } else {
+          throw new NxError(
+            `Unable to parse: ambiguous format (${serial.join(', ')})`, this);
+        }
+
       }
 
+      this.options = serial.options;
+
+      this.root = new RootToken(this);
+      this.comments = serial.comments.map(com => new Comment(this, com));
+      this.tokens = serial.tokens.map(tok => new Token(this, tok));
+
+      this.attach();
+      this.is_parsed = true;
+
+    } catch (e) {
+
+      if ((e instanceof NxError || e instanceof ToolError)) {
+
+        this.ParseError = e;
+
+      } else {
+        throw e;
+      }
     }
-
-    this.input = serial.input;
-    this.options = serial.options;
-    this.comments = serial.comments.map(com => new Comment(this, com));
-    this.tokens = serial.tokens.map(tok => new Token(this, tok));
-    this.root = new RootToken(this);
-
-    this.attach();
   }
 
   serialize(master = {}) {
@@ -208,6 +230,7 @@ class Sentence extends NxBaseClass {
 
           const query = token.sent.query(token => token.indices.serial === dependency.index);
           if (query.length !== 1) {
+            //console.log(token)
             throw new NxError(`cannot locate token with serial index "${dependency.index}"`);
           }
 
