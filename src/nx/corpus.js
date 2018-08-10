@@ -66,6 +66,7 @@ class Corpus extends NxBaseClass {
 
   serialize() {
     return {
+      filename: this.filename,
       meta: this._meta,
       options: this.options,
       labeler: this._labeler.serialize(),
@@ -77,6 +78,7 @@ class Corpus extends NxBaseClass {
   static deserialize(serial) {
 
     const corpus = new Corpus(serial.options);
+    corpus.filename = serial.filename || null;
     corpus._meta = serial.meta;
     corpus._labeler = Labeler.deserialize(corpus, serial.labeler);
     corpus._sentences = serial.sentences.map(s => {
