@@ -334,4 +334,40 @@ describe('corpus', () => {
       });
     });
   });
+
+  it(`should generate a snapshot`, done => {
+
+    nx.Corpus.fromFile(nx.data.corpora.assorted, corpus => {
+
+      // hard-coded expectations
+      expect(corpus.snapshot).to.deep.equal({
+        filename: 'assorted.conllu',
+        sentences: 21,
+        errors: 0,
+        labels: [
+          { name: 'label1', size: 2 },
+          { name: 'one_label', size: 2 },
+          { name: 'this-is-a-tag', size: 2 },
+          { name: 'too_long_to_cut', size: 1 },
+          { name: 'second', size: 1 },
+          { name: 'third-label', size: 1 },
+          { name: 'row_2', size: 1 },
+          { name: 'again:here', size: 1 },
+          { name: 'this,', size: 1 },
+          { name: 'another_label', size: 1 },
+          { name: 'a-third-label', size: 1 },
+          { name: 'test', size: 1 },
+          { name: 'testing', size: 1 },
+          { name: 'new', size: 1 },
+          { name: 'press_1986', size: 1 },
+          { name: 'ch_syntax', size: 1 },
+          { name: 'p_197', size: 1 },
+          { name: 'to_check', size: 1 },
+          { name: 'that', size: 1 }
+        ]
+      });
+
+      done();
+    });
+  });
 });

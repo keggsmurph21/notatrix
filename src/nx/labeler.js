@@ -18,6 +18,30 @@ class Labeler extends NxBaseClass {
 
   }
 
+  sort() {
+
+    const size = name => this._labels[name]._sents.size;
+
+    return Object.keys(this._labels).sort((x, y) => {
+
+      if (size(x) < size(y))
+        return 1;
+
+      if (size(x) > size(y))
+        return -1;
+
+      return 0;
+
+    }).map(name => {
+
+      return {
+        name: name,
+        size: this._labels[name]._sents.size,
+      };
+
+    });
+  }
+
   serialize() {
     return {
       labels: _.map(this._labels, label => label._label.serialize()),

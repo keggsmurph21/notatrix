@@ -2,6 +2,7 @@
 
 const _ = require('underscore');
 const fs = require('fs');
+const path = require('path');
 const uuid = require('uuid/v4');
 
 const utils = require('../utils');
@@ -27,6 +28,7 @@ class Corpus extends NxBaseClass {
     options = _.defaults(options, {
       requireOne: true,
     });
+    this.filename = null;
     this.options = options;
     this.sources = [];
 
@@ -38,8 +40,28 @@ class Corpus extends NxBaseClass {
 
   }
 
+  get snapshot() {
+    return {
+      filename: this.filename,
+      sentences: this.length,
+      errors: this.errors.length,
+      labels: this._labeler.sort(),
+    };
+  }
+
   get length() {
     return this._sentences.length;
+  }
+
+  get errors() {
+    return this._sentences.filter(sent => {
+      if (!sent.is_parsed)
+        return sent;
+    });
+  }
+
+  get topLabels() {
+    return this._labeler.top;
   }
 
   serialize() {
@@ -281,6 +303,7 @@ class Corpus extends NxBaseClass {
     const index = this.index || 0;
 
     splitted.forEach((split, i) => {
+      //console.log(i, split);
       this.insertSentence(index + i, split, false);
     });
 
@@ -308,6 +331,7 @@ class Corpus extends NxBaseClass {
         data = data.toString();
         this.parse(data);
         this.sources.push(filepath);
+        this.filename = path.basename(filepath);
 
         if (next)
           next(this);
@@ -322,7 +346,6 @@ class Corpus extends NxBaseClass {
       next = options;
       options = {};
     }
-
     const corpus = new Corpus(options);
     corpus.readFile(filepath, next);
 
