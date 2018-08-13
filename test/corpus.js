@@ -321,9 +321,9 @@ describe('corpus', () => {
 
         corpus._sentences.forEach(sent => {
 
-          expect(sent.is_parsed).to.equal(!sent.ParseError);
+          expect(sent.isParsed).to.equal(!sent.ParseError);
 
-          if (!sent.is_parsed)
+          if (!sent.isParsed)
             utils.forEachFormat(format => {
               expect(sent.to(format).output).to.equal(null);
             });

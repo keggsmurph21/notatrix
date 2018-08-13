@@ -55,7 +55,7 @@ class Corpus extends NxBaseClass {
 
   get errors() {
     return this._sentences.filter(sent => {
-      if (!sent.is_parsed)
+      if (!sent.isParsed)
         return sent;
     });
   }

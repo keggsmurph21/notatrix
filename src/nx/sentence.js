@@ -74,7 +74,7 @@ class Sentence extends NxBaseClass {
       this.tokens = serial.tokens.map(tok => new Token(this, tok));
 
       this.attach();
-      this.is_parsed = true;
+      this.isParsed = true;
 
     } catch (e) {
 
