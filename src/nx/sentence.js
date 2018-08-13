@@ -39,9 +39,6 @@ class Sentence extends NxBaseClass {
 
     this.input = serial.input || serial;
     this.isParsed = false;
-    this.options = options;
-    this.comments = [];
-    this.tokens = [];
     this.Error = null;
 
     try {
@@ -66,6 +63,8 @@ class Sentence extends NxBaseClass {
             `Unable to parse: ambiguous format (${serial.join(', ')})`, this);
         }
 
+        if (serial.isParsed === false)
+          throw new NxError('Cannot parse explicitly unparsed serial');
       }
 
       this.options = serial.options;
@@ -81,6 +80,7 @@ class Sentence extends NxBaseClass {
 
       if ((e instanceof NxError || e instanceof ToolError)) {
 
+        this.options = serial.options || options;
         this.comments = [];
         this.tokens = [];
         this.Error = e;
@@ -95,6 +95,7 @@ class Sentence extends NxBaseClass {
     return {
       meta: this._meta,
       input: this.input,
+      isParsed: this.isParsed,
       options: utils.dedup(master, this.options),
       comments: this.isParsed
         ? this.comments.map(com => com.serialize())
