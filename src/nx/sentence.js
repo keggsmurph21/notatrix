@@ -38,8 +38,7 @@ class Sentence extends NxBaseClass {
     });
 
     this.input = serial.input || serial;
-    this.is_parsed = false;
-    this.ParseError = null;
+    this.isParsed = false;
     this.options = options;
     this.comments = [];
     this.tokens = [];
@@ -81,7 +80,8 @@ class Sentence extends NxBaseClass {
 
       if ((e instanceof NxError || e instanceof ToolError)) {
 
-        this.ParseError = e;
+        this.comments = [];
+        this.tokens = [];
 
       } else {
         throw e;
@@ -94,8 +94,12 @@ class Sentence extends NxBaseClass {
       meta: this._meta,
       input: this.input,
       options: utils.dedup(master, this.options),
-      comments: this.comments.map(com => com.serialize()),
-      tokens: this.tokens.map(token => token.serialize()),
+      comments: this.isParsed
+        ? this.comments.map(com => com.serialize())
+        : [],
+      tokens: this.isParsed
+        ? this.tokens.map(token => token.serialize())
+        : [],
     };
   }
 
@@ -245,7 +249,7 @@ class Sentence extends NxBaseClass {
     return this.index();
   }
 
-  update(serial, options) {
+  /*update(serial, options) {
     try {
 
       const sent = new Sentence(serial, options);
@@ -258,7 +262,7 @@ class Sentence extends NxBaseClass {
 
       throw e;
     }
-  }
+  }*/
 
   enhance() {
     this.options.enhanced = true;
