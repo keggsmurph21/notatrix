@@ -42,6 +42,7 @@ class Sentence extends NxBaseClass {
     this.options = options;
     this.comments = [];
     this.tokens = [];
+    this.Error = null;
 
     try {
 
@@ -82,6 +83,7 @@ class Sentence extends NxBaseClass {
 
         this.comments = [];
         this.tokens = [];
+        this.Error = e;
 
       } else {
         throw e;
