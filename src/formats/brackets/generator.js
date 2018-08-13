@@ -8,7 +8,7 @@ const getLoss = require('./get-loss')
 
 module.exports = (sent, options) => {
 
-  if (!sent.is_parsed)
+  if (!sent.isParsed)
     return {
       output: null,
       loss: undefined,
