@@ -155,17 +155,25 @@ module.exports = (text, options) => {
         	type: 'token',
           index: tokenLine[1],
         	isEmpty: !!tokenLine[3],
-        	form: utils.re.fallback.test(fields[0]) ? null : fields[0],
-        	lemma: utils.re.fallback.test(fields[1]) ? null : fields[1],
-        	upostag: utils.re.fallback.test(fields[2]) ? null : fields[2],
-        	xpostag: utils.re.fallback.test(fields[3]) ? null : fields[3],
-        	feats: utils.re.fallback.test(fields[4]) ? null : fields[4].split('|'),
+        	form: !fields[0] || utils.re.fallback.test(fields[0])
+            ? null
+            : fields[0],
+        	lemma: !fields[1] || utils.re.fallback.test(fields[1])
+            ? null
+            : fields[1],
+        	upostag: !fields[2] || utils.re.fallback.test(fields[2])
+            ? null
+            : fields[2],
+        	xpostag: !fields[3] || utils.re.fallback.test(fields[3])
+            ? null
+            : fields[3],
+        	feats: !fields[4] || utils.re.fallback.test(fields[4])
+            ? null
+            : fields[4].split('|'),
           heads: getHeads(fields[5], fields[6], fields[7]),
-        	misc: fields[8]
-            ? utils.re.fallback.test(fields[8])
-              ? null
-              : fields[8].split('|')
-            : null,
+        	misc: !fields[8] || utils.re.fallback.test(fields[8])
+            ? null
+            : fields[8].split('|'),
         };
 
       }
