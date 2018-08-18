@@ -19,10 +19,10 @@ module.exports = sent => {
         case ('uuid'):
         case ('index'):
           break;
-          
+
         case ('heads'):
           if (token.heads.length > 1)
-            losses.add(field);
+            losses.add('enhanced dependencies');
           break;
 
         default:

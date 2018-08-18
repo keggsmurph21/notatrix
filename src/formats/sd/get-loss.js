@@ -11,6 +11,9 @@ module.exports = sent => {
   let losses = new Set();
 
   serial.tokens.forEach(token => {
+    if (token.heads && token.heads.length > 1)
+      losses.add('enhanced dependencies');
+      
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
         case ('uuid'):
@@ -23,8 +26,16 @@ module.exports = sent => {
             losses.add(field);
           break;
 
+
+        case ('feats'):
+        case ('misc'):
+          if (token[field] && token[field].length)
+            losses.add(field);
+          break;
+
         default:
-          losses.add(field);
+          if (token[field])
+            losses.add(field);
       }
     })
   });

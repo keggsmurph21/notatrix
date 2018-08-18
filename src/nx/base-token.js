@@ -85,13 +85,13 @@ class BaseToken extends NxBaseClass {
 
   mapHeads(callback) {
 
-    if (this.sent.options.enhanced) {
+    //if (this.sent.options.enhanced) {
       return this.heads.map(callback);
-    } else {
+    /*} else {
       return this.heads.first
         ? [ this.heads.first ].map(callback)
         : [].map(callback);
-    }
+    }*/
 
   }
 

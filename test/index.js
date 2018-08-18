@@ -14,6 +14,7 @@ require('./corpus');
 
 // then externalizers
 require('./generator');
+require('./loss');
 
 // then editing stuff
 //require('./update');

@@ -11,6 +11,9 @@ module.exports = sent => {
   let losses = new Set();
 
   const tokenCalcLoss = token => {
+    if (token.heads && token.heads.length > 1)
+      losses.add('enhanced dependencies');
+
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
         case ('uuid'):
@@ -27,11 +30,6 @@ module.exports = sent => {
 
         case ('isEmpty'):
           if (token.isEmpty)
-            losses.add(field);
-          break;
-          
-        case ('heads'):
-          if (token.heads.length > 1)
             losses.add(field);
           break;
 

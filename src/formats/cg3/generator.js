@@ -44,7 +44,7 @@ module.exports = (sent, options) => {
         .concat(token.xpostag || token.upostag)
         .concat((token._feats || []).join(' '))
         .concat((token._misc || []).join(' '))
-        .concat(head ? '@' + head.deprel : null)
+        .concat(head && head.deprel ? '@' + head.deprel : null)
         .concat(dependency);
 
       line = indent + line.filter(utils.thin).join(' ');

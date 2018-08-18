@@ -281,6 +281,7 @@ describe('relation sets', () => {
 
   });
 
+  /*
   it(`should map un-enhanced dependencies to just the first element`, () => {
 
     const sent = new nx.Sentence('first second third', { enhanced: true });
@@ -322,6 +323,7 @@ describe('relation sets', () => {
     ]);
 
   });
+  */
 
   it(`should map enhanced dependencies to all the elements`, () => {
 

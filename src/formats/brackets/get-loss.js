@@ -26,8 +26,15 @@ module.exports = sent => {
             losses.add(field);
           break;
 
+        case ('feats'):
+        case ('misc'):
+          if (token[field] && token[field].length)
+            losses.add(field);
+          break;
+
         default:
-          losses.add(field);
+          if (token[field])
+            losses.add(field);
       }
     })
 

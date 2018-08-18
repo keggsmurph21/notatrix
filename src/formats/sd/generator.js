@@ -34,7 +34,7 @@ module.exports = (sent, options) => {
   [sent.root].concat(sent.tokens).forEach(token => {
 
     token.mapDependents(dependent => {
-      lines.push(`${dependent.deprel}(${token.form}, ${dependent.token.form})`);
+      lines.push(`${dependent.deprel || '_'}(${token.form}, ${dependent.token.form})`);
     });
 
   });
