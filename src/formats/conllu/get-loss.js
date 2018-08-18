@@ -34,6 +34,11 @@ module.exports = sent => {
           }
           break;
 
+        case ('heads'):
+          if (token.heads.length > 1 && !sent.options.enhanced)
+            losses.add(field);
+          break;
+
         default:
           losses.add(field);
       }

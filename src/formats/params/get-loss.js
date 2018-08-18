@@ -19,6 +19,11 @@ module.exports = sent => {
         case ('uuid'):
         case ('index'):
           break;
+          
+        case ('heads'):
+          if (token.heads.length > 1)
+            losses.add(field);
+          break;
 
         default:
           losses.add(field);

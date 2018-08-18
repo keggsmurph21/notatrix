@@ -1,6 +1,5 @@
 module.exports = [
   'form',
-  'head',
-  'deprel',
+  'heads',
 ];
 module.exports.hasComments = true;

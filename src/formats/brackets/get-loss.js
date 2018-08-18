@@ -21,6 +21,11 @@ module.exports = sent => {
         case ('deps'):
           break;
 
+        case ('heads'):
+          if (token.heads.length > 1)
+            losses.add(field);
+          break;
+
         default:
           losses.add(field);
       }

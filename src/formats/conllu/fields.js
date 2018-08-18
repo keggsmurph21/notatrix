@@ -6,9 +6,7 @@ module.exports = [
   'upostag',
   'xpostag',
   'feats',
-  'head',
-  'deprel',
-  'deps',
+  'heads',
   'misc',
   'subTokens',
 ];
