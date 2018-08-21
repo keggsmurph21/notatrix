@@ -27,9 +27,9 @@ module.exports = sent => {
           break;
 
         case ('heads'):
-          if (token.heads.length > 1)
-            losses.add('enhanced dependencies');
-
+          if (token.heads.length)
+            losses.add('heads');
+          break;
 
         default:
           if (token[field])

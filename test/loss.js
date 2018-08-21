@@ -8,6 +8,22 @@ const _ = require('underscore'),
 
 describe('check loss', () => {
 
+  it('no dependencies', () => {
+
+    const s = new nx.Sentence(`1	one	_	_	_	_	_	_	_	_
+2	two	_	_	_	_	_	_	_	_
+3	three	_	_	_	_	_	_	_	_`);
+
+    expect(s.options.enhanced).to.equal(false);
+    expect(() => s.to('Brackets').loss).to.throw(nx.GeneratorError);
+    expect(s.to('CG3').loss).to.deep.equal([]);
+    expect(s.to('CoNLL-U').loss).to.deep.equal([]);
+    expect(s.to('Params').loss).to.deep.equal([]);
+    expect(s.to('plain text').loss).to.deep.equal([]);
+    expect(s.to('SD').loss).to.deep.equal([]);
+
+  });
+
   it('only dependencies', () => {
 
     const s = new nx.Sentence(`1	one	_	_	_	_	0	root	_	_
