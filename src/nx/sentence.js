@@ -37,7 +37,7 @@ class Sentence extends NxBaseClass {
       autoAddPunct: true,
     });
 
-    this.input = serial.input || serial;
+    this.input = serial.input == null ? serial : serial.input;
     this.isParsed = false;
     this.Error = null;
 
