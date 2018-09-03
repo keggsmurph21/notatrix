@@ -28,6 +28,12 @@ module.exports = (sent, options) => {
   sent.comments.forEach(comment => lines.push('# ' + comment.body));
   sent.tokens.forEach(token => {
 
+    const isSet = field => {
+      return field && field !== utils.fallback
+        ? field
+        : null;
+    };
+
     const push = (token, indent) => {
 
       if (!token.lemma && !options.allowMissingLemma)
@@ -40,11 +46,11 @@ module.exports = (sent, options) => {
         ? null
         : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head.token.indices.cg3);
 
-      let line = [ `"${token.lemma || '_'}"` ]
-        .concat(token.xpostag || token.upostag)
+      let line = [ `"${isSet(token.lemma) || isSet(token.form) || utils.fallback}"` ]
+        .concat(isSet(token.xpostag) || isSet(token.upostag))
         .concat((token._feats || []).join(' '))
         .concat((token._misc || []).join(' '))
-        .concat(head && head.deprel ? '@' + head.deprel : null)
+        .concat(head && isSet(head.deprel) ? '@' + head.deprel : null)
         .concat(dependency);
 
       line = indent + line.filter(utils.thin).join(' ');
