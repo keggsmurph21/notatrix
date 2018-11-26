@@ -1,8 +1,7 @@
 'use strict';
 
-const NotatrixCore = require('./core');
-const utils = require('./utils')
-
+const core = require('./core');
+const utils = require('./utils');
 
 const corpus = {
 
@@ -11,22 +10,21 @@ const corpus = {
 
 };
 
-var n = new NotatrixCore(corpus.name);
-
-n.on('db-open', () => {
-  console.log('connected to database');
-});
-
-n.on('read-begin', () => {
+core.on('read-begin', () => {
   console.log(`started reading ${corpus.name}`);
 });
 
-n.on('read-end', () => {
+core.on('read-end', () => {
   console.log(`finished reading ${corpus.name}`);
 });
 
-n.on('read-chunk', chunk => {
+core.on('read-chunk', chunk => {
   //console.log('read a chunk');
 });
 
-n.readFile(corpus.filepath);
+core.on('db-connected', () => {
+
+  console.log('db connected');
+  core.readFile(corpus.filepath);
+
+});

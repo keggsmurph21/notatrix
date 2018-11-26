@@ -1,43 +1,69 @@
-const sqlite3 = require('sqlite3');
+'use strict';
 
-class DB extends sqlite3.Database {
-  constructor(filename, callback) {
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-    super(filename);
-    this.length = 0;
+const SchemaConstructor = require('./models/sentence');
 
-    this.run(`
-      CREATE TABLE IF NOT EXISTS sentences (
-        id INT PRIMARY KEY,
-        comments TEXT,
-        tokens TEXT
-      );
+// config stuff
+const db_uri = process.env.DB_URI;
+const db_user = process.env.DB_USER;
+const db_pass = process.env.DB_PASS;
+if (!db_uri || !db_user || !db_pass)
+  throw new Error('database not configured');
 
-      CREATE TABLE IF NOT EXISTS comments (
-        id INT PRIMARY KEY
-      );
+const db_path = `mongodb://${db_user}:${db_pass}@${db_uri}`;
+const db_opts = {
+  useNewUrlParser: true,
+};
+const reservedCollectionNames = new Set([
+  'system.indexes',
+  'objectlabs-system.admin.collections',
+  'objectlabs-system',
+  'corpora.meta',
+]);
 
-      CREATE TABLE IF NOT EXISTS tokens (
-        id INT PRIMARY KEY
-      );
-      `, callback);
-  }
 
-  getSentence() {
+module.exports = core => {
+  mongoose.connect(db_path, db_opts, err => {
 
-  }
+    if (err)
+      throw err;
 
-  setSentence() {
+    // add things to the mongoose object
+    mongoose.schemas = {};
+    mongoose.getSchema = name => {
 
-  }
+      if (!name || reservedCollectionNames.has(name))
+        throw new Error(`invalid schema name "${name}"`);
 
-  insertSentence() {
+      let schema = mongoose.schemas[name];
+      if (!schema) {
+        schema = SchemaConstructor(name);
+        mongoose.schemas[name] = schema;
+      }
 
-  }
+      return schema;
+    };
 
-  removeSentence() {
+    // build up a hash of the schemas
+    mongoose.connection.db.listCollections().toArray((err, colls) => {
 
-  }
-}
+      if (err)
+        throw err;
 
-module.exports = DB;
+      colls
+        .map(coll => coll.name)
+        .filter(name => !reservedCollectionNames.has(name))
+        .forEach(name => {
+
+          mongoose.schemas[name] = SchemaConstructor(name);
+
+        });
+
+      core.emit('_db-connected', mongoose);
+    });
+  });
+
+  return mongoose;
+};

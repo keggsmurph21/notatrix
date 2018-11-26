@@ -3,82 +3,66 @@
 const Emitter = require('events');
 const config = require('./config');
 const path = require('path');
-const sqlite3 = require('sqlite3');
 const utils = require('./utils');
 const LineReader = require('line-by-line');
-const formats = require('./formats');
-const DB = require('./db');
+const formats = require('../src/formats');
+const connectDB = require('./db');
 
 class NotatrixCore extends Emitter {
-  constructor(filename) {
+  constructor() {
 
     super();
 
-    this._connected = false;
+    // make sure to start with db in uninit'ed state
+    this.db = null;
+    this.once('_db-connected', db => {
 
-    this.path = path.join(config.db_path, filename);
-    this.db = new DB(this.path, err => {
-      if (err)
-        throw err;
-
-      console.log('db connected');
-      this._connected = true;
+      this.db = db;
       this.emit('db-connected');
 
     });
 
+    // connect to it
+    connectDB(this);
   }
 
   readFile(filename) {
 
+    // hack to get around this-rebinding
     var self = this;
-    var reading = false;
 
-    function onReady() {
+    if (!self.db)
+      throw new Error('no database connected');
 
-      if (reading)
-        return;
+    self.emit('read-begin');
 
-      self.emit('read-begin');
-      reading = true;
+    const lr = new LineReader(filename);
 
-      const lr = new LineReader(filename);
-      var chunk = [];
-      var lineNum = 0;
+    var chunk = [];
+    var lineNum = 0;
+    var numBlankLines = 0;
 
-      lr.on('error', err => {
-        throw err;
-      });
+    lr.on('line', line => {
 
-      lr.on('line', line => {
+      if (utils.re.whitespaceLine.test(line)) {
+        if (chunk.length > 0) {
 
-        if (utils.regex.whitespaceLine.test(line)) {
-          if (chunk.length > 0) {
+          self.emit('read-chunk', chunk, lineNum);
+          chunk = [];
 
-            self.emit('read-chunk', chunk);
-            chunk = [];
-
-          }
-        } else {
-          chunk.push(line);
         }
+      } else {
+        chunk.push(line);
+      }
 
-        ++lineNum;
-      });
+      ++lineNum;
+    });
 
-      lr.on('end', () => {
-        self.emit('read-end');
-      });
-
-    }
-
-    if (self._connected) {
-      onReady();
-    } else {
-      self.on('db-connected', onReady);
-    }
+    lr.on('end', () => {
+      self.emit('read-end');
+    });
 
   }
 }
 
-module.exports = NotatrixCore;
+module.exports = new NotatrixCore();
