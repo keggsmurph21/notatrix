@@ -47,7 +47,7 @@ class NotatrixCore extends Emitter {
       if (utils.re.whitespaceLine.test(line)) {
         if (chunk.length > 0) {
 
-          self.emit('read-chunk', chunk, lineNum);
+          self.emit('read-lines', chunk, lineNum);
           chunk = [];
 
         }
