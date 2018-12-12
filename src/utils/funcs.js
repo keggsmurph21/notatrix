@@ -39,8 +39,14 @@ function hexToRGB(hex) {
     ];
 }
 
+function slugify(str) {
+  return str.replace(/[^\w-.]/g, '_');
+}
+
 module.exports = {
 
+  slugify,
+  
   isJSONSerializable: obj => {
 
     if (typeof obj === 'string') {

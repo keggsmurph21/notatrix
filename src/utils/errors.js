@@ -1,29 +1,8 @@
 'use strict';
 
-class NotatrixError extends Error {
-  constructor(...args) {
-    super(...args);
-  }
-}
+class NotatrixError extends Error {};
 
-class InvalidCG3Error extends NotatrixError {
-  constructor(...args) {
-    super(...args);
-  }
-}
-
-class InvalidCoNLLUError extends NotatrixError {
-  constructor(...args) {
-    super(...args);
-  }
-}
-
-
-class ToolError extends NotatrixError {
-  constructor(...args) {
-    super(...args);
-  }
-}
+class ToolError extends NotatrixError {};
 
 class SplitterError extends ToolError {
   constructor(message, text, options) {
@@ -84,11 +63,12 @@ class NxError extends NotatrixError {
 
 
 
+class DBError extends NotatrixError {};
+
+
 module.exports = {
 
   NotatrixError,
-  InvalidCG3Error,
-  InvalidCoNLLUError,
 
   ToolError,
   SplitterError,
@@ -98,5 +78,6 @@ module.exports = {
   ConverterError,
 
   NxError,
+  DBError,
 
 };

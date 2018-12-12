@@ -3,27 +3,39 @@
 const Emitter = require('events');
 const config = require('./config');
 const path = require('path');
-const utils = require('./utils');
+const utils = require('../utils');
 const LineReader = require('line-by-line');
-const formats = require('../src/formats');
-const connectDB = require('./db');
+//const formats = require('../src/formats');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-class NotatrixCore extends Emitter {
+class CorporaDB extends Emitter {
   constructor() {
 
     super();
 
     // make sure to start with db in uninit'ed state
-    this.db = null;
-    this.once('_db-connected', db => {
+    this.db_connected = false;
 
-      this.db = db;
-      this.emit('db-connected');
+    const db_path = (config.username && config.password)
+      ? config.username + ':' + config.password + '@' + config.uri
+      : config.uri;
+
+    const db_opts = {
+      useNewUrlParser: true,
+      dbName: db_path,
+    };
+
+    var self = this;
+    mongoose.connect('mongodb://' + db_path, db_opts, err => {
+
+      if (err)
+        throw err;
+
+      self.db_connected = true;
+      self.emit('db-connected', mongoose);
 
     });
-
-    // connect to it
-    connectDB(this);
   }
 
   readFile(filename) {
@@ -65,4 +77,5 @@ class NotatrixCore extends Emitter {
   }
 }
 
-module.exports = new NotatrixCore();
+var db = new CorporaDB();
+module.exports = db;
