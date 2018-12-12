@@ -2,12 +2,9 @@
 
 const app = require('express')();
 const http = require('http');
-const db = require('../corpora-db');
 const Corpus = require('../corpora-db/models/corpus');
 const utils = require('../utils');
 const uuidv4 = require('uuid/v4');
-
-var server;
 
 function getTreebank(name, next) {
   Corpus.findOne({ name: name }, (err, corpus) => {
@@ -56,13 +53,10 @@ app.get('/annotate/:treebank', (req, res) => {
   });
 });
 
-// connect to db
-db.on('db-connected', () => {
-  server = http.createServer(app).listen(6900, () => {
+module.exports = () => {
 
+  return http.createServer(app).listen(6900, () => {
     console.log('Express server listening at port 6900');
-
   });
-});
 
-module.exports = server;
+};

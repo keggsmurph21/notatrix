@@ -1,9 +1,8 @@
 'use strict';
 
-const db = require('./src/corpora-db');
+const db = (new (require('./src/corpora-db'))());
 const utils = require('./src/utils');
-const server = require('./src/server');
-
+const server = require('./src/server')();
 const corpus = {
 
   name: 'tr_imst-ud-test',

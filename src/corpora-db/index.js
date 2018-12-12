@@ -1,7 +1,8 @@
 'use strict';
 
+const _ = require('underscore');
 const Emitter = require('events');
-const config = require('./config');
+const defaults = require('./defaults');
 const path = require('path');
 const utils = require('../utils');
 const LineReader = require('line-by-line');
@@ -10,12 +11,14 @@ const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 class CorporaDB extends Emitter {
-  constructor() {
+  constructor(config) {
 
     super();
 
     // make sure to start with db in uninit'ed state
     this.db_connected = false;
+
+    config = _.defaults(config, defaults);
 
     const db_path = (config.username && config.password)
       ? config.username + ':' + config.password + '@' + config.uri
@@ -77,5 +80,4 @@ class CorporaDB extends Emitter {
   }
 }
 
-var db = new CorporaDB();
-module.exports = db;
+module.exports = CorporaDB;
