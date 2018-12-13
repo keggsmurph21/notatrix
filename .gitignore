@@ -6,3 +6,5 @@ node_modules
 
 # istanbul/nyc output
 .nyc_output
+.env
+old
