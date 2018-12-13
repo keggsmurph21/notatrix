@@ -1,11 +1,14 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const utils = require('../../utils');
 
 const CorpusSchema = mongoose.Schema({
 
   meta: Object,
   name: String,
+
+  filename: String,
 
   options: {
 

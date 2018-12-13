@@ -17,6 +17,7 @@ module.exports = {
   cg3Deprel: /\s@([\w:]*)/,
   cg3Other: /([^;].*(:.+)?)/,
   whitespace: /(\s+)/,
+  whitespaceLine: /^(\s*)$/,
   whiteline: /^(\s*)(\n|$)/,
   sdDependency: /^\s*([\w.]+)\(([\w.]+),\s*([\w.]+)\)\s*$/,
   sdDependencyNoWhitespace: /^([\w.]+)\(([\w.]+),\s*([\w.]+)\)$/,

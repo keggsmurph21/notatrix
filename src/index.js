@@ -18,7 +18,7 @@ module.exports = _.extend({
   split: require('./splitter'),
   convert: require('./converter'),
 
-  db: require('./corpora-db'),
+  DB: require('./corpora-db'),
   server: require('./server'),
 
 }, nx, errors);

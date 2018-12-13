@@ -2,13 +2,16 @@
 
 const _ = require('underscore');
 const Emitter = require('events');
-const defaults = require('./defaults');
 const path = require('path');
-const utils = require('../utils');
 const LineReader = require('line-by-line');
-//const formats = require('../src/formats');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
+
+const nx = require('../nx');
+const utils = require('../utils');
+const DBError = utils.DBError;
+const defaults = require('./defaults');
+const Corpus = require('./models/corpus');
 
 class CorporaDB extends Emitter {
   constructor(config) {
@@ -41,18 +44,30 @@ class CorporaDB extends Emitter {
     });
   }
 
-  readFile(filename) {
+  readFile(file) {
 
     // hack to get around this-rebinding
     var self = this;
 
-    if (!self.db)
-      throw new Error('no database connected');
+    if (!self.db_connected)
+      throw new DBError('no database connected');
 
-    self.emit('read-begin');
+    console.log('started reading ' + file.name);
 
-    const lr = new LineReader(filename);
+    var corpus = new Corpus({
 
+      name: file.name,
+      filename: path.basename(file.path),
+
+    });
+
+    const lr = new LineReader(file.path);
+    lr.pause();
+    corpus.save(() => {
+      lr.resume();
+    });
+
+    var sentenceNum = 0;
     var chunk = [];
     var lineNum = 0;
     var numBlankLines = 0;
@@ -62,7 +77,7 @@ class CorporaDB extends Emitter {
       if (utils.re.whitespaceLine.test(line)) {
         if (chunk.length > 0) {
 
-          self.emit('read-lines', chunk, lineNum);
+          lr.emit('chunk', chunk, lineNum);
           chunk = [];
 
         }
@@ -74,9 +89,52 @@ class CorporaDB extends Emitter {
     });
 
     lr.on('end', () => {
-      self.emit('read-end');
+      console.log('finished reading ' + file.name);
+      //corpus.save();
     });
 
+    lr.on('chunk', (chunk, lineNum) => {
+
+      try {
+
+        //lr.pause();
+
+        const sent = new nx.Sentence(chunk.join('\n'));
+        const serial = sent.serialize();
+        const key = `sentences.${sentenceNum}`;
+        const update = { $set: { [key]: serial }};
+
+        //console.log(corpus.name, sentenceNum);
+        /*
+        Corpus.findByIdAndUpdate(corpus.id, update, err => {
+
+          if (err)
+            throw err;
+
+          const mem = process.memoryUsage().heapTotal / 1024 / 1024;
+          lr.resume();
+        });
+
+        /*
+        corpus.sentences[sentenceNum] = serial;
+        corpus.save(() => {
+          console.log(corpus.sentences.length)
+          lr.resume();
+        });
+        */
+
+      } catch (e) {
+        if (e instanceof utils.NotatrixError) {
+          console.log('CAUGHT ERROR');
+          console.log(e);
+          return;
+        }
+
+        throw e;
+      }
+
+      ++sentenceNum;
+    });
   }
 }
 

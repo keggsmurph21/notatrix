@@ -1,37 +1,46 @@
 'use strict';
 
-const db = (new (require('./src/corpora-db'))());
-const utils = require('./src/utils');
-const server = require('./src/server')();
-const corpus = {
+const nx = require('.');
+const db = new nx.DB();
+const Corpus = require('./src/corpora-db/models/corpus');
+const server = nx.server();
+const corpora = [
+  {
+    name: 'small corpus',
+    path: '/data/treebanks/ud/mr_ufal-ud-dev.conllu',
+  },
+  {
+    name: 'large corpus',
+    path: '/data/treebanks/ud/ja_bccwj-ud-train.conllu',
+  },
+];
 
-  name: 'tr_imst-ud-test',
-  filepath: './data/corpora/tr_imst-ud-test.conllu',
-
-};
-
-db.on('read-begin', () => {
-  console.log(`started reading ${corpus.name}`);
-});
-
-db.on('read-end', () => {
-  console.log(`finished reading ${corpus.name}`);
-});
-
-db.on('read-lines', chunk => {
-  //console.log('read a chunk', chunk);
-  console.log('\n\nchunk', chunk);
-  //conllu2.parse(chunk);
-  //console.log(conllu2.parse(chunk))
-});
 
 db.on('db-connected', () => {
 
   console.log('db connected');
-  //db.readFile(corpus.filepath);
+  corpora.forEach(corpus => {
+    db.readFile(corpus);
+  });
+
+  //const c = new Corpus({ name: 'test' });
+  //c.save();
+
+  /*
+
+  Corpus.findByIdAndUpdate('5c11d5a61e1e7e660eb27a00'
+    , { $set: { 'sentences.$[i]': { isParsed: false } }}
+    , { arrayFilters: [ { i: 7 } ] }
+    , (err, corpus) => {
+
+      Corpus.findById('5c11d5a61e1e7e660eb27a00', (err, c) => {
+        console.log(c.sentences[7])
+      });
+
+    });
+
+    */
 
 });
 
-db.on('parse-sentence', sentence => {
-  console.log(sentence);
-});
+module.exports = db;
