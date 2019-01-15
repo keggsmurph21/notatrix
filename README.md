@@ -206,7 +206,7 @@ const toParams = sent.to('params');
 */
 
 const toPlainText = sent.to('plain text');
-/*
+/* expected:
 {
   output: 'hello, world',
   loss: [ 'comments', 'lemma', 'heads', 'upostag' ]
@@ -214,7 +214,7 @@ const toPlainText = sent.to('plain text');
 */
 
 const toSD = sent.to('sd');
-/*
+/* expected:
 {
   output: '# this is my first comment\n# here is another comment\nhello, world\nroot(ROOT, hello)\npunct(hello, ,)\n_(hello, world)',
   loss: [ 'lemma', 'upostag' ]
