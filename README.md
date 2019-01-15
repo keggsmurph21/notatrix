@@ -10,14 +10,29 @@ Experimental notational system for <a href="https://github.com/jonorthwash/ud-an
  
 ## <a id="Install" href="#Install">Installation</a>
 
-For basic usage, just clone the repository!
+For basic usage, just reference the [main file](build/notatrix.js) from a [CDN](https://www.jsdelivr.com/?docs=gh) in an HTML script tag.
+
+For example:
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/keggsmurph21/notatrix/build/notatrix.js"></script>
+<script>
+
+  text = 'this is a test';
+  sent = new nx.Sentence(text);
+  conllu = sent.to('conllu');
+  console.log(conllu.output);
+
+</script>
+```
+
+Or, just clone the repository!
 
 ```bash
 $ cd ~/src
 $ git clone https://github.com/keggsmurph21/notatrix notatrix
 ```
 
-Then, you can test it out directly in the browser by including a path to `notatrix/build/notatrix.js` in a script tag of an HTML document.  Then, all of the `notatrix` methods will be available on a global `nx` object.
+Then, you can test it out directly in the browser by including a path to `notatrix/build/notatrix.js` in a script tag of an HTML document.  All of the `notatrix` methods will be available on a global `nx` object.
 
 For example:
 ```html
