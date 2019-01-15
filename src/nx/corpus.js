@@ -18,7 +18,10 @@ const NxBaseClass = require('./base-class');
 const Labeler = require('./labeler');
 const Sentence = require('./sentence');
 
-
+/**
+ * Abstraction over a collection of Sentences.  NOTE: this class is
+ *  out-of-date and will be replaced soon :)
+ */
 class Corpus extends NxBaseClass {
   constructor(options) {
 

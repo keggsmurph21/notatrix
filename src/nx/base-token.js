@@ -8,6 +8,10 @@ const NxError = utils.NxError;
 const NxBaseClass = require('./base-class');
 const RelationSet = require('./relation-set');
 
+/**
+ * Ancestor of Token, SubToken, SuperToken.  Implements methods common
+ *  to all three of them.
+ */
 class BaseToken extends NxBaseClass {
   constructor(sent, name, serial={}) {
 
@@ -39,6 +43,12 @@ class BaseToken extends NxBaseClass {
     };
   }
 
+  /**
+   * Add a head to a token with a dependency relation.
+   *
+   * @param {BaseToken} head
+   * @param {String} deprel
+   */
   addHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
@@ -58,6 +68,12 @@ class BaseToken extends NxBaseClass {
 
   }
 
+  /**
+   * Change the dependency relation for a given head.
+   *
+   * @param {BaseToken} head
+   * @param {String} deprel
+   */
   modifyHead(head, deprel) {
 
     if (!(head instanceof BaseToken))
@@ -70,6 +86,11 @@ class BaseToken extends NxBaseClass {
 
   }
 
+  /**
+   * Remove a head and its dependency relation.
+   *
+   * @param {BaseToken} head
+   */
   removeHead(head) {
 
     if (!(head instanceof BaseToken))
@@ -79,10 +100,16 @@ class BaseToken extends NxBaseClass {
 
   }
 
+  /**
+   * Remove all heads
+   */
   removeAllHeads() {
     return this.heads.clear();
   }
 
+  /**
+   * Apply a callback to each of a token's heads
+   */
   mapHeads(callback) {
 
     //if (this.sent.options.enhanced) {
@@ -95,12 +122,21 @@ class BaseToken extends NxBaseClass {
 
   }
 
+  /**
+   * Apply a callback to each of token's dependents
+   */
   mapDependents(callback) {
 
     return this.dependents.map(callback);
 
   }
 
+  /**
+   * Get the head index for a given format
+   *
+   * @param {String} format
+   * @return {String}
+   */
   getHead(format) {
 
     if (!this.heads.length)
@@ -157,6 +193,11 @@ class BaseToken extends NxBaseClass {
     });
   }
 
+  /**
+   * Apply a callback to each of a token's analyses and subTokens
+   *
+   * @param {Function} callback
+   */
   walk(callback) {
     let i = 0;
     if (this._analyses)
@@ -169,6 +210,12 @@ class BaseToken extends NxBaseClass {
     return null;
   }
 
+  /**
+   * Hash a list of fields to a string
+   *
+   * @param {String[]} fields
+   * @return {String}
+   */
   hashFields(...fields) {
 
     fields = _.flatten(fields);
@@ -200,6 +247,9 @@ class BaseToken extends NxBaseClass {
     return hash;
   }
 
+  /**
+   * Serialize a token to JSON format
+   */
   serialize() {
     let serial = {
 

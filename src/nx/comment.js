@@ -6,6 +6,10 @@ const utils = require('../utils');
 const NxBaseClass = require('./base-class');
 const Label = require('./label');
 
+/**
+ * Abstraction over a CoNLL-U or CG3 comment, allows us to extract and then
+ *  manipulate data in some useful ways across a Corpus.
+ */
 class Comment extends NxBaseClass {
   constructor(sent, body) {
 

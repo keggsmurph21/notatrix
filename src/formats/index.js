@@ -1,3 +1,15 @@
+/**
+ * Supported output formats:
+ *  * ApertiumStream (coming soon!)
+ *  * Brackets
+ *  * CG3
+ *  * CoNLL-U
+ *  * NotatrixSerial
+ *  * Params
+ *  * Plain text
+ *  * SDParse
+ */
+
 module.exports = {
 
   'apertium stream': require('./apertium-stream'),

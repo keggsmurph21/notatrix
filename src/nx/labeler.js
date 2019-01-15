@@ -6,7 +6,10 @@ const utils = require('../utils');
 const NxBaseClass = require('./base-class');
 const Label = require('./label');
 
-
+/**
+ * Abstraction to hold a mapping of String => Label pairs, as well as some
+ *  methods for doing work on those labels.
+ */
 class Labeler extends NxBaseClass {
   constructor(corpus) {
 
@@ -18,6 +21,17 @@ class Labeler extends NxBaseClass {
 
   }
 
+  /**
+   * @typedef Labeler_SortReturnT
+   * @property {String} name Label name
+   * @property {Number} size Number of sentences with Label
+   */
+
+  /**
+   * Sort all labels in Corpus by number of Sentences with that label
+   *
+   * @return {Labeler_SortReturnT}
+   */
   sort() {
 
     const size = name => this._labels[name]._sents.size;
@@ -58,18 +72,35 @@ class Labeler extends NxBaseClass {
     return labeler;
   }
 
+  /**
+   * Get a Label given its name
+   *
+   * @param {String} name
+   * @return {Label}
+   */
   get(name) {
     return this._labels[name];
   }
 
+  /**
+   * Get the number of sentences with a given Label
+   *
+   * @param {String} name
+   * @return {Number}
+   */
   count(name) {
     return this._labels[name]
       ? this._labels[name]._sents.size
       : 0;
   }
 
-
-
+  /**
+   * Crawl through a sentence's comments to see if it has a particular Label
+   *
+   * @param {Sentence} sent
+   * @param {String} searching
+   * @return {Boolean}
+   */
   sentenceHasLabel(sent, searching) {
 
     let hasLabel = false;
@@ -85,6 +116,12 @@ class Labeler extends NxBaseClass {
     return hasLabel;
   }
 
+  /**
+   * Checks if a given Sentence should be filtered
+   *
+   * @param {Sentence} sent
+   * @return {Boolean}
+   */
   sentenceInFilter(sent) {
 
     let inFilter = false;
@@ -100,17 +137,30 @@ class Labeler extends NxBaseClass {
     return inFilter;
   }
 
+  /**
+   * Adds a Label name to the filter
+   *
+   * @param {String} name
+   */
   addToFilter(name) {
     if (this.get(name))
       return this._filter.add(name);
   }
 
+  /**
+   * Removes a Label name from the filter
+   *
+   * @param {String} name
+   */
   removeFromFilter(name) {
     return this._filter.delete(name);
   }
 
-
-
+  /**
+   * Callback to be triggered whenever we add a new Sentence to a Corpus
+   *
+   * @param {Sentence} sent
+   */
   onAdd(sent) {
     sent.comments.forEach(comment => {
       if (comment.type === 'label') {
@@ -123,6 +173,11 @@ class Labeler extends NxBaseClass {
     });
   }
 
+  /**
+   * Callback to be triggered whenever we remove a Sentence from a Corpus
+   *
+   * @param {Sentence} sent
+   */
   onRemove(sent) {
     sent.comments.forEach(comment => {
       if (comment.type === 'label') {
@@ -135,8 +190,13 @@ class Labeler extends NxBaseClass {
     })
   }
 
-
-
+  /**
+   * Add new Label with the given name (if it doesn't already exist) and
+   *  attach it to a list of Sentences.
+   *
+   * @param {String} name
+   * @param {Sentence[]} [sents=[]]
+   */
   addLabel(name, sents=[]) {
 
     let label = this.get(name);
@@ -168,6 +228,13 @@ class Labeler extends NxBaseClass {
     return label;
   }
 
+  /**
+   * Remove a Label by name (if it exists) from a set of Sentences (can
+   *  be omitted).
+   *
+   * @param {String} name
+   * @param {Sentence[]} sents
+   */
   removeLabel(name, sents) {
 
     const label = this.get(name);
@@ -191,6 +258,13 @@ class Labeler extends NxBaseClass {
     return label;
   }
 
+  /**
+   * Change the name of a Label from oldName => newName
+   *
+   * @param {String} oldName
+   * @param {String} newName
+   * @return {Label}
+   */
   changeLabelName(oldName, newName) {
 
     if (this.get(newName))
@@ -208,6 +282,13 @@ class Labeler extends NxBaseClass {
     return newLabel;
   }
 
+  /**
+   * Change the color of a Label to a given color
+   *
+   * @param {String} name
+   * @param {String} color
+   * @return {Boolean} - whether the operation succeeded
+   */
   changeLabelColor(name, color) {
 
     const label = this.get(name);
@@ -231,6 +312,13 @@ class Labeler extends NxBaseClass {
     return true;
   }
 
+  /**
+   * Change the description of a Label to a given description
+   *
+   * @param {String} name
+   * @param {String} desc
+   * @return {Boolean} - whether the operation succeeded
+   */
   changeLabelDesc(name, desc) {
 
     const label = this.get(name);

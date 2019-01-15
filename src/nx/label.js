@@ -5,7 +5,11 @@ const _ = require('underscore');
 const utils = require('../utils');
 const NxBaseClass = require('./base-class');
 
-
+/**
+ * Allows us to extract labels from "field = value"-type comments, so that
+ *  we can filter a corpus by Label and arbitrarily apply that label to
+ *  multiple Sentences.
+ */
 class Label extends NxBaseClass {
   constructor(name) {
 

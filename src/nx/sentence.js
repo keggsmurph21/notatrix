@@ -17,12 +17,15 @@ const update = require('./update');
 const Analysis = require('./analysis');
 const SubToken = require('./sub-token');
 
+/**
+ * Abstraction over a Sentence.  Holds an array of comments and of tokens,
+ *  plus some metadata.
+ */
 class Sentence extends NxBaseClass {
   constructor(serial, options) {
 
     super('Sentence');
 
-    this.to = (format, options) => generate[format](this, options);
     this._meta = {};
 
     serial = serial || '';
@@ -91,6 +94,19 @@ class Sentence extends NxBaseClass {
     }
   }
 
+  /**
+   * Output Sentence to a given format
+   *
+   * @param {String} format
+   * @param {Object} options
+   */
+  to(format, options) {
+    return generate[format](this, options);
+  }
+
+  /**
+   * Output Sentence to a notatrix-serial string
+   */
   serialize(master = {}) {
     return {
       meta: this._meta,
@@ -106,6 +122,11 @@ class Sentence extends NxBaseClass {
     };
   }
 
+  /**
+   * Apply a callback function for every token in the sentence
+   *
+   * @param {Function} callback
+   */
   iterate(callback) {
     for (let i=0; i<this.tokens.length; i++) {
 
@@ -123,6 +144,9 @@ class Sentence extends NxBaseClass {
     }
   }
 
+  /**
+   * Return all tokens where `predicate(token)` is truth-y
+   */
   query(predicate) {
 
     let matches = [];
@@ -267,6 +291,9 @@ class Sentence extends NxBaseClass {
     }
   }*/
 
+  /**
+   * Tell Sentence to output in enhanced dependency format
+   */
   enhance() {
     this.options.enhanced = true;
 
@@ -281,11 +308,20 @@ class Sentence extends NxBaseClass {
     return this;
   }
 
+  /**
+   * Tell Sentence to stop outputting in enhanced dependency format
+   */
   unenhance() {
     this.options.enhanced = false;
     return this;
   }
 
+  /**
+   * Get the superToken for a given token
+   *
+   * @param {BaseToken} token
+   * @return {BaseToken}
+   */
   getSuperToken(token) {
 
     let superToken = null;
@@ -309,6 +345,12 @@ class Sentence extends NxBaseClass {
     return superToken;
   }
 
+  /**
+   * Merge tokens into a single, regular token
+   *
+   * @param {BaseToken} src
+   * @param {BaseToken} tar
+   */
   merge(src, tar) {
 
     if (!(src instanceof BaseToken) || !(tar instanceof BaseToken))
@@ -360,6 +402,12 @@ class Sentence extends NxBaseClass {
     return this.index();
   }
 
+  /**
+   * Combine tokens into subTokens of some superToken
+   *
+   * @param {BaseToken} src
+   * @param {BaseToken} tar
+   */
   combine(src, tar) {
 
     if (!(src instanceof BaseToken) || !(tar instanceof BaseToken))
@@ -460,6 +508,15 @@ class Sentence extends NxBaseClass {
     return this.index();
   }
 
+  /**
+   * Split a given token into two tokens.  If the given token is a
+   *  superToken, make each of its subTokens into a regular token and
+   *  delete the superToken.  Otherwise, split the token at the given
+   *  index.
+   *
+   * @param {BaseToken} src
+   * @param {Number} splitAtIndex
+   */
   split(src, splitAtIndex) {
 
     if (!(src instanceof BaseToken))
