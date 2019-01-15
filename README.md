@@ -120,7 +120,7 @@ mark(like, that)`;
 const sent = new nx.Sentence(sd);
 ```
 
-### <a id="inspecting" href="inspecting">Inspecting properties of a [`notatrix.Sentence`](build/docs.md#Sentence)</a>
+### <a id="inspecting" href="#inspecting">Inspecting properties of a [`notatrix.Sentence`](build/docs.md#Sentence)</a>
 
 ```js
 const nx = require('notatrix');
