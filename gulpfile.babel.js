@@ -6,9 +6,11 @@ const babelify = require('babelify');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
+const jsdoc2md = require('jsdoc-to-markdown');
+const fs = require('fs');
 
 gulp.task('js', () => {
-  return browserify('src/notatrix.js', {
+  return browserify('src/index.js', {
       standalone: 'nx'
     })
     .transform('babelify', {
@@ -22,7 +24,7 @@ gulp.task('js', () => {
 });
 
 gulp.task('uglify', () => {
-  return browserify('src/notatrix.js', {
+  return browserify('src/index.js', {
       standalone: 'nx'
     })
     .transform('babelify', {
@@ -42,10 +44,26 @@ gulp.task('uglify', () => {
       }
     }))
     .pipe(gulp.dest('build'));
-})
-
-gulp.task('watch', () => {
-  gulp.watch('src/*.js', gulp.series('uglify', 'js'));
 });
 
-gulp.task('default', gulp.series('uglify', 'js'));
+gulp.task('docs', done => {
+  jsdoc2md.render({
+    files: [
+      './src/nx/*.js',
+      './src/formats/*.js'
+    ]
+  }).then(md => {
+    fs.writeFile('./build/docs.md', md, err => {
+      if (err)
+        throw err;
+
+      done();
+    })
+  })
+});
+
+gulp.task('watch', () => {
+  gulp.watch('src/*.js', gulp.series('uglify', 'js', 'docs'));
+});
+
+gulp.task('default', gulp.series('uglify', 'js', 'docs'));

@@ -1,4 +1,697 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.nx = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+"use strict";
+
+module.exports = {};
+
+},{}],2:[function(require,module,exports){
+"use strict";
+
+module.exports = {
+  0: "[root [nsubj I] have [obj [amod [advmod too] many] commitments] [advmod right now] [punct .]]"
+};
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+module.exports = {
+	equals: "# sent_id = mst-0001\n# text = Pe\u015Freve ba\u015Flamal\u0131.\n\"<Pe\u015Freve>\"\n\t\"pe\u015Frev\" Noun @obl #1->2\n\"<ba\u015Flamal\u0131>\"\n\t\"ba\u015Fla\" Verb SpaceAfter=No @root #2->0\n\"<.>\"\n\t\".\" Punc @punct #3->2",
+
+	x_and_u_postag: "# text = \xD1e'\u1EBDngu\xE9ra i\xF1e'\u1EBDrapoambu\xE9va (lenguas de flexi\xF3n), umi \xF1e'\u1EBDte indoeuropeo-icha.\n# text[spa] = Las lenguas de flexi\xF3n, aquellas lenguas como indoeuropeas.\n# labels =\n\"<\xD1e\u02BC\u1EBDngu\xE9ra>\"\n\t\"\xF1e\u02BC\u1EBD\" n @nsubj #1->\n\t\t\"ku\xE9ra\" det pl @det #2->1\n\"<i\xF1e\u02BC\u1EBDrapoambu\xE9va>\"\n\t\"i\xF1e\u02BC\u1EBDrapoambu\xE9va\" adj @amod #3->1\n\"<(>\"\n\t\"(\" lpar @punct #4->5\n\"<lenguas>\"\n\t\"lenguas\" barb @appos #5->1\n\"<de>\"\n\t\"de\" barb @foreign #6->7\n\"<flexi\xF3n>\"\n\t\"flexi\xF3n\" barb @foreign #7->5\n\"<)>\"\n\t\")\" rpar @punct #8->5\n\"<,>\"\n\t\",\" cm @punct #9->\n\"<umi>\"\n\t\"umi\" adj dem pl @amod #10->11\n\"<\xF1e\u02BC\u1EBDte>\"\n\t\"\xF1e\u02BC\u1EBD\" n @obl #11->\n\t\t\"te\" post @case #12->11\n\"<indoeuropeo-icha>\"\n\t\"indoeuropeo\" barb @amod #13->11\n\t\t\"icha\" comp @dep #14->13\n\"<.>\"\n\t\".\" sent @punct #15->",
+
+	nested: "# sent_id = wikipedia:Poyvi_Paragu\xE1i:11\n# text = Poyvi pete\u0129ha \xF1ane ret\xE3megua niko ojepuru\u2019yp\xFDkuri 15 jasypo guive 16 jasypote\u0129 meve ary 1811-pe.\n# text[spa] = Bandera uno nosotros de-de _ \xE9l-se-utiliz\xF3-_ 15 maio desde 16 junio hasta a\xF1o 1811-en.\n\"<Poyvi>\"\n\t\"poyvi\" n\n\"<pete\u0129ha>\"\n\t\"pete\" n incp\n\t\t\"\u0129\" v tv pres\n\t\t\t\"ha\" subs\n\t\"pete\u0129ha\" num\n\"<\xF1ane>\"\n\t\"\xF1and\xE9\" prn pers p1 incl pl\n\"<ret\xE3megua>\"\n\t\"*ret\xE3megua\"\n\"<niko>\"\n\t\"*niko\"\n\"<ojepuru\u02BCyp\xFDkuri>\"\n\t\"*ojepuru\u02BCyp\xFDkuri\"\n\"<15>\"\n\t\"15\" num @amod\n\"<jasypo>\"\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" n\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" v iv pres\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" v tv pres\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" n\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" v iv pres\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" v tv pres\n\t\"jasy\" n incp\n\t\t\"po\" n\n\t\"jasy\" n incp\n\t\t\"po\" v iv pres\n\t\"jasy\" n incp\n\t\t\"po\" v tv pres\n\t\"jasypo\" n\n\"<guive>\"\n\t\"guive\" post @case\n\"<16>\"\n\t\"16\" num @amod\n\"<jasypote\u0129>\"\n\t\"jasypote\u0129\" n\n\"<meve>\"\n\t\"peve\" post @case\n\"<ary>\"\n\t\"ary\" n\n\"<1811-pe>\"\n\t\"1811\" num\n\t\t\"pe\" post @case",
+
+	/*nested_2: `"<ab>"
+ 	"A" #1->
+ 		"B" #2->
+ "<cde>"
+ 	"C" #3->
+ 		"D" #4->
+ 			"E" #5->
+ "<f>"
+ 	"F" #6->
+ "<h>"
+ 	"H" #7->`,*/
+
+	kdt_tagged_1: "# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.tagged.txt\n\"<\u04E8\u0441\u043A\u0435\u043C\u0435\u043D\u043D\u0456\u04A3>\"\n\t\"\u04E8\u0441\u043A\u0435\u043C\u0435\u043D\" np top gen @nmod:poss #1->3\n\"<\u0430\u0440>\"\n\t\"\u0430\u0440\" adj @amod #2->3\n\"<\u0436\u0430\u0493\u044B\u043D\u0434\u0430>\"\n\t\"\u0436\u0430\u049B\" n px3sp loc @conj #3->7\n\"<,>\"\n\t\",\" cm @punct #4->7\n\"<\u0411\u04B1\u049B\u0442\u044B\u0440\u043C\u0430\u043D\u044B\u04A3>\"\n\t\"\u0411\u04B1\u049B\u0442\u044B\u0440\u043C\u0430\" np top gen @nmod:poss #5->7\n\"<\u043E\u04A3>\"\n\t\"\u043E\u04A3\" adj @amod #6->7\n\"<\u0436\u0430\u0493\u044B\u043D\u0434\u0430>\"\n\t\"\u0436\u0430\u049B\" n px3sp loc @nmod #7->11\n\"<\u04D9\u043B\u0435\u043C\u0433\u0435>\"\n\t\"\u04D9\u043B\u0435\u043C\" n dat @nmod #8->9\n\"<\u0430\u044F\u043D>\"\n\t\"\u0430\u044F\u043D\" adj @acl #9->10\n\"<\u0410\u043B\u0442\u0430\u0439>\"\n\t\"\u0410\u043B\u0442\u0430\u0439\" np top nom @nsubj #10->11\n\"<\u0431\u0430\u0440>\"\n\t\"\u0431\u0430\u0440\" adj @root #11->0\n\t\t\"\u0435\" cop aor p3 sg @cop #12->11\n\"<.>\"\n\t\".\" sent @punct #13->11",
+
+	kdt_tagged_2: "# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.tagged.txt\n\"<\u0410\u0442\u0442\u0430\u043D>\"\n\t\"\u0430\u0442\u0442\u0430\u043D\" v iv imp p2 sg @root #1->0\n\"<!>\"\n\t\"!\" sent @punct #2->1",
+
+	kdt_tagged_3: "# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.tagged.txt\n\"<\u041C\u0430\u043D\u0430\u0493\u044B>\"\n\t\"\u043C\u0430\u043D\u0430\u0493\u044B\" det dem @det #1->3\n\"<\u0430\u043B\u0430>\"\n\t\"\u0430\u043B\u0430\" adj @amod #2->3\n\"<\u0430\u0442\u0442\u044B>\"\n\t\"\u0430\u0442\u0442\u044B\" adj subst nom @nsubj #3->4\n\"<\u043A\u0456\u043C>\"\n\t\"\u043A\u0456\u043C\" prn itg nom @root #4->0\n\t\t\"\u0435\" cop aor p3 sg @cop #5->4\n\"<?>\"\n\t\"?\" sent @punct #6->4",
+
+	0: "\"<\u041F\u0430\u0442\u0448\u0430\u043C\u0435\u043D>\"\n\t\"\u043F\u0430\u0442\u0448\u0430\" n ins @nmod #1->3\n\"<\u0441\u043E\u0493\u044B\u0441>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n nom @obj #2->3\n\"<\u0430\u0448\u049B\u0430\u043D\u0434\u0430>\"\n\t\"\u0430\u0448\" v tv ger_past loc @advcl #3->12\n\"<,>\"\n\t\",\" cm @punct #4->12\n\"<\u0435\u043B-\u0436\u04B1\u0440\u0442>\"\n\t\"\u0435\u043B-\u0436\u04B1\u0440\u0442\" n nom @conj #5->7\n\"<,>\"\n\t\",\" cm @punct #6->7\n\"<\u043E\u0442\u0430\u043D\u044B\u043C\u0434\u044B>\"\n\t\"\u043E\u0442\u0430\u043D\" n px1sg acc @obj #7->8\n\"<\u049B\u043E\u0440\u0493\u0430\u0443\u0493\u0430>\"\n\t\"\u049B\u043E\u0440\u0493\u0430\" v tv ger dat @advcl #8->12\n\"<,>\"\n\t\",\" cm @punct #9->12\n\"<\u0431\u0456\u0437>\"\n\t\"\u0431\u0456\u0437\" prn pers p1 pl nom @nsubj #10->12\n\"<\u0441\u043E\u0493\u044B\u0441\u049B\u0430>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n dat @nmod #11->12\n\"<\u0431\u0430\u0440\u0434\u044B\u049B>\"\n\t\"\u0431\u0430\u0440\" v iv ifi p1 pl @root #12->0\n\"<.>\"\n\t\".\" sent @punct #13->12",
+
+	1: "# text = He boued e tebr Mona er gegin.\n# text[eng] = Mona eats her food here in the kitchen.\n# labels = press_1986 ch_syntax p_197 to_check\n\"<He>\"\n\t\"he\" det pos f sp @det #1->2\n\"<boued>\"\n\t\"boued\" n m sg @obj #2->4\n\"<e>\"\n\t\"e\" vpart obj @aux #3->4\n\"<tebr>\"\n\t\"debri\xF1\" vblex pri p3 sg @root #4->0\n\"<Mona>\"\n\t\"Mona\" np ant f sg @nsubj #5->4\n\"<er>\"\n\t\"e\" pr @case #6->8\n\t\t\"an\" det def sp @det #7->8\n\"<gegin>\"\n\t\"kegin\" n f sg @obl #8->4\n\"<.>\"\n\t\".\" sent @punct #9->4",
+
+	2: "# text = He boued e tebr Mona er gegin.\n# text[eng] = Mona eats her food here in the kitchen.\n# labels = press_1986 ch_syntax p_197 to_check\n\"<He>\"\n\t\"he\" det pos f sp @det #1->2\n\"<boued>\"\n\t\"boued\" n m sg @obj #2->4\n\"<e>\"\n\t\"e\" vpart obj @aux #3->4\n\"<tebr>\"\n\t\"debri\xF1\" vblex pri p3 sg @root #4->0\n\"<Mona>\"\n\t\"Mona\" np ant f sg @nsubj #5->4\n\"<er>\"\n\t\"e\" pr @case #6->8\n\t\t\"an\" det def sp @det #7->8\n\"<gegin>\"\n\t\"kegin\" n f sg @obl #8->4\n\t\"kegin\" n f pl @obl #9->\n\"<.>\"\n\t\".\" sent @punct #10->4", // note: changed line `"kegin" n f pl @obl #8->4`
+
+	with_semicolumn: "\n\"<Siedzieli\u015Bmy>\"\n\t\"siedzie\u0107\" vblex impf past p1 m pl\n\"<w>\"\n\t\"w\" pr\n\"<moim>\"\n;   \"m\xF3j\" prn pos mi sg loc\n\"<pokoju>\"\n\t\"pok\xF3j\" n mi sg loc\n\"<,>\"\n\t\",\" cm\n\"<pal\u0105c>\"\n\t\"pali\u0107\" vblex impf pprs adv\n\"<i>\"\n\t\"i\" cnjcoo\n\"<rozmawiaj\u0105c>\"\n\t\"rozmawia\u0107\" vblex impf pprs adv\n\"<o>\"\n\t\"o\" pr\n\"<tem>\"\n\t\"to\" prn dem mi sg loc\n\"<,>\"\n\t\",\" cm\n\"<jak>\"\n\t\"jak\" rel adv\n\"<marni>\"\n\t\"marny\" adj sint mp pl nom\n\"<jeste\u015Bmy>\"\n\t\"by\u0107\" vbser pres p1 pl\n\"<,>\"\n\t\",\" cm\n\"<marni>\"\n\t\"marny\" adj sint mp pl nom\n\"<z>\"\n\t\"z\" pr\n\"<lekarskiego>\"\n\t\"lekarski\" adj mi sg gen\n\"<punktu>\"\n\t\"punkt\" n mi sg gen\n\"<widzenia>\"\n;   \"widzie\u0107\" vblex impf ger nt sg gen\n\"<chc\u0119>\"\n\t\"chcie\u0107\" vblex impf pres p1 sg\n\"<powiedzie\u0107>\"\n\t\"powiedzie\u0107\" vblex perf inf\n\"<,>\"\n\t\",\" cm\n\"<naturalnie>\"\n\t\"naturalnie\" adv sint\n\"<.>\"\n\t\".\" sent",
+
+	simple: "\"<\u041F\u0430\u0442\u0448\u0430\u043C\u0435\u043D>\"\n\t\"\u043F\u0430\u0442\u0448\u0430\" n ins @nmod #1->3\n\"<\u0441\u043E\u0493\u044B\u0441>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n nom @obj #2->3\n\"<\u0430\u0448\u049B\u0430\u043D\u0434\u0430>\"\n\t\"\u0430\u0448\" v tv ger_past loc @advcl #3->12\n\"<,>\"\n\t\",\" cm @punct #4->12\n\"<\u0435\u043B-\u0436\u04B1\u0440\u0442>\"\n\t\"\u0435\u043B-\u0436\u04B1\u0440\u0442\" n nom @conj #5->7\n\"<,>\"\n\t\",\" cm @punct #6->7\n\"<\u043E\u0442\u0430\u043D\u044B\u043C\u0434\u044B>\"\n\t\"\u043E\u0442\u0430\u043D\" n px1sg acc @obj #7->8\n\"<\u049B\u043E\u0440\u0493\u0430\u0443\u0493\u0430>\"\n\t\"\u049B\u043E\u0440\u0493\u0430\" v tv ger dat @advcl #8->12\n\"<,>\"\n\t\",\" cm @punct #9->12\n\"<\u0431\u0456\u0437>\"\n\t\"\u0431\u0456\u0437\" prn pers p1 pl nom @nsubj #10->12\n\"<\u0441\u043E\u0493\u044B\u0441\u049B\u0430>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n dat @nmod #11->12\n\"<\u0431\u0430\u0440\u0434\u044B\u049B>\"\n\t\"\u0431\u0430\u0440\" v iv ifi p1 pl @root #12->0\n\"<.>\"\n\t\".\" sent @punct #13->12",
+
+	simple_with_comments: "# comment #1\n# comment #2\n\"<\u041F\u0430\u0442\u0448\u0430\u043C\u0435\u043D>\"\n\t\"\u043F\u0430\u0442\u0448\u0430\" n ins @nmod #1->3\n\"<\u0441\u043E\u0493\u044B\u0441>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n nom @obj #2->3\n\"<\u0430\u0448\u049B\u0430\u043D\u0434\u0430>\"\n\t\"\u0430\u0448\" v tv ger_past loc @advcl #3->12\n\"<,>\"\n\t\",\" cm @punct #4->12\n\"<\u0435\u043B-\u0436\u04B1\u0440\u0442>\"\n\t\"\u0435\u043B-\u0436\u04B1\u0440\u0442\" n nom @conj #5->7\n\"<,>\"\n\t\",\" cm @punct #6->7\n\"<\u043E\u0442\u0430\u043D\u044B\u043C\u0434\u044B>\"\n\t\"\u043E\u0442\u0430\u043D\" n px1sg acc @obj #7->8\n\"<\u049B\u043E\u0440\u0493\u0430\u0443\u0493\u0430>\"\n\t\"\u049B\u043E\u0440\u0493\u0430\" v tv ger dat @advcl #8->12\n\"<,>\"\n\t\",\" cm @punct #9->12\n\"<\u0431\u0456\u0437>\"\n\t\"\u0431\u0456\u0437\" prn pers p1 pl nom @nsubj #10->12\n\"<\u0441\u043E\u0493\u044B\u0441\u049B\u0430>\"\n\t\"\u0441\u043E\u0493\u044B\u0441\" n dat @nmod #11->12\n\"<\u0431\u0430\u0440\u0434\u044B\u049B>\"\n\t\"\u0431\u0430\u0440\" v iv ifi p1 pl @root #12->0\n\"<.>\"\n\t\".\" sent @punct #13->12",
+
+	with_spans: "# text = He boued e tebr Mona er gegin.\n# text[eng] = Mona eats her food here in the kitchen.\n# labels = press_1986 ch_syntax p_197 to_check\n\"<He>\"\n\t\"he\" det pos f sp @det #1->2\n\"<boued>\"\n\t\"boued\" n m sg @obj #2->4\n\"<e>\"\n\t\"e\" vpart obj @aux #3->4\n\"<tebr>\"\n\t\"debri\xF1\" vblex pri p3 sg @root #4->0\n\"<Mona>\"\n\t\"Mona\" np ant f sg @nsubj #5->4\n\"<er>\"\n\t\"e\" pr @case #6->8\n\t\t\"an\" det def sp @det #7->8\n\"<gegin>\"\n\t\"kegin\" n f sg @obl #8->4\n\"<.>\"\n\t\".\" sent @punct #9->4",
+
+	apertium_kaz_1: "# https://bpaste.net/show/be7c03e6213e\n\"<\u0427\u0430\u0443>\"\n\t\"*\u0427\u0430\u0443\"\n\"<->\"\n\t\"\u0445\" guio\n\t\"-\" guio\n\"<\u0447\u0430\u0443>\"\n\t\"*\u0447\u0430\u0443\"\n\"<\u0448\u044B\u0493\u0443>\"\n\t\"\u0448\u044B\u0493\u0443\" n attr\n\t\"\u0448\u044B\u049B\" v tv ger nom\n\t\"\u0448\u044B\u049B\" v iv ger nom\n\t\"\u0448\u044B\u0493\u0443\" n nom\n;\t\"\u0448\u044B\u0493\u0443\" n nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:294\n;\t\"\u0448\u044B\u0493\u0443\" n nom\n;\t\t\"\u0435\" cop aor p3 sg REMOVE:294\n;\t\"\u0448\u044B\u049B\" vaux ger nom REMOVE:766\n\"<\u0442\u0435\u0433\u0456\u043D\u0435\u043D>\"\n\t\"\u0442\u0435\u043A\" n px3sp abl\n;\t\"\u0442\u0435\u043A\" n px3sp abl\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:294\n;\t\"\u0442\u0435\u043A\" n px3sp abl\n;\t\t\"\u0435\" cop aor p3 sg REMOVE:294\n\"<\u0448\u043F\u0438\u0446\u0442\u0435\u0440>\"\n\t\"*\u0448\u043F\u0438\u0446\u0442\u0435\u0440\"\n\"<\u0442\u043E\u0431\u044B\u043D\u0430>\"\n\t\"\u0442\u043E\u043F\" n px3sp dat\n\"<\u0436\u0430\u0442\u0430\u0434\u044B>\"\n\t\"\u0436\u0430\u0442\" v iv aor p3 sg\n;\t\"\u0436\u0430\u0442\" vaux aor p3 pl REMOVE:766\n;\t\"\u0436\u0430\u0442\" vaux aor p3 sg REMOVE:766\n;\t\"\u0436\u0430\u0442\" v iv aor p3 pl REMOVE:846\n\"<.>\"\n\t\".\" sent",
+
+	apertium_kaz_2: "# https://bpaste.net/show/be7c03e6213e\n\"<\u049A\u0430\u043D\u044B\u043D\u0434\u0430>\"\n\t\"\u049B\u0430\u043D\" n px3sp loc\n;\t\"\u049B\u0430\u043D\" n px3sp loc\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:294\n;\t\"\u049B\u0430\u043D\" n px3sp loc\n;\t\t\"\u0435\" cop aor p3 sg REMOVE:294\n\"<\u0442\u0438\u0431\u0435\u0442>\"\n\t\"*\u0442\u0438\u0431\u0435\u0442\"\n\"<\u0438\u0442\u0456\u043D\u0456\u04A3>\"\n\t\"\u0438\u0442\" n px3sp gen\n\"<(>\"\n\t\"(\" lpar\n\"<\u043C\u0430\u0441\u0442\u0438\u0444>\"\n\t\"*\u043C\u0430\u0441\u0442\u0438\u0444\"\n\"<)>\"\n\t\")\" rpar\n\"<\u049B\u0430\u043D\u044B>\"\n\t\"\u049B\u0430\u043D\" n px3sp nom\n;\t\"\u049B\u0430\u043D\" n px3sp nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:294\n;\t\"\u049B\u0430\u043D\" n px3sp nom\n;\t\t\"\u0435\" cop aor p3 sg REMOVE:294\n\"<\u0431\u0430\u0440>\"\n\t\"\u0431\u0430\u0440\" adj SELECT:1118\n\t\"\u0431\u0430\u0440\" adj subst nom SELECT:1118\n\t\t\"\u0435\" cop aor p3 sg\n\t\"\u0431\u0430\u0440\" adj subst nom SELECT:1118\n\t\"\u0431\u0430\u0440\" adj SELECT:1118\n\t\t\"\u0435\" cop aor p3 sg\n;\t\"\u0431\u0430\u0440\" n attr REMOVE:567\n;\t\"\u0431\u0430\u0440\" adj\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n;\t\"\u0431\u0430\u0440\" n nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n;\t\"\u0431\u0430\u0440\" adj subst nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n;\t\"\u0431\u0430\u0440\" n nom SELECT:1118\n;\t\"\u0431\u0430\u0440\" det qnt SELECT:1118\n;\t\"\u0431\u0430\u0440\" v iv imp p2 sg SELECT:1118\n;\t\"\u0431\u0430\u0440\" n nom SELECT:1118\n;\t\t\"\u0435\" cop aor p3 sg\n\"<\u0434\u0435\u0433\u0435\u043D>\"\n\t\"\u0434\u0435\" v tv gpr_past SELECT:813\n\t\"\u0434\u0435\" v tv gpr_past subst nom SELECT:813\n;\t\"\u0434\u0435\" v tv ger_past nom SELECT:813\n;\t\"\u0434\u0435\" v tv past p3 pl SELECT:813\n;\t\"\u0434\u0435\" v tv past p3 sg SELECT:813\n\"<\u0442\u04B1\u0436\u044B\u0440\u044B\u043C>\"\n\t\"\u0442\u04B1\u0436\u044B\u0440\u044B\u043C\" n nom\n\t\"\u0442\u04B1\u0436\u044B\u0440\u044B\u043C\" n attr\n;\t\"\u0442\u04B1\u0436\u044B\u0440\u044B\u043C\" n nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:294\n;\t\"\u0442\u04B1\u0436\u044B\u0440\u044B\u043C\" n nom\n;\t\t\"\u0435\" cop aor p3 sg REMOVE:294\n\"<\u0431\u0430\u0440>\"\n\t\"\u0431\u0430\u0440\" adj\n\t\"\u0431\u0430\u0440\" n nom\n\t\"\u0431\u0430\u0440\" adj\n\t\t\"\u0435\" cop aor p3 sg\n\t\"\u0431\u0430\u0440\" adj subst nom\n\t\t\"\u0435\" cop aor p3 sg\n\t\"\u0431\u0430\u0440\" adj subst nom\n\t\"\u0431\u0430\u0440\" v iv imp p2 sg\n\t\"\u0431\u0430\u0440\" n nom\n\t\t\"\u0435\" cop aor p3 sg\n;\t\"\u0431\u0430\u0440\" det qnt REMOVE:551\n;\t\"\u0431\u0430\u0440\" n attr REMOVE:567\n;\t\"\u0431\u0430\u0440\" adj subst nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n;\t\"\u0431\u0430\u0440\" adj\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n;\t\"\u0431\u0430\u0440\" n nom\n;\t\t\"\u0435\" cop aor p3 pl REMOVE:853\n\"<.>\"\n\t\".\" sent"
+
+};
+
+},{}],4:[function(require,module,exports){
+"use strict";
+
+module.exports = {
+  turkic: "# sent_id = mst-0008\n# text = Ercan Tezer, i\xE7 pazarda bu y\u0131l seksen bin otomobil ve toplam yuzotuz bin ara\xE7 sat\u0131lmas\u0131n\u0131n beklendi\u011Fini kaydederek, \" onalti y\u0131l geriden gidiyoruz \" dedi.\n1\tErcan\tErcan\tPROPN\tProp\tCase=Nom|Number=Sing|Person=3\t26\tnsubj\t_\t_\n2\tTezer\tTezer\tPROPN\tProp\tCase=Nom|Number=Sing|Person=3\t1\tflat\t_\tSpaceAfter=No\n3\t,\t,\tPUNCT\tPunc\t_\t26\tpunct\t_\t_\n4\ti\xE7\ti\xE7\tADJ\tAdj\t_\t16\tamod\t_\t_\n5\tpazarda\tpazar\tNOUN\tNoun\tCase=Loc|Number=Sing|Person=3\t4\tcompound\t_\t_\n6\tbu\tbu\tDET\tDet\t_\t7\tdet\t_\t_\n7\ty\u0131l\ty\u0131l\tNOUN\tNoun\tCase=Nom|Number=Sing|Person=3\t16\tobl\t_\t_\n8\tseksen\tseksen\tNUM\tANum\tNumType=Card\t10\tnummod\t_\t_\n9\tbin\tbin\tNUM\tANum\tNumType=Card\t8\tflat\t_\t_\n10\totomobil\totomobil\tNOUN\tNoun\tCase=Nom|Number=Sing|Person=3\t16\tnsubj\t_\t_\n11\tve\tve\tCCONJ\tConj\t_\t15\tcc\t_\t_\n12\ttoplam\ttoplam\tNOUN\tNoun\tCase=Nom|Number=Sing|Person=3\t13\tobl\t_\t_\n13\tyuzotuz\tyuzotuz\tNUM\tANum\tNumType=Card\t15\tnummod\t_\t_\n14\tbin\tbin\tNUM\tANum\tNumType=Card\t13\tflat\t_\t_\n15\tara\xE7\tara\xE7\tNOUN\tNoun\tCase=Nom|Number=Sing|Person=3\t10\tconj\t_\t_\n16\tsat\u0131lmas\u0131n\u0131n\tsat\tVERB\tVerb\tAspect=Perf|Case=Gen|Mood=Ind|Number[psor]=Sing|Person[psor]=3|Polarity=Pos|Tense=Pres|VerbForm=Vnoun|Voice=Pass\t17\tnmod:poss\t_\t_\n17\tbeklendi\u011Fini\tbekle\tVERB\tVerb\tAspect=Perf|Case=Acc|Mood=Ind|Number[psor]=Sing|Person[psor]=3|Polarity=Pos|Tense=Past|VerbForm=Part|Voice=Pass\t18\tobj\t_\t_\n18\tkaydederek\tkaydet\tVERB\tVerb\tAspect=Perf|Mood=Ind|Polarity=Pos|Tense=Pres|VerbForm=Conv\t26\tnmod\t_\tSpaceAfter=No\n19\t,\t,\tPUNCT\tPunc\t_\t18\tpunct\t_\t_\n20\t\"\t\"\tPUNCT\tPunc\t_\t24\tpunct\t_\t_\n21\tonalti\tonalti\tNUM\tANum\tNumType=Card\t22\tnummod\t_\t_\n22\ty\u0131l\ty\u0131l\tNOUN\tNoun\tCase=Nom|Number=Sing|Person=3\t23\tnmod\t_\t_\n23\tgeriden\tgeri\tADJ\tNAdj\tCase=Abl|Number=Sing|Person=3\t24\tamod\t_\t_\n24\tgidiyoruz\tgit\tVERB\tVerb\tAspect=Prog|Mood=Ind|Number=Plur|Person=1|Polarity=Pos|Polite=Infm|Tense=Pres\t26\tobj\t_\t_\n25\t\"\t\"\tPUNCT\tPunc\t_\t24\tpunct\t_\t_\n26\tdedi\tde\tVERB\tVerb\tAspect=Perf|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past\t0\troot\t_\tSpaceAfter=No\n27\t.\t.\tPUNCT\tPunc\t_\t26\tpunct\t_\t_",
+
+  labels_1: "# text = \"This is a simple sentence.\"\n# labels = label1 another_label a-third-label\n1\tThis\tThis\t_\t_\t_\t_\t_\t_\t_\n2\tis\tis\t_\t_\t_\t_\t_\t_\t_\n3\ta\ta\t_\t_\t_\t_\t_\t_\t_\n4\tsimple\tsimple\t_\t_\t_\t_\t_\t_\t_\n5\tsentence\tsentence\t_\t_\t_\t_\t_\t_\t_\n6\t.\t.\tPUNCT\tPUNCT\t_\t_\t_\t_\t_",
+
+  labels_2: "# labels = one_label second third-label\n# labels = row_2 again:here this, that\n1\tThis\tThis\t_\t_\t_\t_\t_\t_\t_",
+
+  labels_3: "# tags = this-is-a-tag test testing test\n1\tThis\tThis\t_\t_\t_\t_\t_\t_\t_",
+
+  labels_4: "# labels = new label1 one_label this-is-a-tag\n1\tHullo\thello\t_\t_\t_\t_\t_\t_\t_",
+
+  nested_2: "# text = ab cde f h\n1-2\tab\t_\t_\t_\t_\t_\t_\t_\t_\n1\ta\tA\t_\t_\t_\t_\t_\t_\t_\n2\tb\tB\t_\t_\t_\t_\t_\t_\t_\n3-5\tcde\t_\t_\t_\t_\t_\t_\t_\t_\n3\tc\tC\t_\t_\t_\t_\t_\t_\t_\n4\td\tD\t_\t_\t_\t_\t_\t_\t_\n5\te\tE\t_\t_\t_\t_\t_\t_\t_\n6\tf\tF\t_\t_\t_\t_\t_\t_\t_\n6.1\tsilent_g\tG\t_\t_\t_\t_\t_\t_\t_\n7\th\tH\t_\t_\t_\t_\t_\t_\t_",
+
+  t: "# testing :)\n1-3\tHe\t_\t_\t_\t_\t_\t_\t_\t_\n1\tboued\tboued\tn\t_\tm|sg\t4\tobj\t_\t_\n2\te\te\tvpart\t_\tobj\t4\taux\t_\t_\n3\ttebr\tdebri\xF1\tvblex\t_\tpri|p3|sg\t0\troot\t_\t_\n4\tdoob\tdoobie\tnp\t_\t_\t3\t_\t_\t_\n5\tMona\tMona\tnp\t_\tant|f|sg\t4\tnsubj\t_\t_",
+
+  empty: "1      Sue       Sue       _       _       _       _       _       _       _\n2      likes     like       _       _       _       _       _       _       _\n3      coffee    coffee       _       _       _       _       _       _       _\n4      and       and       _       _       _       _       _       _       _\n5      Bill      Bill       _       _       _       _       _       _       _\n5.1    likes     like       _       _       _       _       _       _       _\n6      tea       tea       _       _       _       _       _       _       _",
+
+  0: "# sent_id = _\n# text = this is a test\n1\tthis\t_\t_\t_\t_\t_\t_\t_\t_\n2\tis\t_\t_\t_\t_\t_\t_\t_\t_\n3\ta\t_\t_\t_\t_\t_\t_\t_\t_\n4\ttest\t_\t_\t_\t_\t_\t_\t_\t_",
+
+  1: "1\tthis\t_\t_\t_\t_\t_\t_\t_\t_\n2\tis\t_\t_\t_\t_\t_\t_\t_\t_\n3\ta\t_\t_\t_\t_\t_\t_\t_\t_\n4\ttest\t_\t_\t_\t_\t_\t_\t_\t_",
+
+  cat_ancora: "# url = https://raw.githubusercontent.com/UniversalDependencies/UD_Catalan-AnCora/dev/ca_ancora-ud-test.conllu\n# sent_id = test-s1\n# text = El darrer n\xFAmero de l'Observatori del Mercat de Treball d'Osona inclou un informe especial sobre la contractaci\xF3 a trav\xE9s de les empreses de treball temporal, les ETT.\n# orig_file_sentence 001#1\n1\tEl\tel\tDET\tDET\tDefinite=Def|Gender=Masc|Number=Sing|PronType=Art\t3\tdet\t_\t_\n2\tdarrer\tdarrer\tADJ\tADJ\tGender=Masc|Number=Sing|NumType=Ord\t3\tamod\t_\t_\n3\tn\xFAmero\tn\xFAmero\tNOUN\tNOUN\tGender=Masc|Number=Sing\t13\tnsubj\t_\t_\n4\tde\tde\tADP\tADP\tAdpType=Prep\t6\tcase\t_\t_\n5\tl'\tel\tDET\tDET\tDefinite=Def|Number=Sing|PronType=Art\t6\tdet\t_\tSpaceAfter=No\n6\tObservatori\tObservatori\tPROPN\tPROPN\t_\t3\tnmod\t_\tMWE=Observatori_del_Mercat_de_Treball_d'_Osona|MWEPOS=PROPN\n7\tdel\tdel\tADP\tADP\tAdpType=Preppron|Gender=Masc|Number=Sing\t8\tcase\t_\t_\n8\tMercat\tMercat\tPROPN\tPROPN\t_\t6\tflat\t_\t_\n9\tde\tde\tADP\tADP\tAdpType=Prep\t10\tcase\t_\t_\n10\tTreball\tTreball\tPROPN\tPROPN\t_\t6\tflat\t_\t_\n11\td'\td'\tADP\tADP\tAdpType=Prep\t12\tcase\t_\tSpaceAfter=No\n12\tOsona\tOsona\tPROPN\tPROPN\t_\t6\tflat\t_\t_\n13\tinclou\tincloure\tVERB\tVERB\tMood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin\t0\troot\t_\t_\n14\tun\tun\tNUM\tNUM\tGender=Masc|Number=Sing|NumType=Card\t15\tnummod\t_\t_\n15\tinforme\tinforme\tNOUN\tNOUN\tGender=Masc|Number=Sing\t13\tobj\t_\t_\n16\tespecial\tespecial\tADJ\tADJ\tNumber=Sing\t15\tamod\t_\t_\n17\tsobre\tsobre\tADP\tADP\tAdpType=Prep\t19\tcase\t_\t_\n18\tla\tel\tDET\tDET\tDefinite=Def|Gender=Fem|Number=Sing|PronType=Art\t19\tdet\t_\t_\n19\tcontractaci\xF3\tcontractaci\xF3\tNOUN\tNOUN\tGender=Fem|Number=Sing\t15\tnmod\t_\t_\n20\ta\ta\tADP\tADP\tAdpType=Prep\t24\tcase\t_\tMWE=a_trav\xE9s_de|MWEPOS=ADP\n21\ttrav\xE9s\ttrav\xE9s\tNOUN\tNOUN\t_\t20\tfixed\t_\t_\n22\tde\tde\tADP\tADP\tAdpType=Prep\t20\tfixed\t_\t_\n23\tles\tel\tDET\tDET\tDefinite=Def|Gender=Fem|Number=Plur|PronType=Art\t24\tdet\t_\t_\n24\tempreses\tempresa\tNOUN\tNOUN\tGender=Fem|Number=Plur\t19\tnmod\t_\t_\n25\tde\tde\tADP\tADP\tAdpType=Prep\t26\tcase\t_\t_\n26\ttreball\ttreball\tNOUN\tNOUN\tGender=Masc|Number=Sing\t24\tnmod\t_\t_\n27\ttemporal\ttemporal\tADJ\tADJ\tNumber=Sing\t26\tamod\t_\tSpaceAfter=No\n28\t,\t,\tPUNCT\tPUNCT\tPunctType=Comm\t30\tpunct\t_\t_\n29\tles\tel\tDET\tDET\tDefinite=Def|Gender=Fem|Number=Plur|PronType=Art\t30\tdet\t_\t_\n30\tETT\tETT\tPROPN\tPROPN\t_\t24\tappos\t_\tSpaceAfter=No\n31\t.\t.\tPUNCT\tPUNCT\tPunctType=Peri\t13\tpunct\t_\t_",
+
+  with_tabs: "# sent_id = chapID01:paragID1:sentID1\n# text = \u041A\u0435\u0447\u0430\u0435\u043D\u044C \u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C \u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F \u043A\u0430\u0440\u0432\u043E\u0442 .\n# text[eng] = Kechai was awoken by annoying flies.\n1\t\u041A\u0435\u0447\u0430\u0435\u043D\u044C\t\u041A\u0435\u0447\u0430\u0439\tN\tN\tSem/Ant_Mal|Prop|SP|Gen|Indef\t2\tobj\t_\t\u041A\u0435\u0447\u0430\u0435\u043D\u044C\n2\t\u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C\t\u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0435\u043C\u0441\tV\tV\tTV|Ind|Prt1|ScPl3|OcSg3\t0\troot\t_\t\u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C\n3\t\u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F\t\u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u043E\u043C\u0441\tPRC\tPrc\tV|TV|PrcPrsL|Sg|Nom|Indef\t4\tamod\t_\t\u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F\n4\t\u043A\u0430\u0440\u0432\u043E\u0442\t\u043A\u0430\u0440\u0432\u043E\tN\tN\tSem/Ani|N|Pl|Nom|Indef\t2\tnsubj\t_\t\u043A\u0430\u0440\u0432\u043E\u0442\n5\t.\t.\tCLB\tCLB\tCLB\t2\tpunct\t_\t.",
+
+  without_tabs: "# sent_id = chapID01:paragID1:sentID1\n# text = \u041A\u0435\u0447\u0430\u0435\u043D\u044C \u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C \u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F \u043A\u0430\u0440\u0432\u043E\u0442 .\n# text[eng] = Kechai was awoken by annoying flies.\n1 \u041A\u0435\u0447\u0430\u0435\u043D\u044C \u041A\u0435\u0447\u0430\u0439 N N Sem/Ant_Mal|Prop|SP|Gen|Indef 2 obj _ \u041A\u0435\u0447\u0430\u0435\u043D\u044C\n2 \u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C \u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0435\u043C\u0441 V V TV|Ind|Prt1|ScPl3|OcSg3 0 root _ \u0441\u044B\u0440\u0433\u043E\u0437\u0442\u0438\u0437\u044C\n3 \u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F \u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u043E\u043C\u0441 PRC Prc V|TV|PrcPrsL|Sg|Nom|Indef 4 amod _ \u043D\u0430\u043B\u043A\u0441\u0442\u0430\u0432\u0442\u044B\u0446\u044F\n4 \u043A\u0430\u0440\u0432\u043E\u0442 \u043A\u0430\u0440\u0432\u043E N N Sem/Ani|N|Pl|Nom|Indef 2 nsubj _ \u043A\u0430\u0440\u0432\u043E\u0442\n5 . . CLB CLB CLB 2 punct _ .",
+
+  from_cg3_with_semicolumn: "1\tSiedzieli\u015Bmy\tsiedzie\u0107\tvblex\t_\timpf|past|p1|m|pl\t_\t_\t_\t_\n2\tw\tw\tpr\t_\t_\t_\t_\t_\t_\n3\tmoim\tm\xF3j\tprn\t_\tpos|mi|sg|loc\t_\t_\t_\t_\n4\tpokoju\tpok\xF3j\tn\t_\tmi|sg|loc\t_\t_\t_\t_\n5\t,\t,\tcm\t_\t_\t_\t_\t_\t_\n6\tpal\u0105c\tpali\u0107\tvblex\t_\timpf|pprs|adv\t_\t_\t_\t_\n7\ti\ti\tcnjcoo\t_\t_\t_\t_\t_\t_\n8\trozmawiaj\u0105c\trozmawia\u0107\tvblex\t_\timpf|pprs|adv\t_\t_\t_\t_\n9\to\to\tpr\t_\t_\t_\t_\t_\t_\n10\ttem\tto\tprn\t_\tdem|mi|sg|loc\t_\t_\t_\t_\n11\t,\t,\tcm\t_\t_\t_\t_\t_\t_\n12\tjak\tjak\trel\t_\tadv\t_\t_\t_\t_\n13\tmarni\tmarny\tadj\t_\tsint|mp|pl|nom\t_\t_\t_\t_\n14\tjeste\u015Bmy\tby\u0107\tvbser\t_\tpres|p1|pl\t_\t_\t_\t_\n15\t,\t,\tcm\t_\t_\t_\t_\t_\t_\n16\tmarni\tmarny\tadj\t_\tsint|mp|pl|nom\t_\t_\t_\t_\n17\tz\tz\tpr\t_\t_\t_\t_\t_\t_\n18\tlekarskiego\tlekarski\tadj\t_\tmi|sg|gen\t_\t_\t_\t_\n19\tpunktu\tpunkt\tn\t_\tmi|sg|gen\t_\t_\t_\t_\n20\twidzenia\twidzie\u0107\tvblex\t_\timpf|ger|nt|sg|gen\t_\t_\t_\t_\n21\tchc\u0119\tchcie\u0107\tvblex\t_\timpf|pres|p1|sg\t_\t_\t_\t_\n22\tpowiedzie\u0107\tpowiedzie\u0107\tvblex\t_\tperf|inf\t_\t_\t_\t_\n23\t,\t,\tcm\t_\t_\t_\t_\t_\t_\n24\tnaturalnie\tnaturalnie\tadv\t_\tsint\t_\t_\t_\t_\n25\t.\t.\tsent\t_\t_\t_\t_\t_\t_",
+
+  from_cg3_simple: "1\t\u041F\u0430\u0442\u0448\u0430\u043C\u0435\u043D\t\u043F\u0430\u0442\u0448\u0430\tn\t_\tins\t3\tnmod\t_\t_\n2\t\u0441\u043E\u0493\u044B\u0441\t\u0441\u043E\u0493\u044B\u0441\tn\t_\tnom\t3\tobj\t_\t_\n3\t\u0430\u0448\u049B\u0430\u043D\u0434\u0430\t\u0430\u0448\tv\t_\ttv|ger_past|loc\t12\tadvcl\t_\t_\n4\t,\t,\tcm\t_\t_\t12\tpunct\t_\t_\n5\t\u0435\u043B-\u0436\u04B1\u0440\u0442\t\u0435\u043B-\u0436\u04B1\u0440\u0442\tn\t_\tnom\t7\tconj\t_\t_\n6\t,\t,\tcm\t_\t_\t7\tpunct\t_\t_\n7\t\u043E\u0442\u0430\u043D\u044B\u043C\u0434\u044B\t\u043E\u0442\u0430\u043D\tn\t_\tpx1sg|acc\t8\tobj\t_\t_\n8\t\u049B\u043E\u0440\u0493\u0430\u0443\u0493\u0430\t\u049B\u043E\u0440\u0493\u0430\tv\t_\ttv|ger|dat\t12\tadvcl\t_\t_\n9\t,\t,\tcm\t_\t_\t12\tpunct\t_\t_\n10\t\u0431\u0456\u0437\t\u0431\u0456\u0437\tprn\t_\tpers|p1|pl|nom\t12\tnsubj\t_\t_\n11\t\u0441\u043E\u0493\u044B\u0441\u049B\u0430\t\u0441\u043E\u0493\u044B\u0441\tn\t_\tdat\t12\tnmod\t_\t_\n12\t\u0431\u0430\u0440\u0434\u044B\u049B\t\u0431\u0430\u0440\tv\t_\tiv|ifi|p1|pl\t0\troot\t_\t_\n13\t.\t.\tsent\t_\t_\t12\tpunct\t_\t_\n",
+
+  from_cg3_with_spans: "# text = He boued e tebr Mona er gegin.\n# text[eng] = Mona eats her food here in the kitchen.\n# labels = press_1986 ch_syntax p_197 to_check\n1\tHe\the\tdet\t_\tpos|f|sp\t2\tdet\t_\t_\n2\tboued\tboued\tn\t_\tm|sg\t4\tobj\t_\t_\n3\te\te\tvpart\t_\tobj\t4\taux\t_\t_\n4\ttebr\tdebri\xF1\tvblex\t_\tpri|p3|sg\t0\troot\t_\t_\n5\tMona\tMona\tnp\t_\tant|f|sg\t4\tnsubj\t_\t_\n6-7\ter\t_\t_\t_\t_\t_\t_\t_\t_\n6\t_\te\tpr\t_\t_\t8\tcase\t_\t_\n7\t_\tan\tdet\t_\tdef|sp\t8\tdet\t_\t_\n8\tgegin\tkegin\tn\t_\tf|sg\t4\tobl\t_\t_\n9\t.\t.\tsent\t_\t_\t4\tpunct\t_\t_\n",
+
+  rueter_long: "# sent_id = BryzhinskijMixail_Kirdazht_manu:3859\n# text = \u041D\u043E \u0437\u044F\u0440\u0441 \u0432\u0430\u043B\u0433\u0441\u044C , \u0437\u044F\u0440\u0441 \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u0441\u044C \u0434\u044B \u043C\u0435\u043A\u0435\u0432 \u043F\u0430\u0440\u0441\u0442\u0435 \u043F\u0435\u043A\u0441\u0442\u043D\u0435\u0441\u044C \u0432\u0435\u043B\u0435 \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C , \u043A\u0443\u0436\u043E \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C , \u043A\u0443\u0440\u043E \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u0434\u044B \u044D\u0441\u0435\u0441\u0442 \u044E\u0440\u0442\u0441 \u0441\u043E\u0432\u0430\u043C\u043E \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u044D\u0440\u044C\u0432\u0430 \u043B\u0438\u0441\u0438\u0446\u044F\u043D\u0442\u0435\u043D\u044C \u0441\u043E\u0432\u0438\u0446\u044F\u043D\u0442\u0435\u043D\u044C \u0442\u0435 \u0441\u0432\u0430\u043B \u0442\u0435\u0439\u043D\u0435\u043C\u0430 , \u043A\u0435\u043D\u043A\u0448\u0442\u043D\u0435 \u0441\u0432\u0430\u043B \u043F\u0435\u043A\u0441\u0442\u0430\u0437\u044C \u0443\u043B\u0435\u0437\u0442 ; \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u0441\u044B\u0437\u044C \u043A\u0435\u043B\u0435\u0441 \u0430\u043D\u0441\u044F\u043A \u0432\u0430\u043B\u0441\u043A\u0435 \u043C\u0430\u0440\u0442\u043E \u0434\u044B \u0447\u043E\u043F\u043E\u043D\u044C\u0431\u0435\u043B\u0435\u0432 \u2014 \u0440\u0430\u043A\u0448\u0430\u043D\u044C \u043B\u0438\u0432\u0442\u0435\u043C\u0430 \u0441\u043E\u0432\u0430\u0432\u0442\u043E\u043C\u0430 \u0448\u043A\u0430\u043D\u0435 , \u043A\u0443\u0439\u043C\u0435\u0441\u044C \u0442\u0430\u0433\u043E \u0441\u0442\u0430\u043A\u0430\u043B\u0433\u0430\u0434\u0441\u044C .\n# text_en = But by the time he got down the hill, opened and closed the village gate, the lane gate, the cluster gate and the one to their own home (something everyone coming or going had to do, so the gates would always be closed; they were only opened in the morning and at dusk for taking out and letting in the cattle), the wicker of clay had grown heavy again.\n# text_fi = Kun Ket\u0161ai tuli m\xE4elt\xE4 alas, avasi ja sulki huolellisesti kyl\xE4ver\xE4j\xE4ns\xE4, ??aukio/kentt\xE4ver\xE4j\xE4n, kujaver\xE4j\xE4n ja oman kotiver\xE4j\xE4n, savikontti ehti taas alkaa painaa h\xE4nen selk\xE4\xE4ns\xE4. (Kaikkien k\xE4vij\xF6iden tulee tehd\xE4 n\xE4in, jotta ver\xE4j\xE4t olisivat aina kiinni, ver\xE4j\xE4th\xE4n pidet\xE4\xE4n selkosen sel\xE4ll\xE4\xE4n vain aamulla ja illansuussa, kun karjaa ajetaan laitumelle tai kotiin.)\n1 \u041D\u043E \u043D\u043E CCONJ CC _ 3 cc _ _\n2 \u0437\u044F\u0440\u0441 \u0437\u044F\u0440\u0441 ADV Adv|Der/Ill|Adv|Sem/Time Derivation=Ill|AdvType=Tim 3 mark _ _\n3 \u0432\u0430\u043B\u0433\u0441\u044C \u0432\u0430\u043B\u0433\u043E\u043C\u0441 VERB V|Ind|Prt1|ScSg3 Mood=Ind|Number[subj]=Sing|Person[subj]=3|Tense=Prt1 51 advcl _ SpaceAfter=No\n4 , , PUNCT CLB _ 6 punct _ _\n5 \u0437\u044F\u0440\u0441 \u0437\u044F\u0440\u0441 ADV Adv|Der/Ill|Adv|Sem/Time Derivation=Ill|AdvType=Tim 6 mark _ _\n6 \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u0441\u044C \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u043C\u0441 VERB V|Ind|Prt1|ScSg3 Mood=Ind|Number[subj]=Sing|Person[subj]=3|Tense=Prt1 3 conj _ _\n7 \u0434\u044B \u0434\u044B CCONJ CC _ 10 cc _ _\n8 \u043C\u0435\u043A\u0435\u0432 \u043C\u0435\u043A\u0435\u0432 ADV Adv|Lat|Sg|Nom|Indef Case=Lat|Case=Nom|Definite=Ind|Number=Sing 10 advmod _ _\n9 \u043F\u0430\u0440\u0441\u0442\u0435 \u043F\u0430\u0440\u0441\u0442\u0435 ADV Adv|Manner AdvType=Man 10 advmod _ _\n10 \u043F\u0435\u043A\u0441\u0442\u043D\u0435\u0441\u044C \u043F\u0435\u043A\u0441\u0442\u043D\u0435\u043C\u0441 VERB V|Ind|Prt1|ScSg3 Mood=Ind|Number[subj]=Sing|Person[subj]=3|Tense=Prt1 3 conj _ _\n11 \u0432\u0435\u043B\u0435 \u0432\u0435\u043B\u0435 NOUN N|Sem/Inanim_Cnt|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 10 obj _ _\n12 \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u043A\u0435\u043D\u043A\u0448 NOUN N|Sem/Inanim_Cnt|Sg|Gen|Def Case=Gen|Definite=Def|Number=Sing 11 goeswith _ SpaceAfter=No\n13 , , PUNCT CLB _ 15 punct _ _\n14 \u043A\u0443\u0436\u043E \u043A\u0443\u0436\u043E NOUN N|Sem/Inanim_Cnt|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 12 conj _ _\n15 \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u043A\u0435\u043D\u043A\u0448 NOUN N|Sem/Inanim_Cnt|Sg|Gen|Def Case=Gen|Definite=Def|Number=Sing 14 goeswith _ SpaceAfter=No\n16 , , PUNCT CLB _ 18 punct _ _\n17 \u043A\u0443\u0440\u043E \u043A\u0443\u0440\u043E NOUN N|Sem/Inanim_Cnt|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 12 conj _ _\n18 \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u043A\u0435\u043D\u043A\u0448 NOUN N|Sem/Inanim_Cnt|Sg|Gen|Def Case=Gen|Definite=Def|Number=Sing 17 goeswith _ _\n19 \u0434\u044B \u0434\u044B CCONJ CC _ 23 cc _ _\n20 \u044D\u0441\u0435\u0441\u0442 \u044D\u0441\u044C PRON Pron|Refl|Pl3|Gen|Variant=Short Case=Gen|Number=Plur|Person=3|PronType=Refl|Variant=Short 22 nmod _ _\n21 \u044E\u0440\u0442\u0441 \u044E\u0440\u0442 NOUN N|Sem/Inanim_Cnt|SP|Ill|Indef Case=Ill|Definite=Ind|Number=Plur,Sing 20 case _ _\n22 \u0441\u043E\u0432\u0430\u043C\u043E \u0441\u043E\u0432\u0430\u043C\u043E NOUN N|IV|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing|Valency=1 23 compound _ _\n23 \u043A\u0435\u043D\u043A\u0448\u0435\u043D\u0442\u044C \u043A\u0435\u043D\u043A\u0448 NOUN N|Sem/Inanim_Cnt|Sg|Gen|Def Case=Gen|Definite=Def|Number=Sing 12 conj _ _\n24 ( ( PUNCT PUNCT _ 29 punct _ SpaceAfter=No\n25 \u044D\u0440\u044C\u0432\u0430 \u044D\u0440\u044C\u0432\u0430 DET Det|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 26 det _ _\n26 \u043B\u0438\u0441\u0438\u0446\u044F\u043D\u0442\u0435\u043D\u044C-\u0441\u043E\u0432\u0438\u0446\u044F\u043D\u0442\u0435\u043D\u044C \u043B\u0438\u0441\u0438\u0446\u044F\u0442-\u0441\u043E\u0432\u0438\u0446\u044F\u0442 NOUN N|V|NomAg|Sg|Dat|Def Case=Dat|Definite=Def|Derivation=NomAg|Number=Sing 29 obl _ _\n27 \u0442\u0435 \u0442\u0435 PRON Pron|Dem|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing|PronType=Dem 29 nsubj _ _\n28 \u0441\u0432\u0430\u043B \u0441\u0432\u0430\u043B ADV Adv|Tot|Sem/Time_dur PronType=Tot|PronType=Tot 29 advmod _ _\n29 \u0442\u0435\u0439\u043D\u0435\u043C\u0430 \u0442\u0435\u0439\u043D\u0435\u043Cc VERB V|TV|Oblig|Clitic=Cop|Prs|ScSg3 Valency=2|VerbForm=Oblig|Clitic=Cop|Number[subj]=Sing|Person[subj]=3|Tense=Pres 3 parataxis _ SpaceAfter=No\n30 , , PUNCT CLB _ 33 punct _ _\n31 \u043A\u0435\u043D\u043A\u0448\u0442\u043D\u0435 \u043A\u0435\u043D\u043A\u0448 NOUN N|Sem/Inanim_Cnt|Pl|Nom|Def Case=Nom|Definite=Def|Number=Plur 34 nsubj _ _\n32 \u0441\u0432\u0430\u043B \u0441\u0432\u0430\u043B ADV Adv|Tot|Sem/Time_dur PronType=Tot|PronType=Tot 33 advmod _ _\n33 \u043F\u0435\u043A\u0441\u0442\u0430\u0437\u044C \u043F\u0435\u043A\u0441\u0442\u0430\u043C\u0441 VERB V|Der/\u041E\u0437\u044C|Ger Derivation=Ozj|VerbForm=Conv 29 ccomp _ _\n34 \u0443\u043B\u0435\u0437\u0442 \u0443\u043B\u0435\u043C\u0441 AUX V|IV|Opt|ScPl3 Mood=Opt|Number[subj]=Plur|Person[subj]=3|Valency=1 33 cop _ SpaceAfter=No\n35 ; ; PUNCT CLB _ 29 punct _ _\n36 \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u0441\u044B\u0437\u044C \u043F\u0430\u043D\u0436\u0442\u043D\u0435\u043C\u0441 VERB V|Ind|Prs|ScPl3|Obj3 Mood=Ind|Number[subj]=Plur|Person[subj]=3|Tense=Pres|Obj3 29 conj _ _\n37 \u043A\u0435\u043B\u0435\u0441 \u043A\u0435\u043B\u0435\u0441 ADV Adv Adv 36 advmod _ _\n38 \u0430\u043D\u0441\u044F\u043A \u0430\u043D\u0441\u044F\u043A ADV Adv Adv 39 advmod _ _\n39 \u0432\u0430\u043B\u0441\u043A\u0435 \u0432\u0430\u043B\u0441\u043A\u0435 NOUN N|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 36 obl _ _\n40 \u043C\u0430\u0440\u0442\u043E \u043C\u0430\u0440\u0442\u043E ADP Adp|Po AdpType=Post 39 case _ _\n41 \u0434\u044B \u0434\u044B CCONJ CC _ 42 cc _ _\n42 \u0447\u043E\u043F\u043E\u043D\u044C\u0431\u0435\u043B\u0435\u0432 \u0447\u043E\u043F\u043E\u043D\u044C\u0431\u0435\u043B\u0435\u0432 ADV Adv|Lat Case=Lat 39 conj _ _\n43 \u2014 \u2014 PUNCT CLB _ 46 punct _ _\n44 \u0440\u0430\u043A\u0448\u0430\u043D\u044C \u0440\u0430\u043A\u0448\u0430 NOUN N|Sem/Anim_Cnt|SP|Gen|Indef Case=Gen|Definite=Ind|Number=Plur,Sing 45 nmod:gobj _ _\n45 \u043B\u0438\u0432\u0442\u0435\u043C\u0430-\u0441\u043E\u0432\u0430\u0432\u0442\u043E\u043C\u0430 \u043B\u0438\u0432\u0442\u0435\u043C\u0430-\u0441\u043E\u0432\u0430\u0432\u0442\u043E\u043C\u0430 NOUN N|Sg|Nom|Indef Case=Nom|Definite=Ind|Number=Sing 36 nmod _ _\n46 \u0448\u043A\u0430\u043D\u0435 \u0448\u043A\u0430 NOUN N|Sem/Time|SP|Temp|Indef Case=Temp|Definite=Ind|Number=Plur,Sing 39 conj _ SpaceAfter=No\n47 ) ) PUNCT PUNCT _ 29 punct _ SpaceAfter=No\n48 , , PUNCT CLB _ 29 punct _ _\n49 \u043A\u0443\u0439\u043C\u0435\u0441\u044C \u043A\u0443\u0439\u043C\u0435 NOUN N|Sem/Inanim_Cnt|Sg|Nom|Def Case=Nom|Definite=Def|Number=Sing 51 nsubj _ _\n50 \u0442\u0430\u0433\u043E \u0442\u0430\u0433\u043E ADV Adv|Sem/Time AdvType=Tim 51 advmod _ _\n51 \u0441\u0442\u0430\u043A\u0430\u043B\u0433\u0430\u0434\u0441\u044C \u0441\u0442\u0430\u043A\u0430\u043B\u0433\u0430\u0434\u043E\u043C\u0441 VERB V|Ind|Prt1|ScSg3 Mood=Ind|Number[subj]=Sing|Person[subj]=3|Tense=Prt1 0 root _ SpaceAfter=No\n52 . . PUNCT CLB _ 51 punct _ _",
+
+  katya_aplonova_large_arrows: "# sent_id = html/meyer_gorog-contes_bambara_10amadu_tara.dis.html:16\n# text = ko ni i sera ka jiri nin bulu s\xF2r\xF2 ka na ni a ye, ko c\xE8k\xF2r\xF2ba b\xE8 se ka furak\xE8 o la.\n1\tko\tk\xF3\tPART\tcop\t_\t4\tdiscourse\t_\tGloss=QUOT\n2\tni\tn\xED\tSCONJ\tconj\t_\t4\tmark\t_\tGloss=si\n3\ti\t\xED\tPRON\tpers\tPronType=Prs\t4\tnsubj\t_\tGloss=2.SG\n4\tsera\tsera\tVERB\tv\tAspect=Perf|Valency=1|Polarity=Pos\t19\tadvcl\t_\tGloss=arriver|Morf=arriver,PFV.INTR\n5\tka\tk\xE0\tAUX\tpm\t_\t9\taux\t_\tGloss=INF\n6\tjiri\tj\xEDri\tNOUN\tn\t_\t8\tnmod:poss\t_\tGloss=arbre\n7\tnin\tn\xECn\tDET\tprn/dtm\tPronType=Dem|Definite-Def\t6\tdet\t_\tGloss=DEM\n8\tbulu\tb\xFAlu\tNOUN\tn\t_\t9\tobj\t_\tGloss=feuille\n9\ts\xF2r\xF2\ts\u0254\u0300r\u0254\tVERB\tv\t_\t4\txcomp\t_\tGloss=obtenir\n10\tka\tk\xE0\tAUX\tpm\t_\t11\taux\t_\tGloss=INF\n11\tna\tn\xE0\tVERB\tv\t_\t9\txcomp\t_\tGloss=venir\n12\tni\tn\xED\tADP\tconj/prep\t_\t13\tcase\t_\tGloss=et\n13\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t11\tobl\t_\tGloss=3SG\n14\tye\ty\xE9\tADP\tpp\t_\t13\tcase\t_\tGloss=PP\n15\t,\t,\tPUNCT\t_\t_\t4\tpunct\t_\tGloss=,\n16\tko\tk\xF3\tPART\tcop\t_\t19\tdiscourse\t_\tGloss=QUOT\n17\tc\xE8k\xF2r\xF2ba\tc\u025B\u0300.k\u0254r\u0254.ba\tNOUN\tn\t_\t19\tnsubj\t_\tGloss=vieillard|Morf=vieillard,m\xE2le,vieux,AUGM\n18\tb\xE8\tb\u025B\u0301\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t19\taux\t_\tGloss=IPFV.AFF\n19\tse\ts\xE9\tVERB\tv\t_\t0\troot\t_\tGloss=arriver\n20\tka\tk\xE0\tAUX\tpm\t_\t21\taux\t_\tGloss=INF\n21\tfurak\xE8\tf\xFAra.k\u025B\tVERB\tv\t_\t19\txcomp\t_\tGloss=soigner|Morf=soigner,feuille,faire\n22\to\t\xF2\tPRON\tprn\t_\t21\tobl\t_\tGloss=ce\n23\tla\tl\xE1\tADP\tpp\t_\t22\tcase\t_\tGloss=dans\n24\t.\t.\tPUNCT\t_\t_\t19\tpunct\t_\tGloss=.\n",
+
+  katya_aplonova_long: "# sent_id = html/meyer_gorog-contes_bambara_10amadu_tara.dis.html:19\n# text = ko u ye m\xF2g\xF2 nyini a ye, min b\xE8 a furak\xE8 sisan ko c\xE8 ye furak\xE8li cogoya b\xE8\xE8 f\xF2, ko fura nin s\xF2r\xF2 ka g\xE8l\xE8n ko epi ko ni o ye a s\xF2r\xF2 u ye ale den de ye, ni min b\xE8 sa de furanyini f\xE8 a ka sa nin min b\xE8 balo o ka balo ko u k\xF2n\xF2nt\xF2 b\xE8\xE8 ka taga fura nin nyini, ko u k\xF2n\xF2nt\xF2 b\xE8\xE8 ka taga ko nin min seginna ka a s\xF2r\xF2 fura ma na, ko a b\xE8 o den nin haramuya ka o g\xE8n, ka a b\xE8 a ba fana g\xE8n ko u ka a fil\xE8 u y\xE8r\xE8 ni min ma s\xF2n fana ko a b\xE8 o g\xE8n, o ni a ba b\xE8\xE8.\n# label = too_long_to_cut\n1\tko\tk\xF3\tPART\tcop\t_\t5\tdiscourse\t_\tGloss=QUOT\n2\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t5\tnsubj\t_\tGloss=3PL\n3\tye\ty\xE9\tAUX\tpm\tAspect=Perf|Valency=2|Polarity=Pos\t5\taux\t_\tGloss=PFV.TR\n4\tm\xF2g\xF2\tm\u0254\u0300g\u0254\tNOUN\tn\t_\t5\tobj\t_\tGloss=homme\n5\tnyini\t\u0272\xEDni\tVERB\tv\t_\t0\troot\t_\tGloss=chercher\n6\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t5\tobl\t_\tGloss=3SG\n7\tye\ty\xE9\tADP\tpp\t_\t6\tcase\t_\tGloss=PP\n8\t,\t,\tPUNCT\t_\t_\t5\tpunct\t_\tGloss=,\n9\tmin\tm\xEDn\tPRON\tprn\tPronType=Rel\t_\t_\t_\tGloss=REL\n10\tb\xE8\tb\u025B\u0301\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t_\t_\t_\tGloss=IPFV.AFF\n11\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n12\tfurak\xE8\tf\xFAra.k\u025B\tVERB\tv\t_\t_\t_\t_\tGloss=soigner|Morf=soigner,feuille,faire\n13\tsisan\ts\xEDsan\tADV\tadv/n\t_\t_\t_\t_\tGloss=maintenant\n14\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n15\tc\xE8\tc\u025B\u0300\tNOUN\tn\t_\t_\t_\t_\tGloss=m\xE2le\n16\tye\tye\tAUX\tpm\tAspect=Perf|Valency=2|Polarity=Pos\t_\t_\t_\tGloss=PFV.TR\n17\tfurak\xE8li\tf\xFArak\u025Bli\tNOUN\tn\tVerbalForm=Vnoun\t_\t_\t_\tGloss=traitement|Morf=traitement,feuille,faire,NMLZ\n18\tcogoya\tc\xF3goya\tNOUN\tn\t_\t_\t_\t_\tGloss=mani\xE8re|Morf=mani\xE8re,mani\xE8re,ABSTR\n19\tb\xE8\xE8\tb\u025B\u0301\u025B\tDET\tdtm\t_\t_\t_\t_\tGloss=tout\n20\tf\xF2\tf\u0254\u0301\tVERB\tv\t_\t_\t_\t_\tGloss=dire\n21\t,\t,\tPUNCT\t_\t_\t_\t_\t_\tGloss=,\n22\tko\tk\xF3\tPART\tcop\t_\t27\tdiscourse\t_\tGloss=QUOT\n23\tfura\tf\xFAra\tNOUN\tn\t_\t25\tnmod:poss\t_\tGloss=feuille\n24\tnin\tn\xECn\tDET\tdtm\tPronType=Dem|Definite-Def\t23\tdet\t_\tGloss=DEM\n25\ts\xF2r\xF2\ts\u0254\u0300r\u0254\tNOUN\tv\t_\t27\tnsubj\t_\tGloss=obtenir\n26\tka\tka\tAUX\tpm\tPolarity=Pos\t27\taux\t_\tGloss=QUAL.AFF\n27\tg\xE8l\xE8n\tg\u025B\u0300l\u025Bn\tVERB\tvq\t_\t_\t_\t_\tGloss=dur\n28\tko\tk\xF3\tPART\tcop\t_\t29\tdiscourse\t_\tGloss=QUOT\n29\tepi\tepi\tCCONJ\tconj\t_\t27\tcc\t_\tGloss=ETRG.FRA\n30\tko\tk\xF3\tVERB\tcop\t_\t37\tdiscourse\t_\tGloss=QUOT\n31\tni\tn\xED\tSCONJ\tconj\t_\t35\tmark\t_\tGloss=si\n32\to\t\xF2\tPRON\tprn\t_\t35\tnsubj\t_\tGloss=ce\n33\tye\tye\tAUX\tpm\tAspect=Perf|Valency=2|Polarity=Pos\t35\taux\t_\tGloss=PFV.TR\n34\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t35\tobj\t_\tGloss=3SG\n35\ts\xF2r\xF2\ts\u0254\u0300r\u0254\tVERB\tv\t_\t37\tadvcl\t_\tGloss=obtenir\n36\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t37\tnsubj\t_\tGloss=3PL\n37\tye\ty\xE9\tVERB\tcop\tPolarity=Pos\t27\tparataxis\t_\tGloss=EQU\n38\tale\t\xE0l\xEA\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3|PronType=Emp\t39\tnmod:poss\t_\tGloss=3SG.EMPH\n39\tden\td\xE9n\tNOUN\tn\t_\t37\tobl\t_\tGloss=enfant\n40\tde\td\xE8\tPART\tprt\t_\t39\tdiscourse\t_\tGloss=FOC\n41\tye\ty\xE9\tADP\tpp\t_\t39\tcase\t_\tGloss=PP\n42\t,\t,\tPUNCT\t_\t_\t37\tpunct\t_\tGloss=,\n43\tni\tn\xED\tSCONJ\tconj\t_\t46\tmark\t_\tGloss=si\n44\tmin\tm\xEEn\tPRON\tprn\tPronType=Rel\t46\t_\t_\tGloss=REL\n45\tb\xE8\tb\u025B\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t46\t_\t_\tGloss=IPFV.AFF\n46\tsa\ts\xE0\tVERB\tv\t_\t52\t_\t_\tGloss=mourir\n47\tde\td\xE8\tPART\tprt\t_\t46\t_\t_\tGloss=FOC\n48\tfuranyini\tfura\u0272ini\tNOUN\tn\t_\t46\t_\t_\tGloss=feuille|Morf=feuille,chercher\n49\tf\xE8\tf\u025B\u0300\tADP\tpp\t_\t48\t_\t_\tGloss=par\n50\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t52\t_\t_\tGloss=3SG\n51\tka\tka\tAUX\tpm\tMood=Subj|Polarity=Aff\t52\t_\t_\tGloss=SBJV\n52\tsa\ts\xE0\tVERB\tv\t_\t37\t_\t_\tGloss=mourir\n53\tnin\tn\xED\tSCONJ\tconj\t_\t56\tmark\t_\tGloss=quand\n54\tmin\tm\xEEn\tPRON\tprn\tPronType=Rel\t56\t_\t_\tGloss=REL\n55\tb\xE8\tb\u025B\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t56\t_\t_\tGloss=IPFV.AFF\n56\tbalo\tb\xE1lo\tVERB\tv\t_\t59\t_\t_\tGloss=vivre\n57\to\t\xF2\tPRON\tprn\t_\t59\t_\t_\tGloss=ce\n58\tka\tka\tAUX\tpm\tMood=Subj|Polarity=Aff\t59\t_\t_\tGloss=SBJV\n59\tbalo\tb\xE1lo\tVERB\tv\t_\t52\t_\t_\tGloss=vivre\n60\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n61\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t_\t_\t_\tGloss=3PL\n62\tk\xF2n\xF2nt\xF2\tk\u0254\u0300n\u0254nt\u0254n\tNUM\tnum\t_\t_\t_\t_\tGloss=neuf\n63\tb\xE8\xE8\tb\u025B\u0301\u025B\tDET\tdtm\t_\t_\t_\t_\tGloss=tout\n64\tka\tka\tAUX\tpm\tMood=Subj|Polarity=Aff\t_\t_\t_\tGloss=SBJV\n65\ttaga\tt\xE1ga\tVERB\tv\t_\t59\t_\t_\tGloss=aller\n66\tfura\tf\xFAra\tNOUN\tn\t_\t_\t_\t_\tGloss=feuille\n67\tnin\tn\xECn\tDET\tdtm\tPronType=Dem|Definite-Def\t_\t_\t_\tGloss=DEM\n68\tnyini\t\u0272\xEDni\tVERB\tv\t_\t_\t_\t_\tGloss=chercher\n69\t,\t,\tPUNCT\t_\t_\t_\t_\t_\tGloss=,\n70\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n71\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t_\t_\t_\tGloss=3PL\n72\tk\xF2n\xF2nt\xF2\tk\u0254\u0300n\u0254nt\u0254n\tNUM\tnum\t_\t_\t_\t_\tGloss=neuf\n73\tb\xE8\xE8\tb\u025B\u0301\u025B\tDET\tdtm\t_\t_\t_\t_\tGloss=tout\n74\tka\tka\tAUX\tpm\tMood=Subj|Polarity=Aff\t_\t_\t_\tGloss=SBJV\n75\ttaga\tt\xE1ga\tVERB\tv\t_\t65\t_\t_\tGloss=aller\n76\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n77\tnin\tn\xED\tSCONJ\tconj\t_\t_\t_\t_\tGloss=quand\n78\tmin\tm\xEEn\tPRON\tprn\tPronType=Rel\t_\t_\t_\tGloss=REL\n79\tseginna\tseginna\tVERB\tv\tAspect=Perf|Valency=1|Polarity=Pos\t85\t_\t_\tGloss=revenir|Morf=revenir,PFV.INTR\n80\tka\tk\xE0\tAUX\tpm\t_\t_\t_\t_\tGloss=INF\n81\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n82\ts\xF2r\xF2\ts\u0254\u0300r\u0254\tVERB\tv\t_\t_\t_\t_\tGloss=obtenir\n83\tfura\tf\xFAra\tNOUN\tn\t_\t_\t_\t_\tGloss=feuille\n84\tma\tma\tAUX\tpm\tPolarity=Neg|Aspect=Perf\t_\t_\t_\tGloss=PFV.NEG\n85\tna\tn\xE0\tVERB\tv\t_\t75\t_\t_\tGloss=venir\n86\t,\t,\tPUNCT\t_\t_\t_\t_\t_\tGloss=,\n87\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n88\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n89\tb\xE8\tb\u025B\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t_\t_\t_\tGloss=IPFV.AFF\n90\to\t\xF2\tPRON\tprn\t_\t_\t_\t_\tGloss=ce\n91\tden\td\xE9n\tNOUN\tn\t_\t_\t_\t_\tGloss=enfant\n92\tnin\tn\xECn\tDET\tdtm\tPronType=Dem|Definite-Def\t_\t_\t_\tGloss=DEM\n93\tharamuya\th\xE0ramuya\tVERB\tv\t_\t85\t_\t_\tGloss=interdire|Morf=interdire,interdire,ABSTR\n94\tka\tk\xE0\tAUX\tpm\t_\t_\t_\t_\tGloss=INF\n95\to\t\xF2\tPRON\tprn\t_\t_\t_\t_\tGloss=ce\n96\tg\xE8n\tg\u025B\u0301n\tVERB\tv\t_\t_\t_\t_\tGloss=chasser\n97\t,\t,\tPUNCT\t_\t_\t_\t_\t_\tGloss=,\n98\tka\tk\xE0\tAUX\tpm\t_\t_\t_\t_\tGloss=INF\n99\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n100\tb\xE8\tb\u025B\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t_\t_\t_\tGloss=IPFV.AFF\n101\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n102\tba\tb\xE1\tNOUN\tn\t_\t_\t_\t_\tGloss=m\xE8re\n103\tfana\tf\xE1na\tPART\tprt\t_\t_\t_\t_\tGloss=aussi\n104\tg\xE8n\tg\u025B\u0301n\tVERB\tv\t_\t_\t_\t_\tGloss=chasser\n105\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n106\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t_\t_\t_\tGloss=3PL\n107\tka\tka\tAUX\tpm\tMood=Subj|Polarity=Aff\t_\t_\t_\tGloss=SBJV\n108\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n109\tfil\xE8\tf\xEDl\u025B\tVERB\tv\t_\t_\t_\t_\tGloss=regarder\n110\tu\t\xF9\tPRON\tpers\tPronType=Prs|Number=Plur|Person=3\t_\t_\t_\tGloss=3PL\n111\ty\xE8r\xE8\ty\u025B\u0300r\u025B\u0302\tDET\tdtm\t_\t_\t_\t_\tGloss=m\xEAme\n112\tni\tn\xED\tSCONJ\tconj\t_\t_\t_\t_\tGloss=si\n113\tmin\tm\xEEn\tPRON\tprn\tPronType=Rel\t_\t_\t_\tGloss=REL\n114\tma\tma\tAUX\tpm\tPolarity=Neg|Aspect=Perf\t_\t_\t_\tGloss=PFV.NEG\n115\ts\xF2n\ts\u0254\u0300n\tVERB\tv\t_\t_\t_\t_\tGloss=accepter\n116\tfana\tf\xE1na\tPART\tprt\t_\t_\t_\t_\tGloss=aussi\n117\tko\tk\xF3\tPART\tcop\t_\t_\t_\t_\tGloss=QUOT\n118\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n119\tb\xE8\tb\u025B\tAUX\tpm\tPolarity=Pos|Aspect=Imp\t_\t_\t_\tGloss=IPFV.AFF\n120\to\t\xF2\tPRON\tprn\t_\t_\t_\t_\tGloss=ce\n121\tg\xE8n\tg\u025B\u0301n\tVERB\tv\t_\t_\t_\t_\tGloss=chasser\n122\t,\t,\tPUNCT\t_\t_\t_\t_\t_\tGloss=,\n123\to\t\xF2\tPRON\tprn\t_\t_\t_\t_\tGloss=ce\n124\tni\tni\tCCONJ\tconj\t_\t_\t_\t_\tGloss=et\n125\ta\t\xE0\tPRON\tpers\tPronType=Prs|Number=Sing|Person=3\t_\t_\t_\tGloss=3SG\n126\tba\tb\xE1\tNOUN\tn\t_\t_\t_\t_\tGloss=m\xE8re\n127\tb\xE8\xE8\tb\u025B\u0301\u025B\tDET\tdtm\t_\t_\t_\t_\tGloss=tout\n128\t.\t.\tPUNCT\t_\t_\t_\t_\t_\tGloss=.",
+
+  ud_example_tabs: "1\tThey\tthey\tPRON\tPRP\tCase=Nom|Number=Plur\t2\tnsubj\t2:nsubj|4:nsubj\t_\n2\tbuy\tbuy\tVERB\tVBP\tNumber=Plur|Person=3|Tense=Pres\t0\troot\t0:root\t_\n3\tand\tand\tCONJ\tCC\t_\t4\tcc\t4:cc\t_\n4\tsell\tsell\tVERB\tVBP\tNumber=Plur|Person=3|Tense=Pres\t2\tconj\t2:conj\t_\n5\tbooks\tbook\tNOUN\tNNS\tNumber=Plur\t2\tobj\t2:obj|4:obj\t_\n6\t.\t.\tPUNCT\t.\t_\t2\tpunct\t2:punct\t_",
+
+  ud_example_spaces: "1    They     they    PRON    PRP    Case=Nom|Number=Plur               2    nsubj    2:nsubj|4:nsubj  _\n2    buy      buy     VERB    VBP    Number=Plur|Person=3|Tense=Pres    0    root     0:root          _\n3    and      and     CONJ    CC     _                                  4    cc       4:cc            _\n4    sell     sell    VERB    VBP    Number=Plur|Person=3|Tense=Pres    2    conj     2:conj   _\n5    books    book    NOUN    NNS    Number=Plur                        2    obj      2:obj|4:obj     _\n6    .        .       PUNCT   .      _                                  2    punct    2:punct         _",
+
+  ud_example_modified: "1\tThey\tthey\tPRON\tPRP\tCase=Nom|Number=Plur\t2\tnsubj\t2:nsubj|4:nsubj\t_\n2\tbuy\tbuy\tVERB\tVBP\tNumber=Plur|Person=3|Tense=Presroot\t0\troot\t0:root\t_\n3\tand\tand\tCONJ\tCC\t_\t4\tcc\t4:cc\t_\n4\tsell\tsell\tVERB\tVBP\tNumber=Plur|Person=3|Tense=Presconj\t2\t_\t2\t_\n5\tbooks\tbook\tNOUN\tNNS\tNumber=Plur\t2\tobj\t2:obj|4:obj\t_\n6\t.\t.\tPUNCT\t.\t_\t2\tpunct\t2:punct\t_"
+};
+
+},{}],5:[function(require,module,exports){
+(function (__dirname){
+'use strict';
+
+var path = require('path');
+
+module.exports = {
+
+  assorted: path.join(__dirname, 'assorted.conllu'),
+  czech_train: path.join(__dirname, 'cs_cac-ud-train.conllu'),
+  turkish_train: path.join(__dirname, 'tr_imst-ud-test.conllu')
+
+};
+
+}).call(this,"/data/corpora")
+},{"path":12}],6:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  'apertium stream': require('./apertium-stream'),
+  apertiumStream: require('./apertium-stream'),
+  Brackets: require('./brackets'),
+  brackets: require('./brackets'),
+  CG3: require('./cg3'),
+  cg3: require('./cg3'),
+  'CoNLL-U': require('./conllu'),
+  conllu: require('./conllu'),
+  'notatrix serial': require('./notatrix-serial'),
+  notatrixSerial: require('./notatrix-serial'),
+  Params: require('./params'),
+  params: require('./params'),
+  'plain text': require('./plain-text'),
+  plainText: require('./plain-text'),
+  SD: require('./sd'),
+  sd: require('./sd'),
+
+  corpora: require('./corpora')
+
+};
+
+},{"./apertium-stream":1,"./brackets":2,"./cg3":3,"./conllu":4,"./corpora":5,"./notatrix-serial":7,"./params":8,"./plain-text":9,"./sd":10}],7:[function(require,module,exports){
+"use strict";
+
+module.exports = {};
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	0: [{ form: 'hello' }, { form: 'world' }]
+};
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  0: 'this is a test',
+  1: 'this is a test.',
+  2: 'this is a test...',
+  3: 'this is a test?',
+  4: '\tthis is a test',
+  5: 'More sentences = more data; ipso facto, yes.',
+  parens_and_numbers: '\u0414\u04D9\u04AF\u043B\u04D9\u0442\u043B\u04D9\u0440\u043D\u0435\u04A3, \u0448\u0443\u043B \u0438\u0441\u04D9\u043F\u0442\u04D9\u043D \u0420\u0443\u0441\u0438\u044F\u043D\u0435\u04A3 \u0434\u04D9, \u0434\u0438\u04A3\u0433\u0435\u0437 \u0447\u0438\u043A\u043B\u04D9\u0440\u0435 \u044F\u0440\u0434\u0430\u043D 12 \u043C\u0438\u043B\u044C (\u044F\u043A\u0438 22,2 \u043A\u043C) \u0435\u0440\u0430\u043A\u043B\u044B\u043A\u0442\u0430 \u0443\u0437\u0443\u044B \u043A\u0438\u043B\u0435\u0448\u0435\u043D\u0433\u04D9\u043D'
+};
+
+},{}],10:[function(require,module,exports){
+"use strict";
+
+module.exports = {
+  0: "And Robert the fourth place .\ncc(Robert, And)\norphan(Robert, place)\npunct(Robert, .)\namod(place, fourth)\ndet(place, the)",
+
+  1: "ROOT And Robert the fourth place .\nroot(ROOT, Robert)\ncc(Robert, And)\norphan(Robert, place)\npunct(Robert, .)\namod(place, fourth)\ndet(place, the)",
+
+  2: "ROOT I love French fries .\nroot(ROOT, love)",
+
+  // https://github.com/UniversalDependencies/docs/blob/pages-source/_u-dep/ccomp.md
+  ccomp_1: "He says that you like to swim\nccomp(says, like)\nmark(like, that)",
+
+  ccomp_2: "He says you like to swim\nccomp(says, like)",
+
+  ccomp_3: "The boss said to start digging\nccomp(said, start)\nmark(start, to)",
+
+  ccomp_4: "We started digging\nxcomp(started, digging)",
+
+  ccomp_5: "The important thing is to keep calm.\nccomp(is, keep)\nnsubj(is, thing)",
+
+  ccomp_6: "The problem is that this has never been tried .\nccomp(is, tried)\nnsubj(is, problem)"
+};
+
+},{}],11:[function(require,module,exports){
+
+},{}],12:[function(require,module,exports){
+(function (process){
+// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+// backported and transplited with Babel, with backwards-compat fixes
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  if (path.length === 0) return '.';
+  var code = path.charCodeAt(0);
+  var hasRoot = code === 47 /*/*/;
+  var end = -1;
+  var matchedSlash = true;
+  for (var i = path.length - 1; i >= 1; --i) {
+    code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        if (!matchedSlash) {
+          end = i;
+          break;
+        }
+      } else {
+      // We saw the first non-path separator
+      matchedSlash = false;
+    }
+  }
+
+  if (end === -1) return hasRoot ? '/' : '.';
+  if (hasRoot && end === 1) {
+    // return '//';
+    // Backwards-compat fix:
+    return '/';
+  }
+  return path.slice(0, end);
+};
+
+function basename(path) {
+  if (typeof path !== 'string') path = path + '';
+
+  var start = 0;
+  var end = -1;
+  var matchedSlash = true;
+  var i;
+
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path.charCodeAt(i) === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          start = i + 1;
+          break;
+        }
+      } else if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // path component
+      matchedSlash = false;
+      end = i + 1;
+    }
+  }
+
+  if (end === -1) return '';
+  return path.slice(start, end);
+}
+
+// Uses a mixed approach for backwards-compatibility, as ext behavior changed
+// in new Node.js versions, so only basename() above is backported here
+exports.basename = function (path, ext) {
+  var f = basename(path);
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+exports.extname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  var startDot = -1;
+  var startPart = 0;
+  var end = -1;
+  var matchedSlash = true;
+  // Track the state of characters (if any) we see before our first dot and
+  // after any path separator we find
+  var preDotState = 0;
+  for (var i = path.length - 1; i >= 0; --i) {
+    var code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          startPart = i + 1;
+          break;
+        }
+        continue;
+      }
+    if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // extension
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code === 46 /*.*/) {
+        // If this is our first dot, mark it as the start of our extension
+        if (startDot === -1)
+          startDot = i;
+        else if (preDotState !== 1)
+          preDotState = 1;
+    } else if (startDot !== -1) {
+      // We saw a non-dot and non-path separator before our dot, so we should
+      // have a good chance at having a non-empty extension
+      preDotState = -1;
+    }
+  }
+
+  if (startDot === -1 || end === -1 ||
+      // We saw a non-dot character immediately before the dot
+      preDotState === 0 ||
+      // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return '';
+  }
+  return path.slice(startDot, end);
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+}).call(this,require('_process'))
+},{"_process":13}],13:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],14:[function(require,module,exports){
 (function (global){
 //     Underscore.js 1.9.1
 //     http://underscorejs.org
@@ -1694,10 +2387,457 @@
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],2:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+var byteToHex = [];
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
+}
+
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex;
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([bth[buf[i++]], bth[buf[i++]], 
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]]]).join('');
+}
+
+module.exports = bytesToUuid;
+
+},{}],16:[function(require,module,exports){
+// Unique ID creation requires a high quality random # generator.  In the
+// browser this is a little complicated due to unknown quality of Math.random()
+// and inconsistent support for the `crypto` API.  We do the best we can via
+// feature-detection
+
+// getRandomValues needs to be invoked in a context where "this" is a Crypto
+// implementation. Also, find the complete implementation of crypto on IE11.
+var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
+                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
+
+if (getRandomValues) {
+  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
+  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
+
+  module.exports = function whatwgRNG() {
+    getRandomValues(rnds8);
+    return rnds8;
+  };
+} else {
+  // Math.random()-based (RNG)
+  //
+  // If all else fails, use Math.random().  It's fast, but is of unspecified
+  // quality.
+  var rnds = new Array(16);
+
+  module.exports = function mathRNG() {
+    for (var i = 0, r; i < 16; i++) {
+      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return rnds;
+  };
+}
+
+},{}],17:[function(require,module,exports){
+var rng = require('./lib/rng');
+var bytesToUuid = require('./lib/bytesToUuid');
+
+function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof(options) == 'string') {
+    buf = options === 'binary' ? new Array(16) : null;
+    options = null;
+  }
+  options = options || {};
+
+  var rnds = options.random || (options.rng || rng)();
+
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+  // Copy bytes to buffer, if provided
+  if (buf) {
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
+    }
+  }
+
+  return buf || bytesToUuid(rnds);
+}
+
+module.exports = v4;
+
+},{"./lib/bytesToUuid":15,"./lib/rng":16}],18:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _ = require('underscore');
+
+var utils = require('./utils');
+var ConverterError = utils.ConverterError;
+var nx = require('./nx');
+
+module.exports = function (input, options) {
+  try {
+
+    var sent = new nx.Sentence(input, options);
+    sent.from = function (format) {
+      return convert(sent.input, _.extend({
+        interpretAs: format
+      }, options));
+    };
+
+    return sent;
+  } catch (e) {
+
+    if (e instanceof utils.ToolError || e instanceof utils.NxError) throw new ConverterError('FATAL: unable to convert: ' + e.message);
+
+    throw e;
+  }
+};
+
+},{"./nx":80,"./utils":94,"underscore":14}],19:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('./utils');
+var DetectorError = utils.DetectorError;
+
+var as = {
+
+	'apertium stream': require('./formats/apertium-stream').detect,
+	apertiumStream: require('./formats/apertium-stream').detect,
+	Brackets: require('./formats/brackets').detect,
+	brackets: require('./formats/brackets').detect,
+	CG3: require('./formats/cg3').detect,
+	cg3: require('./formats/cg3').detect,
+	'CoNLL-U': require('./formats/conllu').detect,
+	conllu: require('./formats/conllu').detect,
+	'notatrix serial': require('./formats/notatrix-serial').detect,
+	notatrixSerial: require('./formats/notatrix-serial').detect,
+	Params: require('./formats/params').detect,
+	params: require('./formats/params').detect,
+	'plain text': require('./formats/plain-text').detect,
+	plainText: require('./formats/plain-text').detect,
+	SD: require('./formats/sd').detect,
+	sd: require('./formats/sd').detect
+
+};
+
+module.exports = function (text, options) {
+
+	options = _.defaults(options, {
+		suppressDetectorErrors: true,
+		returnAllMatches: true,
+		requireOneMatch: false
+	});
+
+	var matches = utils.formats.map(function (format) {
+
+		try {
+			return as[format](text, options);
+		} catch (e) {
+
+			if (e instanceof DetectorError) return;
+
+			throw e;
+		}
+	}).filter(utils.thin);
+
+	if (!matches.length && !options.suppressDetectorErrors) throw new DetectorError('Unable to detect format', text, options);
+
+	if (matches.length > 1 && !options.suppressDetectorErrors && options.requireOneMatch) throw new DetectorError('Detected multiple formats', text, options);
+
+	return options.returnAllMatches ? matches : matches[0];
+};
+module.exports.as = as;
+
+},{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],20:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+  throw new DetectorError('not implemented');
+};
+
+},{"../../utils":94}],21:[function(require,module,exports){
+"use strict";
+
+module.exports = null;
+
+},{}],22:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+
+module.exports = function (text, options) {
+  //throw new GeneratorError('not implemented');
+};
+
+},{"../../utils":94}],23:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'apertium stream',
+  fields: require('./fields'),
+  split: require('./splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"./detector":20,"./fields":21,"./generator":22,"./parser":24,"./splitter":25}],24:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+
+module.exports = function (text, options) {
+  //throw new ParserError('not implemented');
+};
+
+},{"../../utils":94}],25:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var SplitterError = utils.SplitterError;
+
+module.exports = function (text, options) {
+  //throw new SplitterError('not implemented', text, options);
+};
+
+},{"../../utils":94}],26:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    allowTrailingWhitespace: true,
+    allowLeadingWhitespace: true,
+    allowNoDependencies: false,
+    allowNewlines: false
+  });
+
+  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal Brackets: empty string', text, options);
+
+  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal Brackets: JSON object', text, options);
+
+  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError('Illegal Brackets: contains newlines', text, options);
+
+  // internal stuff
+  var parsing = null;
+  var depth = 0;
+  var sawBracket = false;
+
+  text.split('').forEach(function (char, i) {
+
+    switch (char) {
+
+      case '[':
+        if (parsing === ']') throw new DetectorError('Illegal Brackets: invalid sequence "]["', text, options);
+
+        sawBracket = true;
+        depth += 1;
+        break;
+
+      case ']':
+        if (parsing === '[') throw new DetectorError('Illegal Brackets: invalid sequence "[]"', text, options);
+
+        sawBracket = true;
+        depth -= 1;
+        break;
+
+      case ' ':
+      case '\t':
+      case '\n':
+
+        if (!options.allowLeadingWhitespace) {
+          if (parsing !== null && !utils.re.whitespace.test(parsing)) throw new DetectorError('Illegal Brackets: contains leading whitespace', text, options);
+        }
+        break;
+    }
+
+    parsing = char;
+  });
+
+  if (!sawBracket && !options.allowNoDependencies) throw new DetectorError('Illegal Brackets: contains no dependencies', text, options);
+
+  if (depth !== 0) throw new DetectorError('Illegal Brackets: bracket mismatch', text, options);
+
+  if (utils.re.whitespace.test(parsing) && !options.allowTrailingWhitespace) throw new DetectorError('Illegal Brackets: contains trailing whitespace', text, options);
+
+  return 'Brackets';
+};
+
+},{"../../utils":94,"underscore":14}],27:[function(require,module,exports){
+'use strict';
+
+module.exports = ['form', 'heads'];
+module.exports.hasComments = false;
+
+},{}],28:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  if (!sent.root) throw new GeneratorError('Unable to generate, could not find root');
+
+  // build the tree structure
+  var seen = new Set([sent.root]);
+  var root = {
+    token: sent.root,
+    deprel: null,
+    deps: []
+  };
+
+  var visit = function visit(node) {
+    node.token.mapDependents(function (dep) {
+
+      if (seen.has(dep.token)) throw new GeneratorError('Unable to generate, dependency structure non-linear');
+
+      dep.deps = [];
+      node.deps.push(dep);
+      seen.add(dep.token);
+      visit(dep);
+    });
+  };
+  visit(root);
+
+  //console.log(root);
+
+  if (seen.size < sent.size + 1) throw new GeneratorError('Unable to generate, sentence not fully connected');
+
+  // parse the tree into a string
+  var output = '';
+  var walk = function walk(node) {
+
+    output += '[' + (node.deprel || '_') + ' ';
+
+    node.deps.forEach(function (dep) {
+      if (dep.token.indices.absolute < node.token.indices.absolute) walk(dep);
+    });
+
+    output += ' ' + node.token.form + ' ';
+
+    node.deps.forEach(function (dep) {
+      if (dep.token.indices.absolute > node.token.indices.absolute) walk(dep);
+    });
+
+    output += ' ] ';
+  };
+  root.deps.forEach(function (dep) {
+    return walk(dep);
+  });
+
+  // clean up the output
+  output = output.replace(/\s+/g, ' ').replace(/ \]/g, ']').replace(/\[ /g, '[').replace(/(\w)_(\w)/, '$1 $2').trim();
+
+  // console.log(output);
+
+  return {
+    output: output,
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":29,"underscore":14}],29:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  if (serial.comments.length) losses.add('comments');
+
+  serial.tokens.forEach(function (token) {
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+        case 'deps':
+          break;
+
+        case 'heads':
+          if (token.heads.length > 1) losses.add(field);
+          break;
+
+        case 'feats':
+        case 'misc':
+          if (token[field] && token[field].length) losses.add(field);
+          break;
+
+        default:
+          if (token[field]) losses.add(field);
+      }
+    });
+  });
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":27,"underscore":14}],30:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'Brackets',
+  fields: require('./fields'),
+  split: require('../default-splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"../default-splitter":44,"./detector":26,"./fields":27,"./generator":28,"./parser":31}],31:[function(require,module,exports){
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1705,1232 +2845,5245 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var _ = require('underscore');
 
-var NotatrixError = require('./errors').NotatrixError;
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
 
-/**
- * convert a string to subscripts (for ele labels)
- *
- * @param {String} str string to be subscripted
- * @return {String}
- */
-function toSubscript(str) {
-  var subscripts = { 0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄', 5: '₅',
-    6: '₆', 7: '₇', 8: '₈', 9: '₉', '-': '₋', '(': '₍', ')': '₎' };
+module.exports = function (text, options) {
 
-  return str.split('').map(function (char) {
-    return subscripts[char] || char;
-  }).join('');
-}
+  //console.log();
+  //console.log(text);
 
-/**
- * strip whitespace from a string
- *
- * @param {String} str
- * @return {String}
- */
-function sanitize(str) {
-  if (str) return str.replace(/\s/g, '');
-}
-
-/**
- * take a string possibly given in enhanced notation and extract the head
- *   and deprel
- *
- * e.g. `2:ccomp|3:nsubj` => `[
- *   { token: 2, deprel: 'ccomp' },
- *   { token: 3, deprel: 'nsubj' } ]`
- *
- * @param {String} str
- * @return {Array} [[Object]]
- */
-function parseEnhancedString(str) {
-
-  // strip whitespace in input
-  str = sanitize(str);
-
-  // keep our heads here
-  var heads = [];
-
-  // iterate over "|"-delimited chunks
-  _.each(str.split('|'), function (head) {
-    head = head.split(':');
-
-    // ignore it if we don't parse a head
-    if (head[0]) heads.push({
-      token: head[0],
-      deprel: head[1]
-    });
+  options = _.defaults(options, {
+    allowEmptyString: false
   });
-  return heads;
-}
 
-/**
- * automatically add PUNCT pos tags to strings that consist of only punctuation
- *
- * NOTE: only has an effect if sentence-level options help.upostag|help.xpostag
- *   are set to true (default: true)
- *
- * @param {Analysis} ana the analysis to evaluate for
- * @param {String} string
- * @return {undefined}
- */
-function evaluatePunctPos(ana, string) {
-  if (typeof string !== 'string') return;
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
 
-  if (puncts.test(string)) {
-    if (ana.sentence.options.help.upostag && !ana.upostag) ana.upostag = 'PUNCT';
-
-    if (ana.sentence.options.help.xpostag && !ana.xpostag) ana.xpostag = 'PUNCT';
+    throw e;
   }
-}
 
-/**
- * helper function for Analysis::cg3 [get] ... actually does the work of
- *   deciding how we want to display the information contained in an analysis
- *
- * @param {Analysis} ana
- * @param {Number} tabs current indent level
- * @return {String}
- */
-function cg3FormatOutput(analysis, tabs) {
+  var Sentence = function () {
+    function Sentence(text, options) {
+      _classCallCheck(this, Sentence);
 
-  var indent = new Array(tabs).fill('\t').join('');
-  var tags = analysis.xpostag ? ' ' + analysis.xpostag.replace(/;/g, ' ') : '';
-  var misc = analysis.misc ? ' ' + analysis.misc.replace(/;/g, ' ') : '';
-  var deprel = analysis.deprel ? ' @' + analysis.deprel : '';
-  var id = analysis.id ? ' #' + analysis.id + '->' : '';
-  var head = id && analysis.head ? '' + analysis.head : '';
-  var dependency = analysis.sentence.options.showEmptyDependencies || analysis.head ? '' + id + head : '';
+      this.input = text;
+      this.options = options;
+      this.parent = null;
+      this.root = [];
+      this.comments = [];
+    }
 
-  return indent + '"' + analysis.lemma + '"' + tags + misc + deprel + dependency;
-}
+    _createClass(Sentence, [{
+      key: 'serialize',
+      value: function serialize() {
 
-// placeholder for CoNLL-U export in `undefined` fields
-var fallback = '_';
-// setteable fields
-var fields = [
-// NB: 'id' is not kept here
-'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
-// supported punctuation characters
-var puncts = /[.,!?]/;
+        this.root.index(0);
 
-/**
- * this class contains all the information associated with an analysis, including
- *   a value for each of form, lemma, upostag, xpostag, feats, head, deprel,
- *   deps, & misc ... also keeps an array of subTokens and an index
- */
+        return {
+          input: this.input,
+          options: this.options,
+          comments: this.comments,
+          tokens: this.root.serialize([])
+        };
+      }
+    }, {
+      key: 'push',
+      value: function push(token) {
+        this.root = token;
+      }
+    }]);
 
-var Analysis = function () {
-  function Analysis(token, params) {
-    var _this = this;
+    return Sentence;
+  }();
 
-    _classCallCheck(this, Analysis);
+  var Token = function () {
+    function Token(parent) {
+      _classCallCheck(this, Token);
 
-    // require token param
-    if (!token) throw new NotatrixError('missing required arg: Token');
+      this.parent = parent;
 
-    // used to make sure we only add the head/deps strings on first pass, since
-    //   we'll eventually call attach() whenever we're constructing like this
-    this.initializing = true;
+      this.deprel = null;
+      this.before = [];
+      this.words = [];
+      this.after = [];
+    }
 
-    // pointers to parents
-    this.token = token;
-    this.sentence = token.sentence;
+    _createClass(Token, [{
+      key: 'eachBefore',
+      value: function eachBefore(callback) {
+        for (var i = 0; i < this.before.length; i++) {
+          callback(this.before[i], i);
+        }
+      }
+    }, {
+      key: 'eachAfter',
+      value: function eachAfter(callback) {
+        for (var i = 0; i < this.after.length; i++) {
+          callback(this.after[i], i);
+        }
+      }
+    }, {
+      key: 'index',
+      value: function index(num) {
+        this.eachBefore(function (before) {
+          num = before.index(num);
+        });
+        this.num = ++num;
+        this.eachAfter(function (after) {
+          num = after.index(num);
+        });
 
-    // internal arrays of Analyses
-    this._heads = [];
-    this._deps = [];
+        return num;
+      }
+    }, {
+      key: 'serialize',
+      value: function serialize(tokens) {
 
-    // internal index (see Sentence::index and Token::index), don't change this!
-    this.id = null;
+        this.eachBefore(function (before) {
+          before.serialize(tokens);
+        });
 
-    // array of Tokens
-    this.subTokens = [];
+        tokens.push({
+          form: this.form,
+          heads: [{
+            index: this.parent.num || 0,
+            deprel: this.deprel
+          }],
+          index: this.num
+        });
 
-    // iterate over passed params
-    _.each(params, function (value, key) {
-      if (value === undefined || fields.indexOf(key) === -1) {
-        // delete invalid parameters
-        delete params[key];
+        this.eachAfter(function (after) {
+          after.serialize(tokens);
+        });
+
+        return tokens;
+      }
+    }, {
+      key: 'push',
+      value: function push(token) {
+        if (this.words.length) {
+          this.after.push(token);
+        } else {
+          this.before.push(token);
+        }
+      }
+    }, {
+      key: 'addWord',
+      value: function addWord(word) {
+        if (!word) return;
+
+        if (this.deprel) {
+          this.words.push(word);
+        } else {
+          this.deprel = word;
+        }
+      }
+    }, {
+      key: 'form',
+      get: function get() {
+        return this.words.join('_');
+      }
+    }]);
+
+    return Token;
+  }();
+
+  var sent = new Sentence(text, options),
+      parsing = sent,
+      parent = null,
+      word = '';
+
+  _.each(text, function (char) {
+    switch (char) {
+      case '[':
+        parent = parsing;
+        parsing = new Token(parent);
+        if (parent && parent.push) parent.push(parsing);
+        word = '';
+        break;
+
+      case ']':
+        if (parsing.addWord) parsing.addWord(word);
+        parsing = parsing.parent;
+        parent = parsing.parent;
+        word = '';
+        break;
+
+      case ' ':
+        if (parsing.addWord) parsing.addWord(word);
+        word = '';
+        break;
+
+      default:
+        word += char;
+        break;
+    }
+  });
+
+  //console.log(sent.serialize())
+  return sent.serialize();
+};
+
+},{"../../utils":94,"./detector":26,"underscore":14}],32:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    allowTrailingWhitespace: true,
+    allowLeadingWhitespace: true
+  });
+
+  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal CG3: empty string', text, options);
+
+  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal CG3: JSON object', text, options);
+
+  // internal stuff
+  var parsing = null;
+
+  // iterate over the lines and check each one
+  text.split(/\n/).forEach(function (line) {
+
+    if (utils.re.whiteline.test(line)) {
+
+      if (parsing === null) {
+
+        if (!options.allowLeadingWhitespace) throw new DetectorError('Illegal CG3: contains leading whitespace', text, options);
       } else {
-        // save valid ones (using our setters defined below)
-        _this[key] = value;
+
+        if (parsing !== 'token-body' || !options.allowTrailingWhitespace) throw new DetectorError('Illegal CG3: contains trailing whitespace', text, options);
+      }
+
+      parsing = 'whitespace';
+    } else if (utils.re.comment.test(line)) {
+
+      if (parsing === 'token-start' || parsing === 'token-body') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>comment', text, options);
+
+      parsing = 'comment';
+    } else if (utils.re.cg3TokenStart.test(line)) {
+
+      if (parsing === 'token-start') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>token-start', text, options);
+
+      parsing = 'token-start';
+    } else if (utils.re.cg3TokenContent.test(line)) {
+
+      if (parsing === 'comment' || parsing === 'whitespace') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>token-body', text, options);
+
+      parsing = 'token-body';
+    } else {
+
+      throw new DetectorError('Illegal CG3: unmatched line', text, options);
+    }
+  });
+
+  return 'CG3';
+};
+
+},{"../../utils":94,"underscore":14}],33:[function(require,module,exports){
+'use strict';
+
+module.exports = ['semicolon', 'index', 'form', 'lemma', 'heads', 'xpostag', 'other', 'analyses'];
+module.exports.hasComments = true;
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {
+    omitIndices: false,
+    allowMissingLemma: true
+  });
+
+  sent.index();
+
+  var lines = [];
+  sent.comments.forEach(function (comment) {
+    return lines.push('# ' + comment.body);
+  });
+  sent.tokens.forEach(function (token) {
+
+    var isSet = function isSet(field) {
+      return field && field !== utils.fallback ? field : null;
+    };
+
+    var push = function push(token, indent) {
+
+      if (!token.lemma && !options.allowMissingLemma) throw new GeneratorError('Unable to generate, token has no lemma', sent, options);
+
+      indent = (token.semicolon ? ';' : '') + '\t'.repeat(indent);
+
+      var head = token.heads.first;
+      var dependency = options.omitIndices ? null : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head.token.indices.cg3);
+
+      var line = ['"' + (isSet(token.lemma) || isSet(token.form) || utils.fallback) + '"'].concat(isSet(token.xpostag) || isSet(token.upostag)).concat((token._feats || []).join(' ')).concat((token._misc || []).join(' ')).concat(head && isSet(head.deprel) ? '@' + head.deprel : null).concat(dependency);
+
+      line = indent + line.filter(utils.thin).join(' ');
+      lines.push(line);
+    };
+
+    lines.push('"<' + (token.form || utils.fallback) + '>"');
+
+    if (token._analyses && token._analyses.length) {
+
+      token._analyses.forEach(function (analysis) {
+        analysis.subTokens.forEach(function (subToken, i) {
+
+          push(subToken, i + 1);
+        });
+      });
+    } else {
+
+      push(token, 1);
+    }
+  });
+
+  return {
+    output: lines.join('\n'),
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":35,"underscore":14}],35:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  var tokenCalcLoss = function tokenCalcLoss(token) {
+    if (token.heads && token.heads.length > 1) losses.add('enhanced dependencies');
+
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+        case 'deps':
+        case 'feats':
+        case 'misc':
+          break;
+
+        case 'upostag':
+          if (token.xpostag && token.upostag) losses.add(field);
+          break;
+
+        case 'isEmpty':
+          if (token.isEmpty) losses.add(field);
+          break;
+
+        default:
+          losses.add(field);
       }
     });
+  };
 
-    // save updated params (mostly for debugging purposes)
-    this.params = params || {};
+  serial.tokens.map(function (token) {
 
-    // safe to unset this now
-    this.initializing = false;
+    tokenCalcLoss(token);
+
+    (token.analyses || []).forEach(function (analysis) {
+
+      var analysisKeys = Object.keys(analysis);
+      if (analysisKeys.length > 1 || analysisKeys[0] !== 'subTokens') {
+        losses.add('analyses');
+      } else {
+        analysis.subTokens.map(function (subToken) {
+
+          tokenCalcLoss(subToken);
+
+          if (subToken.form != undefined) losses.add('form');
+        });
+      }
+    });
+  });
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":33,"underscore":14}],36:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'CG3',
+  fields: require('./fields'),
+  split: require('../default-splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"../default-splitter":44,"./detector":32,"./fields":33,"./generator":34,"./parser":37}],37:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+
+module.exports = function (text, options) {
+
+  function getIndentNum(str, options) {
+
+    var count = function count(str, reg) {
+      return str.match(reg).length;
+    };
+
+    if (options.indentString) {
+
+      var regex = options.indentString instanceof RegExp ? options.indentString : new RegExp(options.indentString, 'g');
+
+      return count(str, regex);
+    } else if (options.useTabIndent) {
+
+      return count(str, /\t/g);
+    } else if (options.spacesPerTab) {
+
+      var _regex = new RegExp(' {' + options.spacesPerTab + '}', 'g');
+      return count(str, _regex);
+    } else if (options.equalizeWhitespace) {
+
+      return count(str, /\s/g);
+    } else {
+      throw new ParserError('can\'t get the indent number, insufficient options set', text, options);
+    }
+  }
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    indentString: null,
+    useTabIndent: false,
+    spacesPerTab: null,
+    equalizeWhitespace: true,
+    coerceMultipleSpacesAfterSemicolonToTab: true,
+    allowMissingIndices: true
+  });
+
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  //console.log();
+  //console.log(text);
+
+  // "tokenize" into chunks
+  var i = 0,
+      chunks = [];
+  while (i < text.length) {
+
+    var remains = text.slice(i),
+        whiteline = remains.match(utils.re.whiteline),
+        comment = remains.match(utils.re.comment),
+        tokenStart = remains.match(utils.re.cg3TokenStart),
+        tokenContent = remains.match(utils.re.cg3TokenContent);
+
+    if (whiteline) {
+
+      i += whiteline[0].length;
+    } else if (comment) {
+
+      chunks.push({
+        type: 'comment',
+        body: comment[2]
+      });
+      i += comment[1].length;
+    } else if (tokenStart) {
+
+      chunks.push({
+        type: 'form',
+        form: tokenStart[1]
+      });
+      i += tokenStart[0].length;
+
+      while (utils.re.whitespace.test(text[i]) && text[i] !== '\n') {
+        i++;
+      }i++;
+    } else if (tokenContent) {
+      (function () {
+
+        // some real BS right here, overfitting my data hard
+        var indent = options.coerceMultipleSpacesAfterSemicolonToTab ? !!tokenContent[1] ? tokenContent[2].replace(/ +/, '\t') : tokenContent[2] : tokenContent[2];
+
+        var chunk = {
+          type: 'content',
+          semicolon: !!tokenContent[1],
+          indent: getIndentNum(indent, options),
+          lemma: tokenContent[3],
+          misc: []
+        };
+
+        var deprel = tokenContent[5].match(utils.re.cg3Deprel);
+
+        tokenContent[5].split(/\s+/).filter(utils.thin).forEach(function (subChunk) {
+
+          var dependency = subChunk.match(utils.re.cg3Dependency),
+              head = subChunk.match(utils.re.cg3Head),
+              index = subChunk.match(utils.re.cg3Index),
+              misc = subChunk.match(utils.re.cg3Other);
+
+          if (dependency && (head || index)) {
+
+            if (head) {
+
+              if (chunk.heads) throw new ParserError('unexpected subChunk, heads already set', text, options);
+
+              head = parseInt(head[1]);
+
+              if (!isNaN(head)) chunk.heads = [{
+                index: head,
+                deprel: deprel && deprel[1] ? deprel[1] : null
+              }];
+            } else if (index) {
+
+              if (chunk.index) throw new ParserError('unexpected subChunk, index already set', text, options);
+
+              chunk.index = parseInt(index[1]);
+            }
+          } else if (misc) {
+
+            if (!misc[0].startsWith('@')) chunk.misc.push(misc[0]);
+          }
+        });
+
+        if (deprel && deprel[1] && !chunk.heads) chunk.misc.push('@' + deprel[1]);
+
+        chunks.push(chunk);
+        i += tokenContent[0].length;
+      })();
+    } else {
+      throw new ParserError('unable to match remains: ' + remains, text, options);
+    }
+  }
+
+  //console.log(chunks);
+
+  // turn the chunks into tokens and comments
+  var tokens = [];
+  var comments = [];
+  var expecting = ['comment', 'form'];
+  var token = null;
+  var analysis = null;
+  var missingIndices = false;
+
+  chunks.forEach(function (chunk) {
+
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
+
+    if (chunk.type === 'comment') {
+
+      comments.push(chunk.body);
+      expecting = ['comment', 'form'];
+      token = null;
+      analysis = null;
+    } else if (chunk.type === 'form') {
+
+      if (analysis) token.analyses.push(analysis);
+
+      if (token) {
+        if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+
+        tokens.push(_.omit(token, 'currentIndent'));
+      }
+
+      token = {
+        form: chunk.form,
+        currentIndent: 0,
+        analyses: []
+      };
+      analysis = null;
+
+      expecting = ['content'];
+    } else if (chunk.type === 'content') {
+
+      if (!token) throw new ParserError('cannot parse content chunk without a token', text, options);
+
+      if (chunk.indent > token.currentIndent + 1) throw new ParserError('invalid indent change (' + token.currentIndent + '=>' + chunk.indent + ')', text, options);
+
+      if (chunk.indent === 1) {
+        if (analysis) token.analyses.push(analysis);
+
+        if (chunk.index === undefined) {
+          if (!options.allowMissingIndices) throw new ParserError('cannot parse token without index', text, options);
+
+          missingIndices = true;
+        } else {
+          if (missingIndices) throw new ParserError('cannot parse partially indexed CG3', text, options);
+        }
+
+        analysis = {
+          subTokens: [{
+            semicolon: chunk.semicolon,
+            lemma: chunk.lemma || null,
+            heads: chunk.heads || null,
+            index: chunk.index || null,
+            xpostag: chunk.misc.shift() || null,
+            misc: chunk.misc || null
+          }]
+        };
+      } else {
+        if (!analysis) throw new ParserError('cannot parse content chunk without an analysis', text, options);
+
+        if (chunk.index === undefined && !options.allowMissingIndices) throw new ParserError('cannot parse token without index', text, options);
+
+        analysis.subTokens.push({
+          semicolon: chunk.semicolon,
+          lemma: chunk.lemma || null,
+          heads: chunk.heads || null,
+          index: chunk.index || null,
+          xpostag: chunk.misc.shift() || null,
+          misc: chunk.misc || null
+        });
+      }
+
+      token.currentIndent = chunk.indent;
+      expecting = ['content', 'form'];
+    } else {
+      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+    }
+  });
+
+  if (analysis) token.analyses.push(analysis);
+
+  if (token) {
+    if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+
+    tokens.push(_.omit(token, 'currentIndent'));
+  }
+
+  if (missingIndices) {
+
+    var index = 0;
+    tokens.forEach(function (token) {
+      if (token.analyses) {
+        token.analyses.forEach(function (analysis) {
+          analysis.subTokens.forEach(function (subToken) {
+            subToken.index = ++index;
+          });
+        });
+      } else {
+        token.index = ++index;
+      }
+    });
+  }
+
+  //console.log(comments);
+  //console.log(tokens);
+
+  return {
+    input: text,
+    options: options,
+    comments: comments,
+    tokens: tokens
+  };
+};
+
+},{"../../utils":94,"./detector":32,"underscore":14}],38:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    requireTenParams: false,
+    allowTrailingWhitespace: true
+  });
+
+  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal CoNLL-U: empty string', text, options);
+
+  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal CoNLL-U: JSON object', text, options);
+
+  // be more or less strict about the fields we require being set
+  var tokenLine = options.requireTenParams ? utils.re.conlluTokenLineTenParams : utils.re.conlluTokenLine;
+
+  // internal stuff
+  var doneComments = false;
+  var doneContent = false;
+
+  // iterate over the lines and check each one
+  var lines = text.split(/\n/);
+  lines.forEach(function (line, i) {
+
+    if (utils.re.comment.test(line)) {
+
+      // can only have comments at the beginning
+      if (doneComments) throw new DetectorError('Illegal CoNLL-U: misplaced comment', text, options);
+    } else {
+
+      // done parsing comments
+      doneComments = true;
+
+      if (line) {
+        if (!tokenLine.test(line)) throw new DetectorError('Illegal CoNLL-U: unmatched line', text, options);
+
+        if (doneContent) throw new DetectorError('Illegal CoNLL-U: misplaced whitespace', text, options);
+      } else {
+
+        // only allow empty lines after we've looked at all the content
+        if (!options.allowTrailingWhitespace) throw new DetectorError('Illegal CoNLL-U: contains trailing whitespace', text, options);
+
+        doneContent = true;
+      }
+    }
+  });
+
+  return 'CoNLL-U';
+};
+
+},{"../../utils":94,"underscore":14}],39:[function(require,module,exports){
+'use strict';
+
+module.exports = ['isEmpty', 'index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'heads', 'misc', 'subTokens'];
+module.exports.hasComments = true;
+
+},{}],40:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  var lines = [];
+  sent.comments.forEach(function (comment) {
+    lines.push('# ' + comment.body);
+  });
+  sent.tokens.forEach(function (token) {
+
+    var toString = function toString(token) {
+
+      var head = token.heads.first;
+
+      return [token.indices.conllu, token.form || utils.fallback, token.lemma || utils.fallback, token.upostag || utils.fallback, token.xpostag || utils.fallback, token.feats || utils.fallback, head ? head.token.indices.conllu : utils.fallback, head && head.deprel ? head.deprel : utils.fallback, token._getDeps('CoNLL-U').join('|') || utils.fallback, token.misc || utils.fallback].join('\t');
+    };
+
+    lines.push(toString(token));
+    token.subTokens.forEach(function (subToken) {
+      lines.push(toString(subToken));
+    });
+  });
+
+  return {
+    output: lines.join('\n'),
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":41,"underscore":14}],41:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  var tokenCalcLoss = function tokenCalcLoss(token) {
+
+    if (token.heads.length > 1 && !sent.options.enhanced) losses.add('enhanced dependencies');
+
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+        case 'other':
+          break;
+
+        case 'analyses':
+          if (token.analyses.length > 1) {
+            losses.add('analyses');
+          } else {
+
+            var analysis = token.analyses[0],
+                analysisKeys = Object.keys(analysis);
+
+            if (analysisKeys.length > 1 || analysisKeys[0] !== 'subTokens') {
+              losses.add('analyses');
+            } else {
+              analysis.subTokens.map(tokenCalcLoss);
+            }
+          }
+          break;
+
+        default:
+          losses.add(field);
+      }
+    });
+  };
+
+  serial.tokens.map(tokenCalcLoss);
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":39,"underscore":14}],42:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'CoNLL-U',
+  fields: require('./fields'),
+  split: require('../default-splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+/*
+{
+  semicolon: Boolean || undefined,
+  isEmpty: Boolean || undefined,
+  index: String || undefined,
+  form: String || null || undefined,
+  lemma: String || null || undefined,
+  upostag: String || null || undefined,
+  xpostag: String || null || undefined,
+  feats: String || null || undefined,
+  head: String || null || undefined,
+  deprel: String || null || undefined,
+  deps: String || null || undefined,
+  other: Array || undefined,
+  analyses: [
+    subTokens: [
+      semicolon: Boolean || undefined,
+      isEmpty: Boolean || undefined,
+      index: String || undefined,
+      form: String || null || undefined,
+      lemma: String || null || undefined,
+      upostag: String || null || undefined,
+      xpostag: String || null || undefined,
+      feats: String || null || undefined,
+      head: String || null || undefined,
+      deprel: String || null || undefined,
+      deps: String || null || undefined,
+      other: Array || undefined,
+    ]
+  ]
+}
+*/
+
+},{"../default-splitter":44,"./detector":38,"./fields":39,"./generator":40,"./parser":43}],43:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+
+module.exports = function (text, options) {
+
+  function assertNext(supStr, subStr) {
+
+    function parseIndex(str) {
+
+      var match = (str || '').match(utils.re.conlluEmptyIndex);
+      if (!match) return null;
+
+      return match[2] ? {
+        major: parseInt(match[1]),
+        minor: parseInt(match[2])
+      } : {
+        major: parseInt(match[1]),
+        minor: null
+      };
+    }
+
+    if (supStr === null) return;
+
+    var sup = parseIndex(supStr),
+        sub = parseIndex(subStr);
+
+    if (sub.minor === null) {
+      if (sub.major - sup.major !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+    } else if (sup.minor === null) {
+      if (sub.minor !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+    } else {
+      if (sub.minor - sup.minor !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+    }
+  }
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    requireTenParams: false,
+    allowWhiteLines: true
+  });
+
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  //console.log();
+  //console.log(text);
+
+  // "tokenize" into chunks
+  var i = 0,
+      chunks = [];
+  var lines = text.split('\n');
+  var tokenRegex = options.requireTenParams ? utils.re.conlluTokenLineTenParams : utils.re.conlluTokenLine;
+
+  lines.forEach(function (line) {
+    var whiteline = line.match(utils.re.whiteline),
+        comment = line.match(utils.re.comment),
+        tokenLine = line.match(tokenRegex);
+
+    if (whiteline) {} else if (comment) {
+
+      chunks.push({
+        type: 'comment',
+        body: comment[2]
+      });
+    } else if (tokenLine) {
+
+      var token = void 0;
+
+      var fields = tokenLine[7];
+      if (/(\t|[ ]{2,})/g.test(fields)) {
+
+        fields = fields.replace(/[ ]{2,}/g, '\t').split(/\t/g).filter(utils.thin);
+      } else {
+
+        fields = fields.split(/[\t ]+/g).filter(utils.thin);
+      }
+
+      if (tokenLine[4]) {
+
+        token = {
+          type: 'super-token',
+          index: tokenLine[1],
+          startIndex: tokenLine[2],
+          stopIndex: tokenLine[5],
+          form: utils.re.fallback.test(fields[0]) ? null : fields[0],
+          misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|')
+        };
+      } else {
+        var getHeads = function getHeads(head, deprel, deps) {
+
+          head = utils.re.fallback.test(head) ? null : head;
+          deprel = utils.re.fallback.test(deprel) ? null : deprel;
+          deps = utils.re.fallback.test(deps) ? null : deps;
+
+          var heads = [];
+          var seen = new Set();
+
+          if (!head) return null;
+
+          heads.push({
+            index: head,
+            deprel: deprel || null
+          });
+
+          seen.add(head);
+
+          if (deps) deps.split('|').forEach(function (dep) {
+
+            dep = dep.split(':');
+
+            if (!seen.has(dep[0])) heads.push({
+              index: dep[0],
+              deprel: dep[1] || null
+            });
+
+            seen.add(dep[0]);
+          });
+
+          return heads;
+        };
+
+        token = {
+          type: 'token',
+          index: tokenLine[1],
+          isEmpty: !!tokenLine[3],
+          form: !fields[0] || utils.re.fallback.test(fields[0]) ? null : fields[0],
+          lemma: !fields[1] || utils.re.fallback.test(fields[1]) ? null : fields[1],
+          upostag: !fields[2] || utils.re.fallback.test(fields[2]) ? null : fields[2],
+          xpostag: !fields[3] || utils.re.fallback.test(fields[3]) ? null : fields[3],
+          feats: !fields[4] || utils.re.fallback.test(fields[4]) ? null : fields[4].split('|'),
+          heads: getHeads(fields[5], fields[6], fields[7]),
+          misc: !fields[8] || utils.re.fallback.test(fields[8]) ? null : fields[8].split('|')
+        };
+      }
+      chunks.push(token);
+    } else {
+      throw new ParserError('unable to match line: ' + line, text, options);
+    }
+  });
+
+  //console.log(chunks);
+
+  var tokens = [];
+  var comments = [];
+  var expecting = ['comment', 'super-token', 'token'];
+  var superToken = null;
+
+  chunks.filter(utils.thin).forEach(function (chunk) {
+
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
+
+    if (chunk.type === 'comment') {
+
+      comments.push(chunk.body);
+      expecting = ['comment', 'super-token', 'token'];
+    } else if (chunk.type === 'super-token') {
+
+      superToken = {
+        form: chunk.form,
+        misc: chunk.misc,
+        analyses: [{
+          subTokens: []
+        }],
+        index: chunk.index,
+        currentIndex: null,
+        stopIndex: chunk.stopIndex
+      };
+
+      expecting = ['token'];
+    } else if (chunk.type === 'token') {
+
+      if (superToken) {
+
+        assertNext(superToken.currentIndex, chunk.index);
+        superToken.currentIndex = chunk.index;
+
+        superToken.analyses[0].subTokens.push(_.omit(chunk, ['type']));
+
+        if (superToken.currentIndex === superToken.stopIndex) {
+
+          tokens.push(_.omit(superToken, ['currentIndex', 'stopIndex']));
+          superToken = null;
+          expecting = ['super-token', 'token'];
+        } else {
+          expecting = ['token'];
+        }
+      } else {
+
+        tokens.push(_.omit(chunk, ['type']));
+        expecting = ['super-token', 'token'];
+      }
+    } else {
+      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+    }
+  });
+
+  //console.log(comments);
+  //console.log(tokens);
+
+  return {
+    input: text,
+    options: options,
+    comments: comments,
+    tokens: tokens
+  };
+};
+
+},{"../../utils":94,"./detector":38,"underscore":14}],44:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+var utils = require('../utils');
+
+module.exports = function (text) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+  options = _.defaults(options, {
+    trimChunks: true
+  });
+
+  return text.split(utils.re.multiNewlines).map(function (chunk) {
+    if (options.trimChunks) {
+      return chunk.trim();
+    } else {
+      return chunk;
+    }
+  }).filter(utils.thin);
+};
+
+},{"../utils":94,"underscore":14}],45:[function(require,module,exports){
+'use strict';
+
+/**
+ * Supported output formats:
+ *  * ApertiumStream (coming soon!)
+ *  * Brackets
+ *  * CG3
+ *  * CoNLL-U
+ *  * NotatrixSerial
+ *  * Params
+ *  * Plain text
+ *  * SDParse
+ */
+
+module.exports = {
+
+  'apertium stream': require('./apertium-stream'),
+  apertiumStream: require('./apertium-stream'),
+  Brackets: require('./brackets'),
+  brackets: require('./brackets'),
+  CG3: require('./cg3'),
+  cg3: require('./cg3'),
+  'CoNLL-U': require('./conllu'),
+  conllu: require('./conllu'),
+  'notatrix serial': require('./notatrix-serial'),
+  notatrixSerial: require('./notatrix-serial'),
+  Params: require('./params'),
+  params: require('./params'),
+  'plain text': require('./plain-text'),
+  plainText: require('./plain-text'),
+  SD: require('./sd'),
+  sd: require('./sd')
+
+};
+
+},{"./apertium-stream":23,"./brackets":30,"./cg3":36,"./conllu":42,"./notatrix-serial":50,"./params":57,"./plain-text":64,"./sd":71}],46:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (obj, options) {
+
+  function restrict(obj, fields) {
+    var allowUndefined = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    if (obj === undefined) throw new DetectorError('Illegal notatrix serial: missing field', obj, options);
+
+    if (_.omit(obj, Object.keys(fields)).length) throw new DetectorError('Illegal notatrix serial: unexpected field', obj, options);
+
+    _.each(fields, function (fieldType, fieldName) {
+
+      var value = obj[fieldName];
+
+      switch (fieldType) {
+        case 'number':
+          if (value !== undefined || !allowUndefined) if (isNaN(parseFloat(value))) throw new DetectorError('Illegal notatrix serial: could not parse ' + value + ' as float', obj, options);
+          break;
+
+        case 'string':
+          if (value !== undefined || !allowUndefined) if (typeof value !== 'string') throw new DetectorError('Illegal notatrix serial: expected \'string\', got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+          break;
+
+        case 'string*':
+          if (value !== undefined || !allowUndefined) if (value !== null && typeof value !== 'string') throw new DetectorError('Illegal notatrix serial: expected \'string\', got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+          break;
+
+        case 'object':
+          // pass
+          break;
+
+        case 'array':
+          if (value != undefined || !allowUndefined) if (!Array.isArray(value)) throw new DetectorError('Illegal notatrix serial: expected Array, got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+          break;
+      }
+    });
+  }
+
+  options = _.defaults(options, {
+    allowZeroTokens: true,
+    allowZeroFields: true
+  });
+
+  if (!utils.isJSONSerializable(obj)) throw new DetectorError('Illegal notatrix serial: not JSON object', obj, options);
+
+  obj = typeof obj === 'string' ? JSON.parse(obj) : obj;
+
+  restrict(obj, utils.nxSentenceFields);
+  _.each(obj.comments, function (comment) {
+    if (typeof comment !== 'string') throw new DetectorError('Illegal notatrix serial: comments should be strings', obj, options);
+  });
+  _.each(obj.tokens, function (token) {
+    restrict(token, utils.nxSentenceTokensFields, true);
+  });
+  if (obj.tokens.length === 0 && !options.allowZeroTokens) throw new DetectorError('Illegal notatrix serial: cannot have empty token list', obj, options);
+
+  _.each(obj.tokens, function (token) {
+    if (Object.keys(token).length === 0 && !options.allowZeroFields) throw new DetectorError('Illegal notatrix serial: cannot have token without fields', obj, options);
+
+    if (token.analyses) _.each(token.analyses, function (analysis) {
+
+      var analysisKeys = Object.keys(analysis);
+      if (analysisKeys.length !== 1 || analysisKeys[0] !== 'subTokens') throw new DetectorError('Illegal notatrix serial: got unexpected analyses field', obj, options);
+
+      _.each(analysis.subTokens, function (subToken) {
+        restrict(subToken, utils.nxSentenceTokensFields, true);
+        if (subToken.analyses !== undefined) throw new DetectorError('Illegal notatrix serial: subTokens can only have one analysis', obj, options);
+      });
+    });
+  });
+
+  return 'notatrix serial';
+};
+
+},{"../../utils":94,"underscore":14}],47:[function(require,module,exports){
+"use strict";
+
+module.exports = [];
+module.exports.hasComments = true;
+
+},{}],48:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  return {
+    output: sent.serialize(),
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":49,"underscore":14}],49:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var Loss = utils.Loss;
+var fields = require('./fields');
+
+module.exports = function (sent) {
+  // do nothing, can't lose info on this one
+  return [];
+};
+
+},{"../../utils":94,"./fields":47,"underscore":14}],50:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'notatrix serial',
+  fields: require('./fields'),
+  split: require('./splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+/*
+INPUT:
+{
+  input: String,
+  options: Object,
+  comments: [
+    String
+  ],
+  tokens: [
+    (
+      // #1 (default)
+      {
+        isEmpty: Boolean || undefined,
+        index: String || undefined,
+        form: String || null || undefined,
+        lemma: String || null || undefined,
+        upostag: String || null || undefined,
+        xpostag: String || null || undefined,
+        feats: String || null || undefined,
+        head: (
+          String
+          ||
+          null
+          ||
+          undefined
+          ||
+          {
+            index: String,
+            type: String || null,
+          }
+        ),
+        deprel: String || null || undefined,
+        deps: (
+          String
+          ||
+          null
+          ||
+          undefined
+          ||
+          {
+            index: String,
+            type: String || null,
+          }
+        ),
+        misc: String || null || undefined,
+      }
+      ||
+      // #2 (CoNLL-U superToken)
+      {
+        index: String,
+        form: String || null,
+        misc: String || null,
+        subTokens: [
+          <#1>
+        ]
+      }
+      ||
+      // #3 (CG3)
+      {
+        form: String || null,
+        analyses: [
+          [
+            semicolon: Boolean,
+            lemma: String || null,
+            head: String || null,
+            index: String || null,
+            deprel: String || null,
+            xpostag: String || null,
+            other: [
+              String
+            ]
+          ]
+        ]
+      }
+      ||
+      // #4 (notatrix serial)
+      {
+
+      }
+    )
+  ]
+}
+
+
+OUTPUT:
+{
+  input: String,
+  options: 'plain object',
+  comments: [
+    {
+      type: String,
+      body: String,
+      value: <any>
+    }
+  ],
+*/
+
+},{"./detector":46,"./fields":47,"./generator":48,"./parser":51,"./splitter":52}],51:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+
+module.exports = function (obj, options) {
+
+  try {
+    detect(obj, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  return obj;
+};
+
+},{"../../utils":94,"./detector":46,"underscore":14}],52:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var SplitterError = utils.SplitterError;
+
+module.exports = function (text, options) {
+  throw new SplitterError('Can\'t split notatrix serial', text, options);
+};
+
+},{"../../utils":94}],53:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (obj, options) {
+
+  options = _.defaults(options, {
+    allowEmptyList: false,
+    allowTrailingWhitespace: true,
+    allowLeadingWhitespace: true
+  });
+
+  if (!utils.isJSONSerializable(obj)) throw new DetectorError('Illegal Params: not JSON object', obj, options);
+
+  obj = typeof obj === 'string' ? JSON.parse(obj) : obj;
+
+  if (Array.isArray(obj)) {
+
+    if (!obj.length && !options.allowEmptyList) throw new DetectorError('Illegal Params: contains no tokens', obj, options);
+
+    obj.forEach(function (obj) {
+
+      var omitted = Object.keys(_.omit(obj, utils.fields));
+      if (omitted.length) throw new DetectorError('Illegal Params: contains illegal keys (' + omitted.join(', ') + ')', obj, options);
+
+      var picked = Object.keys(_.pick(obj, utils.fields));
+      if (!picked.length) throw new DetectorError('Illegal Params: missing required keys', obj, options);
+    });
+  } else {
+
+    throw new DetectorError('Illegal Params: expected array of parameters, got ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)), obj, options);
+  }
+
+  return 'Params';
+};
+
+},{"../../utils":94,"underscore":14}],54:[function(require,module,exports){
+'use strict';
+
+module.exports = ['isEmpty', 'index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
+module.exports.hasComments = false;
+
+},{}],55:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  var output = sent.tokens.map(function (token) {
+
+    if (token.analysis) throw new GeneratorError('Unable to generate, contains ambiguous analyses or multiword tokens');
+
+    var params = _.pick(token, utils.fields);
+    params.head = token.getHead();
+
+    return _.pick(params, function (value) {
+      return value != undefined;
+    });
+  });
+
+  return {
+    output: output,
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":56,"underscore":14}],56:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  if (serial.comments.length) losses.add('comments');
+
+  serial.tokens.forEach(function (token) {
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+          break;
+
+        case 'heads':
+          if (token.heads.length > 1) losses.add('enhanced dependencies');
+          break;
+
+        default:
+          losses.add(field);
+      }
+    });
+  });
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":54,"underscore":14}],57:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'Params',
+  fields: require('./fields'),
+  split: require('./splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"./detector":53,"./fields":54,"./generator":55,"./parser":58,"./splitter":59}],58:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+
+module.exports = function (obj, options) {
+
+  try {
+    detect(obj, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  return {
+    input: JSON.stringify(obj),
+    options: options,
+    comments: [],
+    tokens: obj.map(function (token, i) {
+      token.index = '' + i;
+      return token;
+    })
+  };
+};
+
+},{"../../utils":94,"./detector":53,"underscore":14}],59:[function(require,module,exports){
+'use strict';
+
+var utils = require('../../utils');
+var SplitterError = utils.SplitterError;
+
+module.exports = function (text, options) {
+  throw new SplitterError('Can\'t split Params', text, options);
+};
+
+},{"../../utils":94}],60:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: true,
+    allowNewlines: false,
+    bracketsAllowanceTreshold: 0.2 // set to <0 or >1 to avoid
+  });
+
+  /*
+  if (!text && !options.allowEmptyString)
+    throw new DetectorError(`Illegal plain text: empty string`, text, options);
+    */
+
+  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal plain text: JSON object', text, options);
+
+  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError('Illegal plain text: contains newlines', text, options);
+
+  if (options.bracketsAllowanceTreshold >= 0) {
+
+    var numWords = text.split(utils.re.whitespace).length;
+    var numBrackets = (text.match(/[\[\]]/g) || []).length;
+    var ratio = numBrackets / numWords;
+
+    if (ratio > options.bracketsAllowanceTreshold) throw new DetectorError('Illegal plain text: contains too many brackets (' + ratio + ')', text, options);
+  }
+
+  return 'plain text';
+};
+
+},{"../../utils":94,"underscore":14}],61:[function(require,module,exports){
+'use strict';
+
+module.exports = ['form'];
+module.exports.hasComments = false;
+
+},{}],62:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  var output = sent.tokens.map(function (token) {
+
+    return token.isSuperToken ? token.subTokens.map(function (subToken) {
+      return subToken.value;
+    }).join(' ') : token.form;
+  }).join(' ').replace(utils.re.spaceBeforePunctuation, '$1');
+
+  return {
+    output: output,
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"./get-loss":63,"underscore":14}],63:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  if (serial.comments.length) losses.add('comments');
+
+  serial.tokens.forEach(function (token) {
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+          break;
+
+        case 'feats':
+        case 'misc':
+          if (token[field] && token[field].length) losses.add(field);
+          break;
+
+        case 'heads':
+          if (token.heads.length) losses.add('heads');
+          break;
+
+        default:
+          if (token[field]) losses.add(field);
+      }
+    });
+  });
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":61,"underscore":14}],64:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'plain text',
+  fields: require('./fields'),
+  split: require('./splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"./detector":60,"./fields":61,"./generator":62,"./parser":65,"./splitter":66}],65:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: true
+  });
+
+  text = text || '';
+
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  //console.log();
+  //console.log(text);
+
+  var chunks = [];
+  var word = '';
+
+  _.each(text, function (char, i) {
+
+    if (utils.re.whitespace.test(char)) {
+
+      chunks.push(word);
+      word = '';
+    } else if (utils.re.punctuation.test(char)) {
+
+      if (!utils.re.allPunctuation.test(word)) {
+        chunks.push(word);
+        word = '';
+      }
+      word += char;
+    } else {
+      word += char;
+    }
+  });
+
+  chunks.push(word);
+
+  //console.log(chunks);
+
+  var tokens = chunks.filter(utils.thin).map(function (chunk, i) {
+    return {
+      form: chunk,
+      index: i
+    };
+  });
+
+  //console.log(comments);
+  //console.log(tokens);
+
+  return {
+    input: text,
+    options: options,
+    comments: [],
+    tokens: tokens
+  };
+};
+
+},{"../../utils":94,"./detector":60,"underscore":14}],66:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+var utils = require('../../utils');
+
+module.exports = function (text) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+  options = _.defaults(options, {
+    trimChunks: true
+  });
+
+  return text.split(utils.re.sentenceThenPunctuation).map(function (chunk) {
+    if (options.trimChunks) {
+      return chunk.trim();
+    } else {
+      return chunk;
+    }
+  }).filter(utils.thin);
+};
+
+},{"../../utils":94,"underscore":14}],67:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var DetectorError = utils.DetectorError;
+
+module.exports = function (text, options) {
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    allowLeadingWhitespace: true,
+    allowBookendWhitespace: true,
+    allowTrailingWhitespace: true,
+    allowNoDependencies: false
+  });
+
+  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal SD: empty string', text, options);
+
+  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal SD: JSON object', text, options);
+
+  // be more or less strict about whitespace
+  var dependencyRegex = options.allowBookendWhitespace ? utils.re.sdDependency : utils.re.sdDependencyNoWhitespace;
+
+  // internal stuff
+  var parsingDeps = false;
+  var parsingWhitespace = false;
+  var parsedDeps = 0;
+
+  var lines = text.split(/\n/);
+  lines.forEach(function (line, i) {
+
+    if (utils.re.whiteline.test(line)) {
+      if (parsingDeps) {
+        if (!options.allowTrailingWhitespace) throw new DetectorError('Illegal SD: contains trailing whitespace', text, options);
+      } else {
+        if (!options.allowLeadingWhitespace) throw new DetectorError('Illegal SD: contains leading whitespace', text, options);
+      }
+    }
+
+    if (utils.re.comment.test(line)) {} else if (!parsingDeps) {
+
+      if (dependencyRegex.test(line)) throw new DetectorError('Illegal SD: missing text line', text, options);
+
+      parsingDeps = true;
+    } else if (!dependencyRegex.test(line)) {
+
+      throw new DetectorError('Illegal SD: expected dependency line', text, options);
+    } else {
+
+      parsedDeps += 1;
+    }
+  });
+
+  if (parsedDeps === 0 && !options.allowNoDependencies) throw new DetectorError('Illegal SD: contains no dependencies', text, options);
+
+  return 'SD';
+};
+
+},{"../../utils":94,"underscore":14}],68:[function(require,module,exports){
+'use strict';
+
+module.exports = ['form', 'heads'];
+module.exports.hasComments = true;
+
+},{}],69:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var GeneratorError = utils.GeneratorError;
+var generateText = require('../plain-text').generate;
+var getLoss = require('./get-loss');
+
+module.exports = function (sent, options) {
+
+  if (!sent.isParsed) return {
+    output: null,
+    loss: undefined
+  };
+
+  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+
+  options = _.defaults(options, sent.options, {});
+
+  sent.index();
+
+  var lines = [];
+  sent.comments.forEach(function (comment) {
+    lines.push('# ' + comment.body);
+  });
+
+  lines.push(generateText(sent).output);
+
+  [sent.root].concat(sent.tokens).forEach(function (token) {
+
+    token.mapDependents(function (dependent) {
+      lines.push((dependent.deprel || '_') + '(' + token.form + ', ' + dependent.token.form + ')');
+    });
+  });
+
+  /*
+  sent.root.mapDependents(dependent => lines.push(`${dependent.deprel}(${})`))
+  if (sent.root)
+    lines.push(`root(ROOT, ${sent.root.form})`);
+   sent.tokens.forEach(token => {
+     if (token._head && token.deprel && token._head.name !== 'RootToken')
+      lines.push(`${token.deprel}(${token._head.form}, ${token.form})`);
+   });
+  */
+
+  return {
+    output: lines.join('\n'),
+    loss: getLoss(sent)
+  };
+};
+
+},{"../../utils":94,"../plain-text":64,"./get-loss":70,"underscore":14}],70:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var fields = require('./fields');
+
+module.exports = function (sent) {
+
+  var serial = sent.serialize();
+  var losses = new Set();
+
+  serial.tokens.forEach(function (token) {
+    if (token.heads && token.heads.length > 1) losses.add('enhanced dependencies');
+
+    Object.keys(_.omit(token, fields)).forEach(function (field) {
+      switch (field) {
+        case 'uuid':
+        case 'index':
+        case 'deps':
+          break;
+
+        case 'heads':
+          if (token.heads.length > 1) losses.add(field);
+          break;
+
+        case 'feats':
+        case 'misc':
+          if (token[field] && token[field].length) losses.add(field);
+          break;
+
+        default:
+          if (token[field]) losses.add(field);
+      }
+    });
+  });
+
+  return Array.from(losses);
+};
+
+},{"../../utils":94,"./fields":68,"underscore":14}],71:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  name: 'SD',
+  fields: require('./fields'),
+  split: require('../default-splitter'),
+  detect: require('./detector'),
+  parse: require('./parser'),
+  generate: require('./generator')
+
+};
+
+},{"../default-splitter":44,"./detector":67,"./fields":68,"./generator":69,"./parser":72}],72:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../../utils');
+var ParserError = utils.ParserError;
+var detect = require('./detector');
+var parseText = require('../plain-text').parse;
+
+module.exports = function (text, options) {
+
+  function getTokenIndexFromString(tokens, token) {
+    for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].form.toLowerCase() === token.toLowerCase()) return i;
+    }
+
+    return null;
+  }
+
+  //console.log();
+  //console.log(text);
+
+  options = _.defaults(options, {
+    allowEmptyString: false,
+    allowBookendWhitespace: true,
+    allowWhiteLines: true
+  });
+
+  try {
+    detect(text, options);
+  } catch (e) {
+    if (e instanceof utils.DetectorError) throw new ParserError(e.message);
+
+    throw e;
+  }
+
+  var lines = text.split('\n');
+  var depRegex = options.allowBookendWhitespace ? utils.re.sdDependencyNoWhitespace : utils.re.sdDependency;
+
+  var chunks = [];
+  lines.forEach(function (line) {
+
+    var whiteline = line.match(utils.re.whiteline),
+        comment = line.match(utils.re.comment),
+        dep = line.match(depRegex);
+
+    if (whiteline) {} else if (comment) {
+
+      chunks.push({
+        type: 'comment',
+        body: comment[2]
+      });
+    } else if (dep) {
+
+      chunks.push({
+        type: 'dependency',
+        deprel: dep[1],
+        head: dep[2],
+        dep: dep[3]
+      });
+    } else {
+
+      chunks.push({
+        type: 'text',
+        body: line
+      });
+    }
+  });
+
+  //console.log(chunks);
+
+  var tokens = void 0;
+  var comments = [];
+  var expecting = ['comment', 'text'];
+
+  chunks.forEach(function (chunk) {
+
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
+
+    if (chunk.type === 'comment') {
+
+      comments.push(chunk.body);
+      expecting = ['comment', 'text'];
+    } else if (chunk.type === 'text') {
+
+      tokens = parseText(chunk.body).tokens;
+      expecting = ['dependency'];
+    } else if (chunk.type === 'dependency') {
+
+      var index = getTokenIndexFromString(tokens, chunk.dep);
+      if (index === null) throw new ParserError('unable to find token with form ' + chunk.dep, text, options);
+
+      tokens[index].heads = [{
+        index: getTokenIndexFromString(tokens, chunk.head),
+        deprel: chunk.deprel
+      }];
+      expecting = ['dependency'];
+    } else {
+      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+    }
+  });
+
+  //console.log(comments);
+  //console.log(tokens);
+
+  return {
+    input: text,
+    options: options,
+    comments: comments,
+    tokens: tokens
+  };
+};
+
+},{"../../utils":94,"../plain-text":64,"./detector":67,"underscore":14}],73:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('./utils');
+var GeneratorError = utils.GeneratorError;
+
+var as = {
+
+  'apertium stream': require('./formats/apertium-stream').generate,
+  apertiumStream: require('./formats/apertium-stream').generate,
+  Brackets: require('./formats/brackets').generate,
+  brackets: require('./formats/brackets').generate,
+  CG3: require('./formats/cg3').generate,
+  cg3: require('./formats/cg3').generate,
+  'CoNLL-U': require('./formats/conllu').generate,
+  conllu: require('./formats/conllu').generate,
+  'notatrix serial': require('./formats/notatrix-serial').generate,
+  notatrixSerial: require('./formats/notatrix-serial').generate,
+  Params: require('./formats/params').generate,
+  params: require('./formats/params').generate,
+  'plain text': require('./formats/plain-text').generate,
+  plainText: require('./formats/plain-text').generate,
+  SD: require('./formats/sd').generate,
+  sd: require('./formats/sd').generate
+
+};
+
+module.exports = as;
+
+},{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],74:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+var nx = require('./nx');
+var errors = require('./utils/errors');
+
+module.exports = _.extend({
+
+  constants: require('./utils/constants'),
+  formats: require('./formats'),
+  funcs: require('./utils/funcs'),
+  regex: require('./utils/regex'),
+  data: require('../data'),
+
+  detect: require('./detector'),
+  generate: require('./generator'),
+  parse: require('./parser'),
+  split: require('./splitter'),
+  convert: require('./converter')
+
+}, nx, errors);
+
+},{"../data":6,"./converter":18,"./detector":19,"./formats":45,"./generator":73,"./nx":80,"./parser":89,"./splitter":90,"./utils/constants":91,"./utils/errors":92,"./utils/funcs":93,"./utils/regex":95,"underscore":14}],75:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxError = utils.NxError;
+var NxBaseClass = require('./base-class');
+var SubToken = require('./sub-token');
+
+/**
+ * Abstraction over a CG3 analysis.  Most sentences have just one of these for
+ *  each token.
+ */
+
+var Analysis = function (_NxBaseClass) {
+  _inherits(Analysis, _NxBaseClass);
+
+  function Analysis(sent, serial) {
+    _classCallCheck(this, Analysis);
+
+    var _this = _possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this, sent, 'Analysis'));
+
+    _this._subTokens = (serial.subTokens || []).map(function (sub) {
+      return new SubToken(sent, sub);
+    });
+
+    return _this;
+  }
+
+  _createClass(Analysis, [{
+    key: 'subTokens',
+    get: function get() {
+      return this._subTokens;
+    }
+  }]);
+
+  return Analysis;
+}(NxBaseClass);
+
+module.exports = Analysis;
+
+},{"../utils":94,"./base-class":76,"./sub-token":86,"underscore":14}],76:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var NxBaseClass = function NxBaseClass(name) {
+  _classCallCheck(this, NxBaseClass);
+
+  this.name = name;
+};
+
+;
+
+module.exports = NxBaseClass;
+
+},{}],77:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+var uuid = require('uuid/v4');
+
+var utils = require('../utils');
+var NxError = utils.NxError;
+var NxBaseClass = require('./base-class');
+var RelationSet = require('./relation-set');
+
+/**
+ * Ancestor of Token, SubToken, SuperToken.  Implements methods common
+ *  to all three of them.
+ */
+
+var BaseToken = function (_NxBaseClass) {
+  _inherits(BaseToken, _NxBaseClass);
+
+  function BaseToken(sent, name) {
+    var serial = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    _classCallCheck(this, BaseToken);
+
+    var _this = _possibleConstructorReturn(this, (BaseToken.__proto__ || Object.getPrototypeOf(BaseToken)).call(this, name));
+
+    _this.sent = sent;
+    _this.uuid = uuid();
+
+    _this.uuid = serial.uuid || _this.uuid;
+
+    _this.semicolon = serial.semicolon;
+    _this.isEmpty = serial.isEmpty;
+    _this.form = serial.form;
+    _this.lemma = serial.lemma;
+    _this.upostag = serial.upostag;
+    _this.xpostag = serial.xpostag;
+    _this.feats = serial.feats;
+    _this.misc = serial.misc;
+
+    _this._heads = serial.heads;
+    _this.heads = new RelationSet(_this, 'dependents');
+    _this.dependents = new RelationSet(_this, 'heads');
+
+    _this.indices = {
+      conllu: null,
+      cg3: null,
+      cytoscape: null,
+      serial: serial.index
+    };
+    return _this;
   }
 
   /**
-   * @return {Number} total number of subTokens for this analysis
+   * Add a head to a token with a dependency relation.
+   *
+   * @param {BaseToken} head
+   * @param {String} deprel
    */
 
 
-  _createClass(Analysis, [{
-    key: 'getSubToken',
-
-
-    // manipulate subTokens array
-
-    /**
-     * get subToken at the given index or null
-     *
-     * @param {Number} index
-     * @return {(null|Token)}
-     */
-    value: function getSubToken(index) {
-      return this.subTokens[index] || null;
-    }
-
-    /**
-     * insert a subToken BEFORE the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
-     *   to fit the bounds. this means that you can call this with `index=-Infinity`
-     *   to push to the front of the subTokens array or with `index=Infinity` to push
-     *   to the end
-     *
-     * @param {Number} index
-     * @param {Token} token
-     * @return {Analysis}
-     *
-     * @throws {NotatrixError} if given invalid index or analysis (see below)
-     */
-
-  }, {
-    key: 'insertSubTokenAt',
-    value: function insertSubTokenAt(index, token) {
-
-      // enforce only indices that can be cast as Numbers
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to insert subToken: unable to cast index to int');
-
-      // enforce token is a Token
-      if (!token) throw new NotatrixError('unable to insert subToken: no subToken provided');
-
-      // enforce token is a Token
-      if (token.__proto__ !== this.token.__proto__) // hacky, but don't have access to Token class
-        throw new NotatrixError('unable to insert subToken: not instance of Token');
-
-      // enforce not trying to add a superToken as a subToken
-      if (token.isSuperToken) throw new NotatrixError('unable to insert subToken: token has subTokens');
-
-      // enforce not trying to add a subToken of some other token
-      if (token.isSubToken) throw new NotatrixError('unable to insert subToken: token is already a subToken');
-
-      // enforce not trying to add a subToken to a subToken
-      if (this.isSubToken) throw new NotatrixError('unable to insert subToken: this is already a subToken');
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.length ? this.length : parseInt(index);
-
-      // set the superToken pointer on the token
-      token.superToken = this;
-
-      // array insertion
-      this.subTokens = this.subTokens.slice(0, index).concat(token).concat(this.subTokens.slice(index));
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * remove a subToken at the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
-     *   adjusted to fit the bounds. this means that you can call this with
-     *   `index=-Infinity` to remove the first element of the subTokens array or
-     *   with `index=Infinity` to remove the last
-     *
-     * @param {Number} index
-     * @return {(null|Token)}
-     *
-     * @throws {NotatrixError} if given invalid index
-     */
-
-  }, {
-    key: 'removeSubTokenAt',
-    value: function removeSubTokenAt(index) {
-      var _this2 = this;
-
-      // can't remove if we have an empty array
-      if (!this.length) return null;
-
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to remove subToken: unable to cast index to int');
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.length - 1 ? this.length - 1 : parseInt(index);
-
-      // unlink heads and deps from the token to be removed
-      this.sentence.forEach(function (token) {
-        token.analysis.mapHeads(function (head) {
-          if (head === _this2[index]) token.analysis.removeHead(head);
-        }).mapDeps(function (dep) {
-          if (dep === _this2[index]) token.analysis.removeDep(dep);
-        });
-      });
-
-      // remove the superToken pointer from the removed token
-      this.subTokens[index].superToken = null;
-
-      // array splicing, return spliced element
-      return this.subTokens.splice(index, 1)[0];
-    }
-
-    /**
-     * move a subToken from sourceIndex to targetIndex
-     *
-     * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
-     *   be adjusted to fit the bounds. this means that you can call this with
-     *   `sourceIndex=-Infinity` to select the first element of the subTokens array
-     *   or with `sourceIndex=Infinity` to select the last
-     *
-     * @param {Number} sourceIndex
-     * @param {Number} targetIndex
-     * @return {Analysis}
-     *
-     * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
-     */
-
-  }, {
-    key: 'moveSubTokenAt',
-    value: function moveSubTokenAt(sourceIndex, targetIndex) {
-
-      sourceIndex = parseFloat(sourceIndex);
-      targetIndex = parseFloat(targetIndex);
-      if (isNaN(sourceIndex) || isNaN(targetIndex)) throw new NotatrixError('unable to move subToken: unable to cast indices to ints');
-
-      // bounds checking
-      sourceIndex = sourceIndex < 0 ? 0 : sourceIndex > this.length - 1 ? this.length - 1 : parseInt(sourceIndex);
-      targetIndex = targetIndex < 0 ? 0 : targetIndex > this.length - 1 ? this.length - 1 : parseInt(targetIndex);
-
-      if (sourceIndex === targetIndex) {
-        // do nothing
-      } else {
-
-        // array splice and insert
-        var subToken = this.subTokens.splice(sourceIndex, 1);
-        this.subTokens = this.subTokens.slice(0, targetIndex).concat(subToken).concat(this.subTokens.slice(targetIndex));
-      }
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * push a subToken to the end of the subTokens array ... sugar for
-     *   Analysis::insertSubTokenAt(Infinity, analysis)
-     *
-     * @param {Token} token
-     * @return {Analysis}
-     */
-
-  }, {
-    key: 'pushSubToken',
-    value: function pushSubToken(token) {
-      return this.insertSubTokenAt(Infinity, token);
-    }
-
-    /**
-     * pop a subToken from the end of the subTokens array ... sugar for
-     *   Analysis::removeSubTokenAt(Infinity)
-     *
-     * @return {(null|Analysis)}
-     */
-
-  }, {
-    key: 'popSubToken',
-    value: function popSubToken() {
-      return this.removeSubTokenAt(Infinity);
-    }
-
-    // external formats
-
-    /**
-     * get a serial version of the internal analysis representation
-     *
-     * @return {Object}
-     */
-
-  }, {
-    key: 'mapHeads',
-
-
-    // array-field (heads & deps) manipulators
-
-    /**
-     * iterate over the `head`s for this analysis and apply a callback to each
-     *
-     * @param {Function} callback
-     * @return {Analysis}
-     */
-    value: function mapHeads(callback) {
-      _.each(this._heads, function (head, i) {
-        callback(head.token, head.deprel, i);
-      });
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * add a head on the given token with a dependency relation
-     *
-     * @param {Analysis} head pointer directly to the analysis
-     * @param {String} deprel
-     * @return {Analysis}
-     */
-
-  }, {
+  _createClass(BaseToken, [{
     key: 'addHead',
     value: function addHead(head, deprel) {
-      if (!(head instanceof Analysis)) throw new NotatrixError('can\'t add head: not Analysis instance');
 
-      // first try to change an existing one (don't want duplicate heads)
-      if (this.changeHead(head, deprel)) return this;
+      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
 
-      // get rid of "empty" value
-      if (this._heads.length === 1 && this._heads[0].token === '_') this._heads = [];
+      if (head === this) throw new NxError('token cannot be its own head');
 
-      // otherwise push a new one
-      this._heads.push({
-        token: head,
-        deprel: deprel
-      });
+      if (typeof deprel !== 'string' && deprel != null) throw new NxError('deprel must be a string, null, or undefined');
 
-      // if applicable, add to the head's deps field too
-      if (this.sentence.options.help.head) head._deps.push({
-        token: this,
-        deprel: deprel
-      });
+      // if we're not enhanced, only can have 1 head at a time
+      if (!this.sent.options.enhanced) this.heads.clear();
 
-      // chaining
-      return this;
+      return this.heads.add(head, deprel);
     }
 
     /**
-     * remove a head from the given analysis if it exists
+     * Change the dependency relation for a given head.
      *
-     * @param {Analysis} head
-     * @return {Analysis}
+     * @param {BaseToken} head
+     * @param {String} deprel
+     */
+
+  }, {
+    key: 'modifyHead',
+    value: function modifyHead(head, deprel) {
+
+      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
+
+      if (typeof deprel !== 'string' && deprel != null) throw new NxError('deprel must be a string, null, or undefined');
+
+      return this.heads.modify(head, deprel);
+    }
+
+    /**
+     * Remove a head and its dependency relation.
+     *
+     * @param {BaseToken} head
      */
 
   }, {
     key: 'removeHead',
     value: function removeHead(head) {
-      var _this3 = this;
 
-      if (!(head instanceof Analysis)) throw new NotatrixError('can\'t remove head: not Analysis instance');
+      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
 
-      // remove from _heads
-      var removing = -1;
-      this.mapHeads(function (token, deprel, i) {
-        if (token === head) removing = i;
-      });
-      if (removing > -1) this._heads.splice(removing, 1);
-
-      // if applicable, also remove from head's _deps
-      removing = -1;
-      if (this.sentence.options.help.head) head.mapDeps(function (token, deprel, i) {
-        if (token === _this3) removing = i;
-      });
-      if (removing > -1) head._deps.splice(removing, 1);
-
-      // chaining
-      return this;
+      return this.heads.remove(head);
     }
 
     /**
-     * change the dependency relation for a given head ... returns null if unable
-     *   to make the change
-     *
-     * @param {Analysis} head
-     * @param {String} deprel
-     * @return {(Analysis|null)}
+     * Remove all heads
      */
 
   }, {
-    key: 'changeHead',
-    value: function changeHead(head, deprel) {
-      var _this4 = this;
-
-      if (!(head instanceof Analysis)) throw new NotatrixError('can\'t change head: not Analysis instance');
-
-      // change for this head
-      var done = false;
-      this.mapHeads(function (token, _deprel, i) {
-        if (token === head) {
-          _this4._heads[i].deprel = deprel || _deprel;
-          done = true;
-        }
-      });
-
-      // if applicable, change for the head's dep too
-      if (this.sentence.options.help.head) head.mapDeps(function (token, _deprel, i) {
-        if (token === _this4) head._deps[i].deprel = deprel || _deprel;
-      });
-
-      return done ? this : null;
+    key: 'removeAllHeads',
+    value: function removeAllHeads() {
+      return this.heads.clear();
     }
 
     /**
-     * iterate over the `deps`s for this analysis and apply a callback to each
+     * Apply a callback to each of a token's heads
+     */
+
+  }, {
+    key: 'mapHeads',
+    value: function mapHeads(callback) {
+
+      //if (this.sent.options.enhanced) {
+      return this.heads.map(callback);
+      /*} else {
+        return this.heads.first
+          ? [ this.heads.first ].map(callback)
+          : [].map(callback);
+      }*/
+    }
+
+    /**
+     * Apply a callback to each of token's dependents
+     */
+
+  }, {
+    key: 'mapDependents',
+    value: function mapDependents(callback) {
+
+      return this.dependents.map(callback);
+    }
+
+    /**
+     * Get the head index for a given format
+     *
+     * @param {String} format
+     * @return {String}
+     */
+
+  }, {
+    key: 'getHead',
+    value: function getHead(format) {
+
+      if (!this.heads.length) return null;
+
+      if (format === 'CoNLL-U') return '' + this.heads.first.token.indices.conllu;
+
+      if (format === 'CG3') return '' + this.heads.first.token.indices.cg3;
+
+      return '' + this.heads.first.token.indices.absolute;
+    }
+  }, {
+    key: '_getDeprel',
+    value: function _getDeprel() {
+
+      if (!this.heads.length) return null;
+
+      return this.heads.first.deprel;
+    }
+  }, {
+    key: '_getDeps',
+    value: function _getDeps(format) {
+
+      function getIndex(token) {
+        if (format === 'CoNLL-U') return token.indices.conllu;
+
+        if (format === 'CG3') return token.indices.cg3;
+
+        return token.indices.absolute;
+      }
+
+      if (!this.heads.length || !this.sent.options.enhanced) return [];
+
+      return this.mapHeads(utils.noop).sort(function (x, y) {
+
+        if (getIndex(x.token) < getIndex(y.token)) return -1;
+
+        if (getIndex(x.token) > getIndex(y.token)) return 1;
+
+        return 0;
+      }).map(function (head) {
+
+        return head.deprel ? getIndex(head.token) + ':' + head.deprel : '' + getIndex(head.token);
+      });
+    }
+
+    /**
+     * Apply a callback to each of a token's analyses and subTokens
      *
      * @param {Function} callback
-     * @return {Analysis}
      */
 
   }, {
-    key: 'mapDeps',
-    value: function mapDeps(callback) {
-      _.each(this._deps, function (dep, i) {
-        callback(dep.token, dep.deprel, i);
+    key: 'walk',
+    value: function walk(callback) {
+      var i = 0;
+      if (this._analyses) return this._analyses.map(function (analysis) {
+        return analysis._subTokens.map(function (subToken) {
+          return callback(subToken, ++i);
+        });
       });
 
-      // chaining
+      return null;
+    }
+
+    /**
+     * Hash a list of fields to a string
+     *
+     * @param {String[]} fields
+     * @return {String}
+     */
+
+  }, {
+    key: 'hashFields',
+    value: function hashFields() {
+      var _this2 = this;
+
+      for (var _len = arguments.length, fields = Array(_len), _key = 0; _key < _len; _key++) {
+        fields[_key] = arguments[_key];
+      }
+
+      fields = _.flatten(fields);
+
+      var hash = _.intersection(fields, ['form', 'lemma', 'upostag', 'xpostag', 'feats', 'deprel', 'misc', 'isEmpty', 'semicolon']).map(function (field) {
+        return '<' + (_this2[field] || field) + '>';
+      }).join('|');
+
+      if (fields.indexOf('indices') > -1) hash += '|' + _.map(this.indices, function (index) {
+        return '{' + index + '}';
+      }).join('');
+
+      if (fields.indexOf('head') > -1) hash += '|(h:' + this.head.token.indices.absolute + ':' + h.deprel + ')';
+
+      if (fields.indexOf('deps') > -1) hash += '|(d:' + (this.mapDeps(function (d) {
+        return d.token.indices.absolute + ':' + d.deprel;
+      }).join('|') || '') + ')';
+
+      if (fields.indexOf('analyses') > -1 || fields.indexOf('subTokens') > -1) hash += '|[s:' + (this.walk(function (t) {
+        return t.hashFields(fields);
+      }) || '') + ']';
+
+      return hash;
+    }
+
+    /**
+     * Serialize a token to JSON format
+     */
+
+  }, {
+    key: 'serialize',
+    value: function serialize() {
+      var serial = {
+
+        uuid: this.uuid,
+        form: this.form,
+        index: this.indices.absolute,
+
+        semicolon: this.semicolon,
+        isEmpty: this.isEmpty,
+        lemma: this.lemma,
+        upostag: this.upostag,
+        xpostag: this.xpostag,
+        feats: this._feats,
+        misc: this._misc,
+        heads: this.mapHeads(function (head) {
+          return {
+            index: head.token.indices.absolute,
+            deprel: head.deprel
+          };
+        })
+      };
+
+      if (this._analyses && this._analyses.length) serial.analyses = this._analyses.map(function (analysis) {
+        return {
+          subTokens: analysis._subTokens.map(function (subToken) {
+            return subToken.serialize();
+          })
+        };
+      });
+
+      serial = _.pick(serial, function (value) {
+        return value !== undefined;
+      });
+
+      return serial;
+    }
+  }, {
+    key: 'isSuperToken',
+    get: function get() {
+      return !!(this._analyses || []).reduce(function (total, analysis) {
+        return total += analysis._subTokens.length;
+      }, 0);
+    }
+  }, {
+    key: 'value',
+    get: function get() {
+      return this.form || this.lemma;
+    }
+  }, {
+    key: 'feats',
+    get: function get() {
+      return this._feats_init ? this._feats.length ? this._feats.join('|') : null : undefined;
+    },
+    set: function set(feats) {
+      if (feats === undefined) return;
+
+      this._feats_init = true;
+      this._feats = feats || [];
+    }
+  }, {
+    key: 'misc',
+    get: function get() {
+      return this._misc_init ? this._misc.length ? this._misc.join('|') : null : undefined;
+    },
+    set: function set(misc) {
+      // [(serial.misc || ''), (serial.other || []).join('|')].join('|');
+      if (misc === undefined) return;
+
+      this._misc_init = true;
+      this._misc = misc || [];
+    }
+  }, {
+    key: 'other',
+    set: function set(other) {
+      if (other === undefined) return;
+
+      if (typeof other === 'string') other = [other];
+
+      this._misc_init = true;
+      this._misc = (other || []).filter(utils.thin);
+    }
+  }]);
+
+  return BaseToken;
+}(NxBaseClass);
+
+module.exports = BaseToken;
+
+},{"../utils":94,"./base-class":76,"./relation-set":83,"underscore":14,"uuid/v4":17}],78:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxBaseClass = require('./base-class');
+var Label = require('./label');
+
+/**
+ * Abstraction over a CoNLL-U or CG3 comment, allows us to extract and then
+ *  manipulate data in some useful ways across a Corpus.
+ */
+
+var Comment = function (_NxBaseClass) {
+  _inherits(Comment, _NxBaseClass);
+
+  function Comment(sent, body) {
+    _classCallCheck(this, Comment);
+
+    var _this = _possibleConstructorReturn(this, (Comment.__proto__ || Object.getPrototypeOf(Comment)).call(this, sent, 'Comment'));
+
+    _this.type = 'normal';
+    _this.body = body;
+
+    var label = body.match(utils.re.commentLabel),
+        sentId = body.match(utils.re.commentSentId);
+
+    if (label) {
+
+      var labels = [];
+      label[3].split(/\s/).forEach(function (label) {
+        if (label && labels.indexOf(label) === -1) labels.push(label);
+      });
+
+      _this.type = 'label';
+      _this.labels = labels;
+    } else if (sentId) {
+
+      _this.type = 'sent-id';
+      _this.id = sentId[2];
+    }
+    return _this;
+  }
+
+  _createClass(Comment, [{
+    key: 'serialize',
+    value: function serialize() {
+      return this.body;
+    }
+  }]);
+
+  return Comment;
+}(NxBaseClass);
+
+module.exports = Comment;
+
+},{"../utils":94,"./base-class":76,"./label":81,"underscore":14}],79:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+var fs = require('fs');
+var path = require('path');
+var uuid = require('uuid/v4');
+
+var utils = require('../utils');
+var NxError = utils.NxError;
+
+var split = require('../splitter');
+var detect = require('../detector');
+var parse = require('../parser');
+var generate = require('../generator');
+var convert = require('../converter');
+
+var NxBaseClass = require('./base-class');
+var Labeler = require('./labeler');
+var Sentence = require('./sentence');
+
+/**
+ * Abstraction over a collection of Sentences.  NOTE: this class is
+ *  out-of-date and will be replaced soon :)
+ */
+
+var Corpus = function (_NxBaseClass) {
+  _inherits(Corpus, _NxBaseClass);
+
+  function Corpus(options) {
+    _classCallCheck(this, Corpus);
+
+    var _this = _possibleConstructorReturn(this, (Corpus.__proto__ || Object.getPrototypeOf(Corpus)).call(this, 'Corpus'));
+
+    _this.treebank_id = uuid();
+
+    options = _.defaults(options, {
+      requireOne: true
+    });
+    _this.filename = null;
+    _this.options = options;
+    _this.sources = [];
+
+    _this._labeler = new Labeler(_this);
+    _this._sentences = [];
+    _this._index = -1;
+    _this._meta = {};
+    _this._filterIndex = -1;
+
+    return _this;
+  }
+
+  _createClass(Corpus, [{
+    key: 'serialize',
+    value: function serialize() {
+      var _this2 = this;
+
+      return {
+        filename: this.filename,
+        meta: this._meta,
+        options: this.options,
+        labeler: this._labeler.serialize(),
+        sentences: this._sentences.map(function (sent) {
+          return sent.serialize(_this2.options);
+        }),
+        index: this._index
+      };
+    }
+  }, {
+    key: 'reindex',
+    value: function reindex() {
+      this._sentences.forEach(function (sent, i) {
+        sent._index = i;
+      });
+    }
+  }, {
+    key: 'first',
+    value: function first() {
+
+      this.index = this.length ? 0 : -1;
       return this;
     }
-
-    /**
-     * add a dep on the given token with a dependency relation
-     *
-     * @param {Analysis} dep pointer directly to the analysis
-     * @param {String} deprel
-     * @return {Analysis}
-     */
-
   }, {
-    key: 'addDep',
-    value: function addDep(dep, deprel) {
-      if (!(dep instanceof Analysis)) throw new NotatrixError('can\'t add dep: not Analysis instance');
+    key: 'prev',
+    value: function prev() {
 
-      // first try to change an existing one (don't want duplicate deps)
-      if (this.changeDep(dep, deprel)) return this;
+      if (!this.length) return null;
 
-      // get rid of "empty" value
-      if (this._deps.length === 1 && this._deps[0].token === '_') this._deps = [];
+      var filtered = this.filtered;
+      var index = filtered.length ? this._filterIndex : this._index;
 
-      // otherwise push a new one
-      this._deps.push({
-        token: dep,
-        deprel: deprel
-      });
+      if (index === 0) return null;
 
-      // if applicable, add to the dep's head field too
-      if (this.sentence.options.help.deps) dep._heads.push({
-        token: this,
-        deprel: deprel
-      });
-
-      // chaining
+      this.index = --index;
       return this;
     }
-
-    /**
-     * remove a dep from the given analysis if it exists
-     *
-     * @param {Analysis} dep
-     * @return {Analysis}
-     */
-
   }, {
-    key: 'removeDep',
-    value: function removeDep(dep) {
-      var _this5 = this;
+    key: 'next',
+    value: function next() {
 
-      if (!(dep instanceof Analysis)) throw new NotatrixError('can\'t remove dep: not Analysis instance');
+      if (!this.length) return null;
 
-      // remove from _deps
-      var removing = -1;
-      this.mapDeps(function (token, deprel, i) {
-        if (token === dep) removing = i;
-      });
-      if (removing > -1) this._deps.splice(removing, 1);
+      var filtered = this.filtered;
+      var index = filtered.length ? this._filterIndex : this._index;
+      var total = filtered.length ? filtered.length - 1 : this._length - 1;
 
-      // if applicable, also remove from dep's _heads
-      removing = -1;
-      if (this.sentence.options.help.deps) dep.mapHeads(function (token, deprel, i) {
-        if (token === _this5) removing = i;
-      });
-      if (removing > -1) dep._heads.splice(removing, 1);
+      if (index === total) return null;
 
-      // chaining
+      this.index = ++index;
       return this;
     }
-
-    /**
-     * change the dependency relation for a given dep ... returns null if unable
-     *   to make the change
-     *
-     * @param {Analysis} dep
-     * @param {String} deprel
-     * @return {(Analysis|null)}
-     */
-
   }, {
-    key: 'changeDep',
-    value: function changeDep(dep, deprel) {
-      var _this6 = this;
+    key: 'last',
+    value: function last() {
 
-      if (!(dep instanceof Analysis)) throw new NotatrixError('can\'t change dep: not Analysis instance');
+      var filtered = this.filtered;
+      this.index = filtered.length ? filtered.length - 1 : this.length - 1;
 
-      // change for this dep
-      var done = false;
-      this.mapDeps(function (token, _deprel, i) {
-        if (token === dep) {
-          _this6._deps[i].deprel = deprel || _deprel;
-          done = true;
-        }
-      });
-
-      // if applicable, change for the dep's head too
-      if (this.sentence.options.help.deps) dep.mapHeads(function (token, _deprel, i) {
-        if (token === _this6) dep._heads[i].deprel = deprel || _deprel;
-      });
-
-      return done ? this : null;
+      return this;
     }
+  }, {
+    key: 'getSentence',
+    value: function getSentence(index) {
 
-    // field getters and setters
+      if (index == undefined) index = this.index;
 
-    /**
-     * get the `form` ... if none defined, `help.form` setting `= true` (default:
-     *   `true`), and `lemma` is set, return `lemma` instead
-     *
-     * @return {(String|undefined)}
-     */
+      if (0 > index || index > this.length - 1) return null;
 
+      return this._sentences[index] || null;
+    }
+  }, {
+    key: 'setSentence',
+    value: function setSentence(index, text) {
+
+      if (text === null || text === undefined) {
+        // if only passed 1 arg
+        text = index || '';
+        index = this.index;
+      }
+
+      index = parseInt(index);
+      if (isNaN(index) || this.getSentence(index) === null) throw new NxError('cannot set sentence at index ' + index);
+
+      this._labeler.onRemove(this.getSentence(index));
+      var sent = new Sentence(text, this.options);
+      sent.corpus = this;
+
+      this._sentences[index] = sent;
+      this._labeler.onAdd(sent);
+      this.reindex();
+
+      return sent;
+    }
+  }, {
+    key: 'insertSentence',
+    value: function insertSentence(index, text) {
+
+      if (text === null || text === undefined) {
+        // if only passed 1 arg
+        text = index || '';
+        index = this.index + 1;
+      }
+
+      index = parseFloat(index);
+      if (isNaN(index)) throw new NxError('cannot insert sentence at index ' + index);
+
+      index = index < 0 ? 0 : index > this.length ? this.length : parseInt(index);
+
+      var sent = new Sentence(text, this.options);
+      sent.corpus = this;
+
+      this._sentences = this._sentences.slice(0, index).concat(sent).concat(this._sentences.slice(index));
+      this._labeler.onAdd(sent);
+
+      this.index = index;
+      this.reindex();
+      return sent;
+    }
+  }, {
+    key: 'removeSentence',
+    value: function removeSentence(index) {
+
+      if (!this.length) return null;
+
+      if (index === undefined) // if not passed args
+        index = this.index;
+
+      index = parseFloat(index);
+      if (isNaN(index)) throw new NxError('cannot remove sentence at index ' + index);
+
+      index = index < 0 ? 0 : index > this.length - 1 ? this.length - 1 : parseInt(index);
+
+      var removed = this._sentences.splice(index, 1)[0];
+      if (!this.length) this.insertSentence();
+
+      this._labeler.onRemove(removed);
+
+      if (index <= this.index) this.index--;
+      this.reindex();
+      return removed;
+    }
+  }, {
+    key: 'pushSentence',
+    value: function pushSentence(text) {
+      return this.insertSentence(Infinity, text);
+    }
+  }, {
+    key: 'popSentence',
+    value: function popSentence(text) {
+      return this.removeSentence(Infinity);
+    }
+  }, {
+    key: 'parse',
+    value: function parse(string) {
+      var _this3 = this;
+
+      var splitted = split(string, this.options); // might throw errors
+      var index = this.index || 0;
+
+      splitted.forEach(function (split, i) {
+        //console.log(i, split);
+        _this3.insertSentence(index + i, split, false);
+      });
+
+      return this;
+    }
+  }, {
+    key: 'readFile',
+    value: function readFile(filepath, next) {
+      var _this4 = this;
+
+      fs.exists(filepath, function (exists) {
+        if (!exists) throw new NxError('cannot read file: cannot find path ' + filepath);
+
+        fs.readFile(filepath, function (err, data) {
+          if (err) throw err;
+
+          data = data.toString();
+          _this4.parse(data);
+          _this4.sources.push(filepath);
+          _this4.filename = path.basename(filepath);
+
+          if (next) next(_this4);
+        });
+      });
+    }
+  }, {
+    key: 'writeFile',
+    value: function writeFile(format, filepath) {
+
+      filepath = this.getWritePath(filepath);
+
+      var contents = this.serialize();
+      fs.writeFile(filepath, contents, function (err) {
+        if (err) throw err;
+      });
+
+      return this;
+    }
+  }, {
+    key: 'getWritePath',
+    value: function getWritePath(filepath) {
+
+      if (filepath) return filepath;
+
+      var lastSource = this.sources.slice(-1)[0];
+      return (lastSource || 'export') + '.nxcorpus';
+    }
+  }, {
+    key: 'snapshot',
+    get: function get() {
+      return {
+        filename: this.filename,
+        sentences: this.length,
+        errors: this.errors.length,
+        labels: this._labeler.sort()
+      };
+    }
   }, {
     key: 'length',
     get: function get() {
-      return this.subTokens.length;
+      return this._sentences.length;
     }
   }, {
-    key: 'nx',
+    key: 'errors',
     get: function get() {
-      var _this7 = this;
+      return this._sentences.filter(function (sent) {
+        if (!sent.isParsed) return sent;
+      });
+    }
+  }, {
+    key: 'topLabels',
+    get: function get() {
+      return this._labeler.top;
+    }
+  }, {
+    key: 'sentence',
+    get: function get() {
+      return this.index < 0 ? null : this._sentences[this.index];
+    }
+  }, {
+    key: 'filtered',
+    get: function get() {
+      var _this5 = this;
 
-      // serialize "values" (getter/setter version of fields)
-      var values = {};
-      _.each(fields, function (field) {
-        values[field] = _this7[field];
+      return this._labeler._filter.size ? this._sentences.filter(function (sent) {
+        return _this5._labeler.sentenceInFilter(sent);
+      }) : [];
+    }
+  }, {
+    key: 'index',
+    get: function get() {
+      return this._index;
+    },
+    set: function set(index) {
+
+      var filtered = this.filtered,
+          total = filtered.length || this.length;
+
+      index = parseInt(index);
+      if (isNaN(index)) {
+        index = filtered.length ? this._filterIndex : this.index;
+      } else if (index < 0 && total) {
+        index = 0;
+      } else if (index > total - 1) {
+        index = total - 1;
+      }
+
+      if (filtered.length) {
+        this._filterIndex = index;
+        this._index = filtered[index]._index;
+      } else {
+        this._filterIndex = -1;
+        this._index = index;
+      }
+
+      return this.index;
+    }
+  }], [{
+    key: 'deserialize',
+    value: function deserialize(serial) {
+
+      var corpus = new Corpus(serial.options);
+      corpus.filename = serial.filename || null;
+      corpus._meta = serial.meta;
+      corpus._labeler = Labeler.deserialize(corpus, serial.labeler);
+      corpus._sentences = serial.sentences.map(function (s) {
+
+        var sent = new Sentence(s, _.defaults(s.options, serial.options));
+        sent._meta = s.meta;
+
+        _.each(corpus._labeler._labels, function (label, name) {
+          if (corpus._labeler.sentenceHasLabel(sent, name)) label._sents.add(sent);
+        });
+
+        return sent;
+      });
+      corpus.index = serial.index;
+
+      return corpus;
+    }
+  }, {
+    key: 'fromString',
+    value: function fromString(string, options) {
+
+      var corpus = new Corpus(options);
+      corpus.parse(string);
+      return corpus;
+    }
+  }, {
+    key: 'fromFile',
+    value: function fromFile(filepath, options, next) {
+
+      if (next === undefined) {
+        next = options;
+        options = {};
+      }
+      var corpus = new Corpus(options);
+      corpus.readFile(filepath, next);
+
+      return this;
+    }
+  }]);
+
+  return Corpus;
+}(NxBaseClass);
+
+module.exports = Corpus;
+
+},{"../converter":18,"../detector":19,"../generator":73,"../parser":89,"../splitter":90,"../utils":94,"./base-class":76,"./labeler":82,"./sentence":85,"fs":11,"path":12,"underscore":14,"uuid/v4":17}],80:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  NxBaseClass: require('./base-class'),
+  Corpus: require('./corpus'),
+  Labeler: require('./labeler'),
+  Sentence: require('./sentence'),
+  Comment: require('./comment'),
+  BaseToken: require('./base-token'),
+  RootToken: require('./root-token'),
+  Token: require('./token'),
+  Analysis: require('./analysis'),
+  SubToken: require('./sub-token'),
+  RelationSet: require('./relation-set')
+
+};
+
+},{"./analysis":75,"./base-class":76,"./base-token":77,"./comment":78,"./corpus":79,"./labeler":82,"./relation-set":83,"./root-token":84,"./sentence":85,"./sub-token":86,"./token":87}],81:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxBaseClass = require('./base-class');
+
+/**
+ * Allows us to extract labels from "field = value"-type comments, so that
+ *  we can filter a corpus by Label and arbitrarily apply that label to
+ *  multiple Sentences.
+ */
+
+var Label = function (_NxBaseClass) {
+  _inherits(Label, _NxBaseClass);
+
+  function Label(name) {
+    _classCallCheck(this, Label);
+
+    var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, 'Label'));
+
+    _this.name = name;
+    _this.bColor = utils.hashStringToHex(name);
+    _this.tColor = utils.getContrastingColor(_this.bColor);
+    _this.desc = '';
+
+    return _this;
+  }
+
+  _createClass(Label, [{
+    key: 'serialize',
+    value: function serialize() {
+      return {
+        name: this.name,
+        desc: this.desc,
+        bColor: this.bColor,
+        tColor: this.tColor
+      };
+    }
+  }], [{
+    key: 'deserialize',
+    value: function deserialize(serial) {
+
+      var label = new Label(serial.name);
+      label.desc = serial.desc;
+      label.bColor = serial.bColor;
+      label.tColor = serial.tColor;
+
+      return label;
+    }
+
+    /*
+     set state(state) {
+      if (!state.name)
+        throw new DeserializationError(`cannot set name to "${state.name}"`);
+       state.desc = state.desc || '';
+      if (typeof state.desc !== 'string')
+        throw new DeserializationError(`cannot set description to non-string value`);
+       this.name = state.name;
+      this.desc = state.desc;
+       if (!this.changeColor(state.bColor))
+        throw new DeserializationError(`cannot set background color to "${state.bColor}"`);
+    }
+     render(labeler) {
+       const inComments = labeler.has(this.name),
+        filtering = labeler._filter.has(this.name);
+       $(`#labels-horiz`).append($('<li>')
+        .attr('name', this.name)
+        .addClass('label horiz')
+        .addClass(inComments ? 'in-comments' : 'not-in-comments')
+        .addClass(filtering  ? 'filtering'   : 'not-filtering')
+        .append($('<div>')
+          .addClass('label-text')
+          .text(this.name)
+          .css('background-color', this.bColor)
+          .css('color', this.tColor)
+          .click(e => labeler.handle.click.label(e))
+        )
+        .append($('<div>')
+          .addClass('label-hidden')
+          .append($('<div>')
+            .addClass('label-hidden-group')
+            .append($('<div>')
+              .addClass('label-hidden-item')
+              .append($('<strong>')
+                .text('Name')
+              )
+              .append($('<input>')
+                .attr('name', 'label-name')
+                .val(this.name)
+                .keyup(e => labeler.handle.keyup.name(e))
+              ))
+            .append($('<div>')
+              .addClass('label-hidden-item')
+              .append($('<strong>')
+                .text('Description')
+              )
+              .append($('<input>')
+                .attr('name', 'label-desc')
+                .val(this.desc)
+                .keyup(e => labeler.handle.keyup.desc(e))
+              ))
+            .append($('<div>')
+              .addClass('label-hidden-item')
+              .append($('<strong>')
+                .text('Color')
+              )
+              .append($('<div>')
+                .addClass('label-hidden-item-inner')
+                .append($('<span>')
+                  .addClass('hex-color-group')
+                  .text('#')
+                  .append($('<input>')
+                    .attr('name', 'label-color')
+                    .attr('pattern', '[A-Fa-f\\d]{6}')
+                    .val(this.bColor.substr(1))
+                    .keyup(e => labeler.handle.keyup.color(e))
+                  )
+                )
+                .append($('<button>')
+                  .attr('type', 'button')
+                  .addClass('btn btn-secondary refresh-color')
+                  .css('background-color', this.bColor)
+                  .click(e => labeler.handle.click.refresh(e))
+                  .append($('<i>')
+                    .addClass('fa fa-refresh')
+                  )
+                )
+              )
+            )
+          )
+          .append($('<hr>'))
+          .append($('<div>')
+            .addClass('label-hidden-group')
+            .append($('<div>')
+              .addClass('label-hidden-item')
+              .append($('<div>')
+                .addClass('label-hidden-item-inner')
+                .append($('<input>')
+                  .attr('name', 'filtering')
+                  .attr('type', 'checkbox')
+                  .prop('checked', filtering)
+                  .click(e => labeler.handle.click.checkbox.filtering(e))
+                )
+                .append($('<span>')
+                  .addClass('filtering-label checkbox-label')
+                  .text('filtering')
+                )
+              )
+            )
+          )
+          .append($('<hr>'))
+          .append($('<div>')
+            .addClass('label-hidden-group')
+            .append($('<div>')
+              .addClass('label-hidden-item delete-item')
+              .append($('<button>')
+                .attr('type', 'button')
+                .addClass('btn btn-secondary delete-button')
+                .text('delete')
+                .click(e => labeler.handle.click.delete(e))
+              )
+            )
+          )
+        )
+      );
+    }
+    */
+
+  }]);
+
+  return Label;
+}(NxBaseClass);
+
+module.exports = Label;
+
+},{"../utils":94,"./base-class":76,"underscore":14}],82:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxBaseClass = require('./base-class');
+var Label = require('./label');
+
+/**
+ * Abstraction to hold a mapping of String => Label pairs, as well as some
+ *  methods for doing work on those labels.
+ */
+
+var Labeler = function (_NxBaseClass) {
+  _inherits(Labeler, _NxBaseClass);
+
+  function Labeler(corpus) {
+    _classCallCheck(this, Labeler);
+
+    var _this = _possibleConstructorReturn(this, (Labeler.__proto__ || Object.getPrototypeOf(Labeler)).call(this, 'Labeler'));
+
+    _this.corpus = corpus;
+
+    _this._labels = {};
+    _this._filter = new Set();
+
+    return _this;
+  }
+
+  /**
+   * @typedef Labeler_SortReturnT
+   * @property {String} name Label name
+   * @property {Number} size Number of sentences with Label
+   */
+
+  /**
+   * Sort all labels in Corpus by number of Sentences with that label
+   *
+   * @return {Labeler_SortReturnT}
+   */
+
+
+  _createClass(Labeler, [{
+    key: 'sort',
+    value: function sort() {
+      var _this2 = this;
+
+      var size = function size(name) {
+        return _this2._labels[name]._sents.size;
+      };
+
+      return Object.keys(this._labels).sort(function (x, y) {
+
+        if (size(x) < size(y)) return 1;
+
+        if (size(x) > size(y)) return -1;
+
+        return 0;
+      }).map(function (name) {
+
+        return {
+          name: name,
+          size: _this2._labels[name]._sents.size
+        };
+      });
+    }
+  }, {
+    key: 'serialize',
+    value: function serialize() {
+      return {
+        labels: _.map(this._labels, function (label) {
+          return label._label.serialize();
+        }),
+        filter: Array.from(this._filter)
+      };
+    }
+  }, {
+    key: 'get',
+
+
+    /**
+     * Get a Label given its name
+     *
+     * @param {String} name
+     * @return {Label}
+     */
+    value: function get(name) {
+      return this._labels[name];
+    }
+
+    /**
+     * Get the number of sentences with a given Label
+     *
+     * @param {String} name
+     * @return {Number}
+     */
+
+  }, {
+    key: 'count',
+    value: function count(name) {
+      return this._labels[name] ? this._labels[name]._sents.size : 0;
+    }
+
+    /**
+     * Crawl through a sentence's comments to see if it has a particular Label
+     *
+     * @param {Sentence} sent
+     * @param {String} searching
+     * @return {Boolean}
+     */
+
+  }, {
+    key: 'sentenceHasLabel',
+    value: function sentenceHasLabel(sent, searching) {
+
+      var hasLabel = false;
+      sent.comments.forEach(function (comment) {
+        if (comment.type === 'label') {
+          comment.labels.forEach(function (name) {
+            if (name === searching) hasLabel = true;
+          });
+        }
       });
 
-      // serialize other data
+      return hasLabel;
+    }
+
+    /**
+     * Checks if a given Sentence should be filtered
+     *
+     * @param {Sentence} sent
+     * @return {Boolean}
+     */
+
+  }, {
+    key: 'sentenceInFilter',
+    value: function sentenceInFilter(sent) {
+      var _this3 = this;
+
+      var inFilter = false;
+      sent.comments.forEach(function (comment) {
+        if (comment.type === 'label') {
+          comment.labels.forEach(function (name) {
+            if (_this3._filter.has(name)) inFilter = true;
+          });
+        }
+      });
+
+      return inFilter;
+    }
+
+    /**
+     * Adds a Label name to the filter
+     *
+     * @param {String} name
+     */
+
+  }, {
+    key: 'addToFilter',
+    value: function addToFilter(name) {
+      if (this.get(name)) return this._filter.add(name);
+    }
+
+    /**
+     * Removes a Label name from the filter
+     *
+     * @param {String} name
+     */
+
+  }, {
+    key: 'removeFromFilter',
+    value: function removeFromFilter(name) {
+      return this._filter.delete(name);
+    }
+
+    /**
+     * Callback to be triggered whenever we add a new Sentence to a Corpus
+     *
+     * @param {Sentence} sent
+     */
+
+  }, {
+    key: 'onAdd',
+    value: function onAdd(sent) {
+      var _this4 = this;
+
+      sent.comments.forEach(function (comment) {
+        if (comment.type === 'label') {
+          comment.labels.forEach(function (name) {
+
+            _this4.addLabel(name, [sent]);
+          });
+        }
+      });
+    }
+
+    /**
+     * Callback to be triggered whenever we remove a Sentence from a Corpus
+     *
+     * @param {Sentence} sent
+     */
+
+  }, {
+    key: 'onRemove',
+    value: function onRemove(sent) {
+      var _this5 = this;
+
+      sent.comments.forEach(function (comment) {
+        if (comment.type === 'label') {
+          comment.labels.forEach(function (name) {
+
+            _this5.removeLabel(name, [sent]);
+          });
+        }
+      });
+    }
+
+    /**
+     * Add new Label with the given name (if it doesn't already exist) and
+     *  attach it to a list of Sentences.
+     *
+     * @param {String} name
+     * @param {Sentence[]} [sents=[]]
+     */
+
+  }, {
+    key: 'addLabel',
+    value: function addLabel(name) {
+      var sents = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+
+      var label = this.get(name);
+      if (label) {
+        var _label$_sents;
+
+        (_label$_sents = label._sents).add.apply(_label$_sents, _toConsumableArray(sents));
+      } else {
+
+        label = {
+          _label: new Label(name),
+          _sents: new Set()
+        };
+        this._labels[name] = label;
+      }
+
+      sents.forEach(function (sent) {
+        sent.comments.forEach(function (comment) {
+          if (comment.type === 'label') {
+
+            comment.labels.push(name);
+            label._sents.add(sent);
+          }
+        });
+      });
+
+      return label;
+    }
+
+    /**
+     * Remove a Label by name (if it exists) from a set of Sentences (can
+     *  be omitted).
+     *
+     * @param {String} name
+     * @param {Sentence[]} sents
+     */
+
+  }, {
+    key: 'removeLabel',
+    value: function removeLabel(name, sents) {
+
+      var label = this.get(name);
+      if (!label) return false;
+
+      (sents || label._sents).forEach(function (sent) {
+        sent.comments.forEach(function (comment) {
+          if (comment.type === 'label') {
+
+            var index = comment.labels.indexOf(oldName);
+            comment.labels.splice(index, 1);
+          }
+        });
+      });
+
+      if (!this.count(name)) delete this._labels[name];
+
+      return label;
+    }
+
+    /**
+     * Change the name of a Label from oldName => newName
+     *
+     * @param {String} oldName
+     * @param {String} newName
+     * @return {Label}
+     */
+
+  }, {
+    key: 'changeLabelName',
+    value: function changeLabelName(oldName, newName) {
+
+      if (this.get(newName)) return false; // already exists
+
+      var oldLabel = this.removeLabel(oldName);
+      if (!label) return false;
+
+      var newLabel = this.addLabel(newName, oldLabel._sents);
+      newLabel.desc = oldLabel.desc;
+      newLabel.bColor = oldLabel.bColor;
+      newLabel.tColor = oldLabel.tColor;
+
+      return newLabel;
+    }
+
+    /**
+     * Change the color of a Label to a given color
+     *
+     * @param {String} name
+     * @param {String} color
+     * @return {Boolean} - whether the operation succeeded
+     */
+
+  }, {
+    key: 'changeLabelColor',
+    value: function changeLabelColor(name, color) {
+
+      var label = this.get(name);
+      if (!label) return false;
+
+      if (color) {
+
+        color = (color.match(utils.re.hexColorSixDigit) || [])[1];
+        var int = parseInt(color, 16);
+        if (isNaN(int) || int < 0 || int > magic) return false; // out of bounds
+      } else {
+        color = utils.getRandomHexColor();
+      }
+
+      label._label.bColor = color;
+      label._label.tColor = utils.getContrastingColor(color);
+
+      return true;
+    }
+
+    /**
+     * Change the description of a Label to a given description
+     *
+     * @param {String} name
+     * @param {String} desc
+     * @return {Boolean} - whether the operation succeeded
+     */
+
+  }, {
+    key: 'changeLabelDesc',
+    value: function changeLabelDesc(name, desc) {
+
+      var label = this.get(name);
+      if (!label) return false;
+
+      if (typeof desc !== 'string') return false;
+
+      label._label.desc = desc;
+      return true;
+    }
+  }], [{
+    key: 'deserialize',
+    value: function deserialize(corpus, serial) {
+
+      var labeler = new Labeler(corpus);
+      serial.labels.forEach(function (label) {
+        return labeler.addLabel(label.name);
+      });
+      serial._filter = new (Function.prototype.bind.apply(Set, [null].concat(_toConsumableArray(serial.filter))))();
+
+      return labeler;
+    }
+  }]);
+
+  return Labeler;
+}(NxBaseClass);
+
+module.exports = Labeler;
+
+},{"../utils":94,"./base-class":76,"./label":81,"underscore":14}],83:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxBaseClass = require('./base-class');
+
+var RelationSet = function (_NxBaseClass) {
+  _inherits(RelationSet, _NxBaseClass);
+
+  function RelationSet(token, partner) {
+    _classCallCheck(this, RelationSet);
+
+    var _this = _possibleConstructorReturn(this, (RelationSet.__proto__ || Object.getPrototypeOf(RelationSet)).call(this, 'RelationSet'));
+
+    _this.token = token;
+    _this.partner = partner;
+    _this._items = [];
+
+    return _this;
+  }
+
+  _createClass(RelationSet, [{
+    key: 'map',
+    value: function map(callback) {
+      return this._items.map(callback);
+    }
+  }, {
+    key: 'has',
+    value: function has(token) {
+
+      var has = false;
+      this.map(function (item) {
+        if (item.token === token) has = true;
+      });
+
+      return has;
+    }
+  }, {
+    key: 'add',
+    value: function add(token, deprel) {
+      var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+
+      if (this.has(token)) {
+        this.modify(token, deprel);
+        return false;
+      }
+
+      this._items.push({
+        token: token,
+        deprel: deprel
+      });
+
+      if (origin) token[this.partner].add(this.token, deprel, false);
+
+      return true;
+    }
+  }, {
+    key: 'modify',
+    value: function modify(token, deprel) {
+      var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+
+      if (!this.has(token)) return false;
+
+      var ret = void 0;
+      this.map(function (item) {
+        if (item.token === token) {
+          ret = item.deprel !== deprel;
+          item.deprel = deprel;
+        }
+      });
+
+      if (origin) token[this.partner].modify(this.token, deprel, false);
+
+      return ret;
+    }
+  }, {
+    key: 'remove',
+    value: function remove(token) {
+      var origin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+
+      var at = -1;
+
+      this.map(function (item, i) {
+        if (item.token === token) at = i;
+      });
+
+      if (at === -1) return null;
+
+      var removed = this._items.splice(at, 1)[0];
+
+      if (origin) token[this.partner].remove(this.token);
+
+      return removed || null;
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var _this2 = this;
+
+      var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+
+      this.map(function (item) {
+        if (origin) item.token[_this2.partner].remove(_this2.token);
+      });
+      this._items = [];
+    }
+  }, {
+    key: 'length',
+    get: function get() {
+      return this._items.length;
+    }
+  }, {
+    key: 'first',
+    get: function get() {
+      return this._items[0] || null;
+    }
+  }]);
+
+  return RelationSet;
+}(NxBaseClass);
+
+module.exports = RelationSet;
+
+},{"../utils":94,"./base-class":76,"underscore":14}],84:[function(require,module,exports){
+'use strict';
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var BaseToken = require('./base-token');
+
+var RootToken = function (_BaseToken) {
+  _inherits(RootToken, _BaseToken);
+
+  function RootToken(sent) {
+    _classCallCheck(this, RootToken);
+
+    var _this = _possibleConstructorReturn(this, (RootToken.__proto__ || Object.getPrototypeOf(RootToken)).call(this, sent, 'RootToken'));
+
+    _this.form = 'ROOT';
+    _this.indices = {
+      absolute: 0,
+      conllu: 0,
+      cg3: 0,
+      cytoscape: 0
+    };
+    return _this;
+  }
+
+  return RootToken;
+}(BaseToken);
+
+module.exports = RootToken;
+
+},{"../utils":94,"./base-token":77,"underscore":14}],85:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxError = utils.NxError;
+var ToolError = utils.ToolError;
+var parse = require('../parser');
+var generate = require('../generator');
+
+var NxBaseClass = require('./base-class');
+var Comment = require('./comment');
+var BaseToken = require('./base-token');
+var Token = require('./token');
+var RootToken = require('./root-token');
+var update = require('./update');
+var Analysis = require('./analysis');
+var SubToken = require('./sub-token');
+
+/**
+ * Abstraction over a Sentence.  Holds an array of comments and of tokens,
+ *  plus some metadata.
+ */
+
+var Sentence = function (_NxBaseClass) {
+  _inherits(Sentence, _NxBaseClass);
+
+  function Sentence(serial, options) {
+    _classCallCheck(this, Sentence);
+
+    var _this = _possibleConstructorReturn(this, (Sentence.__proto__ || Object.getPrototypeOf(Sentence)).call(this, 'Sentence'));
+
+    _this._meta = {};
+
+    serial = serial || '';
+    options = options || {};
+    options = _.defaults(options, {
+      interpretAs: null,
+      addHeadOnModifyFailure: true,
+      depsShowDeprel: true,
+      showRootDeprel: true,
+      enhanced: false,
+      useTokenDeprel: true,
+      autoAddPunct: true
+    });
+
+    _this.input = serial.input == null ? serial : serial.input;
+    _this.isParsed = false;
+    _this.Error = null;
+
+    try {
+
+      if (options.interpretAs) {
+
+        // interpret as a particular format if passed option
+        serial = parse.as[options.interpretAs](serial, options);
+      } else {
+
+        // otherwise, get an array of possible interpretations
+        serial = parse(serial, options);
+
+        // choose one of them if possible
+        if (serial.length === 0) {
+          throw new NxError('Unable to parse: unrecognized format', _this);
+        } else if (serial.length === 1) {
+          serial = serial[0];
+        } else {
+          throw new NxError('Unable to parse: ambiguous format (' + serial.join(', ') + ')', _this);
+        }
+
+        if (serial.isParsed === false) throw new NxError('Cannot parse explicitly unparsed serial');
+      }
+
+      _this.options = serial.options;
+
+      _this.root = new RootToken(_this);
+      _this.comments = serial.comments.map(function (com) {
+        return new Comment(_this, com);
+      });
+      _this.tokens = serial.tokens.map(function (tok) {
+        return new Token(_this, tok);
+      });
+
+      _this.attach();
+      _this.isParsed = true;
+    } catch (e) {
+
+      if (e instanceof NxError || e instanceof ToolError) {
+
+        _this.options = serial.options || options;
+        _this.comments = [];
+        _this.tokens = [];
+        _this.Error = e;
+      } else {
+        throw e;
+      }
+    }
+    return _this;
+  }
+
+  /**
+   * Output Sentence to a given format
+   *
+   * @param {String} format
+   * @param {Object} options
+   */
+
+
+  _createClass(Sentence, [{
+    key: 'to',
+    value: function to(format, options) {
+      return generate[format](this, options);
+    }
+
+    /**
+     * Output Sentence to a notatrix-serial string
+     */
+
+  }, {
+    key: 'serialize',
+    value: function serialize() {
+      var master = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       return {
-        id: this.id,
-        num: this.num,
-        params: this.params,
-        values: values,
-        subTokens: this.subTokens.map(function (subToken) {
-          return subToken.nx;
-        })
+        meta: this._meta,
+        input: this.input,
+        isParsed: this.isParsed,
+        options: utils.dedup(master, this.options),
+        comments: this.isParsed ? this.comments.map(function (com) {
+          return com.serialize();
+        }) : [],
+        tokens: this.isParsed ? this.tokens.map(function (token) {
+          return token.serialize();
+        }) : []
       };
     }
 
     /**
-     * deserialize an internal representation
+     * Apply a callback function for every token in the sentence
      *
-     * @param {Object} nx
-     * @return {undefined}
-     */
-    ,
-    set: function set(nx) {
-      var _this8 = this;
-
-      this.params = nx.params;
-      _.each(nx.values, function (value, key) {
-        _this8[key] = value;
-      });
-    }
-
-    /**
-     * static method allowing us to construct a new Analysis directly from an
-     *   Nx string and bind it to a token
-     *
-     * @param {Token} token
-     * @param {String} serial
-     * @return {Analysis}
+     * @param {Function} callback
      */
 
   }, {
-    key: 'text',
+    key: 'iterate',
+    value: function iterate(callback) {
+      for (var i = 0; i < this.tokens.length; i++) {
 
+        var token = this.tokens[i];
+        callback(token, i, null, null);
 
-    /**
-     * get a plain-text formatted string of the analysis
-     *
-     * @return {String}
-     */
-    get: function get() {
+        for (var j = 0; j < token._analyses.length; j++) {
+          for (var k = 0; k < token._analyses[j]._subTokens.length; k++) {
 
-      // first check if we have a form
-      if (this.form && this.form !== fallback) return this.form;
-
-      // fall back to using lemma
-      if (this.lemma && this.lemma !== fallback) return this.lemma;
-
-      // if set, fall back to our fallback (defined above)
-      if (this.sentence.fallbackOnText) return fallback;
-
-      // otherwise just give an empty string
-      return '';
-    }
-
-    /**
-     * get a CoNLL-U formatted string representing the analysis
-     *
-     * @return {String}
-     *
-     * @throws {NotatrixError} if id has not been set
-     */
-
-  }, {
-    key: 'conllu',
-    get: function get() {
-      var _this9 = this;
-
-      // reindex just in case since this is crucial
-      this.sentence.index();
-
-      // we can't output CoNLL-U for analyses that aren't indexed, since that
-      //   means they're not in the current analysis
-      if (this.id === null || this.id === undefined) throw new NotatrixError('analysis is not currently indexed');
-
-      // return a tab-delimited string with the information contained in each field
-      //   and the index out front
-      return this.id + '\t' + _.map(fields, function (field) {
-
-        // if we have no data for a field, use our fallback to maintain
-        //   the correct matrix structure
-        return _this9[field] || fallback;
-      }).join('\t');
-    }
-
-    /**
-     * get a CG3 formatted string representing the analysis
-     *
-     * @return {String}
-     */
-
-  }, {
-    key: 'cg3',
-    get: function get() {
-
-      // reindex just in case since this is crucial
-      this.sentence.index();
-
-      // either output this analysis or its subTokens
-      if (this.isSuperToken) {
-        return this.subTokens.map(function (subToken, i) {
-
-          // recall subTokens get hanging indents
-          return cg3FormatOutput(subToken.analysis, i + 1);
-        }).join('\n');
-      } else {
-
-        // regular tokens get an index of 1
-        return cg3FormatOutput(this, 1);
-      }
-    }
-
-    /**
-     * get an array of nodes relating to this analysis for export to an external
-     *   graphing library (e.g. Cytoscape, D3)
-     *
-     * @return {Array}
-     */
-
-  }, {
-    key: 'eles',
-    get: function get() {
-      var _this10 = this;
-
-      var eles = [];
-
-      if (this.isCurrent) {
-
-        if (this.isSuperToken) {
-
-          eles.push({ // multiword label
-            data: {
-              id: 'multiword-' + this.id,
-              num: this.num,
-              clump: this.clump,
-              name: 'multiword',
-              label: this.form + ' ' + toSubscript(this.id)
-              /*length: `${this.form.length > 3
-                ? this.form.length * 0.7
-                : this.form.length}em`*/
-            },
-            classes: 'multiword' /*, {
-                                 } */ });
-
-          _.each(this.subTokens, function (subToken) {
-            eles = eles.concat(subToken.eles);
-          });
-        } else {
-
-          eles.push({ // "number" node
-            data: {
-              id: 'num-' + this.id,
-              num: this.num,
-              clump: this.clump,
-              name: 'number',
-              label: this.id,
-              pos: this.pos,
-              parent: this.superToken ? 'multiword-' + this.superToken.id : undefined,
-              analysis: this
-            },
-            classes: 'number'
-          }, { // "form" node
-            data: {
-              id: 'form-' + this.id,
-              num: this.num,
-              clump: this.clump,
-              name: 'form',
-              attr: 'form',
-              form: this.form,
-              label: this.form,
-              length: (this.form.length > 3 ? this.form.length * 0.7 : this.form.length) + 'em',
-              state: 'normal',
-              parent: 'num-' + this.id,
-              analysis: this
-            },
-            classes: 'form' + (this.head == 0 ? ' root' : '')
-          }, { // "pos" node
-            data: {
-              id: 'pos-node-' + this.id,
-              num: this.num,
-              clump: this.clump,
-              name: 'pos-node',
-              attr: 'upostag',
-              pos: this.pos,
-              label: this.pos || '',
-              length: (this.pos || '').length * 0.7 + 1 + 'em',
-              analysis: this
-            },
-            classes: 'pos'
-          }, { // "pos" edge
-            data: {
-              id: 'pos-edge-' + this.id,
-              num: this.num,
-              clump: this.clump,
-              name: 'pos-edge',
-              pos: this.pos,
-              source: 'form-' + this.id,
-              target: 'pos-node-' + this.id
-            },
-            classes: 'pos'
-          });
-
-          this.mapHeads(function (head, deprel) {
-            deprel = deprel || '';
-
-            if (!head || !head.id) // ROOT
-              return;
-
-            eles.push({
-              data: {
-                id: 'dep_' + _this10.id + '_' + head.id,
-                name: 'dependency',
-                attr: 'deprel',
-                deprel: deprel,
-                source: 'form-' + _this10.id,
-                sourceAnalysis: _this10,
-                target: 'form-' + head.id,
-                targetAnalysis: head,
-                length: deprel.length / 3 + 'em',
-                label: null, // NB overwrite this before use
-                ctrl: null // NB overwrite this before use
-              },
-              classes: null // NB overwrite this before use
-            });
-          });
+            var subToken = token._analyses[j]._subTokens[k];
+            callback(subToken, i, j, k);
+          }
         }
       }
-
-      return eles;
-    }
-  }, {
-    key: 'form',
-    get: function get() {
-      return this.sentence.options.help.form ? this._form || this._lemma : this._form;
     }
 
     /**
-     * set the `form` ... if the form is just punctuation, possibly set the pos tags
-     *   to `PUNCT` (see {@link evaluatePunctPos})
-     *
-     * @return {undefined}
-     */
-    ,
-    set: function set(form) {
-      form = sanitize(form);
-      evaluatePunctPos(this, form);
-      this._form = form;
-    }
-
-    /**
-     * get the `lemma` ... if none defined, `help.lemma` setting `= true` (default:
-     *   `true`), and `form` is set, return `form` instead
-     *
-     * @return {(String|undefined)}
+     * Return all tokens where `predicate(token)` is truth-y
      */
 
   }, {
-    key: 'lemma',
-    get: function get() {
-      return this.isSuperToken ? null : this.sentence.options.help.lemma ? this._lemma || this._form : this._lemma;
+    key: 'query',
+    value: function query(predicate) {
+
+      var matches = [];
+      this.iterate(function (token) {
+        if (predicate(token)) matches.push(token);
+      });
+
+      return matches;
     }
-
-    /**
-     * set the `lemma` ... if the lemma is just punctuation, possibly set the pos tags
-     *   to `PUNCT` (see {@link evaluatePunctPos})
-     *
-     * @return {undefined}
-     */
-    ,
-    set: function set(lemma) {
-      lemma = sanitize(lemma);
-      evaluatePunctPos(this, lemma);
-      this._lemma = lemma;
-    }
-
-    /**
-     * get the `pos`, which is just `upostag || xpostag`
-     *
-     * @return {(String|undefined)}
-     */
-
   }, {
-    key: 'pos',
-    get: function get() {
-      return this.upostag || this.xpostag;
-    }
+    key: 'index',
+    value: function index() {
 
-    /**
-     * get the `upostag`
-     *
-     * @return {(String|undefined)}
-     */
+      var absolute = 0,
+          majorToken = null,
+          superToken = null,
+          empty = 0,
+          conllu = 0,
+          cg3 = 0,
+          cytoscape = -1;
 
-  }, {
-    key: 'upostag',
-    get: function get() {
-      return this.isSuperToken ? null : this._upostag === fallback ? null : this._upostag;
-    }
+      this.iterate(function (token, i, j, k) {
 
-    /**
-     * set the `upostag`
-     *
-     * @return {undefined}
-     */
-    ,
-    set: function set(upostag) {
-      this._upostag = sanitize(upostag);
-    }
+        token.indices.sup = i;
+        token.indices.ana = j;
+        token.indices.sub = k;
+        token.indices.absolute = ++absolute;
 
-    /**
-     * get the `xpostag`
-     *
-     * @return {(String|undefined)}
-     */
+        if (!token._analyses || !token._analyses.length) token.indices.cg3 = ++cg3;
 
-  }, {
-    key: 'xpostag',
-    get: function get() {
-      return this.isSuperToken ? null : this._xpostag === fallback ? null : this._xpostag;
-    }
+        if (!token.isSuperToken && superToken && superToken.analysis === j) token.indices.cytoscape = ++cytoscape;
 
-    /**
-     * set the `xpostag`
-     *
-     * @return {undefined}
-     */
-    ,
-    set: function set(xpostag) {
-      this._xpostag = sanitize(xpostag);
-    }
+        if (token.subTokens && token.subTokens.length === 0) token.indices.cytoscape = ++cytoscape;
 
-    /**
-     * get the `feats`
-     *
-     * @return {(String|undefined)}
-     */
+        if (j === null || k === null) {
 
-  }, {
-    key: 'feats',
-    get: function get() {
-      return this.isSuperToken ? null : this._feats;
-    }
+          majorToken = token;
 
-    /**
-     * set the `feats`
-     *
-     * @return {undefined}
-     */
-    ,
-    set: function set(feats) {
-      this._feats = sanitize(feats);
-    }
+          if (superToken) {
+            superToken.token.indices.conllu = superToken.start + '-' + superToken.stop;
+            superToken = null;
+          }
 
-    /**
-     * get the `head` ... if the `showEnhanced` setting `= true` (default: `true`)
-     *   will return a `|`-delimited list of `index`:`deprel` pairs
-     *
-     * @return {(String)}
-     */
-
-  }, {
-    key: 'head',
-    get: function get() {
-      var _this11 = this;
-
-      if (this.isSuperToken) return null;
-
-      if (this.sentence.options.showEnhanced) {
-        var heads = [];
-        this.mapHeads(function (token, deprel) {
-          if (token === _this11.sentence.getById(token.id) || !_this11.sentence.options.help.head) {
-            heads.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
+          if (token.subTokens.length) {
+            superToken = {
+              token: token,
+              start: null,
+              stop: null,
+              analysis: token._i
+            };
           } else {
-            heads.push('' + token + (deprel ? ':' + deprel : ''));
+
+            if (token.isEmpty) {
+              empty += 1;
+            } else {
+              empty = 0;
+              conllu += 1;
+            }
+
+            token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+          }
+        } else {
+
+          if (majorToken._i === j) {
+
+            if (token.isEmpty) {
+              empty += 1;
+            } else {
+              empty = 0;
+              conllu += 1;
+            }
+
+            token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+          }
+
+          if (superToken) {
+            if (superToken.start === null) {
+              superToken.start = empty ? conllu + '.' + empty : conllu;
+            } else {
+              superToken.stop = empty ? conllu + '.' + empty : conllu;
+            }
+          }
+        }
+      });
+
+      if (superToken) {
+        superToken.token.indices.conllu = superToken.start + '-' + superToken.stop;
+        superToken = null;
+      }
+
+      this.size = absolute;
+      return this;
+    }
+  }, {
+    key: 'attach',
+    value: function attach() {
+
+      this.iterate(function (token) {
+        (token._heads || []).forEach(function (dependency, i) {
+
+          if (i) token.sent.options.enhanced = true;
+
+          if (dependency.index == '0') {
+
+            token.addHead(token.sent.root, 'root');
+          } else {
+
+            var query = token.sent.query(function (token) {
+              return token.indices.serial === dependency.index;
+            });
+            if (query.length !== 1) {
+              //console.log(token)
+              throw new NxError('cannot locate token with serial index "' + dependency.index + '"');
+            }
+
+            token.addHead(query[0], dependency.deprel);
           }
         });
-        return heads.join('|') || null;
-      } else {
-        return this._heads.length ? this._heads[0].id || this._heads[0] : null;
+
+        delete token._heads;
+      });
+
+      return this.index();
+    }
+
+    /*update(serial, options) {
+      try {
+         const sent = new Sentence(serial, options);
+        update(this, sent, options);
+       } catch(e) {
+         if (e instanceof utils.ToolError || utils.NxError)
+          throw new NxError('Unable to update: ' + e.message);
+         throw e;
       }
-    }
+    }*/
 
     /**
-     * set the `head` ... if the `Analysis` is `initializing`, just save a plain
-     *   string, otherwise try to get the head by index (see {@link Sentence#getById})
-     *
-     * @return {undefined}
+     * Tell Sentence to output in enhanced dependency format
      */
-    ,
-    set: function set(heads) {
-      var _this12 = this;
 
-      heads = heads || [];
-      if (typeof heads === 'string') heads = parseEnhancedString(heads);
+  }, {
+    key: 'enhance',
+    value: function enhance() {
+      this.options.enhanced = true;
 
-      this._heads = heads.map(function (head) {
-        return _this12.initializing ? {
-          token: head.token,
-          deprel: head.deprel
-        } : {
-          token: _this12.sentence.getById(head.token) || head.token,
-          deprel: head.deprel
-        };
-      }).filter(function (head) {
-        if (head.token !== fallback) return head;
+      this.iterate(function (token) {
+        if (!token._head) return;
+
+        token.addDep(token._head, token.deprel);
       });
+
+      return this;
     }
 
     /**
-     * get the `deprel`
-     *
-     * @return {(String|undefined)}
+     * Tell Sentence to stop outputting in enhanced dependency format
      */
 
   }, {
-    key: 'deprel',
-    get: function get() {
-      return this.isSuperToken ? null : this._deprel;
+    key: 'unenhance',
+    value: function unenhance() {
+      this.options.enhanced = false;
+      return this;
     }
 
     /**
-     * set the `deprel`
+     * Get the superToken for a given token
      *
-     * @return {undefined}
-     */
-    ,
-    set: function set(deprel) {
-      this._deprel = sanitize(deprel);
-    }
-
-    /**
-     * get the `deps` returns a `|`-delimited list of `index`:`deprel` pairs
-     *
-     * @return {(String)}
+     * @param {BaseToken} token
+     * @return {BaseToken}
      */
 
   }, {
-    key: 'deps',
-    get: function get() {
-      var _this13 = this;
+    key: 'getSuperToken',
+    value: function getSuperToken(token) {
 
-      if (this.isSuperToken) return null;
+      var superToken = null;
 
-      // don't worry about enhanced stuff for deps (always can be multiple)
-      var deps = [];
-      this.mapDeps(function (token, deprel) {
-        if (token === _this13.sentence.getById(token.id) || !_this13.sentence.options.help.deps) {
-          deps.push('' + (token.id || token) + (deprel ? ':' + deprel : ''));
-        } else {
-          deps.push('' + token + (deprel ? ':' + deprel : ''));
-        }
+      this.iterate(function (tok) {
+        if (!tok._analyses) return;
+
+        tok._analyses.forEach(function (ana) {
+          if (!ana._subTokens) return;
+
+          ana._subTokens.forEach(function (sub) {
+            if (sub === token) superToken = tok;
+          });
+        });
       });
-      return deps.join('|') || null;
+
+      return superToken;
     }
 
     /**
-     * set the `deps` ... if the `Analysis` is `initializing`, just save a plain
-     *   string, otherwise try to get the dep by index (see {@link Sentence#getById})
+     * Merge tokens into a single, regular token
      *
-     * @return {undefined}
+     * @param {BaseToken} src
+     * @param {BaseToken} tar
      */
-    ,
-    set: function set(deps) {
-      var _this14 = this;
 
-      deps = deps || [];
-      if (typeof deps === 'string') deps = parseEnhancedString(deps);
+  }, {
+    key: 'merge',
+    value: function merge(src, tar) {
 
-      this._deps = deps.map(function (dep) {
-        return _this14.initializing ? {
-          token: dep.token,
-          deprel: dep.deprel
-        } : {
-          token: _this14.sentence.getById(dep.token) || dep.token,
-          deprel: dep.deprel
-        };
-      }).filter(function (dep) {
-        if (dep.token !== fallback) return dep;
+      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError('unable to merge: src and tar must both be tokens');
+
+      if (src.isSuperToken || tar.isSuperToken) throw new NxError('unable to merge: cannot merge superTokens');
+
+      if (src.name === 'SubToken' || tar.name === 'SuperToken') throw new NxError('unable to merge: cannot merge subTokens');
+
+      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError('unable to merge: tokens too far apart');
+
+      // basic copying
+      src.semicolon = src.semicolon || tar.semicolon;
+      src.isEmpty = src.isEmpty || tar.isEmpty;
+      src.form = (src.form || '') + (tar.form || '') || null;
+      src.lemma = src.lemma || tar.lemma;
+      src.upostag = src.upostag || tar.upostag;
+      src.xpostag = src.xpostag || tar.xpostag;
+
+      // array-type copying
+      src._feats_init = src._feats_init || tar._feats_init;
+      src._feats = src._feats_init ? (src._feats || []).concat(tar._feats || []) : undefined;
+      src._misc_init = src._misc_init || tar._misc_init;
+      src._misc = src._misc_init ? (src._misc || []).concat(tar._misc || []) : undefined;
+
+      // make sure they don't depend on each other
+      src.removeHead(tar);
+      tar.removeHead(src);
+
+      // migrate dependent things to the new token
+      tar.mapDependents(function (dep) {
+        dep.token.removeHead(tar);
+        dep.token.addHead(src, dep.deprel);
       });
+
+      // remove heads from the old token
+      tar.removeAllHeads();
+
+      // now that all references are gone, safe to splice the target out
+      this.tokens.splice(tar.indices.sup, 1);
+
+      return this.index();
     }
 
     /**
-     * get the `misc`
+     * Combine tokens into subTokens of some superToken
      *
-     * @return {(String|undefined)}
+     * @param {BaseToken} src
+     * @param {BaseToken} tar
      */
 
   }, {
-    key: 'misc',
-    get: function get() {
-      // superTokens can have "misc" field
-      return this._misc;
+    key: 'combine',
+    value: function combine(src, tar) {
+
+      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError('unable to combine: src and tar must both be tokens');
+
+      if (src.isSuperToken || tar.isSuperToken) throw new NxError('unable to combine: cannot combine superTokens');
+
+      if (src.name === 'SubToken' || tar.name === 'SuperToken') throw new NxError('unable to combine: cannot combine subTokens');
+
+      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError('unable to combine: tokens too far apart');
+
+      // get a new token to put things into
+      var superToken = new Token(this, {});
+      superToken._analyses = [new Analysis(this, { subTokens: [] })];
+      superToken._i = 0;
+
+      // get the new superToken form from the subTokens
+      superToken.form = (src.form || '') + (tar.form || '') || null;
+
+      // make new subToken objects from src and tar
+      var _src = new SubToken(this, {});
+
+      // basic copying
+      _src.semicolon = src.semicolon;
+      _src.isEmpty = src.isEmpty;
+      _src.form = src.form;
+      _src.lemma = src.lemma;
+      _src.upostag = src.upostag;
+      _src.xpostag = src.xpostag;
+
+      // array-type copying
+      _src._feats_init = src._feats_init;
+      _src._feats = _src._feats_init ? src._feats.slice() : undefined;
+      _src._misc_init = src._misc_init;
+      _src._misc = _src._misc_init ? src._misc.slice() : undefined;
+
+      // make new subToken objects from src and tar
+      var _tar = new SubToken(this, {});
+
+      // basic copying
+      _tar.semicolon = tar.semicolon;
+      _tar.isEmpty = tar.isEmpty;
+      _tar.form = tar.form;
+      _tar.lemma = tar.lemma;
+      _tar.upostag = tar.upostag;
+      _tar.xpostag = tar.xpostag;
+
+      // array-type copying
+      _tar._feats_init = tar._feats_init;
+      _tar._feats = _tar._feats_init ? tar._feats.slice() : undefined;
+      _tar._misc_init = tar._misc_init;
+      _tar._misc = _tar._misc_init ? tar._misc.slice() : undefined;
+
+      if (src.indices.absolute < tar.indices.absolute) {
+
+        superToken.analysis._subTokens.push(_src, _tar);
+      } else {
+
+        superToken.analysis._subTokens.push(_tar, _src);
+      }
+
+      // remove within-superToken dependencies
+      src.removeHead(tar);
+      tar.removeHead(src);
+
+      // transfer all the heads and dependents to the new subTokens
+      src.mapHeads(function (head) {
+        src.removeHead(head.token);
+        _src.addHead(head.token, head.deprel);
+      });
+
+      src.mapDependents(function (dep) {
+        dep.token.removeHead(src);
+        dep.token.addHead(_src, dep.deprel);
+      });
+
+      tar.mapHeads(function (head) {
+        tar.removeHead(head.token);
+        _tar.addHead(head.token, head.deprel);
+      });
+
+      tar.mapDependents(function (dep) {
+        dep.token.removeHead(tar);
+        dep.token.addHead(_tar, dep.deprel);
+      });
+
+      // overwrite the src with the new token
+      this.tokens[src.indices.sup] = superToken;
+
+      // splice out the old target
+      this.tokens.splice(tar.indices.sup, 1);
+
+      return this.index();
     }
 
     /**
-     * set the `misc`
+     * Split a given token into two tokens.  If the given token is a
+     *  superToken, make each of its subTokens into a regular token and
+     *  delete the superToken.  Otherwise, split the token at the given
+     *  index.
      *
-     * @return {undefined}
-     */
-    ,
-    set: function set(misc) {
-      this._misc = sanitize(misc);
-    }
-
-    // bool stuff
-
-    /**
-     * returns this analysis's superToken if it exists
-     *
-     * @return {(Token|null)}
+     * @param {BaseToken} src
+     * @param {Number} splitAtIndex
      */
 
   }, {
-    key: 'superToken',
-    get: function get() {
-      return this.token.superToken;
-    }
+    key: 'split',
+    value: function split(src, splitAtIndex) {
+      var _this2 = this;
 
-    /**
-     * returns true iff this analysis is a subToken of some other token
-     *
-     * @return {Boolean}
-     */
+      if (!(src instanceof BaseToken)) throw new NxError('unable to split: src must be a token');
 
-  }, {
-    key: 'isSubToken',
-    get: function get() {
-      return this.superToken !== null;
-    }
+      if (src.isSuperToken) {
 
-    /**
-     * returns true iff this analysis has subTokens
-     *
-     * @return {Boolean}
-     */
+        var tokens = src.subTokens.map(function (subToken) {
 
-  }, {
-    key: 'isSuperToken',
-    get: function get() {
-      return this.subTokens.length > 0;
-    }
+          var token = new Token(_this2, {});
 
-    /**
-     * returns true iff this analysis is the current analysis
-     *
-     * @return {Boolean}
-     */
+          // basic copying
+          token.semicolon = subToken.semicolon;
+          token.isEmpty = subToken.isEmpty;
+          token.form = subToken.form;
+          token.lemma = subToken.lemma;
+          token.upostag = subToken.upostag;
+          token.xpostag = subToken.xpostag;
 
-  }, {
-    key: 'isCurrent',
-    get: function get() {
-      return this.token.analysis === this;
-    }
-  }], [{
-    key: 'fromNx',
-    value: function fromNx(token, serial) {
-      var analysis = new Analysis(token);
-      analysis.nx = serial;
-      return analysis;
+          // array-type copying
+          token._feats_init = subToken._feats_init;
+          token._feats = (subToken._feats || []).slice();
+          token._misc_init = subToken._misc_init;
+          token._misc = (subToken._misc || []).slice();
+
+          // transfer all the heads and dependents from subToken to token
+          subToken.mapHeads(function (head) {
+            subToken.removeHead(head.token);
+            token.addHead(head.token, head.deprel);
+          });
+
+          subToken.mapDependents(function (dep) {
+            dep.token.removeHead(subToken);
+            dep.token.addHead(token, dep.deprel);
+          });
+
+          return token;
+        });
+
+        var index = src.indices.sup;
+
+        // splice out the old superToken
+        this.tokens.splice(index, 1);
+
+        // insert the new tokens into its place
+        this.tokens = this.tokens.slice(0, index).concat(tokens).concat(this.tokens.slice(index));
+      } else if (src.name === 'SubToken') {
+
+        splitAtIndex = parseInt(splitAtIndex);
+        if (isNaN(splitAtIndex)) throw new NxError('unable to split: cannot split at index ' + splitAtIndex);
+
+        var subToken = new SubToken(this, {});
+
+        var beginning = (src.form || '').slice(0, splitAtIndex) || '_';
+        var ending = (src.form || '').slice(splitAtIndex) || '_';
+
+        src.form = beginning;
+        subToken.form = ending;
+
+        var superToken = this.getSuperToken(src);
+        var subTokens = superToken._analyses[src.indices.ana]._subTokens;
+        var _index = src.indices.sub;
+
+        // insert the new subToken after it
+        superToken._analyses[src.indices.ana]._subTokens = subTokens.slice(0, _index + 1).concat(subToken).concat(subTokens.slice(_index + 1));
+      } else {
+
+        splitAtIndex = parseInt(splitAtIndex);
+        if (isNaN(splitAtIndex)) throw new NxError('unable to split: cannot split at index ' + splitAtIndex);
+
+        var token = new Token(this, {});
+
+        var _beginning = (src.form || '').slice(0, splitAtIndex) || '_';
+        var _ending = (src.form || '').slice(splitAtIndex) || '_';
+
+        src.form = _beginning;
+        token.form = _ending;
+
+        var _index2 = src.indices.sup;
+
+        // insert the new token after it
+        this.tokens = this.tokens.slice(0, _index2 + 1).concat(token).concat(this.tokens.slice(_index2 + 1));
+      }
+
+      return this.index();
     }
   }]);
 
-  return Analysis;
-}();
+  return Sentence;
+}(NxBaseClass);
 
-/**
- * Proxy so that we can get subTokens using Array-like syntax
- *
- * NOTE: usage: `ana[8]` would return the analysis of the subToken at index 8
- * NOTE: if `name` is not a Number, fall through to normal object
- *
- * @return {Mixed}
- * @name Analysis#get
- */
+module.exports = Sentence;
 
+},{"../generator":73,"../parser":89,"../utils":94,"./analysis":75,"./base-class":76,"./base-token":77,"./comment":78,"./root-token":84,"./sub-token":86,"./token":87,"./update":88,"underscore":14}],86:[function(require,module,exports){
+'use strict';
 
-Analysis.prototype.__proto__ = new Proxy(Analysis.prototype.__proto__, {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  // default getter, called any time we use Analysis.name or Analysis[name]
-  get: function get(target, name, receiver) {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    // Symbols can't be cast to floats, so check here to avoid errors
-    if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'symbol') return this[name];
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    // cast, catch Infinity
-    var id = parseFloat(name);
-    if (!isNaN(id)) {
+var _ = require('underscore');
 
-      // if we got a number, return analysis of subToken at that index
-      id = parseInt(id);
-      var token = receiver.subTokens[id];
-      return token ? token.analysis : null;
-    } else {
+var utils = require('../utils');
+var BaseToken = require('./base-token');
 
-      // fall through to normal getting
-      return this[name];
+var SubToken = function (_BaseToken) {
+  _inherits(SubToken, _BaseToken);
+
+  function SubToken(sent, serial) {
+    _classCallCheck(this, SubToken);
+
+    return _possibleConstructorReturn(this, (SubToken.__proto__ || Object.getPrototypeOf(SubToken)).call(this, sent, 'SubToken', serial));
+  }
+
+  return SubToken;
+}(BaseToken);
+
+module.exports = SubToken;
+
+},{"../utils":94,"./base-token":77,"underscore":14}],87:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var BaseToken = require('./base-token');
+var Analysis = require('./analysis');
+
+var Token = function (_BaseToken) {
+  _inherits(Token, _BaseToken);
+
+  function Token(sent, serial) {
+    _classCallCheck(this, Token);
+
+    var _this = _possibleConstructorReturn(this, (Token.__proto__ || Object.getPrototypeOf(Token)).call(this, sent, 'Token', serial));
+
+    _this._analyses = (serial.analyses || []).map(function (ana) {
+      return new Analysis(sent, ana);
+    });
+    _this._i = _this._analyses.length ? 0 : null;
+
+    return _this;
+  }
+
+  _createClass(Token, [{
+    key: 'analysis',
+    get: function get() {
+      if (this._i === null) return null;
+
+      return this._analyses[this._i];
+    }
+  }, {
+    key: 'subTokens',
+    get: function get() {
+      return this.analysis ? this.analysis.subTokens : [];
+    }
+  }]);
+
+  return Token;
+}(BaseToken);
+
+module.exports = Token;
+
+},{"../utils":94,"./analysis":75,"./base-token":77,"underscore":14}],88:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('../utils');
+var NxError = utils.NxError;
+var formats = require('../formats');
+var detect = require('../detector');
+
+function debug(show) {
+  var _console;
+
+  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
+  if (show) (_console = console).log.apply(_console, ['d>'].concat(args));
+}
+
+function compareFields(fields, t1, t2, maxDistance) {
+  debug(false, 'comparing fields at maxDistance: ' + maxDistance);
+
+  /*
+  const compare = field => {
+    debug(false, `comparing "${field}" (${t1[field]}, ${t2[field]})`);
+     if (field === 'analyses' && (t1._analyses || t2._analyses)) {
+       console.log('analyses', t1.analyses === t2.analyses, t1._analyses);
+     } else if (field === 'head') {
+       let unmatched = {
+        old: new Set(),
+        new: new Set(),
+      };
+      let matched = {
+        old: new Set(),
+        new: new Set(),
+      };
+      t1.mapHeads((h1, d1) => {
+        t2.mapHeads((h2, d2) => {
+         });
+      });
+       console.log('head', t1._heads.toString('serial', 'dep'), t2._heads.toString('serial', 'dep'));
+     } else if (field === 'deps') {
+       console.log('deps', t1._deps.toString('serial', 'dep'), t2._deps.toString('serial', 'dep'));
+     } else if (t1[field] !== t2[field]) {
+      if (field === 'analyses') {
+         console.log(t1.analyses, t2.analyses)
+       }
+      //console.log(field, t1.indices.absolute, t2.indices.absolute)
+      distance += 1;
     }
   }
-});
+  */
 
-// expose to application
-module.exports = Analysis;
+  var distance = 0;
 
-},{"./errors":3,"underscore":1}],3:[function(require,module,exports){
+  fields = fields.filter(function (field) {
+    return t1[field] !== undefined;
+  });
+  var combinations = utils.combine(fields, fields.length - maxDistance);
+
+  [].forEach(function (combination) {});
+
+  return distance;
+
+  console.log(fields, utils.combine(fields, fields.length - maxDistance));
+
+  var h1 = t1.hashFields(fields, 'indices'),
+      h2 = t2.hashFields(fields, 'indices');
+
+  if (h1 === h2) return true;
+
+  console.log();
+  console.log('h1', h1);
+  console.log('h2', h2);
+  console.log();
+  return false;
+
+  debug(false, 'distance: ' + distance);
+  return distance <= maxDistance;
+}
+
+function compareIndices(_arg, t1, t2, maxDistance) {
+  debug(false, 'comparing fields at maxDistance: ' + maxDistance);
+
+  var distance = 0;
+  ['conllu', 'cg3', 'cytoscape', 'absolute'].forEach(function (indexName) {
+
+    debug(false, 'comparing "' + indexName + '" (' + t1.indices[indexName] + ', ' + t2.indices[indexName] + ')');
+    if (t1.indices[indexName] !== t2.indices[indexName]) distance += 1;
+  });
+
+  debug(false, 'distance: ' + distance);
+  return distance <= maxDistance;
+}
+
+function updateToken(fields, t1, t2) {
+  debug(false, 'updating');
+
+  fields.forEach(function (field) {
+    debug(false, 'trying to update "' + field + '"');
+
+    switch (field) {
+      case 'subTokens':
+        if (t1.subTokens.length || t2.subTokens.length) {
+          throw new Error('not implemented');
+        } else {
+          // pass
+        }
+        break;
+
+      default:
+        debug(false, 'updating (' + t1[field] + ' => ' + t2[field] + ')');
+        t1[field] = t2[field];
+    }
+  });
+}
+
+function getDistance(fields, t1, t2) {
+
+  fields = fields.filter(function (field) {
+    return t1[field] !== undefined;
+  });
+  for (var dist = 0; dist < fields.length; dist++) {
+
+    var match = false;
+    utils.combine(fields, fields.length - dist).forEach(function (comb) {
+
+      var hash1 = t1.hashFields(comb),
+          hash2 = t2.hashFields(comb);
+
+      if (hash1 === hash2) match = true;
+    });
+
+    if (match) return dist;
+  }
+  return Infinity;
+}
+
+function getMatches(s, t) {
+  for (var _len2 = arguments.length, fields = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+    fields[_key2 - 2] = arguments[_key2];
+  }
+
+  fields = _.flatten(fields);
+
+  var s_unmatched = new Set(s.map(function (token) {
+    return '' + token.indices.absolute;
+  }));
+  var t_unmatched = new Set(t.map(function (token) {
+    return '' + token.indices.absolute;
+  }));
+
+  // build distances between nodes
+  var rawDistances = {};
+  s.forEach(function (t1) {
+
+    var i1 = t1.indices.absolute;
+    rawDistances[i1] = {};
+
+    t.forEach(function (t2) {
+
+      var i2 = t2.indices.absolute;
+      rawDistances[i1][i2] = getDistance(fields, t1, t2);
+    });
+  });
+
+  //console.log(rawDistances);
+
+  var neighbors = {};
+  _.each(rawDistances, function (targets, source) {
+
+    neighbors[source] = [];
+
+    var min = Infinity;
+    _.each(targets, function (distance) {
+      min = Math.min(distance, min);
+    });
+    if (min < Infinity) _.each(targets, function (distance, target) {
+      if (distance === min) neighbors[source].push(target);
+    });
+  });
+
+  //console.log(neighbors);
+
+  var lookup = function lookup(prefix, index) {
+    return key[prefix + '_' + index];
+  };
+
+  var matches = new Set();
+
+  _.each(neighbors, function (neighbors, index) {
+    if (neighbors.length === 1) {
+
+      matches.add(['' + index, '' + neighbors[0]]);
+      s_unmatched.delete('' + index);
+      t_unmatched.delete('' + neighbors[0]);
+    }
+  });
+
+  return {
+    matches: matches,
+    s_unmatched: s_unmatched,
+    t_unmatched: t_unmatched
+  };
+}
+
+function updateMatches(s_key, t_key, matches, fields) {
+
+  matches.forEach(function (match) {
+
+    var s_token = s_key[match[0]];
+    var t_token = t_key[match[1]];
+    //console.log('updating', match[0], match[1]);
+
+    fields.forEach(function (field) {
+
+      switch (field) {
+        case 'analyses':
+
+          //console.log('begin analyses evaluations');
+          if (s_token._analyses === undefined || t_token.analyses === undefined) break;
+
+          var s_analyses = s_token._analyses.slice();
+          var t_analyses = t_token._analyses.slice();
+
+          for (var i = 0; i < s_analyses.length; i++) {
+            matchAndUpdate(s_key, s_analyses[i]._subTokens, t_key, t_analyses[i]._subTokens, fields);
+          } //console.log('end anlyses evaluations');
+
+          break;
+
+        case 'subTokens':
+
+          //console.log('begin subToken evaluations');
+          if (s_token._analyses === undefined || t_token.analyses === undefined) break;
+
+          var s = s_token.subTokens.slice();
+          var t = t_token.subTokens.slice();
+          matchAndUpdate(s_key, s, t_key, t, fields);
+          //console.log('end subToken evaluations');
+
+          break;
+
+        default:
+          //if (s_token[field] !== t_token[field])
+          //console.log('change!!!', field, s_token[field], t_token[field]);
+          s_token[field] = t_token[field];
+      }
+    });
+  });
+}
+
+function matchAndUpdate(s_key, s, t_key, t, fields) {
+
+  //console.log('matching on fields');
+  var m = getMatches(s, t, fields);
+  //console.log(m);
+  updateMatches(s_key, t_key, m.matches, fields);
+
+  if (m.s_unmatched.size || m.t_unmatched.size) {
+
+    var _s = [],
+        _t = [];
+
+    m.s_unmatched.forEach(function (i) {
+      return _s.push(s_key[i]);
+    });
+    m.t_unmatched.forEach(function (i) {
+      return _t.push(t_key[i]);
+    });
+
+    //console.log('matching on fields and indices')
+    var m2 = getMatches(_s, _t, fields, 'indices');
+    //console.log(m2);
+    updateMatches(s_key, t_key, m2.matches, fields);
+
+    if (m2.s_unmatched.size || m2.t_unmatched.size) {
+
+      throw new Error('unable to find match');
+    }
+  }
+}
+
+module.exports = function (original, update, options) {
+
+  debug(false, 'original input:', original.input);
+  debug(false, 'update input:', update.input);
+
+  // the input format of the new guy
+  var format = detect(update.input, _.extend({
+    requireOneFormat: true
+  }, options));
+  debug(false, 'detected update as format:', format);
+  format = formats[format];
+
+  /*
+  let unmatched = {
+    old: new Set(),
+    new: new Set(),
+  };
+  let matched = {
+    old: new Set(),
+    new: new Set(),
+  };
+  */
+
+  if (format.hasComments) {
+    debug(false, '\n\ncomparing comments\n');
+    var i = 0,
+        j = 0;
+    while (data.comments.new.unmatched.size) {
+
+      throw new Error('not implemented');
+
+      /*
+      const s1Comment = this.comments[i];
+      const s2Comment = sent.comments[i];
+       if (commentsEqual(s1Comment, s2Comment)) {
+        throw new Error('not implemented')
+      } else {
+        throw new Error('not implemented')
+      }
+      */
+    }
+  } else {
+    debug(false, 'using original comments');
+    // don't change anything
+  }
+
+  // build a hash table and a list of tokens for each sentence
+  var s_key = {},
+      s = [],
+      t_key = {},
+      t = [];
+
+  original.iterate(function (token) {
+
+    s_key[token.indices.absolute] = token;
+    s.push(token);
+  });
+  update.iterate(function (token) {
+
+    t_key[token.indices.absolute] = token;
+    t.push(token);
+  });
+
+  // try to find matches between the items
+  matchAndUpdate(s_key, s, t_key, t, format.fields);
+
+  return;
+};
+
+/*
+
+  const iterate = (predicate, dist) => {
+    debug(true, 'iterating at distance', dist);
+
+    original.iterate(t1 => {
+      update.iterate(t2 => {
+
+        if (!matched.old.has(t1) && !matched.new.has(t2))
+          if (predicate(format.fields, t1, t2, dist)) {
+
+            debug(false, 'same', t1.form, t2.form);
+            matched.old.add(t1);
+            matched.new.add(t2);
+            unmatched.old.delete(t1);
+            unmatched.new.delete(t2);
+            updateToken(format.fields, t1, t2);
+
+          } else {
+
+            debug(false, 'different', t1.form, t2.form);
+            unmatched.old.add(t1);
+            unmatched.new.add(t2);
+
+          }
+
+      });
+    });
+  };
+
+  debug(false, )
+  debug(true, `comparing tokens on fields to find exact matches`);
+  iterate(compareFields, 0);
+
+  if (!unmatched.old.size && !unmatched.new.size)
+    return;
+
+  debug(false, )
+  debug(true, `comparing tokens on fields to find close matches`);
+  for (let i=1; i<format.fields.length; i++) {
+
+    iterate(compareFields, i);
+    if (!unmatched.old.size && !unmatched.new.size)
+      return;
+
+  }
+
+  unmatched.old.forEach(e => debug(true, e.indices));
+  unmatched.new.forEach(e => debug(true, e.indices));
+
+  debug(false, )
+  debug(true, `comparing tokens on indices to find close matches`);
+  for (let i=0; i<4; i++) {
+
+    iterate(compareIndices, i);
+    if (!unmatched.old.size && !unmatched.new.size)
+      return;
+
+  }
+
+  debug(true, unmatched);
+  throw new Error('can\'t find a match');
+};
+
+  /*
+
+  let distance = 0;
+  while (data.tokens.new.unmatched.size) {
+    debug()
+    debug(`\tevaluating at maxDistance: ${distance}`);
+    debug()
+
+    for (let i=0; i<data.old.tokens.length; i++) {
+      for (let j=0; j<data.new.tokens.length; j++) {
+
+        if (data.tokens.old.unmatched.has(i) && data.tokens.new.unmatched.has(j))
+          if (compareFields(data, i, j, distance)) {
+            debug('same');
+
+            data.tokens.old.unmatched.delete(i);
+            data.tokens.old.matched.add(i);
+            data.tokens.new.unmatched.delete(j);
+            data.tokens.new.matched.add(j);
+
+            updateToken(data, i, j);
+
+          } else {
+            debug('different');
+          }
+
+      }
+    }
+
+    distance++;
+  }
+
+  return data;
+};
+
+
+/*
+
+
+// some helper functions
+
+function commentsEqual(c1, c2) {
+  throw new Error('not implemented');
+}
+
+function tokensIdentical(t1, t2) {
+
+  let matches = 0,
+    mismatches = 0;
+
+  newFormat.fields.forEach(field => {
+
+    debug(`comparing "${field}" (1: "${t1[field]}", 2: "${t2[field]}")`);
+    if (t1[field] === t2[field]) {
+      matches += 1;
+    } else {
+      mismatches += 1;
+    }
+  });
+
+  debug(matches, mismatches);
+
+  if (matches > 0 && mismatches === 0) {
+    debug('tokens equal')
+    return true;
+  }
+}
+
+function updateToken(t1, t2) {
+  newFormat.fields.forEach(field => {
+    debug(`updating "${field}" : "${t1[field]}" => "${t2[field]}"`)
+    t1[field] = t2[field];
+  });
+}
+
+
+// the new guy
+
+const numComments = Math.max(this.comments.length, sent.comments.length);
+if (newFormat.hasComments) {
+  debug('comparing comments');
+  for (let i=0; i<numTokens; i++) {
+    const s1Comment = this.comments[i];
+    const s2Comment = sent.comments[i];
+
+    if (commentsEqual(s1Comment, s2Comment)) {
+      throw new Error('not implemented')
+    } else {
+      throw new Error('not implemented')
+    }
+  }
+} else {
+  debug('using original comments');
+  // don't change anything
+}
+
+debug('comparing tokens');
+const numTokens = Math.max(this.tokens.length, sent.tokens.length);
+let i1 = 0,
+  oldMatches = new Set();
+  i2 = 0,
+  newMatches = new Set();
+
+while (i1 < numTokens && i2 < numTokens) {
+
+  const t1 = this.tokens[i1];
+  const t2 = sent.tokens[i2];
+
+  if (tokensIdentical(t1, t2)) {
+
+    debug(`updating (${i1}, ${i2})`);
+    oldMatches.add(i1);
+    newMatches.add(i2);
+    updateToken(t1, t2);
+
+  } else {
+
+
+
+  }
+
+  i1++;
+  i2++;
+}
+
+
+*/
+
+},{"../detector":19,"../formats":45,"../utils":94,"underscore":14}],89:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('./utils');
+var ParserError = utils.ParserError;
+
+var as = {
+
+	'apertium stream': require('./formats/apertium-stream').parse,
+	apertiumStream: require('./formats/apertium-stream').parse,
+	Brackets: require('./formats/brackets').parse,
+	brackets: require('./formats/brackets').parse,
+	CG3: require('./formats/cg3').parse,
+	cg3: require('./formats/cg3').parse,
+	'CoNLL-U': require('./formats/conllu').parse,
+	conllu: require('./formats/conllu').parse,
+	'notatrix serial': require('./formats/notatrix-serial').parse,
+	notatrixSerial: require('./formats/notatrix-serial').parse,
+	Params: require('./formats/params').parse,
+	params: require('./formats/params').parse,
+	'plain text': require('./formats/plain-text').parse,
+	plainText: require('./formats/plain-text').parse,
+	SD: require('./formats/sd').parse,
+	sd: require('./formats/sd').parse
+
+};
+
+module.exports = function (text, options) {
+
+	options = _.defaults(options, {
+		suppressDetectorErrors: true,
+		suppressParserErrors: true,
+		returnAllPossibilities: true,
+		requireOne: false
+	});
+
+	var possibilities = utils.formats.map(function (format) {
+
+		try {
+			return as[format](text, options);
+		} catch (e) {
+
+			if (e instanceof ParserError && options.suppressParserErrors) return;
+
+			throw e;
+		}
+	}).filter(utils.thin);
+
+	if (!possibilities.length && !options.suppressDetectorErrors) throw new ParserError('Unable to detect format', text, options);
+
+	if (options.requireOne && possibilities.length > 1) throw new ParserError('Unable to detect, ambiguous input');
+
+	return options.returnAllPossibilities ? possibilities : possibilities[0];
+};
+module.exports.as = as;
+
+},{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],90:[function(require,module,exports){
+'use strict';
+
+var _ = require('underscore');
+
+var utils = require('./utils');
+var defaultSplitter = require('./formats/default-splitter');
+var detector = require('./detector');
+var SplitterError = utils.SplitterError;
+
+var as = {
+
+	'apertium stream': require('./formats/apertium-stream').split,
+	apertiumStream: require('./formats/apertium-stream').split,
+	Brackets: require('./formats/brackets').split,
+	brackets: require('./formats/brackets').split,
+	CG3: require('./formats/cg3').split,
+	cg3: require('./formats/cg3').split,
+	'CoNLL-U': require('./formats/conllu').split,
+	conllu: require('./formats/conllu').split,
+	'notatrix serial': require('./formats/notatrix-serial').split,
+	notatrixSerial: require('./formats/notatrix-serial').split,
+	Params: require('./formats/params').split,
+	params: require('./formats/params').split,
+	'plain text': require('./formats/plain-text').split,
+	plainText: require('./formats/plain-text').split,
+	SD: require('./formats/sd').split,
+	sd: require('./formats/sd').split
+
+};
+
+module.exports = function (text, options) {
+
+	var fromDefault = new Set();
+	var splitAsDefault = defaultSplitter(text, options);
+	splitAsDefault.forEach(function (line) {
+		detector(line, options).forEach(function (format) {
+			return fromDefault.add(format);
+		});
+	});
+
+	var fromPlainText = new Set();
+	var splitAsPlainText = as.plainText(text, options);
+	splitAsPlainText.forEach(function (line) {
+		detector(line, options).forEach(function (format) {
+			return fromPlainText.add(format);
+		});
+	});
+
+	if (fromDefault.size !== 1 && fromPlainText.size === 1 && fromPlainText.has('plain text')) return splitAsPlainText;
+
+	return splitAsDefault;
+};
+module.exports.as = as;
+module.exports.onNewlines = require('./formats/default-splitter');
+
+},{"./detector":19,"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/default-splitter":44,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],91:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+  fields: ['index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'],
+
+  formats: [
+  //'apertium stream',
+  'Brackets', 'CG3', 'CoNLL-U', 'notatrix serial', 'Params', 'plain text', 'SD'],
+
+  nxSentenceFields: {
+    input: 'string',
+    options: 'object',
+    comments: 'array',
+    tokens: 'array'
+  },
+
+  nxSentenceTokensFields: {
+    semicolon: 'boolean',
+    isEmpty: 'boolean',
+    index: 'number',
+    form: 'string*',
+    lemma: 'string*',
+    upostag: 'string*',
+    xpostag: 'string*',
+    feats: 'array',
+    heads: 'array',
+    analyses: 'array'
+  },
+
+  nxAllOptions: {},
+
+  fallback: '_',
+
+  hexConstant: 16777215 // = 0xffffff
+
+};
+
+},{}],92:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2943,2172 +8096,345 @@ var NotatrixError = function (_Error) {
   _inherits(NotatrixError, _Error);
 
   function NotatrixError() {
-    var _ref;
-
     _classCallCheck(this, NotatrixError);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _possibleConstructorReturn(this, (_ref = NotatrixError.__proto__ || Object.getPrototypeOf(NotatrixError)).call.apply(_ref, [this].concat(args)));
+    return _possibleConstructorReturn(this, (NotatrixError.__proto__ || Object.getPrototypeOf(NotatrixError)).apply(this, arguments));
   }
 
   return NotatrixError;
 }(Error);
 
-var InvalidCG3Error = function (_NotatrixError) {
-  _inherits(InvalidCG3Error, _NotatrixError);
+;
 
-  function InvalidCG3Error() {
-    var _ref2;
+var ToolError = function (_NotatrixError) {
+  _inherits(ToolError, _NotatrixError);
 
-    _classCallCheck(this, InvalidCG3Error);
+  function ToolError() {
+    _classCallCheck(this, ToolError);
 
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    return _possibleConstructorReturn(this, (_ref2 = InvalidCG3Error.__proto__ || Object.getPrototypeOf(InvalidCG3Error)).call.apply(_ref2, [this].concat(args)));
+    return _possibleConstructorReturn(this, (ToolError.__proto__ || Object.getPrototypeOf(ToolError)).apply(this, arguments));
   }
 
-  return InvalidCG3Error;
+  return ToolError;
 }(NotatrixError);
 
-var InvalidCoNLLUError = function (_NotatrixError2) {
-  _inherits(InvalidCoNLLUError, _NotatrixError2);
+;
 
-  function InvalidCoNLLUError() {
-    var _ref3;
+var SplitterError = function (_ToolError) {
+  _inherits(SplitterError, _ToolError);
 
-    _classCallCheck(this, InvalidCoNLLUError);
+  function SplitterError(message, text, options) {
+    _classCallCheck(this, SplitterError);
 
-    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
+    var _this3 = _possibleConstructorReturn(this, (SplitterError.__proto__ || Object.getPrototypeOf(SplitterError)).call(this, message));
 
-    return _possibleConstructorReturn(this, (_ref3 = InvalidCoNLLUError.__proto__ || Object.getPrototypeOf(InvalidCoNLLUError)).call.apply(_ref3, [this].concat(args)));
+    _this3.name = 'SplitterError';
+    _this3.text = text;
+    _this3.options = options;
+    return _this3;
   }
 
-  return InvalidCoNLLUError;
-}(NotatrixError);
+  return SplitterError;
+}(ToolError);
 
-var TransformationError = function (_NotatrixError3) {
-  _inherits(TransformationError, _NotatrixError3);
+var DetectorError = function (_ToolError2) {
+  _inherits(DetectorError, _ToolError2);
 
-  function TransformationError() {
-    var _ref4;
+  function DetectorError(message, text, options) {
+    _classCallCheck(this, DetectorError);
 
-    _classCallCheck(this, TransformationError);
+    var _this4 = _possibleConstructorReturn(this, (DetectorError.__proto__ || Object.getPrototypeOf(DetectorError)).call(this, message));
 
-    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-      args[_key4] = arguments[_key4];
-    }
-
-    return _possibleConstructorReturn(this, (_ref4 = TransformationError.__proto__ || Object.getPrototypeOf(TransformationError)).call.apply(_ref4, [this].concat(args)));
+    _this4.name = 'DetectorError';
+    _this4.text = text;
+    _this4.options = options;
+    return _this4;
   }
 
-  return TransformationError;
+  return DetectorError;
+}(ToolError);
+
+var ParserError = function (_ToolError3) {
+  _inherits(ParserError, _ToolError3);
+
+  function ParserError(message, text, options) {
+    _classCallCheck(this, ParserError);
+
+    var _this5 = _possibleConstructorReturn(this, (ParserError.__proto__ || Object.getPrototypeOf(ParserError)).call(this, message));
+
+    _this5.name = 'ParserError';
+    _this5.text = text;
+    _this5.options = options;
+    return _this5;
+  }
+
+  return ParserError;
+}(ToolError);
+
+var GeneratorError = function (_ToolError4) {
+  _inherits(GeneratorError, _ToolError4);
+
+  function GeneratorError(message, nx, options) {
+    _classCallCheck(this, GeneratorError);
+
+    var _this6 = _possibleConstructorReturn(this, (GeneratorError.__proto__ || Object.getPrototypeOf(GeneratorError)).call(this, message));
+
+    _this6.name = 'GeneratorError';
+    _this6.nx = nx;
+    _this6.options = options;
+    return _this6;
+  }
+
+  return GeneratorError;
+}(ToolError);
+
+var ConverterError = function (_ToolError5) {
+  _inherits(ConverterError, _ToolError5);
+
+  function ConverterError(message) {
+    _classCallCheck(this, ConverterError);
+
+    var _this7 = _possibleConstructorReturn(this, (ConverterError.__proto__ || Object.getPrototypeOf(ConverterError)).call(this, message));
+
+    _this7.name = 'ConverterError';
+    return _this7;
+  }
+
+  return ConverterError;
+}(ToolError);
+
+var NxError = function (_NotatrixError2) {
+  _inherits(NxError, _NotatrixError2);
+
+  function NxError() {
+    var _ref;
+
+    _classCallCheck(this, NxError);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var _this8 = _possibleConstructorReturn(this, (_ref = NxError.__proto__ || Object.getPrototypeOf(NxError)).call.apply(_ref, [this].concat(args)));
+
+    _this8.name = 'NxError';
+    return _this8;
+  }
+
+  return NxError;
 }(NotatrixError);
+
+var DBError = function (_NotatrixError3) {
+  _inherits(DBError, _NotatrixError3);
+
+  function DBError() {
+    _classCallCheck(this, DBError);
+
+    return _possibleConstructorReturn(this, (DBError.__proto__ || Object.getPrototypeOf(DBError)).apply(this, arguments));
+  }
+
+  return DBError;
+}(NotatrixError);
+
+;
 
 module.exports = {
 
   NotatrixError: NotatrixError,
-  InvalidCG3Error: InvalidCG3Error,
-  InvalidCoNLLUError: InvalidCoNLLUError,
-  TransformationError: TransformationError
+
+  ToolError: ToolError,
+  SplitterError: SplitterError,
+  DetectorError: DetectorError,
+  ParserError: ParserError,
+  GeneratorError: GeneratorError,
+  ConverterError: ConverterError,
+
+  NxError: NxError,
+  DBError: DBError
 
 };
 
-},{}],4:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
-
-module.exports = {
-
-  Error: require('./errors'),
-  Sentence: require('./sentence'),
-  Token: require('./token'),
-  Analysis: require('./analysis')
-
-};
-
-},{"./analysis":2,"./errors":3,"./sentence":5,"./token":6}],5:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var _ = require('underscore');
+var constants = require('./constants');
+var re = require('./regex');
 
-var NotatrixError = require('./errors').NotatrixError;
-var InvalidCG3Error = require('./errors').InvalidCG3Error;
-var InvalidCoNLLUError = require('./errors').InvalidCoNLLUError;
+function combine(arr, k) {
 
-var Token = require('./token');
-var Analysis = require('./analysis');
+  if (k > arr.length || k <= 0) return [];
 
-// define all the regex we use in this module here
-var regex = {
-  comment: /^\W*\#/,
-  commentContent: /^\W*\#\W*(.*)/,
-  superToken: /^\W*[0-9.]+\-[0-9.]+/,
-  empty: /^\W*[0-9]+\.[0-9]+/,
-  cg3TokenStart: /^"<(.|\\")*>"/,
-  cg3TokenContent: /^;?\s+"(.|\\")*"/
-};
+  if (k === arr.length) return [arr];
 
-var fallback = '_';
+  if (k === 1) return arr.map(function (e) {
+    return [e];
+  });
 
-/**
- * this class contains all the information associated with a sentence, including
- *   an comments array, a tokens array, and a list of options/settings that apply
- *   to all subelements of this sentence
- */
+  var combs = [];
 
-var Sentence = function () {
-  function Sentence(paramsList, options) {
-    _classCallCheck(this, Sentence);
+  var _loop = function _loop(i) {
 
-    // handle only receiving one arg better
-    if (options === undefined && !Array.isArray(paramsList)) {
-      options = paramsList;
-      paramsList = undefined;
-    }
-
-    // save sentence-wide settings here
-    this.options = _.defaults(options, {
-      help: {
-        form: true,
-        lemma: true,
-        upostag: true,
-        xpostag: true,
-        head: true,
-        deps: true
-      },
-      showEnhanced: true,
-      showEmptyDependencies: true,
-      catchInvalid: true,
-      fallbackOnText: false
+    var head = arr.slice(i, i + 1);
+    var tailCombs = combine(arr.slice(i + 1), k - 1);
+    tailCombs.forEach(function (tailComb) {
+      combs.push(head.concat(tailComb));
     });
+  };
 
-    // the actual data
-    this.comments = [];
-    this.tokens = [];
-
-    // try parsing a list of parameters
-    if (paramsList) this.params = paramsList;
+  for (var i = 0; i < arr.length - k + 1; i++) {
+    _loop(i);
   }
-  /**
-   * @return {Number} total number of tokens/subTokens in this sentence
-   */
+  return combs;
+}
 
+function hexToRGB(hex) {
+  var match = hex.match(re.hexColor);
 
-  _createClass(Sentence, [{
-    key: 'forEach',
+  if (match) return [parseInt(match[1], 16), parseInt(match[2], 16), parseInt(match[3], 16)];
+}
 
-    /**
-     * loop through every token in the sentence and apply a callback
-     *
-     * @param {Function} callback function to be applied to every token
-     * @return {Sentence}
-     */
-    value: function forEach(callback) {
+module.exports = {
 
-      var t = 0;
-      for (var i = 0; i < this.tokens.length; i++) {
-        var token = this.tokens[i];
-        callback(token, t);
-        t++;
-        for (var j = 0; j < token.subTokens.length; j++) {
-          callback(token.subTokens[j], t);
-          t++;
-        }
-      }
+  isJSONSerializable: function isJSONSerializable(obj) {
 
-      // chaining
-      return this;
-    }
-    /**
-     * loop through the tokens in the sentence and return the superToken and
-     *   subToken indices
-     * @param {Token} tok token to search for
-     * @return {(Object|null)}
-     */
-
-  }, {
-    key: 'getIndices',
-    value: function getIndices(tok) {
-
-      var superTokenId = -1,
-          subTokenId = -1,
-          analysisId = 0,
-          found = false,
-          isSubToken = false;
-
-      tok.sentence.forEach(function (token) {
-
-        if (found) return;
-
-        if (token.isSubToken) {
-          subTokenId++;
-          isSubToken = true;
-        } else {
-          superTokenId++;
-          subTokenId = -1;
-          isSubToken = false;
-        }
-
-        if (token === tok) found = true;
-      });
-
-      return superTokenId === -1 ? null : {
-        super: superTokenId,
-        sub: isSubToken ? subTokenId : null
-      };
-    }
-
-    /**
-     * return the comment at the given index, or null
-     *
-     * @param {Number} index
-     * @return {(String|null)}
-     */
-
-  }, {
-    key: 'getComment',
-    value: function getComment(index) {
-      return this.comments[index] || null;
-    }
-
-    /**
-     * return the token at the given index (note: this is regular token OR subToken),
-     *   or null.  to choose by superToken index, use Sentence[index] syntax.  this
-     *   function assumes only the current analysis is desired.
-     *
-     * @param {Number} index
-     * @return {(Token|null)}
-     */
-
-  }, {
-    key: 'getToken',
-    value: function getToken(index) {
-      var t = 0,
-          token = null;
-      this.forEach(function (tok, t) {
-        if (t === index) token = tok;
-      });
-      return token;
-    }
-
-    /**
-     * return the current analysis of the token that matches a given index string
-     *
-     * NOTE: tokens outside the current analysis will have id=null and cannot be retrieved
-     *   with this function
-     *
-     * @param {String} index
-     * @return {(Analysis|null)}
-     */
-
-  }, {
-    key: 'getById',
-    value: function getById(index) {
-      for (var i = 0; i < this.tokens.length; i++) {
-        var token = this.tokens[i];
-        if (token.analysis.id == index) return token.analysis;
-        for (var j = 0; j < token.subTokens.length; j++) {
-          var subToken = token.subTokens[j];
-          if (subToken.analysis.id == index) return subToken.analysis;
-        }
-      }
-      return null;
-    }
-
-    // manipulate token array
-
-    /**
-     * insert a token AFTER the given token
-     *
-     * NOTE: if only passed 1 arg, it will insert a token constructed from
-     *   the params { form: 'inserted' }
-     *
-     * @param {Token} atToken
-     * @param {(Token|null)} newToken
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid token for first param
-     */
-
-  }, {
-    key: 'insertTokenBefore',
-    value: function insertTokenBefore(atToken, newToken) {
-
-      if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
-
-      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
-
-      var indices = this.getIndices(atToken);
-      if (indices === null) return null;
-
-      return indices.sub === null ? this.insertTokenAt(indices.super, newToken) : this[indices.super].insertSubTokenAt(indices.sub, newToken);
-    }
-
-    /**
-     * insert a token AFTER the given token
-     *
-     * NOTE: if only passed 1 arg, it will insert a token constructed from
-     *   the params { form: 'inserted' }
-     *
-     * @param {Token} atToken
-     * @param {(Token|null)} newToken
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid token for first param
-     */
-
-  }, {
-    key: 'insertTokenAfter',
-    value: function insertTokenAfter(atToken, newToken) {
-
-      if (!(atToken instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
-
-      if (!(newToken instanceof Token)) newToken = Token.fromParams(this, { form: 'inserted' });
-
-      var indices = this.getIndices(atToken);
-      if (indices === null) return null;
-
-      return indices.sub === null ? this.insertTokenAt(indices.super + 1, newToken) : this[indices.super].insertSubTokenAt(indices.sub + 1, newToken);
-    }
-
-    /**
-     * insert an analysis BEFORE the given analysis
-     *
-     * NOTE: if only passed 1 arg, it will insert an analysis constructed from
-     *   the params { form: 'inserted' }
-     *
-     * @param {Analysis} atAnalysis
-     * @param {(Analysis|null)} newAnalysis
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid analysis for first param
-     */
-
-  }, {
-    key: 'insertAnalysisBefore',
-    value: function insertAnalysisBefore(atAnalysis, newAnalysis) {
-
-      if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
-
-      if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
-
-      var indices = this.getIndices(atAnalysis.token);
-      if (indices === null) return null;
-
-      var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
-
-      var analysisId = -1;
-      token.forEach(function (ana, i) {
-        if (ana === atAnalysis) analysisId = i;
-      });
-
-      if (analysisId > -1) return token.insertAnalysisAt(analysisId, newAnalysis);
-    }
-
-    /**
-     * insert an analysis AFTER the given analysis
-     *
-     * NOTE: if only passed 1 arg, it will insert an analysis constructed from
-     *   the params { form: 'inserted' }
-     *
-     * @param {Analysis} atAnalysis
-     * @param {(Analysis|null)} newAnalysis
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid analysis for first param
-     */
-
-  }, {
-    key: 'insertAnalysisAfter',
-    value: function insertAnalysisAfter(atAnalysis, newAnalysis) {
-
-      if (!(atAnalysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
-
-      if (!(newAnalysis instanceof Analysis)) newAnalysis = Token.fromParams(this, { form: 'inserted' }).analysis;
-
-      var indices = this.getIndices(atAnalysis.token);
-      if (indices === null) return null;
-
-      var token = indices.sub === null ? this[indices.super].token : this[indices.super][indices.sub].token;
-
-      var analysisId = -1;
-      token.forEach(function (ana, i) {
-        if (ana === atAnalysis) analysisId = i;
-      });
-
-      if (analysisId > -1) return token.insertAnalysisAt(analysisId + 1, newAnalysis);
-    }
-
-    /**
-     * insert a token BEFORE the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
-     *   to fit the bounds. this means that you can call this with `index=-Infinity`
-     *   to push to the front of the tokens array or with `index=Infinity` to push
-     *   to the end
-     *
-     * @param {Number} index
-     * @param {Token} token
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid index or token
-     */
-
-  }, {
-    key: 'insertTokenAt',
-    value: function insertTokenAt(index, token) {
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to insert token: unable to cast index to int');
-
-      if (!(token instanceof Token)) throw new NotatrixError('unable to insert token: not instance of Token');
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.length ? this.length : parseInt(index);
-
-      // array insertion
-      this.tokens = this.tokens.slice(0, index).concat(token).concat(this.tokens.slice(index));
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * remove a token at the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
-     *   adjusted to fit the bounds. this means that you can call this with
-     *   `index=-Infinity` to remove the first element of the tokens array or
-     *   with `index=Infinity` to remove the last
-     *
-     * @param {Number} index
-     * @return {(Token|null)}
-     *
-     * @throws {NotatrixError} if given invalid index
-     */
-
-  }, {
-    key: 'removeTokenAt',
-    value: function removeTokenAt(index) {
-      var _this = this;
-
-      // can't remove if we have an empty sentence
-      if (!this.tokens.length) return null;
-
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to remove token: unable to cast index to int');
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.tokens.length - 1 ? this.tokens.length - 1 : parseInt(index);
-
-      // unlink heads and deps from the token to be removed
-      this.forEach(function (token) {
-        token.analysis.mapHeads(function (head) {
-          if (head === _this[index]) token.analysis.removeHead(head);
-        }).mapDeps(function (dep) {
-          if (dep === _this[index]) token.analysis.removeDep(dep);
-        });
-      });
-
-      // array splicing, return spliced element
-      return this.tokens.splice(index, 1)[0];
-    }
-
-    /**
-     * move a token from sourceIndex to targetIndex
-     *
-     * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
-     *   be adjusted to fit the bounds. this means that you can call this with
-     *   `sourceIndex=-Infinity` to select the first element of the tokens array
-     *   or with `sourceIndex=Infinity` to select the last
-     *
-     * @param {Number} sourceIndex
-     * @param {Number} targetIndex
-     * @return {Sentence}
-     *
-     * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
-     */
-
-  }, {
-    key: 'moveTokenAt',
-    value: function moveTokenAt(sourceIndex, targetIndex) {
-      sourceIndex = parseFloat(sourceIndex);
-      targetIndex = parseFloat(targetIndex);
-      if (isNaN(sourceIndex) || isNaN(targetIndex)) throw new NotatrixError('unable to move token: unable to cast indices to ints');
-
-      // bounds checking
-      sourceIndex = sourceIndex < 0 ? 0 : sourceIndex > this.tokens.length - 1 ? this.tokens.length - 1 : parseInt(sourceIndex);
-      targetIndex = targetIndex < 0 ? 0 : targetIndex > this.tokens.length - 1 ? this.tokens.length - 1 : parseInt(targetIndex);
-
-      if (sourceIndex === targetIndex) {
-        // do nothing
-      } else {
-
-        // array splice and insert
-        var token = this.tokens.splice(sourceIndex, 1);
-        this.tokens = this.tokens.slice(0, targetIndex).concat(token).concat(this.tokens.slice(targetIndex));
-      }
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * push a token to the end of the tokens array ... sugar for
-     *   Sentence::insertTokenAt(Infinity, token)
-     *
-     * @param {Token} token
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'pushToken',
-    value: function pushToken(token) {
-      return this.insertTokenAt(Infinity, token);
-    }
-
-    /**
-     * pop a token from the end of the tokens array ... sugar for
-     *   Sentence::removeTokenAt(Infinity)
-     *
-     * @return {(Token|null)}
-     */
-
-  }, {
-    key: 'popToken',
-    value: function popToken() {
-      return this.removeTokenAt(Infinity);
-    }
-
-    // external formats
-
-    /**
-     * returns the % (as a number in [0,1]) annotation of the sentence
-     *
-     * @return {Number}
-     */
-
-  }, {
-    key: 'clean',
-    value: function clean() {
-      throw new Error('Sentence::clean is not implemented'); // TODO
-    }
-
-    /**
-     * iterate through the tokens and set an appropriate index for each (following
-     *   CoNLL-U indexing scheme with, e.g. 1 for regular token, 1-2 for superToken,
-     *   1.1 for "empty" token)
-     *
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'index',
-    value: function index() {
-      // track "overall" index number (id) and "empty" index number and "absolute" num
-      // NOTE: CoNLL-U indices start at 1 (0 is root), so we will increment this
-      //   index before using it (see Token::index)
-      var id = 0,
-          empty = 0,
-          num = 0,
-          clump = 0;
-      _.each(this.tokens, function (token) {
-        var _token$index = token.index(id, empty, num, clump);
-        // allow each token to return counters for the next guy
-
-
-        var _token$index2 = _slicedToArray(_token$index, 4);
-
-        id = _token$index2[0];
-        empty = _token$index2[1];
-        num = _token$index2[2];
-        clump = _token$index2[3];
-      });
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * iterate through the tokens and try to convert a plain string index to a
-     *   head to the actual token given by that index (called after parsing
-     *   CoNLL-U, CG3, or params)
-     *
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'attach',
-    value: function attach() {
-      // reindex in case we're out of date (valid index is crucial here)
-      this.index();
-      this.forEach(function (token) {
-        token.analysis.head = token.analysis.head;
-        token.analysis.deps = token.analysis.deps;
-      });
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * iterate through the tokens and determine if they could be converted into
-     *   a CoNLL-U formatted string
-     *
-     * NOTE: currently, only returns false if it contains one/more ambiguous analyses
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'length',
-    get: function get() {
-
-      var acc = 0;
-      this.forEach(function (token) {
-        acc++;
-      });
-      return acc;
-    }
-  }, {
-    key: 'progress',
-    get: function get() {
-
-      // amount work done, amount total work
-      var done = 0,
-          total = 0;
-
-      this.forEach(function (token) {
-
-        total += 2;
-
-        // if analysis is not set, can't compute other stuff
-        if (!token.analysis) return;
-
-        // if these fields are filled out, increment work
-        if (token.analysis.head && token.analysis.head !== fallback) done++;
-        if (token.analysis.pos && token.analysis.head !== fallback) done++;
-
-        // each head increases amount of work to do
-        token.analysis.mapHeads(function (head) {
-
-          total++;
-          if (head.deprel && head.deprel !== fallback) done++;
-        });
-      });
-
-      // return a float in [0,1] and avoid dividing by zero
-      return total ? done / total : 1;
-    }
-
-    /**
-     * get a serial version of the internal sentence representation
-     *
-     * @return {String}
-     */
-
-  }, {
-    key: 'nx',
-    get: function get() {
-      // update indices
-      this.index();
-
-      // serialize tokens
-      var tokens = [];
-      for (var i = 0; i < this.tokens.length; i++) {
-        tokens.push(this.tokens[i].nx);
-      }
-
-      // serialize other data
-      return {
-        comments: this.comments,
-        options: this.options,
-        tokens: tokens
-      };
-    }
-
-    /**
-     * deserialize an internal representation
-     *
-     * @param {Object} nx
-     * @return {String}
-     */
-    ,
-    set: function set(nx) {
-      var _this2 = this;
-
-      this.options = nx.options;
-      this.comments = nx.comments;
-      this.tokens = nx.tokens.map(function (tokenNx) {
-        return Token.fromNx(_this2, tokenNx);
-      });
-
-      return this.attach().nx;
-    }
-
-    /**
-     * static method allowing us to construct a new Sentence directly from an
-     *   Nx string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'text',
-
-
-    /**
-     * get a plain-text formatted string of the sentence's current analysis text
-     *
-     * @return {String}
-     */
-    get: function get() {
-      // only care about tokens (not comments or settings)
-      var tokens = [];
-      this.forEach(function (token) {
-        if (!token.isSubToken && !token.isEmpty) tokens.push(token.text);
-      });
-      return tokens.join(' ');
-    }
-
-    /**
-     * parse a Plain text formatted string and save its contents to the sentence
-     *
-     * @param {String} text
-     * @return {String}
-     */
-    ,
-    set: function set(text) {
-      var _this3 = this;
-
-      // insert a space before final punctuation
-      text = text.trim().replace(/([.,?!]+)$/, ' $1');
-
-      // split on whitespace and add form-only tokens
-      _.map(text.split(/\s/), function (chunk) {
-        _this3.pushToken(Token.fromParams(_this3, { form: chunk }));
-      });
-
-      return this.text;
-    }
-
-    /**
-     * static method allowing us to construct a new Sentence directly from a
-     *   text string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'conllu',
-
-
-    /**
-     * get a CoNLL-U formatted string representing the sentence's current analysis
-     *
-     * @return {(String|null)}
-     */
-    get: function get() {
-      // comments first
-      var comments = _.map(this.comments, function (comment) {
-        return '# ' + comment;
-      });
+    if (typeof obj === 'string') {
 
       try {
-
-        var tokens = [];
-        this.forEach(function (token) {
-          tokens.push(token.conllu);
-        });
-        return comments.concat(tokens).join('\n');
+        JSON.parse(obj);
       } catch (e) {
-
-        // if the sentence contains ambiguous analyses, we will get an error,
-        // so catch only those types of errors here
-        if (!(e instanceof InvalidCoNLLUError) || !this.options.catchInvalid) throw e;
-
-        // if sentence is ambiguous
-        return null;
+        return false;
       }
-    }
-
-    /**
-     * parse a CoNLL-U formatted string and save its contents to the sentence
-     *
-     * @param {String} conllu
-     * @return {String}
-     */
-    ,
-    set: function set(conllu) {
-      // clear existing data
-      this.comments = [];
-      this.tokens = [];
-
-      // split on newlines
-      var lines = conllu.trim().split('\n');
-      for (var i = 0; i < lines.length; i++) {
-
-        // extract comments
-        if (regex.comment.test(lines[i])) {
-          this.comments.push(lines[i].match(regex.commentContent)[1]);
-
-          // extract tokens
-        } else if (regex.superToken.test(lines[i])) {
-
-          // the top-level token
-          var superToken = Token.fromConllu(this, lines[i]);
-
-          // check which subTokens belong to this superToken
-          var k = i;
-          var subTokenIndices = lines[i].match(regex.superToken)[0].trim().split('-').map(function (str) {
-            return parseInt(str);
-          });
-
-          // push them all to the superToken's current analysis
-          for (var j = 0; j <= subTokenIndices[1] - subTokenIndices[0]; j++) {
-            superToken.analysis.pushSubToken(Token.fromConllu(this, lines[j + k + 1]));
-            i++;
-          }
-
-          // push the superToken to the sentence
-          this.pushToken(superToken);
-        } else {
-
-          // regular (non-super) tokens pushed to sentence here
-          if (lines[i].trim().length) this.pushToken(Token.fromConllu(this, lines[i]));
-        }
-      }
-
-      // attach heads and return CoNLL-U string
-      return this.attach().conllu;
-    }
-
-    /**
-     * static method allowing us to construct a new Sentence directly from a
-     *   CoNLL-U string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'cg3',
-
-
-    /**
-     * get a CG3 formatted string representing all of the sentence's analyses
-     *
-     * @return {(String|null)}
-     */
-    get: function get() {
-      // comments first
-      var comments = _.map(this.comments, function (comment) {
-        return '# ' + comment;
-      });
-
-      try {
-
-        var tokens = [];
-        for (var i = 0; i < this.tokens.length; i++) {
-          // iterate over superTokens
-          tokens.push(this.tokens[i].cg3);
-        }
-        return comments.concat(tokens).join('\n');
-      } catch (e) {
-
-        // if the sentence is not analyzeable as CG3, we'll get an error
-        // NOTE: this doesn't currently happen under any circumstances
-        if (!(e instanceof InvalidCG3Error) || !this.options.catchInvalid) throw e;
-
-        return null;
-      }
-    }
-
-    /**
-     * parse a CG3 formatted string and save its contents to the sentence
-     *
-     * @param {String} conllu
-     * @return {String}
-     */
-    ,
-    set: function set(cg3) {
-      // clear existing data
-      this.comments = [];
-      this.tokens = [];
-
-      // since this parsing is more complicated than CoNLL-U parsing, keep this
-      //   array of lines for the current token we're parsing
-      // NOTE: CG3 tokens are separated by lines of the form `/^"<EXAMPLE>"/`
-      //   and lines beginning with one/more indent give data for that token
-      var tokenLines = [];
-
-      // split on newlines
-      var lines = cg3.trim().split('\n');
-      for (var i = 0; i < lines.length; i++) {
-
-        // decide what the current line is
-        var isToken = regex.cg3TokenStart.test(lines[i]);
-        var isContent = regex.cg3TokenContent.test(lines[i]);
-
-        // current line is the start of a new token
-        if (isToken) {
-
-          // if we already have stuff in our tokenLines buffer, parse it as a token
-          if (tokenLines.length) this.tokens.push(Token.fromCG3(this, tokenLines));
-
-          // reset tokenLines buffer
-          tokenLines = [lines[i]];
-        } else {
-
-          // add content lines to tokenLines buffer
-          if (tokenLines.length && isContent) {
-            tokenLines.push(lines[i]);
-
-            // push comment
-          } else {
-            this.comments.push(lines[i].match(regex.commentContent)[1]);
-          }
-        }
-      }
-
-      // clear tokenLines buffer
-      if (tokenLines.length) this.tokens.push(Token.fromCG3(this, tokenLines));
-
-      // attach heads and return CG3 string
-      return this.attach().cg3;
-    }
-
-    /**
-     * static method allowing us to construct a new Sentence directly from a
-     *   CG3 string
-     *
-     * @param {String} serial
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'params',
-
-
-    /**
-     * get an array of token parameters representing the sentence
-     *
-     * NOTE: fails (returns null) if we have subTokens or ambiguous analyses
-     *
-     * @return {(Array|null)}
-     */
-    get: function get() {
-      try {
-
-        var params = [];
-        this.forEach(function (token) {
-
-          if (token.isSuperToken || token.isSubToken) throw new InvalidCoNLLUError();
-          if (token.isAmbiguous) throw new InvalidCG3Error();
-
-          params.push(token.params);
-        });
-        return params;
-      } catch (e) {
-        if (e instanceof InvalidCoNLLUError && this.options.catchInvalid) {
-          console.warn('cannot get params for this sentence: contains MultiWordTokens');
-          return null;
-        } else if (e instanceof InvalidCG3Error && this.options.catchInvalid) {
-          console.warn('cannot get params for this sentence: contains ambiguous analyses');
-          return null;
-        } else {
-          // throw other errors
-          throw e;
-        }
-      }
-    }
-
-    /**
-     * parse an array of token parameters and save contents to the sentence
-     *
-     * @param {Array} paramsList
-     * @return {(Array|null)}
-     */
-    ,
-    set: function set(paramsList) {
-      var _this4 = this;
-
-      // can only parse arrays
-      if (!(paramsList instanceof Array)) return null;
-
-      // clear existing data
-      this.comments = [];
-      this.tokens = [];
-
-      // push a new token for each set of parameters
-      _.each(paramsList, function (params) {
-        _this4.tokens.push(Token.fromParams(_this4, params));
-      });
-
-      // attach heads and return validated parameter list
-      return this.attach().params;
-    }
-
-    /**
-     * static method allowing us to construct a new Sentence directly from an
-     *   array of parameters
-     *
-     * @param {Array} paramsList
-     * @param {Object} options (optional)
-     * @return {Sentence}
-     */
-
-  }, {
-    key: 'eles',
-
-
-    /**
-     * get an array of the elements of this sentence, useful for exporting the data
-     *   to visualization libraries such as Cytoscape or D3
-     *
-     * @return {Array}
-     */
-    get: function get() {
-
-      // just in case, since it's critical
-      this.index();
-
-      var eles = [];
-      _.each(this.tokens, function (token) {
-        eles = eles.concat(token.eles);
-      });
-
-      return eles;
-    }
-  }, {
-    key: 'isValidConllu',
-    get: function get() {
-      var valid = true;
-      this.forEach(function (token) {
-        if (token.isAmbiguous) valid = false;
-      });
-      return valid;
-    }
-
-    /**
-     * iterate through the tokens and determine if they could be converted into
-     *   a CG3 formatted string
-     *
-     * NOTE: currently, always returns true (see update below)
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'isValidCG3',
-    get: function get() {
-      var valid = true;
-      this.forEach(function (token) {
-        /*
-        UPDATE 6/9/18: apparently CG3 can handle all this stuff, it's just a bit lossy
-          (e.g. subTokens won't have their own `form` and `empty` tokens won't show up)
-         if (token.isSubToken || token.isSuperToken || token.isEmpty)
-          valid = false;
-        */
-      });
-      return valid;
-    }
-  }], [{
-    key: 'fromNx',
-    value: function fromNx(serial, options) {
-      var sent = new Sentence(options);
-      sent.nx = serial;
-      return sent;
-    }
-  }, {
-    key: 'fromText',
-    value: function fromText(serial, options) {
-      var sent = new Sentence(options);
-      sent.text = serial;
-      return sent;
-    }
-  }, {
-    key: 'fromConllu',
-    value: function fromConllu(serial, options) {
-      var sent = new Sentence(options);
-      sent.conllu = serial;
-      return sent;
-    }
-  }, {
-    key: 'fromCG3',
-    value: function fromCG3(serial, options) {
-      var sent = new Sentence(options);
-      sent.cg3 = serial;
-      return sent;
-    }
-  }, {
-    key: 'fromParams',
-    value: function fromParams(paramsList, options) {
-      var sent = new Sentence(options);
-      sent.params = paramsList;
-      return sent;
-    }
-  }]);
-
-  return Sentence;
-}();
-
-/**
- * Proxy so that we can get tokens using Array-like syntax
- *
- * NOTE: usage: `sent[8]` would return the analysis of the token at index 8
- * NOTE: if `name` is not a Number, fall through to normal object
- *
- * @return {Mixed}
- * @name Sentence#get
- */
-
-
-Sentence.prototype.__proto__ = new Proxy(Sentence.prototype.__proto__, {
-
-  // default getter, called any time we use Sentence.name or Sentence[name]
-  get: function get(target, name, receiver) {
-
-    // Symbols can't be cast to floats, so check here to avoid errors
-    if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'symbol') return this[name];
-
-    // cast, catch Infinity
-    var id = parseFloat(name);
-    if (!isNaN(id)) {
-
-      // if we got a number, return analysis at that index
-      id = parseInt(id);
-      var token = receiver.tokens[id];
-      return token ? token.analysis : null;
     } else {
 
-      // fall through to normal getting
-      return this[name];
+      try {
+        JSON.stringify(obj);
+      } catch (e) {
+        return false;
+      }
     }
+
+    return true;
+  },
+
+  noop: function noop(arg) {
+    return arg;
+  },
+
+  thin: function thin(arg) {
+    return !!arg ? arg : undefined;
+  },
+
+  combine: combine,
+
+  guessDeprel: function guessDeprel(dependent, head, context) {
+    return undefined;
+  },
+
+  dedup: function dedup(master, slave) {
+
+    var dedup = {};
+
+    _.each(slave, function (value, key) {
+      if (master[key] !== value) dedup[key] = value;
+    });
+
+    return dedup;
+  },
+
+  hashStringToHex: function hashStringToHex(string) {
+    var hash = 0;
+    for (var i = 0; i < string.length; i++) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    var hex = '';
+    for (var _i = 0; _i < 3; _i++) {
+      var value = hash >> _i * 8 & 0xFF;
+      hex += ('00' + value.toString(16)).substr(-2);
+    }
+    return hex;
+  },
+
+  getRandomHexColor: function getRandomHexColor() {
+
+    var color = '';
+    do {
+      color = Math.floor(Math.random() * constants.hexConstant).toString(16);
+    } while (color.length !== 7);
+
+    return color;
+  },
+
+  hexToRGB: hexToRGB,
+
+  getContrastingColor: function getContrastingColor(background) {
+
+    var color = 'ffffff';
+
+    var rgb = hexToRGB(background);
+    if (!rgb) return color;
+
+    var _rgb = _slicedToArray(rgb, 3),
+        r = _rgb[0],
+        g = _rgb[1],
+        b = _rgb[2];
+
+    if (Math.pow(r, 2) + Math.pow(g, 2) + Math.pow(b, 2) > Math.pow(255 - r, 2) + Math.pow(255 - g, 2) + Math.pow(255 - b, 2)) color = '000000';
+
+    return color;
   }
-});
 
-// expose to application
-module.exports = Sentence;
+};
 
-},{"./analysis":2,"./errors":3,"./token":6,"underscore":1}],6:[function(require,module,exports){
+},{"./constants":91,"./regex":95,"underscore":14}],94:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var _ = require('underscore');
 
-var NotatrixError = require('./errors').NotatrixError;
-var InvalidCG3Error = require('./errors').InvalidCG3Error;
-var InvalidCoNLLUError = require('./errors').InvalidCoNLLUError;
+var constants = require('./constants');
+var errors = require('./errors');
+var funcs = require('./funcs');
+var regex = require('./regex');
 
-var Analysis = require('./analysis');
+module.exports = _.extend({ re: regex }, errors, constants, funcs);
 
-/**
- * helper function to split on whitespace
- *
- * @param {String} str
- * @return {Array}
- */
-function split(str) {
-  return (str || '').split(/\s+/);
-}
+},{"./constants":91,"./errors":92,"./funcs":93,"./regex":95,"underscore":14}],95:[function(require,module,exports){
+"use strict";
 
-/**
- * helper function to count the number of leading `\t` characters in a string
- *
- * @param {String} line
- * @return {Number}
- */
-function getIndent(line) {
+module.exports = {
 
-  var chars = line.split(''),
-      i = 0;
+  multiNewlines: /\n{2,}/g,
+  punctuation: /[.,!?;]+/g,
+  allPunctuation: /^[.,!?;]+$/,
+  sentenceThenPunctuation: /([^.!?]*[.!?]*)/g,
+  spaceBeforePunctuation: /\s+([.,!?;]+)/g,
+  comment: /^(#\s*(.*))(\n|$)/,
+  conlluTokenLine: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)(.+)/,
+  conlluTokenLineTenParams: /^((\d+(\.\d+)?)(\-(\d+(\.\d+)?))?)((\s+\S+){8,9})/,
+  conlluEmptyIndex: /^(\d+)(\.\d+)?/,
+  cg3TokenStart: /^["']<((.|\\")*)>["']/,
+  cg3TokenContent: /^(;?)(\s+)"((.|\\")*)"((\s+[\w@#\->:=]+)*)/,
+  cg3Dependency: /#?\d+(->\d*)?$/,
+  cg3Head: /#\d+->(\d*)$/,
+  cg3Index: /#(\d+)/,
+  cg3Deprel: /\s@([\w:]*)/,
+  cg3Other: /([^;].*(:.+)?)/,
+  whitespace: /(\s+)/,
+  whitespaceLine: /^(\s*)$/,
+  whiteline: /^(\s*)(\n|$)/,
+  sdDependency: /^\s*([\w.]+)\(([\w.]+),\s*([\w.]+)\)\s*$/,
+  sdDependencyNoWhitespace: /^([\w.]+)\(([\w.]+),\s*([\w.]+)\)$/,
+  fallback: /^_$/,
+  commentLabel: /(\s*)(labels?|tags?)\s*=\s*(\w.*)/,
+  commentSentId: /(\s*)sent.?id\s*=\s*(\w*)/i,
 
-  while (chars[i++] === '\t') {
-    true;
-  } // do nothing
+  hexColor: /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i,
+  hexColorSixDigit: /^#?([a-f\d]{6})/i
 
-  return i - 1;
-}
-
-// CG3 parser helper functions
-
-/**
- * extract the `form` parameter from a given string
- *
- * @param {String} line
- * @return {(undefined|String)}
- */
-function cg3StringGetForm(line) {
-
-  return cg3Regex.form.test(line) ? line.match(cg3Regex.form)[1] : undefined;
-}
-
-/**
- * extract all the other (not `form`) tags from a given string
- *
- * @param {String} line
- * @return {Object}
- */
-function cg3StringGetTags(line) {
-
-  // initialize things
-  var lemma = void 0,
-      xpostag = [],
-      head = void 0,
-      deprel = void 0,
-      deps = void 0,
-      misc = [];
-
-  // get lemma
-  if (cg3Regex.lemma.test(line)) lemma = line.match(cg3Regex.lemma)[1];
-
-  // only consider line after lemma (if it exists)
-  line = lemma ? line.slice(line.indexOf(lemma) + lemma.length + 1).trim() : line;
-
-  // split on whitespace
-  var chunks = split(line);
-
-  // iterate over each chunk
-  for (var j = 0; j < chunks.length; j++) {
-
-    // try to extract deprel
-    if (cg3Regex.deprel.test(chunks[j])) {
-      deprel = chunks[j].match(cg3Regex.deprel)[1];
-
-      // try to extract head
-    } else if (cg3Regex.id.test(chunks[j])) {
-      if (cg3Regex.dependency.test(chunks[j])) {
-        head = chunks[j].match(cg3Regex.dependency)[2];
-      } else {
-        head = chunks[j].match(cg3Regex.id)[1];
-      }
-
-      // try to extract misc, track with array (can be multiple)
-    } else if (cg3Regex.misc.test(chunks[j])) {
-      misc.push(chunks[j]);
-
-      // try to extract tags (and save to xpostag), track with an array (can be multiple)
-    } else {
-      if (chunks[j] !== '_') xpostag.push(chunks[j]);
-    }
-  }
-
-  // return our extracted data
-  return {
-    lemma: lemma,
-    xpostag: xpostag.join(';') || undefined,
-    head: head,
-    deprel: deprel,
-    deps: deps,
-    misc: misc.join(';') || undefined
-  };
-}
-
-/**
- * parse an array of strings representing a CG3 analysis ... recall that in CG3,
- *   subTokens have an increasingly hanging indent from their superToken
- *
- * @param {Token} token token to attach the analyses to
- * @param {Array} lines [[String]]
- * @return {undefined}
- */
-function cg3StringParseAnalysis(token, lines) {
-
-  if (lines.length === 2) {
-
-    // no subTokens
-    var tags = cg3StringGetTags(lines[1]); // extract tags
-    tags.form = cg3StringGetForm(lines[0]); // extract the form
-    token.pushAnalysis(new Analysis(token, tags)); // save to token
-  } else {
-
-    // has subTokens
-    var analysis = new Analysis(token, {
-      form: cg3StringGetForm(lines[0]) // superToken only save form
-    });
-
-    // for each subToken
-    for (var i = 1; i < lines.length; i++) {
-      var _tags = cg3StringGetTags(lines[i]); // extract tags
-      var subToken = new Token(token.sentence, _tags); // make new subToken
-      analysis.pushSubToken(subToken); // attach to this analysis
-    }
-    token.pushAnalysis(analysis); // save to token
-  }
-}
-
-// define all the CG3-parsing regex here
-var cg3Regex = {
-  form: /^"<((.|\\")*)>"/,
-  lemma: /["\]](.*)["\]](\s|$)/,
-  head: /->(\d*)$/,
-  dependency: /^#(\d+)->(\d*)/,
-  id: /^#(\d+)/,
-  deprel: /^@(.*)/,
-  misc: /.+:.*/
 };
 
-/**
- * this class contains all the information associated with a token, including
- *   a possible superToken, an array of possible analyses, an index to the
- *   current analysis, and a Boolean representing whether it is an "empty" token
- */
-
-var Token = function () {
-  function Token(sent, params) {
-    _classCallCheck(this, Token);
-
-    // require sentence param
-    if (!sent) throw new NotatrixError('missing required arg: Sentence');
-
-    // pointer to parent
-    this.sentence = sent;
-
-    // internal stuff
-    this.superToken = null;
-    this.analyses = []; // array of analyses
-    this._current = null; // index of current analysis in array
-    this._isEmpty = false; // used for CoNLL-U "empty" tokens
-
-    // try parsing an analysis from params
-    if (params) this.analysis = new Analysis(this, params);
-  }
-
-  /**
-   *
-   * @return {Number} total number of analyses in this token
-   */
-
-
-  _createClass(Token, [{
-    key: 'forEach',
-
-
-    /**
-     * loop through every analysis in the sentence and apply a callback
-     *
-     * @param {Function} callback function to be applied to every analysis
-     * @return {Token}
-     */
-    value: function forEach(callback) {
-
-      for (var i = 0; i < this.length; i++) {
-        callback(this.analyses[i], i);
-      }
-
-      // chaining
-      return this;
-    }
-
-    // keeping track of ambiguous analyses
-
-    /**
-     * decrement the _current counter by one (set "previous" analysis as current)
-     *
-     * @return {Token}
-     */
-
-  }, {
-    key: 'prev',
-    value: function prev() {
-
-      // if no analyses set whatsoever
-      if (this._current === null) return null;
-
-      // if we're not already at the first one
-      if (this._current > 0) this._current--;
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * increment the _current counter by one (set "next" analysis as current)
-     *
-     * @return {Token}
-     */
-
-  }, {
-    key: 'next',
-    value: function next() {
-
-      // if no analyses set whatsoever
-      if (this._current === null) return null;
-
-      // if we're not already at the last one
-      if (this._current < this.length - 1) this._current++;
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * return the _current index
-     *
-     * @return {Number}
-     */
-
-  }, {
-    key: 'insertAnalysisAt',
-
-
-    // manipulate analyses array
-
-    /**
-     * insert an analysis BEFORE the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length), then it will be adjusted
-     *   to fit the bounds. this means that you can call this with `index=-Infinity`
-     *   to push to the front of the analyses array or with `index=Infinity` to push
-     *   to the end
-     *
-     * @param {Number} index
-     * @param {Analysis} analysis
-     * @return {Token}
-     *
-     * @throws {NotatrixError} if given invalid index or analysis
-     */
-    value: function insertAnalysisAt(index, analysis) {
-
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to insert subToken: unable to cast index to int');
-
-      if (!(analysis instanceof Analysis)) throw new NotatrixError('unable to insert analysis: not instance of Analysis');
-
-      // if we had no analyses, make this the first
-      if (this.current === null) this._current = 0;
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.length ? this.length : parseInt(index);
-
-      // set the parent pointer on the analysis
-      analysis.token = this;
-
-      // array insertion
-      this.analyses = this.analyses.slice(0, index).concat(analysis).concat(this.analyses.slice(index));
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * remove an analysis at the given index
-     *
-     * NOTE: if the index is out of bounds (<0 or >length - 1), then it will be
-     *   adjusted to fit the bounds. this means that you can call this with
-     *   `index=-Infinity` to remove the first element of the analyses array or
-     *   with `index=Infinity` to remove the last
-     *
-     * @param {Number} index
-     * @return {(null|Analysis)}
-     *
-     * @throws {NotatrixError} if given invalid index
-     */
-
-  }, {
-    key: 'removeAnalysisAt',
-    value: function removeAnalysisAt(index) {
-
-      // can't remove if we have an empty array
-      if (!this.length) return null;
-
-      index = parseFloat(index); // catch Infinity
-      if (isNaN(index)) throw new NotatrixError('unable to remove subToken: unable to cast index to int');
-
-      // bounds checking
-      index = index < 0 ? 0 : index > this.length - 1 ? this.length - 1 : parseInt(index);
-
-      // go to previous analysis if we just deleted our current one or before it
-      if (this.current >= index) this.prev();
-
-      // if we now have an empty array, update _current
-      if (this.length === 1) this._current = null;
-
-      // array splicing, return spliced element
-      return this.analyses.splice(index, 1)[0];
-    }
-
-    /**
-     * move an analysis from sourceIndex to targetIndex
-     *
-     * NOTE: if either index is out of bounds (<0 or >length - 1), then it will
-     *   be adjusted to fit the bounds. this means that you can call this with
-     *   `sourceIndex=-Infinity` to select the first element of the analyses array
-     *   or with `sourceIndex=Infinity` to select the last
-     *
-     * @param {Number} sourceIndex
-     * @param {Number} targetIndex
-     * @return {Token}
-     *
-     * @throws {NotatrixError} if given invalid sourceIndex or targetIndex
-     */
-
-  }, {
-    key: 'moveAnalysisAt',
-    value: function moveAnalysisAt(sourceIndex, targetIndex) {
-
-      sourceIndex = parseFloat(sourceIndex);
-      targetIndex = parseFloat(targetIndex);
-      if (isNaN(sourceIndex) || isNaN(targetIndex)) throw new NotatrixError('unable to move analysis: unable to cast indices to ints');
-
-      // bounds checking
-      sourceIndex = sourceIndex < 0 ? 0 : sourceIndex > this.length - 1 ? this.length - 1 : parseInt(sourceIndex);
-      targetIndex = targetIndex < 0 ? 0 : targetIndex > this.length - 1 ? this.length - 1 : parseInt(targetIndex);
-
-      if (sourceIndex === targetIndex) {
-        // do nothing
-      } else {
-
-        // array splice and insert
-        var analysis = this.analyses.splice(sourceIndex, 1);
-        this.analyses = this.analyses.slice(0, targetIndex).concat(analysis).concat(this.analyses.slice(targetIndex));
-      }
-
-      // chaining
-      return this;
-    }
-
-    /**
-     * push an analysis to the end of the analyses array ... sugar for
-     *   Token::insertAnalysisAt(Infinity, analysis)
-     *
-     * @param {Analysis} analysis
-     * @return {Token}
-     */
-
-  }, {
-    key: 'pushAnalysis',
-    value: function pushAnalysis(analysis) {
-      return this.insertAnalysisAt(Infinity, analysis);
-    }
-
-    /**
-     * pop an analysis from the end of the analyses array ... sugar for
-     *   Token::insertRemoveAt(Infinity)
-     *
-     * @return {(null|Analysis)}
-     */
-
-  }, {
-    key: 'popAnalysis',
-    value: function popAnalysis() {
-      return this.removeAnalysisAt(Infinity);
-    }
-
-    // token combining, merging, splitting
-
-  }, {
-    key: 'combineWith',
-    value: function combineWith(token) {}
-  }, {
-    key: 'mergeWith',
-    value: function mergeWith(token) {
-      if (!(token instanceof Token)) throw new NotatrixError('unable to merge: not instance of Token');
-
-      if (this === token) throw new NotatrixError('unable to merge: can\'t merge with self');
-
-      if (this.isSuperToken || token.isSuperToken) throw new NotatrixError('unable to merge: can\'t merge superTokens');
-
-      if (this.superToken !== token.superToken) throw new NotatrixError('unable to merge: can\'t merge tokens with different superTokens');
-
-      var dist = Math.abs(this.analysis.clump - token.analysis.clump);
-      if (dist !== 1) throw new NotatrixError('unable to merge: tokens must be adjacent');
-
-      if (this.analysis === null || token.analysis === null) throw new NotatrixError('unable to merge: tokens must have at least one analysis');
-
-      // combine the form and lemma fields
-      this.analysis.form = (this.analysis.form || '') + (token.analysis.form || '') || null;
-      this.analysis.lemma = (this.analysis.lemma || '') + (token.analysis.lemma || '') || null;
-
-      // take one of these fields
-      this.upostag = this.upostag || token.upostag || null;
-      this.xpostag = this.xpostag || token.xpostag || null;
-      this.feats = this.feats || token.feats || null;
-      this.misc = this.misc || token.misc || null;
-
-      // remove the token
-      if (token.isSubToken) {
-
-        var indices = this.sentence.getIndices(token);
-        this.superToken.removeSubTokenAt(indices.sub);
-      } else {
-
-        var _indices = this.sentence.getIndices(token);
-        this.sentence.removeTokenAt(_indices.super);
-      }
-
-      this.sentence.index();
-      return this; // chaining
-    }
-  }, {
-    key: 'split',
-    value: function split() {}
-
-    // internal format
-
-    /**
-     * get the current analysis for the token or null if none exist
-     *
-     * @return {(null|Analysis)}
-     */
-
-  }, {
-    key: 'index',
-
-
-    // external format stuff
-
-    /**
-     * iterate over this token and its subTokens (if we have any) for the current
-     *   analysis, using the `id` and `empty` params to set indices
-     *
-     * @param {Number} id "overall" index
-     * @param {Number} empty
-     * @return {Array} [Number, Number]
-     *
-     * @throws {NotatrixError} if given invalid id or empty
-     */
-    value: function index(id, empty, num, clump) {
-      var _this = this;
-
-      id = parseInt(id);
-      empty = parseInt(empty);
-      num = parseInt(num);
-      clump = parseInt(clump);
-
-      if (isNaN(id) || isNaN(empty) || isNaN(num) || isNaN(clump)) throw new NotatrixError('can\'t index tokens using non-integers, make sure to call Sentence.index()');
-
-      // if no analysis, nothing to do
-      if (this.analysis === null) return [id, empty, num, clump];
-
-      // iterate over analyses
-      this.forEach(function (analysis) {
-
-        // only set the "id" and "empty" indices on the current analysis
-        if (analysis.isCurrent) {
-          if (_this.isSuperToken) {
-
-            // save the absolute index
-            _this.analysis.num = num;
-            _this.analysis.clump = null;
-            num++;
-
-            // index subTokens
-            _.each(_this.analysis.subTokens, function (subToken) {
-              if (subToken.isEmpty) {
-                empty++; // incr empty counter
-                subToken.analysis.id = id + '.' + empty; // dot syntax
-              } else {
-                id++; // incr regular counter
-                subToken.analysis.id = '' + id; // vanilla syntax
-                empty = 0; // reset empty counter
-              }
-
-              // save the absolute index
-              subToken.forEach(function (analysis) {
-                analysis.num = num;
-                num++;
-                analysis.clump = clump;
-                clump++;
-              });
-            });
-
-            // set special superToken index scheme
-            var firstSubAnalysis = _this.subTokens[0].analysis;
-            var lastSubAnalysis = _this.subTokens[_this.analysis.length - 1].analysis;
-            _this.analysis.id = firstSubAnalysis.id + '-' + lastSubAnalysis.id;
-          } else {
-
-            // save the absolute index
-            _this.analysis.num = num;
-            num++;
-            _this.analysis.clump = clump;
-            clump++;
-
-            if (_this.isEmpty) {
-              empty++; // incr empty counter
-              _this.analysis.id = id + '.' + empty; // dot syntax
-            } else {
-              id++; // incr regular counter
-              _this.analysis.id = '' + id; // vanilla syntax
-              empty = 0; // reset empty counter
-            }
-          }
-        } else {
-
-          // save the absolute index
-          _this.analysis.num = num;
-          num++;
-
-          // non-current analyses get "id" and "empty" indices set to null
-          analysis.id = null;
-          _.each(analysis.subTokens, function (subToken) {
-            subToken.analysis.id = null;
-
-            subToken.forEach(function (analysis) {
-
-              // save the absolute index
-              _this.analysis.num = num;
-              num++;
-            });
-          });
-        }
-      });
-
-      // return updated indices
-      return [id, empty, num, clump];
-    }
-
-    /**
-     * get a serial version of the internal token representation
-     *
-     * @return {Object}
-     */
-
-  }, {
-    key: 'length',
-    get: function get() {
-
-      return this.analyses.length;
-    }
-  }, {
-    key: 'current',
-    get: function get() {
-
-      return this._current;
-    }
-
-    /**
-     * set the _current index to the given index if possible
-     *
-     * @param {Number} current
-     * @return {Number}
-     */
-    ,
-    set: function set(current) {
-
-      // force cast to int
-      current = parseInt(current);
-      if (isNaN(current)) return this.current;
-
-      // bounds checking
-      if (current < 0) return this.current;
-      if (current > this.length - 1) return this.current;
-
-      // set and return it
-      this._current = current;
-      return this.current;
-    }
-  }, {
-    key: 'analysis',
-    get: function get() {
-
-      if (this.current === null) return null;
-      return this.analyses[this.current];
-    }
-
-    /**
-     * set the current analysis for the token
-     *
-     * NOTE: if there is already an analysis, overwrite
-     *
-     * @param {Analysis} analysis
-     * @return {Token}
-     *
-     * @throws {NotatrixError} if given invalid analysis
-     */
-    ,
-    set: function set(analysis) {
-
-      if (!(analysis instanceof Analysis)) throw new NotatrixError('unable to set analysis: not instance of Analysis');
-
-      if (this.analysis === null) {
-        // push to front if we have no analyses
-        this.insertAnalysisAt(0, analysis);
-      } else {
-        // otherwise overwrite
-        analysis.token = this;
-        this.analyses[this.current] = analysis;
-      }
-
-      return this;
-    }
-
-    /**
-     * if we have a current analysis, return its subTokens
-     *
-     * @return {(null|Array)}
-     */
-
-  }, {
-    key: 'subTokens',
-    get: function get() {
-
-      if (this.analysis === null) return null;
-      return this.analysis.subTokens;
-    }
-  }, {
-    key: 'nx',
-    get: function get() {
-
-      // serialize analyses
-      var analyses = [];
-      this.forEach(function (analysis) {
-        analyses.push(analysis.nx);
-      });
-
-      // serialize other data
-      return {
-        current: this.current,
-        isEmpty: this.isEmpty,
-        analyses: analyses
-      };
-    }
-
-    /**
-     * deserialize an internal representation
-     *
-     * @param {Object} nx
-     * @return {undefined}
-     */
-    ,
-    set: function set(nx) {
-      var _this2 = this;
-
-      this.analyses = nx.analyses.map(function (analysisNx) {
-
-        var analysis = Analysis.fromNx(_this2, analysisNx);
-        analysis.subTokens = analysisNx.subTokens.map(function (subTokenNx) {
-          return Token.fromNx(_this2.sentence, subTokenNx);
-        });
-        return analysis;
-      });
-      this.current = nx.current;
-      this._isEmpty = nx.isEmpty;
-    }
-
-    /**
-     * static method allowing us to construct a new Token directly from an
-     *   Nx string and bind it to a sentence
-     *
-     * @param {Sentence} sent
-     * @param {String} serial
-     * @return {Token}
-     */
-
-  }, {
-    key: 'text',
-
-
-    /**
-     * get a plain-text formatted string of the current analysis text
-     *
-     * @return {String}
-     *
-     * @throws {NotatrixError} if no analysis
-     */
-    get: function get() {
-
-      if (this.analysis === null) throw new NotatrixError('no analysis to get text for');
-
-      return this.analysis.text || '';
-    }
-
-    /**
-     * get a CoNLL-U formatted string representing the current analysis
-     *
-     * @return {String}
-     *
-     * @throws {NotatrixError} if no analysis
-     * @throws {InvalidCoNLLUError} if ambiguous
-     */
-
-  }, {
-    key: 'conllu',
-    get: function get() {
-
-      if (this.analysis === null) throw new NotatrixError('no analysis to get CoNLL-U for');
-
-      if (this.isAmbiguous) throw new InvalidCoNLLUError('Token is ambiguous, can\'t be converted to CoNNL-U');
-
-      return this.analysis.conllu;
-    }
-
-    /**
-     * parse a CoNLL-U formatted string and save its contents to the current analysis
-     *
-     * @param {String} serial
-     * @return {undefined}
-     */
-    ,
-    set: function set(serial) {
-      // split serial string on whitespace
-      var fields = split(serial);
-
-      // check if serial index indicates an "empty" token
-      this._isEmpty = /\./.test(fields[0]);
-
-      // generate an analysis from the fields
-      this.analysis = new Analysis(this, {
-        form: fields[1],
-        lemma: fields[2],
-        upostag: fields[3],
-        xpostag: fields[4],
-        feats: fields[5],
-        head: fields[6],
-        deprel: fields[7],
-        deps: fields[8],
-        misc: fields[9]
-      });
-    }
-
-    /**
-     * static method allowing us to construct a new Token directly from a
-     *   CoNLL-U string and bind it to a sentence
-     *
-     * @param {Sentence} sent
-     * @param {String} serial
-     * @return {Token}
-     */
-
-  }, {
-    key: 'cg3',
-
-
-    /**
-     * get a CG3 formatted string representing the current analysis
-     *
-     * @return {String}
-     *
-     * @throws {NotatrixError} if no analysis
-     */
-    get: function get() {
-      if (this.analysis === null) throw new NotatrixError('no analysis to get CG3 for');
-
-      // the form goes on its own line, with each analysis below
-      return ['"<' + this.analysis.form + '>"'].concat(this.analyses.map(function (analysis) {
-        return analysis.cg3;
-      })).join('\n');
-    }
-
-    /**
-     * parse a CG3 formatted string and save its contents to the current analysis
-     *
-     * @param {Array} tokenLines generated in Sentence::cg3 [set] by splitting
-     *   a serial string on newlines
-     * @return {undefined}
-     */
-    ,
-    set: function set(tokenLines) {
-      // again, we have complicated parsing here ... first make sure we get an
-      //   array of the important information (minimally the form on the first line)
-      var analysis = [tokenLines[0]];
-
-      // iterate over the strings
-      for (var i = 1; i < tokenLines.length; i++) {
-
-        var line = tokenLines[i];
-        if (/^;/.test(line)) {
-          // strip leading semicolons
-          line = line.replace(/^;/, '');
-          // TODO: save this information somewhere
-        }
-
-        // determine line indent
-        var indent = getIndent(line);
-
-        // if we're back at indent=1 and we already have stuff in our analysis
-        //   buffer, parse it as an analysis
-        if (indent === 1 && i > 1) {
-          // parse as analysis
-          cg3StringParseAnalysis(this, analysis);
-          // reset buffer
-          analysis = [tokenLines[0]];
-        }
-
-        // add to buffer
-        analysis.push(line);
-      }
-
-      // parse and clear buffer
-      cg3StringParseAnalysis(this, analysis);
-    }
-
-    /**
-     * static method allowing us to construct a new Token directly from a
-     *   CG3 string
-     *
-     * @param {Sentence} sent
-     * @param {Array} tokenLines
-     * @return {Token}
-     */
-
-  }, {
-    key: 'params',
-
-
-    /**
-     * get the token parameters for the current analysis
-     *
-     * @return {Object}
-     *
-     * @throws {NotatrixError} if no analysis
-     */
-    get: function get() {
-      if (this.analysis === null) throw new NotatrixError('no analysis to get params for');
-
-      return this.analysis.params;
-    }
-
-    /**
-     * set a set of parameters as the current analysis
-     *
-     * @param {Object} params
-     * @return {Object}
-     */
-    ,
-    set: function set(params) {
-      this.analysis = new Analysis(this, params);
-      return this.params;
-    }
-
-    /**
-     * static method allowing us to construct a new Token directly from a set
-     *   of parameters
-     *
-     * @param {Sentence} sent
-     * @param {Object} params
-     * @return {Token}
-     */
-
-  }, {
-    key: 'eles',
-
-
-    /**
-     * get an array of elements for exporting to external visualization libraries
-     *   for all the analyses of this token
-     *
-     * @return {Array}
-     */
-    get: function get() {
-      var eles = [];
-      this.forEach(function (analysis) {
-        eles = eles.concat(analysis.eles);
-      });
-
-      return eles;
-    }
-
-    // bool stuff
-
-    /**
-     * returns true iff this token is a subToken of some other token
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'isSubToken',
-    get: function get() {
-      return this.superToken !== null;
-    }
-
-    /**
-     * returns true iff this token has subTokens
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'isSuperToken',
-    get: function get() {
-      return this.analysis ? this.analysis.isSuperToken : null;
-    }
-
-    /**
-     * returns true iff this token or its superToken is an "empty" token
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'isEmpty',
-    get: function get() {
-      return this.isSubToken ? this.superToken.token.isEmpty : this._isEmpty;
-    }
-
-    /**
-     * return true iff this token has more than one analysis
-     *
-     * @return {Boolean}
-     */
-
-  }, {
-    key: 'isAmbiguous',
-    get: function get() {
-      return this.length > 1;
-    }
-  }], [{
-    key: 'fromNx',
-    value: function fromNx(sent, serial) {
-      var token = new Token(sent);
-      token.nx = serial;
-      return token;
-    }
-  }, {
-    key: 'fromConllu',
-    value: function fromConllu(sent, serial) {
-      var token = new Token(sent);
-      token.conllu = serial;
-      return token;
-    }
-  }, {
-    key: 'fromCG3',
-    value: function fromCG3(sent, tokenLines) {
-      var token = new Token(sent);
-      token.cg3 = tokenLines;
-      return token;
-    }
-  }, {
-    key: 'fromParams',
-    value: function fromParams(sent, params) {
-      var token = new Token(sent);
-      token.params = params;
-      return token;
-    }
-  }]);
-
-  return Token;
-}();
-
-// expose to application
-
-
-module.exports = Token;
-
-},{"./analysis":2,"./errors":3,"underscore":1}]},{},[4])(4)
+},{}]},{},[74])(74)
 });
