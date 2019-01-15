@@ -10,7 +10,7 @@ require('./sentence');
 require('./merge');
 require('./combine');
 require('./split');
-require('./corpus');
+//require('./corpus');
 
 // then externalizers
 require('./generator');
@@ -19,3 +19,6 @@ require('./loss');
 // then editing stuff
 //require('./update');
 require('./enhance');
+
+// integration
+require('./examples');
