@@ -1,4 +1,5 @@
 # Notatrix
+[![CircleCI](https://circleci.com/gh/keggsmurph21/notatrix/tree/master.svg?style=svg)](https://circleci.com/gh/keggsmurph21/notatrix/tree/master)
 
 Experimental notational system for <a href="https://github.com/jonorthwash/ud-annotatrix">UD Annotatrix</a>, combines CoNLL-U and CG3 markup formats into one backend that combines the functionality of both.
 
