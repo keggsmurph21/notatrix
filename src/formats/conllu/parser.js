@@ -52,6 +52,7 @@ module.exports = (text, options) => {
     allowEmptyString: false,
     requireTenParams: false,
     allowWhiteLines: true,
+    enhanced: false,
   });
 
   try {
@@ -115,7 +116,7 @@ module.exports = (text, options) => {
 
       } else {
 
-        function getHeads(head, deprel, deps) {
+        function getHeads(isEmpty, head, deprel, deps) {
 
           head = utils.re.fallback.test(head) ? null : head;
           deprel = utils.re.fallback.test(deprel) ? null : deprel;
@@ -124,17 +125,15 @@ module.exports = (text, options) => {
           let heads = [];
           let seen = new Set();
 
-          if (!head)
-            return null;
+          if (head && !isEmpty) {
+            heads.push({
+              index: head,
+              deprel: deprel || null,
+            });
+            seen.add(head);
+          }
 
-          heads.push({
-            index: head,
-            deprel: deprel || null,
-          });
-
-          seen.add(head);
-
-          if (deps)
+          if (deps) {
             deps.split('|').forEach(dep => {
 
               dep = dep.split(':');
@@ -147,14 +146,23 @@ module.exports = (text, options) => {
 
               seen.add(dep[0]);
             });
+          } else if (isEmpty) {
+            // FIXME: Add this as a "strict mode" requirement?
+            //throw new ParserError(`Missing "deps" for empty node: ${line}`, text, options);
+          }
 
-          return heads;
+          return heads.length ? heads : null;
+        }
+
+        const isEmpty = !!tokenLine[3];
+        if (isEmpty) {
+          options.enhanced = true;
         }
 
         token = {
         	type: 'token',
           index: tokenLine[1],
-        	isEmpty: !!tokenLine[3],
+        	isEmpty: isEmpty,
         	form: !fields[0] || utils.re.fallback.test(fields[0])
             ? null
             : fields[0],
@@ -170,7 +178,7 @@ module.exports = (text, options) => {
         	feats: !fields[4] || utils.re.fallback.test(fields[4])
             ? null
             : fields[4].split('|'),
-          heads: getHeads(fields[5], fields[6], fields[7]),
+          heads: getHeads(isEmpty, fields[5], fields[6], fields[7]),
         	misc: !fields[8] || utils.re.fallback.test(fields[8])
             ? null
             : fields[8].split('|'),

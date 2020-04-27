@@ -435,4 +435,23 @@ ud_example_modified: `1	They	they	PRON	PRP	Case=Nom|Number=Plur	2	nsubj	2:nsubj|
 4	sell	sell	VERB	VBP	Number=Plur|Person=3|Tense=Presconj	2	_	2	_
 5	books	book	NOUN	NNS	Number=Plur	2	obj	2:obj|4:obj	_
 6	.	.	PUNCT	.	_	2	punct	2:punct	_`,
+
+ud_annotatrix_issue_397: `# sent_id = Not_eating_larvae:2
+# text = Гым нэмыӄэй нрзб это ны нырычваԓыӈыттыӄэнат нэмыӄэй гым нывинрэтигым нырычвантойгым.
+# text[phon] = ɣəm neməqej нрзб это nə nərəswaɬəŋəttəqenat neməqej ɣəm nəwinretiɣəm nərəswantojɣəm
+# text[rus] = Собирали личинок, я тоже помогала, доставала личинок.
+# text[eng] = We were gathering the grubs, I also helped, I was extracting the grubs.
+# labels = incomplete
+1	Гым	гым	PRON	_	Number=Sing|Person=1|PronType=Pers	6	nsubj	6:nsubj	Gloss=я
+2	нэмыӄэй	нэмыӄэй	ADV	_	_	_	_	_	Gloss=тоже
+3	нрзб	_	X	_	_	6	discourse	6:discourse	Gloss=
+4	это	_	PART	_	_	6	discourse	6:discourse	Gloss=
+5	ны	ны	X	_	_	6	reparandum	6:reparandum	Gloss=FST
+6	нырычваԓыӈыттыӄэнат	_	VERB	_	_	0	root	0:root	Gloss=ST-личинка-CATCH-ST.3SG-PL
+7	нэмыӄэй	нэмыӄэй	ADV	_	_	9	advmod	9:advmod	Gloss=тоже
+8	гым	гым	PRON	_	Number=Sing|Person=1|PronType=Pers	9	nsubj	9:nsubj	Gloss=я
+9	нывинрэтигым	винрэтык	VERB	_	_	6	parataxis	6:parataxis	Gloss=ST-помогать-NP.1SG
+10	нырычвантойгым	_	VERB	_	_	6	parataxis	6:parataxis	Gloss=ST-личинка-вынимать-NP.1SG	
+10.1	рычва	рычва	NOUN	_	_	_	_	10:obj	Gloss=личинка
+11	.	.	PUNCT	_	_	6	punct	6:punct	_			`
 };

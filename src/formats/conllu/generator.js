@@ -32,7 +32,7 @@ module.exports = (sent, options) => {
 
     const toString = token => {
 
-      const head = token.heads.first;
+      const head = !token.isEmpty && token.heads.first;
 
       return [
 
