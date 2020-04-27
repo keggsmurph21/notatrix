@@ -245,7 +245,7 @@ class Labeler extends NxBaseClass {
       sent.comments.forEach(comment => {
         if (comment.type === 'label') {
 
-          const index = comment.labels.indexOf(oldName);
+          const index = comment.labels.indexOf(name);
           comment.labels.splice(index, 1);
 
         }

@@ -6547,7 +6547,7 @@ var Labeler = function (_NxBaseClass) {
         sent.comments.forEach(function (comment) {
           if (comment.type === 'label') {
 
-            var index = comment.labels.indexOf(oldName);
+            var index = comment.labels.indexOf(name);
             comment.labels.splice(index, 1);
           }
         });
