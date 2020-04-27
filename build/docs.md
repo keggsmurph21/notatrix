@@ -189,7 +189,7 @@ Abstraction to hold a mapping of String => Label pairs, as well as some
 **Kind**: global class  
 
 * [Labeler](#Labeler)
-    * [.sort()](#Labeler+sort) ⇒ [<code>Labeler_SortReturnT</code>](#Labeler_SortReturnT)
+    * [.sort()](#Labeler+sort) ⇒ [<code>Labeler\_SortReturnT</code>](#Labeler_SortReturnT)
     * [.get(name)](#Labeler+get) ⇒ [<code>Label</code>](#Label)
     * [.count(name)](#Labeler+count) ⇒ <code>Number</code>
     * [.sentenceHasLabel(sent, searching)](#Labeler+sentenceHasLabel) ⇒ <code>Boolean</code>
@@ -206,7 +206,7 @@ Abstraction to hold a mapping of String => Label pairs, as well as some
 
 <a name="Labeler+sort"></a>
 
-### labeler.sort() ⇒ [<code>Labeler_SortReturnT</code>](#Labeler_SortReturnT)
+### labeler.sort() ⇒ [<code>Labeler\_SortReturnT</code>](#Labeler_SortReturnT)
 Sort all labels in Corpus by number of Sentences with that label
 
 **Kind**: instance method of [<code>Labeler</code>](#Labeler)  
@@ -482,7 +482,7 @@ Split a given token into two tokens.  If the given token is a
 
 <a name="Labeler_SortReturnT"></a>
 
-## Labeler_SortReturnT
+## Labeler\_SortReturnT
 **Kind**: global typedef  
 **Properties**
 
