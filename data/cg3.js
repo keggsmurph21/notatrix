@@ -467,6 +467,36 @@ apertium_kaz_2: `# https://bpaste.net/show/be7c03e6213e
 ;	"бар" n nom
 ;		"е" cop aor p3 pl REMOVE:853
 "<.>"
-	"." sent`
+	"." sent`,
 
+ud_annotatrix_issue_397: `# sent_id = Not_eating_larvae:2
+# text = Гым нэмыӄэй нрзб это ны нырычваԓыӈыттыӄэнат нэмыӄэй гым нывинрэтигым нырычвантойгым.
+# text[phon] = ɣəm neməqej нрзб это nə nərəswaɬəŋəttəqenat neməqej ɣəm nəwinretiɣəm nərəswantojɣəm
+# text[rus] = Собирали личинок, я тоже помогала, доставала личинок.
+# text[eng] = We were gathering the grubs, I also helped, I was extracting the grubs.
+# labels = incomplete
+"<Гым>"
+	"гым" PRON Number=Sing Person=1 PronType=Pers Gloss=я @nsubj #1->6
+"<нэмыӄэй>"
+	"нэмыӄэй" ADV Gloss=тоже #2->
+"<нрзб>"
+	"нрзб" X Gloss= @discourse #3->6
+"<это>"
+	"это" PART Gloss= @discourse #4->6
+"<ны>"
+	"ны" X Gloss=FST @reparandum #5->6
+"<нырычваԓыӈыттыӄэнат>"
+	"нырычваԓыӈыттыӄэнат" VERB Gloss=ST-личинка-CATCH-ST.3SG-PL @root #6->0
+"<нэмыӄэй>"
+	"нэмыӄэй" ADV Gloss=тоже @advmod #7->9
+"<гым>"
+	"гым" PRON Number=Sing Person=1 PronType=Pers Gloss=я @nsubj #8->9
+"<нывинрэтигым>"
+	"винрэтык" VERB Gloss=ST-помогать-NP.1SG @parataxis #9->6
+"<нырычвантойгым>"
+	"нырычвантойгым" VERB Gloss=ST-личинка-вынимать-NP.1SG @parataxis #10->6
+"<рычва>"
+	"рычва" NOUN Gloss=личинка @obj #11->10
+"<.>"
+	"." PUNCT @punct #12->6`,
 };
