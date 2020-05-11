@@ -1545,6 +1545,13 @@ describe("progress percentage", () => {
   });
 });
 
+describe("setEmpty", () => {
+  it("should allow toggling isEmpty", () => {
+    const s = Sentence.fromConllu(data["CoNNL-U"]["empty"]);
+    console.log(s);
+  });
+});
+
 describe("eles", () => {
   _.each(data["CoNLL-U"], (conllu, name) => {
     it(`should not have duplicate elements for CoNLL-U:${name}`, () => {

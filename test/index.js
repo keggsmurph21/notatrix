@@ -19,6 +19,7 @@ require("./loss");
 // then editing stuff
 // require('./update');
 require("./enhance");
+require("./setEmpty");
 
 // integration
 require("./examples");

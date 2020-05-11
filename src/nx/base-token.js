@@ -173,6 +173,13 @@ class BaseToken extends NxBaseClass {
   }
 
   /**
+   * Mark this token as "empty" (aka "null")
+   *
+   * @param {boolean} isEmpty
+   */
+  setEmpty(isEmpty) { this.isEmpty = isEmpty; }
+
+  /**
    * Apply a callback to each of a token's analyses and subTokens
    *
    * @param {Function} callback

@@ -21,16 +21,16 @@ module.exports = {
 	nested: "# sent_id = wikipedia:Poyvi_Paragu\xE1i:11\n# text = Poyvi pete\u0129ha \xF1ane ret\xE3megua niko ojepuru\u2019yp\xFDkuri 15 jasypo guive 16 jasypote\u0129 meve ary 1811-pe.\n# text[spa] = Bandera uno nosotros de-de _ \xE9l-se-utiliz\xF3-_ 15 maio desde 16 junio hasta a\xF1o 1811-en.\n\"<Poyvi>\"\n\t\"poyvi\" n\n\"<pete\u0129ha>\"\n\t\"pete\" n incp\n\t\t\"\u0129\" v tv pres\n\t\t\t\"ha\" subs\n\t\"pete\u0129ha\" num\n\"<\xF1ane>\"\n\t\"\xF1and\xE9\" prn pers p1 incl pl\n\"<ret\xE3megua>\"\n\t\"*ret\xE3megua\"\n\"<niko>\"\n\t\"*niko\"\n\"<ojepuru\u02BCyp\xFDkuri>\"\n\t\"*ojepuru\u02BCyp\xFDkuri\"\n\"<15>\"\n\t\"15\" num @amod\n\"<jasypo>\"\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" n\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" v iv pres\n\t\"ja\" n incp\n\t\t\"sy\" n incp\n\t\t\t\"po\" v tv pres\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" n\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" v iv pres\n\t\"ja\" prn p1 pl\n\t\t\"sy\" n incp\n\t\t\t\"po\" v tv pres\n\t\"jasy\" n incp\n\t\t\"po\" n\n\t\"jasy\" n incp\n\t\t\"po\" v iv pres\n\t\"jasy\" n incp\n\t\t\"po\" v tv pres\n\t\"jasypo\" n\n\"<guive>\"\n\t\"guive\" post @case\n\"<16>\"\n\t\"16\" num @amod\n\"<jasypote\u0129>\"\n\t\"jasypote\u0129\" n\n\"<meve>\"\n\t\"peve\" post @case\n\"<ary>\"\n\t\"ary\" n\n\"<1811-pe>\"\n\t\"1811\" num\n\t\t\"pe\" post @case",
 
 	/*nested_2: `"<ab>"
- 	"A" #1->
- 		"B" #2->
+   "A" #1->
+     "B" #2->
  "<cde>"
- 	"C" #3->
- 		"D" #4->
- 			"E" #5->
+   "C" #3->
+     "D" #4->
+       "E" #5->
  "<f>"
- 	"F" #6->
+   "F" #6->
  "<h>"
- 	"H" #7->`,*/
+   "H" #7->`,*/
 
 	kdt_tagged_1: "# https://github.com/apertium/apertium-kaz/blob/master/texts/kdt.tagged.txt\n\"<\u04E8\u0441\u043A\u0435\u043C\u0435\u043D\u043D\u0456\u04A3>\"\n\t\"\u04E8\u0441\u043A\u0435\u043C\u0435\u043D\" np top gen @nmod:poss #1->3\n\"<\u0430\u0440>\"\n\t\"\u0430\u0440\" adj @amod #2->3\n\"<\u0436\u0430\u0493\u044B\u043D\u0434\u0430>\"\n\t\"\u0436\u0430\u049B\" n px3sp loc @conj #3->7\n\"<,>\"\n\t\",\" cm @punct #4->7\n\"<\u0411\u04B1\u049B\u0442\u044B\u0440\u043C\u0430\u043D\u044B\u04A3>\"\n\t\"\u0411\u04B1\u049B\u0442\u044B\u0440\u043C\u0430\" np top gen @nmod:poss #5->7\n\"<\u043E\u04A3>\"\n\t\"\u043E\u04A3\" adj @amod #6->7\n\"<\u0436\u0430\u0493\u044B\u043D\u0434\u0430>\"\n\t\"\u0436\u0430\u049B\" n px3sp loc @nmod #7->11\n\"<\u04D9\u043B\u0435\u043C\u0433\u0435>\"\n\t\"\u04D9\u043B\u0435\u043C\" n dat @nmod #8->9\n\"<\u0430\u044F\u043D>\"\n\t\"\u0430\u044F\u043D\" adj @acl #9->10\n\"<\u0410\u043B\u0442\u0430\u0439>\"\n\t\"\u0410\u043B\u0442\u0430\u0439\" np top nom @nsubj #10->11\n\"<\u0431\u0430\u0440>\"\n\t\"\u0431\u0430\u0440\" adj @root #11->0\n\t\t\"\u0435\" cop aor p3 sg @cop #12->11\n\"<.>\"\n\t\".\" sent @punct #13->11",
 
@@ -112,42 +112,42 @@ module.exports = {
 
 },{}],5:[function(require,module,exports){
 (function (__dirname){
-'use strict';
+"use strict";
 
-var path = require('path');
+var path = require("path");
 
 module.exports = {
 
-  assorted: path.join(__dirname, 'assorted.conllu'),
-  czech_train: path.join(__dirname, 'cs_cac-ud-train.conllu'),
-  turkish_train: path.join(__dirname, 'tr_imst-ud-test.conllu')
+  assorted: path.join(__dirname, "assorted.conllu"),
+  czech_train: path.join(__dirname, "cs_cac-ud-train.conllu"),
+  turkish_train: path.join(__dirname, "tr_imst-ud-test.conllu")
 
 };
 
 }).call(this,"/data/corpora")
 },{"path":12}],6:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  'apertium stream': require('./apertium-stream'),
-  apertiumStream: require('./apertium-stream'),
-  Brackets: require('./brackets'),
-  brackets: require('./brackets'),
-  CG3: require('./cg3'),
-  cg3: require('./cg3'),
-  'CoNLL-U': require('./conllu'),
-  conllu: require('./conllu'),
-  'notatrix serial': require('./notatrix-serial'),
-  notatrixSerial: require('./notatrix-serial'),
-  Params: require('./params'),
-  params: require('./params'),
-  'plain text': require('./plain-text'),
-  plainText: require('./plain-text'),
-  SD: require('./sd'),
-  sd: require('./sd'),
+  "apertium stream": require("./apertium-stream"),
+  apertiumStream: require("./apertium-stream"),
+  Brackets: require("./brackets"),
+  brackets: require("./brackets"),
+  CG3: require("./cg3"),
+  cg3: require("./cg3"),
+  "CoNLL-U": require("./conllu"),
+  conllu: require("./conllu"),
+  "notatrix serial": require("./notatrix-serial"),
+  notatrixSerial: require("./notatrix-serial"),
+  Params: require("./params"),
+  params: require("./params"),
+  "plain text": require("./plain-text"),
+  plainText: require("./plain-text"),
+  SD: require("./sd"),
+  sd: require("./sd"),
 
-  corpora: require('./corpora')
+  corpora: require("./corpora")
 
 };
 
@@ -157,23 +157,23 @@ module.exports = {
 module.exports = {};
 
 },{}],8:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
-	0: [{ form: 'hello' }, { form: 'world' }]
+  0: [{ form: "hello" }, { form: "world" }]
 };
 
 },{}],9:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
-  0: 'this is a test',
-  1: 'this is a test.',
-  2: 'this is a test...',
-  3: 'this is a test?',
-  4: '\tthis is a test',
-  5: 'More sentences = more data; ipso facto, yes.',
-  parens_and_numbers: '\u0414\u04D9\u04AF\u043B\u04D9\u0442\u043B\u04D9\u0440\u043D\u0435\u04A3, \u0448\u0443\u043B \u0438\u0441\u04D9\u043F\u0442\u04D9\u043D \u0420\u0443\u0441\u0438\u044F\u043D\u0435\u04A3 \u0434\u04D9, \u0434\u0438\u04A3\u0433\u0435\u0437 \u0447\u0438\u043A\u043B\u04D9\u0440\u0435 \u044F\u0440\u0434\u0430\u043D 12 \u043C\u0438\u043B\u044C (\u044F\u043A\u0438 22,2 \u043A\u043C) \u0435\u0440\u0430\u043A\u043B\u044B\u043A\u0442\u0430 \u0443\u0437\u0443\u044B \u043A\u0438\u043B\u0435\u0448\u0435\u043D\u0433\u04D9\u043D'
+  0: "this is a test",
+  1: "this is a test.",
+  2: "this is a test...",
+  3: "this is a test?",
+  4: "\tthis is a test",
+  5: "More sentences = more data; ipso facto, yes.",
+  parens_and_numbers: "\u0414\u04D9\u04AF\u043B\u04D9\u0442\u043B\u04D9\u0440\u043D\u0435\u04A3, \u0448\u0443\u043B \u0438\u0441\u04D9\u043F\u0442\u04D9\u043D \u0420\u0443\u0441\u0438\u044F\u043D\u0435\u04A3 \u0434\u04D9, \u0434\u0438\u04A3\u0433\u0435\u0437 \u0447\u0438\u043A\u043B\u04D9\u0440\u0435 \u044F\u0440\u0434\u0430\u043D 12 \u043C\u0438\u043B\u044C (\u044F\u043A\u0438 22,2 \u043A\u043C) \u0435\u0440\u0430\u043A\u043B\u044B\u043A\u0442\u0430 \u0443\u0437\u0443\u044B \u043A\u0438\u043B\u0435\u0448\u0435\u043D\u0433\u04D9\u043D"
 };
 
 },{}],10:[function(require,module,exports){
@@ -2621,98 +2621,91 @@ function v4(options, buf, offset) {
 module.exports = v4;
 
 },{"./lib/bytesToUuid":15,"./lib/rng":16}],18:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('./utils');
+var utils = require("./utils");
 var ConverterError = utils.ConverterError;
-var nx = require('./nx');
+var nx = require("./nx");
 
 module.exports = function (input, options) {
   try {
-
     var sent = new nx.Sentence(input, options);
     sent.from = function (format) {
-      return convert(sent.input, _.extend({
-        interpretAs: format
-      }, options));
+      return convert(sent.input, _.extend({ interpretAs: format }, options));
     };
 
     return sent;
   } catch (e) {
-
-    if (e instanceof utils.ToolError || e instanceof utils.NxError) throw new ConverterError('FATAL: unable to convert: ' + e.message);
+    if (e instanceof utils.ToolError || e instanceof utils.NxError) throw new ConverterError("FATAL: unable to convert: " + e.message);
 
     throw e;
   }
 };
 
 },{"./nx":80,"./utils":94,"underscore":14}],19:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('./utils');
+var utils = require("./utils");
 var DetectorError = utils.DetectorError;
 
 var as = {
 
-	'apertium stream': require('./formats/apertium-stream').detect,
-	apertiumStream: require('./formats/apertium-stream').detect,
-	Brackets: require('./formats/brackets').detect,
-	brackets: require('./formats/brackets').detect,
-	CG3: require('./formats/cg3').detect,
-	cg3: require('./formats/cg3').detect,
-	'CoNLL-U': require('./formats/conllu').detect,
-	conllu: require('./formats/conllu').detect,
-	'notatrix serial': require('./formats/notatrix-serial').detect,
-	notatrixSerial: require('./formats/notatrix-serial').detect,
-	Params: require('./formats/params').detect,
-	params: require('./formats/params').detect,
-	'plain text': require('./formats/plain-text').detect,
-	plainText: require('./formats/plain-text').detect,
-	SD: require('./formats/sd').detect,
-	sd: require('./formats/sd').detect
+  "apertium stream": require("./formats/apertium-stream").detect,
+  apertiumStream: require("./formats/apertium-stream").detect,
+  Brackets: require("./formats/brackets").detect,
+  brackets: require("./formats/brackets").detect,
+  CG3: require("./formats/cg3").detect,
+  cg3: require("./formats/cg3").detect,
+  "CoNLL-U": require("./formats/conllu").detect,
+  conllu: require("./formats/conllu").detect,
+  "notatrix serial": require("./formats/notatrix-serial").detect,
+  notatrixSerial: require("./formats/notatrix-serial").detect,
+  Params: require("./formats/params").detect,
+  params: require("./formats/params").detect,
+  "plain text": require("./formats/plain-text").detect,
+  plainText: require("./formats/plain-text").detect,
+  SD: require("./formats/sd").detect,
+  sd: require("./formats/sd").detect
 
 };
 
 module.exports = function (text, options) {
+  options = _.defaults(options, {
+    suppressDetectorErrors: true,
+    returnAllMatches: true,
+    requireOneMatch: false
+  });
 
-	options = _.defaults(options, {
-		suppressDetectorErrors: true,
-		returnAllMatches: true,
-		requireOneMatch: false
-	});
+  var matches = utils.formats.map(function (format) {
+    try {
+      return as[format](text, options);
+    } catch (e) {
+      if (e instanceof DetectorError) return;
 
-	var matches = utils.formats.map(function (format) {
+      throw e;
+    }
+  }).filter(utils.thin);
 
-		try {
-			return as[format](text, options);
-		} catch (e) {
+  if (!matches.length && !options.suppressDetectorErrors) throw new DetectorError("Unable to detect format", text, options);
 
-			if (e instanceof DetectorError) return;
+  if (matches.length > 1 && !options.suppressDetectorErrors && options.requireOneMatch) throw new DetectorError("Detected multiple formats", text, options);
 
-			throw e;
-		}
-	}).filter(utils.thin);
-
-	if (!matches.length && !options.suppressDetectorErrors) throw new DetectorError('Unable to detect format', text, options);
-
-	if (matches.length > 1 && !options.suppressDetectorErrors && options.requireOneMatch) throw new DetectorError('Detected multiple formats', text, options);
-
-	return options.returnAllMatches ? matches : matches[0];
+  return options.returnAllMatches ? matches : matches[0];
 };
 module.exports.as = as;
 
 },{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],20:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-  throw new DetectorError('not implemented');
+    throw new DetectorError("not implemented");
 };
 
 },{"../../utils":94}],21:[function(require,module,exports){
@@ -2721,59 +2714,58 @@ module.exports = function (text, options) {
 module.exports = null;
 
 },{}],22:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
 
 module.exports = function (text, options) {
-  //throw new GeneratorError('not implemented');
+  // throw new GeneratorError('not implemented');
 };
 
 },{"../../utils":94}],23:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'apertium stream',
-  fields: require('./fields'),
-  split: require('./splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "apertium stream",
+  fields: require("./fields"),
+  split: require("./splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"./detector":20,"./fields":21,"./generator":22,"./parser":24,"./splitter":25}],24:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
 
 module.exports = function (text, options) {
-  //throw new ParserError('not implemented');
+  // throw new ParserError('not implemented');
 };
 
 },{"../../utils":94}],25:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var SplitterError = utils.SplitterError;
 
 module.exports = function (text, options) {
-  //throw new SplitterError('not implemented', text, options);
+  // throw new SplitterError('not implemented', text, options);
 };
 
 },{"../../utils":94}],26:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: false,
     allowTrailingWhitespace: true,
@@ -2782,41 +2774,39 @@ module.exports = function (text, options) {
     allowNewlines: false
   });
 
-  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal Brackets: empty string', text, options);
+  if (!text && !options.allowEmptyString) throw new DetectorError("Illegal Brackets: empty string", text, options);
 
-  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal Brackets: JSON object', text, options);
+  if (utils.isJSONSerializable(text)) throw new DetectorError("Illegal Brackets: JSON object", text, options);
 
-  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError('Illegal Brackets: contains newlines', text, options);
+  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError("Illegal Brackets: contains newlines", text, options);
 
   // internal stuff
   var parsing = null;
   var depth = 0;
   var sawBracket = false;
 
-  text.split('').forEach(function (char, i) {
-
+  text.split("").forEach(function (char, i) {
     switch (char) {
-
-      case '[':
-        if (parsing === ']') throw new DetectorError('Illegal Brackets: invalid sequence "]["', text, options);
+      case "[":
+        if (parsing === "]") throw new DetectorError("Illegal Brackets: invalid sequence \"][\"", text, options);
 
         sawBracket = true;
         depth += 1;
         break;
 
-      case ']':
-        if (parsing === '[') throw new DetectorError('Illegal Brackets: invalid sequence "[]"', text, options);
+      case "]":
+        if (parsing === "[") throw new DetectorError("Illegal Brackets: invalid sequence \"[]\"", text, options);
 
         sawBracket = true;
         depth -= 1;
         break;
 
-      case ' ':
-      case '\t':
-      case '\n':
+      case " ":
+      case "\t":
+      case "\n":
 
         if (!options.allowLeadingWhitespace) {
-          if (parsing !== null && !utils.re.whitespace.test(parsing)) throw new DetectorError('Illegal Brackets: contains leading whitespace', text, options);
+          if (parsing !== null && !utils.re.whitespace.test(parsing)) throw new DetectorError("Illegal Brackets: contains leading whitespace", text, options);
         }
         break;
     }
@@ -2824,44 +2814,43 @@ module.exports = function (text, options) {
     parsing = char;
   });
 
-  if (!sawBracket && !options.allowNoDependencies) throw new DetectorError('Illegal Brackets: contains no dependencies', text, options);
+  if (!sawBracket && !options.allowNoDependencies) throw new DetectorError("Illegal Brackets: contains no dependencies", text, options);
 
-  if (depth !== 0) throw new DetectorError('Illegal Brackets: bracket mismatch', text, options);
+  if (depth !== 0) throw new DetectorError("Illegal Brackets: bracket mismatch", text, options);
 
-  if (utils.re.whitespace.test(parsing) && !options.allowTrailingWhitespace) throw new DetectorError('Illegal Brackets: contains trailing whitespace', text, options);
+  if (utils.re.whitespace.test(parsing) && !options.allowTrailingWhitespace) throw new DetectorError("Illegal Brackets: contains trailing whitespace", text, options);
 
-  return 'Brackets';
+  return "Brackets";
 };
 
 },{"../../utils":94,"underscore":14}],27:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['form', 'heads'];
+module.exports = ["form", "heads"];
 module.exports.hasComments = false;
 
 },{}],28:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
   sent.index();
 
-  if (!sent.root) throw new GeneratorError('Unable to generate, could not find root');
+  if (!sent.root) throw new GeneratorError("Unable to generate, could not find root");
 
   // build the tree structure
   var seen = new Set([sent.root]);
@@ -2873,8 +2862,7 @@ module.exports = function (sent, options) {
 
   var visit = function visit(node) {
     node.token.mapDependents(function (dep) {
-
-      if (seen.has(dep.token)) throw new GeneratorError('Unable to generate, dependency structure non-linear');
+      if (seen.has(dep.token)) throw new GeneratorError("Unable to generate, dependency structure non-linear");
 
       dep.deps = [];
       node.deps.push(dep);
@@ -2884,34 +2872,33 @@ module.exports = function (sent, options) {
   };
   visit(root);
 
-  //console.log(root);
+  // console.log(root);
 
-  if (seen.size < sent.size + 1) throw new GeneratorError('Unable to generate, sentence not fully connected');
+  if (seen.size < sent.size + 1) throw new GeneratorError("Unable to generate, sentence not fully connected");
 
   // parse the tree into a string
-  var output = '';
+  var output = "";
   var walk = function walk(node) {
-
-    output += '[' + (node.deprel || '_') + ' ';
+    output += "[" + (node.deprel || "_") + " ";
 
     node.deps.forEach(function (dep) {
       if (dep.token.indices.absolute < node.token.indices.absolute) walk(dep);
     });
 
-    output += ' ' + node.token.form + ' ';
+    output += " " + node.token.form + " ";
 
     node.deps.forEach(function (dep) {
       if (dep.token.indices.absolute > node.token.indices.absolute) walk(dep);
     });
 
-    output += ' ] ';
+    output += " ] ";
   };
   root.deps.forEach(function (dep) {
     return walk(dep);
   });
 
   // clean up the output
-  output = output.replace(/\s+/g, ' ').replace(/ \]/g, ']').replace(/\[ /g, '[').replace(/(\w)_(\w)/, '$1 $2').trim();
+  output = output.replace(/\s+/g, " ").replace(/ \]/g, "]").replace(/\[ /g, "[").replace(/(\w)_(\w)/, "$1 $2").trim();
 
   // console.log(output);
 
@@ -2922,34 +2909,33 @@ module.exports = function (sent, options) {
 };
 
 },{"../../utils":94,"./get-loss":29,"underscore":14}],29:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
-  if (serial.comments.length) losses.add('comments');
+  if (serial.comments.length) losses.add("comments");
 
   serial.tokens.forEach(function (token) {
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
-        case 'deps':
+        case "uuid":
+        case "index":
+        case "deps":
           break;
 
-        case 'heads':
+        case "heads":
           if (token.heads.length > 1) losses.add(field);
           break;
 
-        case 'feats':
-        case 'misc':
+        case "feats":
+        case "misc":
           if (token[field] && token[field].length) losses.add(field);
           break;
 
@@ -2963,36 +2949,35 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":27,"underscore":14}],30:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'Brackets',
-  fields: require('./fields'),
-  split: require('../default-splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "Brackets",
+  fields: require("./fields"),
+  split: require("../default-splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"../default-splitter":44,"./detector":26,"./fields":27,"./generator":28,"./parser":31}],31:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (text, options) {
-
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   options = _.defaults(options, {
     allowEmptyString: false
@@ -3018,9 +3003,8 @@ module.exports = function (text, options) {
     }
 
     _createClass(Sentence, [{
-      key: 'serialize',
+      key: "serialize",
       value: function serialize() {
-
         this.root.index(0);
 
         return {
@@ -3031,7 +3015,7 @@ module.exports = function (text, options) {
         };
       }
     }, {
-      key: 'push',
+      key: "push",
       value: function push(token) {
         this.root = token;
       }
@@ -3053,21 +3037,21 @@ module.exports = function (text, options) {
     }
 
     _createClass(Token, [{
-      key: 'eachBefore',
+      key: "eachBefore",
       value: function eachBefore(callback) {
         for (var i = 0; i < this.before.length; i++) {
           callback(this.before[i], i);
         }
       }
     }, {
-      key: 'eachAfter',
+      key: "eachAfter",
       value: function eachAfter(callback) {
         for (var i = 0; i < this.after.length; i++) {
           callback(this.after[i], i);
         }
       }
     }, {
-      key: 'index',
+      key: "index",
       value: function index(num) {
         this.eachBefore(function (before) {
           num = before.index(num);
@@ -3080,9 +3064,8 @@ module.exports = function (text, options) {
         return num;
       }
     }, {
-      key: 'serialize',
+      key: "serialize",
       value: function serialize(tokens) {
-
         this.eachBefore(function (before) {
           before.serialize(tokens);
         });
@@ -3103,7 +3086,7 @@ module.exports = function (text, options) {
         return tokens;
       }
     }, {
-      key: 'push',
+      key: "push",
       value: function push(token) {
         if (this.words.length) {
           this.after.push(token);
@@ -3112,7 +3095,7 @@ module.exports = function (text, options) {
         }
       }
     }, {
-      key: 'addWord',
+      key: "addWord",
       value: function addWord(word) {
         if (!word) return;
 
@@ -3123,9 +3106,9 @@ module.exports = function (text, options) {
         }
       }
     }, {
-      key: 'form',
+      key: "form",
       get: function get() {
-        return this.words.join('_');
+        return this.words.join("_");
       }
     }]);
 
@@ -3135,27 +3118,27 @@ module.exports = function (text, options) {
   var sent = new Sentence(text, options),
       parsing = sent,
       parent = null,
-      word = '';
+      word = "";
 
   _.each(text, function (char) {
     switch (char) {
-      case '[':
+      case "[":
         parent = parsing;
         parsing = new Token(parent);
         if (parent && parent.push) parent.push(parsing);
-        word = '';
+        word = "";
         break;
 
-      case ']':
+      case "]":
         if (parsing.addWord) parsing.addWord(word);
         parsing = parsing.parent;
         parent = parsing.parent;
-        word = '';
+        word = "";
         break;
 
-      case ' ':
+      case " ":
         if (parsing.addWord) parsing.addWord(word);
-        word = '';
+        word = "";
         break;
 
       default:
@@ -3164,94 +3147,84 @@ module.exports = function (text, options) {
     }
   });
 
-  //console.log(sent.serialize())
+  // console.log(sent.serialize())
   return sent.serialize();
 };
 
 },{"../../utils":94,"./detector":26,"underscore":14}],32:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: false,
     allowTrailingWhitespace: true,
     allowLeadingWhitespace: true
   });
 
-  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal CG3: empty string', text, options);
+  if (!text && !options.allowEmptyString) throw new DetectorError("Illegal CG3: empty string", text, options);
 
-  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal CG3: JSON object', text, options);
+  if (utils.isJSONSerializable(text)) throw new DetectorError("Illegal CG3: JSON object", text, options);
 
   // internal stuff
   var parsing = null;
 
   // iterate over the lines and check each one
   text.split(/\n/).forEach(function (line) {
-
     if (utils.re.whiteline.test(line)) {
-
       if (parsing === null) {
-
-        if (!options.allowLeadingWhitespace) throw new DetectorError('Illegal CG3: contains leading whitespace', text, options);
+        if (!options.allowLeadingWhitespace) throw new DetectorError("Illegal CG3: contains leading whitespace", text, options);
       } else {
-
-        if (parsing !== 'token-body' || !options.allowTrailingWhitespace) throw new DetectorError('Illegal CG3: contains trailing whitespace', text, options);
+        if (parsing !== "token-body" || !options.allowTrailingWhitespace) throw new DetectorError("Illegal CG3: contains trailing whitespace", text, options);
       }
 
-      parsing = 'whitespace';
+      parsing = "whitespace";
     } else if (utils.re.comment.test(line)) {
+      if (parsing === "token-start" || parsing === "token-body") throw new DetectorError("Illegal CG3: invalid sequence " + parsing + "=>comment", text, options);
 
-      if (parsing === 'token-start' || parsing === 'token-body') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>comment', text, options);
-
-      parsing = 'comment';
+      parsing = "comment";
     } else if (utils.re.cg3TokenStart.test(line)) {
+      if (parsing === "token-start") throw new DetectorError("Illegal CG3: invalid sequence " + parsing + "=>token-start", text, options);
 
-      if (parsing === 'token-start') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>token-start', text, options);
-
-      parsing = 'token-start';
+      parsing = "token-start";
     } else if (utils.re.cg3TokenContent.test(line)) {
+      if (parsing === "comment" || parsing === "whitespace") throw new DetectorError("Illegal CG3: invalid sequence " + parsing + "=>token-body", text, options);
 
-      if (parsing === 'comment' || parsing === 'whitespace') throw new DetectorError('Illegal CG3: invalid sequence ' + parsing + '=>token-body', text, options);
-
-      parsing = 'token-body';
+      parsing = "token-body";
     } else {
-
-      throw new DetectorError('Illegal CG3: unmatched line', text, options);
+      throw new DetectorError("Illegal CG3: unmatched line", text, options);
     }
   });
 
-  return 'CG3';
+  return "CG3";
 };
 
 },{"../../utils":94,"underscore":14}],33:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['semicolon', 'index', 'form', 'lemma', 'heads', 'xpostag', 'other', 'analyses'];
+module.exports = ["semicolon", "index", "form", "lemma", "heads", "xpostag", "other", "analyses"];
 module.exports.hasComments = true;
 
 },{}],34:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {
     omitIndices: false,
@@ -3262,81 +3235,75 @@ module.exports = function (sent, options) {
 
   var lines = [];
   sent.comments.forEach(function (comment) {
-    return lines.push('# ' + comment.body);
+    return lines.push("# " + comment.body);
   });
   sent.tokens.forEach(function (token) {
-
     var isSet = function isSet(field) {
       return field && field !== utils.fallback ? field : null;
     };
 
     var push = function push(token, indent) {
+      if (!token.lemma && !options.allowMissingLemma) throw new GeneratorError("Unable to generate, token has no lemma", sent, options);
 
-      if (!token.lemma && !options.allowMissingLemma) throw new GeneratorError('Unable to generate, token has no lemma', sent, options);
-
-      indent = (token.semicolon ? ';' : '') + '\t'.repeat(indent);
+      indent = (token.semicolon ? ";" : "") + "\t".repeat(indent);
 
       var head = token.heads.first;
-      var dependency = options.omitIndices ? null : '#' + token.indices.cg3 + '->' + (head == undefined ? '' : head.token.indices.cg3);
+      var dependency = options.omitIndices ? null : "#" + token.indices.cg3 + "->" + (head == undefined ? "" : head.token.indices.cg3);
 
-      var line = ['"' + (isSet(token.lemma) || isSet(token.form) || utils.fallback) + '"'].concat(isSet(token.xpostag) || isSet(token.upostag)).concat((token._feats || []).join(' ')).concat((token._misc || []).join(' ')).concat(head && isSet(head.deprel) ? '@' + head.deprel : null).concat(dependency);
+      var line = ["\"" + (isSet(token.lemma) || isSet(token.form) || utils.fallback) + "\""].concat(isSet(token.xpostag) || isSet(token.upostag)).concat((token._feats || []).join(" ")).concat((token._misc || []).join(" ")).concat(head && isSet(head.deprel) ? "@" + head.deprel : null).concat(dependency);
 
-      line = indent + line.filter(utils.thin).join(' ');
+      line = indent + line.filter(utils.thin).join(" ");
       lines.push(line);
     };
 
-    lines.push('"<' + (token.form || utils.fallback) + '>"');
+    lines.push("\"<" + (token.form || utils.fallback) + ">\"");
 
     if (token._analyses && token._analyses.length) {
-
       token._analyses.forEach(function (analysis) {
         analysis.subTokens.forEach(function (subToken, i) {
-
           push(subToken, i + 1);
         });
       });
     } else {
-
       push(token, 1);
     }
   });
 
   return {
-    output: lines.join('\n'),
+    output: lines.join("\n"),
     loss: getLoss(sent)
   };
 };
 
 },{"../../utils":94,"./get-loss":35,"underscore":14}],35:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
   var tokenCalcLoss = function tokenCalcLoss(token) {
-    if (token.heads && token.heads.length > 1) losses.add('enhanced dependencies');
+    if (token.heads && token.heads.length > 1) losses.add("enhanced dependencies");
 
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
-        case 'deps':
-        case 'feats':
-        case 'misc':
+        case "uuid":
+        case "index":
+        case "deps":
+        case "feats":
+        case "misc":
           break;
 
-        case 'upostag':
+        case "upostag":
           if (token.xpostag && token.upostag) losses.add(field);
           break;
 
-        case 'isEmpty':
+        case "isEmpty":
           if (token.isEmpty) losses.add(field);
           break;
 
@@ -3347,20 +3314,17 @@ module.exports = function (sent) {
   };
 
   serial.tokens.map(function (token) {
-
     tokenCalcLoss(token);
 
     (token.analyses || []).forEach(function (analysis) {
-
       var analysisKeys = Object.keys(analysis);
-      if (analysisKeys.length > 1 || analysisKeys[0] !== 'subTokens') {
-        losses.add('analyses');
+      if (analysisKeys.length > 1 || analysisKeys[0] !== "subTokens") {
+        losses.add("analyses");
       } else {
         analysis.subTokens.map(function (subToken) {
-
           tokenCalcLoss(subToken);
 
-          if (subToken.form != undefined) losses.add('form');
+          if (subToken.form != undefined) losses.add("form");
         });
       }
     });
@@ -3370,53 +3334,47 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":33,"underscore":14}],36:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'CG3',
-  fields: require('./fields'),
-  split: require('../default-splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "CG3",
+  fields: require("./fields"),
+  split: require("../default-splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"../default-splitter":44,"./detector":32,"./fields":33,"./generator":34,"./parser":37}],37:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (text, options) {
-
   function getIndentNum(str, options) {
-
     var count = function count(str, reg) {
       return str.match(reg).length;
     };
 
     if (options.indentString) {
-
-      var regex = options.indentString instanceof RegExp ? options.indentString : new RegExp(options.indentString, 'g');
+      var regex = options.indentString instanceof RegExp ? options.indentString : new RegExp(options.indentString, "g");
 
       return count(str, regex);
     } else if (options.useTabIndent) {
-
       return count(str, /\t/g);
     } else if (options.spacesPerTab) {
-
-      var _regex = new RegExp(' {' + options.spacesPerTab + '}', 'g');
+      var _regex = new RegExp(" {" + options.spacesPerTab + "}", "g");
       return count(str, _regex);
     } else if (options.equalizeWhitespace) {
-
       return count(str, /\s/g);
     } else {
-      throw new ParserError('can\'t get the indent number, insufficient options set', text, options);
+      throw new ParserError("can't get the indent number, insufficient options set", text, options);
     }
   }
 
@@ -3438,14 +3396,13 @@ module.exports = function (text, options) {
     throw e;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   // "tokenize" into chunks
   var i = 0,
       chunks = [];
   while (i < text.length) {
-
     var remains = text.slice(i),
         whiteline = remains.match(utils.re.whiteline),
         comment = remains.match(utils.re.comment),
@@ -3453,34 +3410,24 @@ module.exports = function (text, options) {
         tokenContent = remains.match(utils.re.cg3TokenContent);
 
     if (whiteline) {
-
       i += whiteline[0].length;
     } else if (comment) {
-
-      chunks.push({
-        type: 'comment',
-        body: comment[2]
-      });
+      chunks.push({ type: "comment", body: comment[2] });
       i += comment[1].length;
     } else if (tokenStart) {
-
-      chunks.push({
-        type: 'form',
-        form: tokenStart[1]
-      });
+      chunks.push({ type: "form", form: tokenStart[1] });
       i += tokenStart[0].length;
 
-      while (utils.re.whitespace.test(text[i]) && text[i] !== '\n') {
+      while (utils.re.whitespace.test(text[i]) && text[i] !== "\n") {
         i++;
       }i++;
     } else if (tokenContent) {
       (function () {
-
         // some real BS right here, overfitting my data hard
-        var indent = options.coerceMultipleSpacesAfterSemicolonToTab ? !!tokenContent[1] ? tokenContent[2].replace(/ +/, '\t') : tokenContent[2] : tokenContent[2];
+        var indent = options.coerceMultipleSpacesAfterSemicolonToTab ? !!tokenContent[1] ? tokenContent[2].replace(/ +/, "\t") : tokenContent[2] : tokenContent[2];
 
         var chunk = {
-          type: 'content',
+          type: "content",
           semicolon: !!tokenContent[1],
           indent: getIndentNum(indent, options),
           lemma: tokenContent[3],
@@ -3490,17 +3437,14 @@ module.exports = function (text, options) {
         var deprel = tokenContent[5].match(utils.re.cg3Deprel);
 
         tokenContent[5].split(/\s+/).filter(utils.thin).forEach(function (subChunk) {
-
           var dependency = subChunk.match(utils.re.cg3Dependency),
               head = subChunk.match(utils.re.cg3Head),
               index = subChunk.match(utils.re.cg3Index),
               misc = subChunk.match(utils.re.cg3Other);
 
           if (dependency && (head || index)) {
-
             if (head) {
-
-              if (chunk.heads) throw new ParserError('unexpected subChunk, heads already set', text, options);
+              if (chunk.heads) throw new ParserError("unexpected subChunk, heads already set", text, options);
 
               head = parseInt(head[1]);
 
@@ -3509,55 +3453,50 @@ module.exports = function (text, options) {
                 deprel: deprel && deprel[1] ? deprel[1] : null
               }];
             } else if (index) {
-
-              if (chunk.index) throw new ParserError('unexpected subChunk, index already set', text, options);
+              if (chunk.index) throw new ParserError("unexpected subChunk, index already set", text, options);
 
               chunk.index = parseInt(index[1]);
             }
           } else if (misc) {
-
-            if (!misc[0].startsWith('@')) chunk.misc.push(misc[0]);
+            if (!misc[0].startsWith("@")) chunk.misc.push(misc[0]);
           }
         });
 
-        if (deprel && deprel[1] && !chunk.heads) chunk.misc.push('@' + deprel[1]);
+        if (deprel && deprel[1] && !chunk.heads) chunk.misc.push("@" + deprel[1]);
 
         chunks.push(chunk);
         i += tokenContent[0].length;
       })();
     } else {
-      throw new ParserError('unable to match remains: ' + remains, text, options);
+      throw new ParserError("unable to match remains: " + remains, text, options);
     }
   }
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   // turn the chunks into tokens and comments
   var tokens = [];
   var comments = [];
-  var expecting = ['comment', 'form'];
+  var expecting = ["comment", "form"];
   var token = null;
   var analysis = null;
   var missingIndices = false;
 
   chunks.forEach(function (chunk) {
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError("expecting " + expecting.join("|") + ", got " + chunk.type, text, options);
 
-    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
-
-    if (chunk.type === 'comment') {
-
+    if (chunk.type === "comment") {
       comments.push(chunk.body);
-      expecting = ['comment', 'form'];
+      expecting = ["comment", "form"];
       token = null;
       analysis = null;
-    } else if (chunk.type === 'form') {
-
+    } else if (chunk.type === "form") {
       if (analysis) token.analyses.push(analysis);
 
       if (token) {
-        if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+        if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), "analyses");
 
-        tokens.push(_.omit(token, 'currentIndent'));
+        tokens.push(_.omit(token, "currentIndent"));
       }
 
       token = {
@@ -3567,22 +3506,21 @@ module.exports = function (text, options) {
       };
       analysis = null;
 
-      expecting = ['content'];
-    } else if (chunk.type === 'content') {
+      expecting = ["content"];
+    } else if (chunk.type === "content") {
+      if (!token) throw new ParserError("cannot parse content chunk without a token", text, options);
 
-      if (!token) throw new ParserError('cannot parse content chunk without a token', text, options);
-
-      if (chunk.indent > token.currentIndent + 1) throw new ParserError('invalid indent change (' + token.currentIndent + '=>' + chunk.indent + ')', text, options);
+      if (chunk.indent > token.currentIndent + 1) throw new ParserError("invalid indent change (" + token.currentIndent + "=>" + chunk.indent + ")", text, options);
 
       if (chunk.indent === 1) {
         if (analysis) token.analyses.push(analysis);
 
         if (chunk.index === undefined) {
-          if (!options.allowMissingIndices) throw new ParserError('cannot parse token without index', text, options);
+          if (!options.allowMissingIndices) throw new ParserError("cannot parse token without index", text, options);
 
           missingIndices = true;
         } else {
-          if (missingIndices) throw new ParserError('cannot parse partially indexed CG3', text, options);
+          if (missingIndices) throw new ParserError("cannot parse partially indexed CG3", text, options);
         }
 
         analysis = {
@@ -3596,9 +3534,9 @@ module.exports = function (text, options) {
           }]
         };
       } else {
-        if (!analysis) throw new ParserError('cannot parse content chunk without an analysis', text, options);
+        if (!analysis) throw new ParserError("cannot parse content chunk without an analysis", text, options);
 
-        if (chunk.index === undefined && !options.allowMissingIndices) throw new ParserError('cannot parse token without index', text, options);
+        if (chunk.index === undefined && !options.allowMissingIndices) throw new ParserError("cannot parse token without index", text, options);
 
         analysis.subTokens.push({
           semicolon: chunk.semicolon,
@@ -3611,22 +3549,21 @@ module.exports = function (text, options) {
       }
 
       token.currentIndent = chunk.indent;
-      expecting = ['content', 'form'];
+      expecting = ["content", "form"];
     } else {
-      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+      throw new ParserError("unrecognized chunk type: " + chunk.type, text, options);
     }
   });
 
   if (analysis) token.analyses.push(analysis);
 
   if (token) {
-    if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), 'analyses');
+    if (token.analyses.length === 1 && token.analyses[0].subTokens.length === 1) token = _.omit(_.extend(token, token.analyses[0].subTokens[0]), "analyses");
 
-    tokens.push(_.omit(token, 'currentIndent'));
+    tokens.push(_.omit(token, "currentIndent"));
   }
 
   if (missingIndices) {
-
     var index = 0;
     tokens.forEach(function (token) {
       if (token.analyses) {
@@ -3641,8 +3578,8 @@ module.exports = function (text, options) {
     });
   }
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,
@@ -3653,24 +3590,23 @@ module.exports = function (text, options) {
 };
 
 },{"../../utils":94,"./detector":32,"underscore":14}],38:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: false,
     requireTenParams: false,
     allowTrailingWhitespace: true
   });
 
-  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal CoNLL-U: empty string', text, options);
+  if (!text && !options.allowEmptyString) throw new DetectorError("Illegal CoNLL-U: empty string", text, options);
 
-  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal CoNLL-U: JSON object', text, options);
+  if (utils.isJSONSerializable(text)) throw new DetectorError("Illegal CoNLL-U: JSON object", text, options);
 
   // be more or less strict about the fields we require being set
   var tokenLine = options.requireTenParams ? utils.re.conlluTokenLineTenParams : utils.re.conlluTokenLine;
@@ -3682,56 +3618,51 @@ module.exports = function (text, options) {
   // iterate over the lines and check each one
   var lines = text.split(/\n/);
   lines.forEach(function (line, i) {
-
     if (utils.re.comment.test(line)) {
-
       // can only have comments at the beginning
-      if (doneComments) throw new DetectorError('Illegal CoNLL-U: misplaced comment', text, options);
+      if (doneComments) throw new DetectorError("Illegal CoNLL-U: misplaced comment", text, options);
     } else {
-
       // done parsing comments
       doneComments = true;
 
       if (line) {
-        if (!tokenLine.test(line)) throw new DetectorError('Illegal CoNLL-U: unmatched line', text, options);
+        if (!tokenLine.test(line)) throw new DetectorError("Illegal CoNLL-U: unmatched line", text, options);
 
-        if (doneContent) throw new DetectorError('Illegal CoNLL-U: misplaced whitespace', text, options);
+        if (doneContent) throw new DetectorError("Illegal CoNLL-U: misplaced whitespace", text, options);
       } else {
-
         // only allow empty lines after we've looked at all the content
-        if (!options.allowTrailingWhitespace) throw new DetectorError('Illegal CoNLL-U: contains trailing whitespace', text, options);
+        if (!options.allowTrailingWhitespace) throw new DetectorError("Illegal CoNLL-U: contains trailing whitespace", text, options);
 
         doneContent = true;
       }
     }
   });
 
-  return 'CoNLL-U';
+  return "CoNLL-U";
 };
 
 },{"../../utils":94,"underscore":14}],39:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['isEmpty', 'index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'heads', 'misc', 'subTokens'];
+module.exports = ["isEmpty", "index", "form", "lemma", "upostag", "xpostag", "feats", "heads", "misc", "subTokens"];
 module.exports.hasComments = true;
 
 },{}],40:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
@@ -3739,15 +3670,13 @@ module.exports = function (sent, options) {
 
   var lines = [];
   sent.comments.forEach(function (comment) {
-    lines.push('# ' + comment.body);
+    lines.push("# " + comment.body);
   });
   sent.tokens.forEach(function (token) {
-
     var toString = function toString(token) {
-
       var head = !token.isEmpty && token.heads.first;
 
-      return [token.indices.conllu, token.form || utils.fallback, token.lemma || utils.fallback, token.upostag || utils.fallback, token.xpostag || utils.fallback, token.feats || utils.fallback, head ? head.token.indices.conllu : utils.fallback, head && head.deprel ? head.deprel : utils.fallback, token._getDeps('CoNLL-U').join('|') || utils.fallback, token.misc || utils.fallback].join('\t');
+      return [token.indices.conllu, token.form || utils.fallback, token.lemma || utils.fallback, token.upostag || utils.fallback, token.xpostag || utils.fallback, token.feats || utils.fallback, head ? head.token.indices.conllu : utils.fallback, head && head.deprel ? head.deprel : utils.fallback, token._getDeps("CoNLL-U").join("|") || utils.fallback, token.misc || utils.fallback].join("\t");
     };
 
     lines.push(toString(token));
@@ -3757,45 +3686,42 @@ module.exports = function (sent, options) {
   });
 
   return {
-    output: lines.join('\n'),
+    output: lines.join("\n"),
     loss: getLoss(sent)
   };
 };
 
 },{"../../utils":94,"./get-loss":41,"underscore":14}],41:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
   var tokenCalcLoss = function tokenCalcLoss(token) {
-
-    if (token.heads.length > 1 && !sent.options.enhanced) losses.add('enhanced dependencies');
+    if (token.heads.length > 1 && !sent.options.enhanced) losses.add("enhanced dependencies");
 
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
-        case 'other':
+        case "uuid":
+        case "index":
+        case "other":
           break;
 
-        case 'analyses':
+        case "analyses":
           if (token.analyses.length > 1) {
-            losses.add('analyses');
+            losses.add("analyses");
           } else {
-
             var analysis = token.analyses[0],
                 analysisKeys = Object.keys(analysis);
 
-            if (analysisKeys.length > 1 || analysisKeys[0] !== 'subTokens') {
-              losses.add('analyses');
+            if (analysisKeys.length > 1 || analysisKeys[0] !== "subTokens") {
+              losses.add("analyses");
             } else {
               analysis.subTokens.map(tokenCalcLoss);
             }
@@ -3814,16 +3740,16 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":39,"underscore":14}],42:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'CoNLL-U',
-  fields: require('./fields'),
-  split: require('../default-splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "CoNLL-U",
+  fields: require("./fields"),
+  split: require("../default-splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
@@ -3861,21 +3787,18 @@ module.exports = {
 */
 
 },{"../default-splitter":44,"./detector":38,"./fields":39,"./generator":40,"./parser":43}],43:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (text, options) {
-
   function assertNext(supStr, subStr) {
-
     function parseIndex(str) {
-
-      var match = (str || '').match(utils.re.conlluEmptyIndex);
+      var match = (str || "").match(utils.re.conlluEmptyIndex);
       if (!match) return null;
 
       return match[2] ? {
@@ -3893,11 +3816,11 @@ module.exports = function (text, options) {
         sub = parseIndex(subStr);
 
     if (sub.minor === null) {
-      if (sub.major - sup.major !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+      if (sub.major - sup.major !== 1) throw new ParserError("unexpected token index (at: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ", got: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ")");
     } else if (sup.minor === null) {
-      if (sub.minor !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+      if (sub.minor !== 1) throw new ParserError("unexpected token index (at: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ", got: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ")");
     } else {
-      if (sub.minor - sup.minor !== 1) throw new ParserError('unexpected token index (at: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ', got: ' + sup.major + (sup.minor === null ? '' : '.' + sup.minor) + ')');
+      if (sub.minor - sup.minor !== 1) throw new ParserError("unexpected token index (at: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ", got: " + sup.major + (sup.minor === null ? "" : "." + sup.minor) + ")");
     }
   }
 
@@ -3916,13 +3839,13 @@ module.exports = function (text, options) {
     throw e;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   // "tokenize" into chunks
   var i = 0,
       chunks = [];
-  var lines = text.split('\n');
+  var lines = text.split("\n");
   var tokenRegex = options.requireTenParams ? utils.re.conlluTokenLineTenParams : utils.re.conlluTokenLine;
 
   lines.forEach(function (line) {
@@ -3931,37 +3854,28 @@ module.exports = function (text, options) {
         tokenLine = line.match(tokenRegex);
 
     if (whiteline) {} else if (comment) {
-
-      chunks.push({
-        type: 'comment',
-        body: comment[2]
-      });
+      chunks.push({ type: "comment", body: comment[2] });
     } else if (tokenLine) {
-
       var token = void 0;
 
       var fields = tokenLine[7];
       if (/(\t|[ ]{2,})/g.test(fields)) {
-
-        fields = fields.replace(/[ ]{2,}/g, '\t').split(/\t/g).filter(utils.thin);
+        fields = fields.replace(/[ ]{2,}/g, "\t").split(/\t/g).filter(utils.thin);
       } else {
-
         fields = fields.split(/[\t ]+/g).filter(utils.thin);
       }
 
       if (tokenLine[4]) {
-
         token = {
-          type: 'super-token',
+          type: "super-token",
           index: tokenLine[1],
           startIndex: tokenLine[2],
           stopIndex: tokenLine[5],
           form: utils.re.fallback.test(fields[0]) ? null : fields[0],
-          misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|')
+          misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split("|")
         };
       } else {
         var getHeads = function getHeads(isEmpty, head, deprel, deps) {
-
           head = utils.re.fallback.test(head) ? null : head;
           deprel = utils.re.fallback.test(deprel) ? null : deprel;
           deps = utils.re.fallback.test(deps) ? null : deps;
@@ -3978,9 +3892,8 @@ module.exports = function (text, options) {
           }
 
           if (deps) {
-            deps.split('|').forEach(function (dep) {
-
-              dep = dep.split(':');
+            deps.split("|").forEach(function (dep) {
+              dep = dep.split(":");
 
               if (!seen.has(dep[0])) heads.push({
                 index: dep[0],
@@ -3991,7 +3904,8 @@ module.exports = function (text, options) {
             });
           } else if (isEmpty) {
             // FIXME: Add this as a "strict mode" requirement?
-            //throw new ParserError(`Missing "deps" for empty node: ${line}`, text, options);
+            // throw new ParserError(`Missing "deps" for empty node:
+            // ${line}`, text, options);
           }
 
           return heads.length ? heads : null;
@@ -4003,82 +3917,73 @@ module.exports = function (text, options) {
         }
 
         token = {
-          type: 'token',
+          type: "token",
           index: tokenLine[1],
           isEmpty: isEmpty,
           form: !fields[0] || utils.re.fallback.test(fields[0]) ? null : fields[0],
           lemma: !fields[1] || utils.re.fallback.test(fields[1]) ? null : fields[1],
           upostag: !fields[2] || utils.re.fallback.test(fields[2]) ? null : fields[2],
           xpostag: !fields[3] || utils.re.fallback.test(fields[3]) ? null : fields[3],
-          feats: !fields[4] || utils.re.fallback.test(fields[4]) ? null : fields[4].split('|'),
+          feats: !fields[4] || utils.re.fallback.test(fields[4]) ? null : fields[4].split("|"),
           heads: getHeads(isEmpty, fields[5], fields[6], fields[7]),
-          misc: !fields[8] || utils.re.fallback.test(fields[8]) ? null : fields[8].split('|')
+          misc: !fields[8] || utils.re.fallback.test(fields[8]) ? null : fields[8].split("|")
         };
       }
       chunks.push(token);
     } else {
-      throw new ParserError('unable to match line: ' + line, text, options);
+      throw new ParserError("unable to match line: " + line, text, options);
     }
   });
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   var tokens = [];
   var comments = [];
-  var expecting = ['comment', 'super-token', 'token'];
+  var expecting = ["comment", "super-token", "token"];
   var superToken = null;
 
   chunks.filter(utils.thin).forEach(function (chunk) {
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError("expecting " + expecting.join("|") + ", got " + chunk.type, text, options);
 
-    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
-
-    if (chunk.type === 'comment') {
-
+    if (chunk.type === "comment") {
       comments.push(chunk.body);
-      expecting = ['comment', 'super-token', 'token'];
-    } else if (chunk.type === 'super-token') {
-
+      expecting = ["comment", "super-token", "token"];
+    } else if (chunk.type === "super-token") {
       superToken = {
         form: chunk.form,
         misc: chunk.misc,
-        analyses: [{
-          subTokens: []
-        }],
+        analyses: [{ subTokens: [] }],
         index: chunk.index,
         currentIndex: null,
         stopIndex: chunk.stopIndex
       };
 
-      expecting = ['token'];
-    } else if (chunk.type === 'token') {
-
+      expecting = ["token"];
+    } else if (chunk.type === "token") {
       if (superToken) {
-
         assertNext(superToken.currentIndex, chunk.index);
         superToken.currentIndex = chunk.index;
 
-        superToken.analyses[0].subTokens.push(_.omit(chunk, ['type']));
+        superToken.analyses[0].subTokens.push(_.omit(chunk, ["type"]));
 
         if (superToken.currentIndex === superToken.stopIndex) {
-
-          tokens.push(_.omit(superToken, ['currentIndex', 'stopIndex']));
+          tokens.push(_.omit(superToken, ["currentIndex", "stopIndex"]));
           superToken = null;
-          expecting = ['super-token', 'token'];
+          expecting = ["super-token", "token"];
         } else {
-          expecting = ['token'];
+          expecting = ["token"];
         }
       } else {
-
-        tokens.push(_.omit(chunk, ['type']));
-        expecting = ['super-token', 'token'];
+        tokens.push(_.omit(chunk, ["type"]));
+        expecting = ["super-token", "token"];
       }
     } else {
-      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+      throw new ParserError("unrecognized chunk type: " + chunk.type, text, options);
     }
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,
@@ -4089,18 +3994,15 @@ module.exports = function (text, options) {
 };
 
 },{"../../utils":94,"./detector":38,"underscore":14}],44:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
-var utils = require('../utils');
+var _ = require("underscore");
+var utils = require("../utils");
 
 module.exports = function (text) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-
-  options = _.defaults(options, {
-    trimChunks: true
-  });
+  options = _.defaults(options, { trimChunks: true });
 
   return text.split(utils.re.multiNewlines).map(function (chunk) {
     if (options.trimChunks) {
@@ -4112,7 +4014,7 @@ module.exports = function (text) {
 };
 
 },{"../utils":94,"underscore":14}],45:[function(require,module,exports){
-'use strict';
+"use strict";
 
 /**
  * Supported output formats:
@@ -4128,67 +4030,65 @@ module.exports = function (text) {
 
 module.exports = {
 
-  'apertium stream': require('./apertium-stream'),
-  apertiumStream: require('./apertium-stream'),
-  Brackets: require('./brackets'),
-  brackets: require('./brackets'),
-  CG3: require('./cg3'),
-  cg3: require('./cg3'),
-  'CoNLL-U': require('./conllu'),
-  conllu: require('./conllu'),
-  'notatrix serial': require('./notatrix-serial'),
-  notatrixSerial: require('./notatrix-serial'),
-  Params: require('./params'),
-  params: require('./params'),
-  'plain text': require('./plain-text'),
-  plainText: require('./plain-text'),
-  SD: require('./sd'),
-  sd: require('./sd')
+  "apertium stream": require("./apertium-stream"),
+  apertiumStream: require("./apertium-stream"),
+  Brackets: require("./brackets"),
+  brackets: require("./brackets"),
+  CG3: require("./cg3"),
+  cg3: require("./cg3"),
+  "CoNLL-U": require("./conllu"),
+  conllu: require("./conllu"),
+  "notatrix serial": require("./notatrix-serial"),
+  notatrixSerial: require("./notatrix-serial"),
+  Params: require("./params"),
+  params: require("./params"),
+  "plain text": require("./plain-text"),
+  plainText: require("./plain-text"),
+  SD: require("./sd"),
+  sd: require("./sd")
 
 };
 
 },{"./apertium-stream":23,"./brackets":30,"./cg3":36,"./conllu":42,"./notatrix-serial":50,"./params":57,"./plain-text":64,"./sd":71}],46:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (obj, options) {
-
   function restrict(obj, fields) {
     var allowUndefined = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-    if (obj === undefined) throw new DetectorError('Illegal notatrix serial: missing field', obj, options);
+    if (obj === undefined) throw new DetectorError("Illegal notatrix serial: missing field", obj, options);
 
-    if (_.omit(obj, Object.keys(fields)).length) throw new DetectorError('Illegal notatrix serial: unexpected field', obj, options);
+    if (_.omit(obj, Object.keys(fields)).length) throw new DetectorError("Illegal notatrix serial: unexpected field", obj, options);
 
     _.each(fields, function (fieldType, fieldName) {
-
       var value = obj[fieldName];
 
       switch (fieldType) {
-        case 'number':
-          if (value !== undefined || !allowUndefined) if (isNaN(parseFloat(value))) throw new DetectorError('Illegal notatrix serial: could not parse ' + value + ' as float', obj, options);
+        case "number":
+          if (value !== undefined || !allowUndefined) if (isNaN(parseFloat(value))) throw new DetectorError("Illegal notatrix serial: could not parse " + value + " as float", obj, options);
           break;
 
-        case 'string':
-          if (value !== undefined || !allowUndefined) if (typeof value !== 'string') throw new DetectorError('Illegal notatrix serial: expected \'string\', got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+        case "string":
+          if (value !== undefined || !allowUndefined) if (typeof value !== "string") throw new DetectorError("Illegal notatrix serial: expected 'string', got " + (typeof value === "undefined" ? "undefined" : _typeof(value)), obj, options);
           break;
 
-        case 'string*':
-          if (value !== undefined || !allowUndefined) if (value !== null && typeof value !== 'string') throw new DetectorError('Illegal notatrix serial: expected \'string\', got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+        case "string*":
+          if (value !== undefined || !allowUndefined) if (value !== null && typeof value !== "string") throw new DetectorError("Illegal notatrix serial: expected 'string', got " + (typeof value === "undefined" ? "undefined" : _typeof(value)), obj, options);
           break;
 
-        case 'object':
+        case "object":
           // pass
           break;
 
-        case 'array':
-          if (value != undefined || !allowUndefined) if (!Array.isArray(value)) throw new DetectorError('Illegal notatrix serial: expected Array, got ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)), obj, options);
+        case "array":
+          if (value != undefined || !allowUndefined) if (!Array.isArray(value)) throw new DetectorError("Illegal notatrix serial: expected Array, got " + (typeof value === "undefined" ? "undefined" : _typeof(value)), obj, options);
           break;
       }
     });
@@ -4199,35 +4099,34 @@ module.exports = function (obj, options) {
     allowZeroFields: true
   });
 
-  if (!utils.isJSONSerializable(obj)) throw new DetectorError('Illegal notatrix serial: not JSON object', obj, options);
+  if (!utils.isJSONSerializable(obj)) throw new DetectorError("Illegal notatrix serial: not JSON object", obj, options);
 
-  obj = typeof obj === 'string' ? JSON.parse(obj) : obj;
+  obj = typeof obj === "string" ? JSON.parse(obj) : obj;
 
   restrict(obj, utils.nxSentenceFields);
   _.each(obj.comments, function (comment) {
-    if (typeof comment !== 'string') throw new DetectorError('Illegal notatrix serial: comments should be strings', obj, options);
+    if (typeof comment !== "string") throw new DetectorError("Illegal notatrix serial: comments should be strings", obj, options);
   });
   _.each(obj.tokens, function (token) {
     restrict(token, utils.nxSentenceTokensFields, true);
   });
-  if (obj.tokens.length === 0 && !options.allowZeroTokens) throw new DetectorError('Illegal notatrix serial: cannot have empty token list', obj, options);
+  if (obj.tokens.length === 0 && !options.allowZeroTokens) throw new DetectorError("Illegal notatrix serial: cannot have empty token list", obj, options);
 
   _.each(obj.tokens, function (token) {
-    if (Object.keys(token).length === 0 && !options.allowZeroFields) throw new DetectorError('Illegal notatrix serial: cannot have token without fields', obj, options);
+    if (Object.keys(token).length === 0 && !options.allowZeroFields) throw new DetectorError("Illegal notatrix serial: cannot have token without fields", obj, options);
 
     if (token.analyses) _.each(token.analyses, function (analysis) {
-
       var analysisKeys = Object.keys(analysis);
-      if (analysisKeys.length !== 1 || analysisKeys[0] !== 'subTokens') throw new DetectorError('Illegal notatrix serial: got unexpected analyses field', obj, options);
+      if (analysisKeys.length !== 1 || analysisKeys[0] !== "subTokens") throw new DetectorError("Illegal notatrix serial: got unexpected analyses field", obj, options);
 
       _.each(analysis.subTokens, function (subToken) {
         restrict(subToken, utils.nxSentenceTokensFields, true);
-        if (subToken.analyses !== undefined) throw new DetectorError('Illegal notatrix serial: subTokens can only have one analysis', obj, options);
+        if (subToken.analyses !== undefined) throw new DetectorError("Illegal notatrix serial: subTokens can only have one analysis", obj, options);
       });
     });
   });
 
-  return 'notatrix serial';
+  return "notatrix serial";
 };
 
 },{"../../utils":94,"underscore":14}],47:[function(require,module,exports){
@@ -4237,22 +4136,21 @@ module.exports = [];
 module.exports.hasComments = true;
 
 },{}],48:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
@@ -4265,13 +4163,13 @@ module.exports = function (sent, options) {
 };
 
 },{"../../utils":94,"./get-loss":49,"underscore":14}],49:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var Loss = utils.Loss;
-var fields = require('./fields');
+var fields = require("./fields");
 
 module.exports = function (sent) {
   // do nothing, can't lose info on this one
@@ -4279,16 +4177,16 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":47,"underscore":14}],50:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'notatrix serial',
-  fields: require('./fields'),
-  split: require('./splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "notatrix serial",
+  fields: require("./fields"),
+  split: require("./splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
@@ -4390,16 +4288,15 @@ OUTPUT:
 */
 
 },{"./detector":46,"./fields":47,"./generator":48,"./parser":51,"./splitter":52}],51:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (obj, options) {
-
   try {
     detect(obj, options);
   } catch (e) {
@@ -4412,88 +4309,82 @@ module.exports = function (obj, options) {
 };
 
 },{"../../utils":94,"./detector":46,"underscore":14}],52:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var SplitterError = utils.SplitterError;
 
 module.exports = function (text, options) {
-  throw new SplitterError('Can\'t split notatrix serial', text, options);
+  throw new SplitterError("Can't split notatrix serial", text, options);
 };
 
 },{"../../utils":94}],53:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (obj, options) {
-
   options = _.defaults(options, {
     allowEmptyList: false,
     allowTrailingWhitespace: true,
     allowLeadingWhitespace: true
   });
 
-  if (!utils.isJSONSerializable(obj)) throw new DetectorError('Illegal Params: not JSON object', obj, options);
+  if (!utils.isJSONSerializable(obj)) throw new DetectorError("Illegal Params: not JSON object", obj, options);
 
-  obj = typeof obj === 'string' ? JSON.parse(obj) : obj;
+  obj = typeof obj === "string" ? JSON.parse(obj) : obj;
 
   if (Array.isArray(obj)) {
-
-    if (!obj.length && !options.allowEmptyList) throw new DetectorError('Illegal Params: contains no tokens', obj, options);
+    if (!obj.length && !options.allowEmptyList) throw new DetectorError("Illegal Params: contains no tokens", obj, options);
 
     obj.forEach(function (obj) {
-
       var omitted = Object.keys(_.omit(obj, utils.fields));
-      if (omitted.length) throw new DetectorError('Illegal Params: contains illegal keys (' + omitted.join(', ') + ')', obj, options);
+      if (omitted.length) throw new DetectorError("Illegal Params: contains illegal keys (" + omitted.join(", ") + ")", obj, options);
 
       var picked = Object.keys(_.pick(obj, utils.fields));
-      if (!picked.length) throw new DetectorError('Illegal Params: missing required keys', obj, options);
+      if (!picked.length) throw new DetectorError("Illegal Params: missing required keys", obj, options);
     });
   } else {
-
-    throw new DetectorError('Illegal Params: expected array of parameters, got ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)), obj, options);
+    throw new DetectorError("Illegal Params: expected array of parameters, got " + (typeof obj === "undefined" ? "undefined" : _typeof(obj)), obj, options);
   }
 
-  return 'Params';
+  return "Params";
 };
 
 },{"../../utils":94,"underscore":14}],54:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['isEmpty', 'index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'];
+module.exports = ["isEmpty", "index", "form", "lemma", "upostag", "xpostag", "feats", "head", "deprel", "deps", "misc"];
 module.exports.hasComments = false;
 
 },{}],55:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
   sent.index();
 
   var output = sent.tokens.map(function (token) {
-
-    if (token.analysis) throw new GeneratorError('Unable to generate, contains ambiguous analyses or multiword tokens');
+    if (token.analysis) throw new GeneratorError("Unable to generate, contains ambiguous analyses or multiword tokens");
 
     var params = _.pick(token, utils.fields);
     params.head = token.getHead();
@@ -4510,29 +4401,28 @@ module.exports = function (sent, options) {
 };
 
 },{"../../utils":94,"./get-loss":56,"underscore":14}],56:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
-  if (serial.comments.length) losses.add('comments');
+  if (serial.comments.length) losses.add("comments");
 
   serial.tokens.forEach(function (token) {
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
+        case "uuid":
+        case "index":
           break;
 
-        case 'heads':
-          if (token.heads.length > 1) losses.add('enhanced dependencies');
+        case "heads":
+          if (token.heads.length > 1) losses.add("enhanced dependencies");
           break;
 
         default:
@@ -4545,30 +4435,29 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":54,"underscore":14}],57:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'Params',
-  fields: require('./fields'),
-  split: require('./splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "Params",
+  fields: require("./fields"),
+  split: require("./splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"./detector":53,"./fields":54,"./generator":55,"./parser":58,"./splitter":59}],58:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (obj, options) {
-
   try {
     detect(obj, options);
   } catch (e) {
@@ -4582,32 +4471,31 @@ module.exports = function (obj, options) {
     options: options,
     comments: [],
     tokens: obj.map(function (token, i) {
-      token.index = '' + i;
+      token.index = "" + i;
       return token;
     })
   };
 };
 
 },{"../../utils":94,"./detector":53,"underscore":14}],59:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var SplitterError = utils.SplitterError;
 
 module.exports = function (text, options) {
-  throw new SplitterError('Can\'t split Params', text, options);
+  throw new SplitterError("Can't split Params", text, options);
 };
 
 },{"../../utils":94}],60:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: true,
     allowNewlines: false,
@@ -4616,59 +4504,57 @@ module.exports = function (text, options) {
 
   /*
   if (!text && !options.allowEmptyString)
-    throw new DetectorError(`Illegal plain text: empty string`, text, options);
+    throw new DetectorError(`Illegal plain text: empty string`, text,
+  options);
     */
 
-  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal plain text: JSON object', text, options);
+  if (utils.isJSONSerializable(text)) throw new DetectorError("Illegal plain text: JSON object", text, options);
 
-  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError('Illegal plain text: contains newlines', text, options);
+  if (/\n/.test(text) && !options.allowNewlines) throw new DetectorError("Illegal plain text: contains newlines", text, options);
 
   if (options.bracketsAllowanceTreshold >= 0) {
-
     var numWords = text.split(utils.re.whitespace).length;
     var numBrackets = (text.match(/[\[\]]/g) || []).length;
     var ratio = numBrackets / numWords;
 
-    if (ratio > options.bracketsAllowanceTreshold) throw new DetectorError('Illegal plain text: contains too many brackets (' + ratio + ')', text, options);
+    if (ratio > options.bracketsAllowanceTreshold) throw new DetectorError("Illegal plain text: contains too many brackets (" + ratio + ")", text, options);
   }
 
-  return 'plain text';
+  return "plain text";
 };
 
 },{"../../utils":94,"underscore":14}],61:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['form'];
+module.exports = ["form"];
 module.exports.hasComments = false;
 
 },{}],62:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var getLoss = require('./get-loss');
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
   sent.index();
 
   var output = sent.tokens.map(function (token) {
-
     return token.isSuperToken ? token.subTokens.map(function (subToken) {
       return subToken.value;
-    }).join(' ') : token.form;
-  }).join(' ').replace(utils.re.spaceBeforePunctuation, '$1');
+    }).join(" ") : token.form;
+  }).join(" ").replace(utils.re.spaceBeforePunctuation, "$1");
 
   return {
     output: output,
@@ -4677,34 +4563,33 @@ module.exports = function (sent, options) {
 };
 
 },{"../../utils":94,"./get-loss":63,"underscore":14}],63:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
-  if (serial.comments.length) losses.add('comments');
+  if (serial.comments.length) losses.add("comments");
 
   serial.tokens.forEach(function (token) {
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
+        case "uuid":
+        case "index":
           break;
 
-        case 'feats':
-        case 'misc':
+        case "feats":
+        case "misc":
           if (token[field] && token[field].length) losses.add(field);
           break;
 
-        case 'heads':
-          if (token.heads.length) losses.add('heads');
+        case "heads":
+          if (token.heads.length) losses.add("heads");
           break;
 
         default:
@@ -4717,35 +4602,34 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":61,"underscore":14}],64:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'plain text',
-  fields: require('./fields'),
-  split: require('./splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "plain text",
+  fields: require("./fields"),
+  split: require("./splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"./detector":60,"./fields":61,"./generator":62,"./parser":65,"./splitter":66}],65:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
+var detect = require("./detector");
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: true
   });
 
-  text = text || '';
+  text = text || "";
 
   try {
     detect(text, options);
@@ -4755,23 +4639,20 @@ module.exports = function (text, options) {
     throw e;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   var chunks = [];
-  var word = '';
+  var word = "";
 
   _.each(text, function (char, i) {
-
     if (utils.re.whitespace.test(char)) {
-
       chunks.push(word);
-      word = '';
+      word = "";
     } else if (utils.re.punctuation.test(char)) {
-
       if (!utils.re.allPunctuation.test(word)) {
         chunks.push(word);
-        word = '';
+        word = "";
       }
       word += char;
     } else {
@@ -4781,7 +4662,7 @@ module.exports = function (text, options) {
 
   chunks.push(word);
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   var tokens = chunks.filter(utils.thin).map(function (chunk, i) {
     return {
@@ -4790,8 +4671,8 @@ module.exports = function (text, options) {
     };
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,
@@ -4802,18 +4683,15 @@ module.exports = function (text, options) {
 };
 
 },{"../../utils":94,"./detector":60,"underscore":14}],66:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
-var utils = require('../../utils');
+var _ = require("underscore");
+var utils = require("../../utils");
 
 module.exports = function (text) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-
-  options = _.defaults(options, {
-    trimChunks: true
-  });
+  options = _.defaults(options, { trimChunks: true });
 
   return text.split(utils.re.sentenceThenPunctuation).map(function (chunk) {
     if (options.trimChunks) {
@@ -4825,15 +4703,14 @@ module.exports = function (text) {
 };
 
 },{"../../utils":94,"underscore":14}],67:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var DetectorError = utils.DetectorError;
 
 module.exports = function (text, options) {
-
   options = _.defaults(options, {
     allowEmptyString: false,
     allowLeadingWhitespace: true,
@@ -4842,9 +4719,9 @@ module.exports = function (text, options) {
     allowNoDependencies: false
   });
 
-  if (!text && !options.allowEmptyString) throw new DetectorError('Illegal SD: empty string', text, options);
+  if (!text && !options.allowEmptyString) throw new DetectorError("Illegal SD: empty string", text, options);
 
-  if (utils.isJSONSerializable(text)) throw new DetectorError('Illegal SD: JSON object', text, options);
+  if (utils.isJSONSerializable(text)) throw new DetectorError("Illegal SD: JSON object", text, options);
 
   // be more or less strict about whitespace
   var dependencyRegex = options.allowBookendWhitespace ? utils.re.sdDependency : utils.re.sdDependencyNoWhitespace;
@@ -4856,58 +4733,53 @@ module.exports = function (text, options) {
 
   var lines = text.split(/\n/);
   lines.forEach(function (line, i) {
-
     if (utils.re.whiteline.test(line)) {
       if (parsingDeps) {
-        if (!options.allowTrailingWhitespace) throw new DetectorError('Illegal SD: contains trailing whitespace', text, options);
+        if (!options.allowTrailingWhitespace) throw new DetectorError("Illegal SD: contains trailing whitespace", text, options);
       } else {
-        if (!options.allowLeadingWhitespace) throw new DetectorError('Illegal SD: contains leading whitespace', text, options);
+        if (!options.allowLeadingWhitespace) throw new DetectorError("Illegal SD: contains leading whitespace", text, options);
       }
     }
 
     if (utils.re.comment.test(line)) {} else if (!parsingDeps) {
-
-      if (dependencyRegex.test(line)) throw new DetectorError('Illegal SD: missing text line', text, options);
+      if (dependencyRegex.test(line)) throw new DetectorError("Illegal SD: missing text line", text, options);
 
       parsingDeps = true;
     } else if (!dependencyRegex.test(line)) {
-
-      throw new DetectorError('Illegal SD: expected dependency line', text, options);
+      throw new DetectorError("Illegal SD: expected dependency line", text, options);
     } else {
-
       parsedDeps += 1;
     }
   });
 
-  if (parsedDeps === 0 && !options.allowNoDependencies) throw new DetectorError('Illegal SD: contains no dependencies', text, options);
+  if (parsedDeps === 0 && !options.allowNoDependencies) throw new DetectorError("Illegal SD: contains no dependencies", text, options);
 
-  return 'SD';
+  return "SD";
 };
 
 },{"../../utils":94,"underscore":14}],68:[function(require,module,exports){
-'use strict';
+"use strict";
 
-module.exports = ['form', 'heads'];
+module.exports = ["form", "heads"];
 module.exports.hasComments = true;
 
 },{}],69:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var GeneratorError = utils.GeneratorError;
-var generateText = require('../plain-text').generate;
-var getLoss = require('./get-loss');
+var generateText = require("../plain-text").generate;
+var getLoss = require("./get-loss");
 
 module.exports = function (sent, options) {
-
   if (!sent.isParsed) return {
     output: null,
     loss: undefined
   };
 
-  if (!sent || sent.name !== 'Sentence') throw new GeneratorError('Unable to generate, input not a Sentence', sent, options);
+  if (!sent || sent.name !== "Sentence") throw new GeneratorError("Unable to generate, input not a Sentence", sent, options);
 
   options = _.defaults(options, sent.options, {});
 
@@ -4915,15 +4787,14 @@ module.exports = function (sent, options) {
 
   var lines = [];
   sent.comments.forEach(function (comment) {
-    lines.push('# ' + comment.body);
+    lines.push("# " + comment.body);
   });
 
   lines.push(generateText(sent).output);
 
   [sent.root].concat(sent.tokens).forEach(function (token) {
-
     token.mapDependents(function (dependent) {
-      lines.push((dependent.deprel || '_') + '(' + token.form + ', ' + dependent.token.form + ')');
+      lines.push((dependent.deprel || "_") + "(" + token.form + ", " + dependent.token.form + ")");
     });
   });
 
@@ -4938,40 +4809,39 @@ module.exports = function (sent, options) {
   */
 
   return {
-    output: lines.join('\n'),
+    output: lines.join("\n"),
     loss: getLoss(sent)
   };
 };
 
 },{"../../utils":94,"../plain-text":64,"./get-loss":70,"underscore":14}],70:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
-var fields = require('./fields');
+var utils = require("../../utils");
+var fields = require("./fields");
 
 module.exports = function (sent) {
-
   var serial = sent.serialize();
   var losses = new Set();
 
   serial.tokens.forEach(function (token) {
-    if (token.heads && token.heads.length > 1) losses.add('enhanced dependencies');
+    if (token.heads && token.heads.length > 1) losses.add("enhanced dependencies");
 
     Object.keys(_.omit(token, fields)).forEach(function (field) {
       switch (field) {
-        case 'uuid':
-        case 'index':
-        case 'deps':
+        case "uuid":
+        case "index":
+        case "deps":
           break;
 
-        case 'heads':
+        case "heads":
           if (token.heads.length > 1) losses.add(field);
           break;
 
-        case 'feats':
-        case 'misc':
+        case "feats":
+        case "misc":
           if (token[field] && token[field].length) losses.add(field);
           break;
 
@@ -4985,31 +4855,30 @@ module.exports = function (sent) {
 };
 
 },{"../../utils":94,"./fields":68,"underscore":14}],71:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'SD',
-  fields: require('./fields'),
-  split: require('../default-splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator')
+  name: "SD",
+  fields: require("./fields"),
+  split: require("../default-splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator")
 
 };
 
 },{"../default-splitter":44,"./detector":67,"./fields":68,"./generator":69,"./parser":72}],72:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../../utils');
+var utils = require("../../utils");
 var ParserError = utils.ParserError;
-var detect = require('./detector');
-var parseText = require('../plain-text').parse;
+var detect = require("./detector");
+var parseText = require("../plain-text").parse;
 
 module.exports = function (text, options) {
-
   function getTokenIndexFromString(tokens, token) {
     for (var i = 0; i < tokens.length; i++) {
       if (tokens[i].form.toLowerCase() === token.toLowerCase()) return i;
@@ -5018,8 +4887,8 @@ module.exports = function (text, options) {
     return null;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   options = _.defaults(options, {
     allowEmptyString: false,
@@ -5035,74 +4904,58 @@ module.exports = function (text, options) {
     throw e;
   }
 
-  var lines = text.split('\n');
+  var lines = text.split("\n");
   var depRegex = options.allowBookendWhitespace ? utils.re.sdDependencyNoWhitespace : utils.re.sdDependency;
 
   var chunks = [];
   lines.forEach(function (line) {
-
     var whiteline = line.match(utils.re.whiteline),
         comment = line.match(utils.re.comment),
         dep = line.match(depRegex);
 
     if (whiteline) {} else if (comment) {
-
-      chunks.push({
-        type: 'comment',
-        body: comment[2]
-      });
+      chunks.push({ type: "comment", body: comment[2] });
     } else if (dep) {
-
-      chunks.push({
-        type: 'dependency',
-        deprel: dep[1],
-        head: dep[2],
-        dep: dep[3]
-      });
+      chunks.push({ type: "dependency", deprel: dep[1], head: dep[2], dep: dep[3] });
     } else {
-
       chunks.push({
-        type: 'text',
+        type: "text",
         body: line
       });
     }
   });
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   var tokens = void 0;
   var comments = [];
-  var expecting = ['comment', 'text'];
+  var expecting = ["comment", "text"];
 
   chunks.forEach(function (chunk) {
+    if (expecting.indexOf(chunk.type) === -1) throw new ParserError("expecting " + expecting.join("|") + ", got " + chunk.type, text, options);
 
-    if (expecting.indexOf(chunk.type) === -1) throw new ParserError('expecting ' + expecting.join('|') + ', got ' + chunk.type, text, options);
-
-    if (chunk.type === 'comment') {
-
+    if (chunk.type === "comment") {
       comments.push(chunk.body);
-      expecting = ['comment', 'text'];
-    } else if (chunk.type === 'text') {
-
+      expecting = ["comment", "text"];
+    } else if (chunk.type === "text") {
       tokens = parseText(chunk.body).tokens;
-      expecting = ['dependency'];
-    } else if (chunk.type === 'dependency') {
-
+      expecting = ["dependency"];
+    } else if (chunk.type === "dependency") {
       var index = getTokenIndexFromString(tokens, chunk.dep);
-      if (index === null) throw new ParserError('unable to find token with form ' + chunk.dep, text, options);
+      if (index === null) throw new ParserError("unable to find token with form " + chunk.dep, text, options);
 
       tokens[index].heads = [{
         index: getTokenIndexFromString(tokens, chunk.head),
         deprel: chunk.deprel
       }];
-      expecting = ['dependency'];
+      expecting = ["dependency"];
     } else {
-      throw new ParserError('unrecognized chunk type: ' + chunk.type, text, options);
+      throw new ParserError("unrecognized chunk type: " + chunk.type, text, options);
     }
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,
@@ -5113,61 +4966,61 @@ module.exports = function (text, options) {
 };
 
 },{"../../utils":94,"../plain-text":64,"./detector":67,"underscore":14}],73:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('./utils');
+var utils = require("./utils");
 var GeneratorError = utils.GeneratorError;
 
 var as = {
 
-  'apertium stream': require('./formats/apertium-stream').generate,
-  apertiumStream: require('./formats/apertium-stream').generate,
-  Brackets: require('./formats/brackets').generate,
-  brackets: require('./formats/brackets').generate,
-  CG3: require('./formats/cg3').generate,
-  cg3: require('./formats/cg3').generate,
-  'CoNLL-U': require('./formats/conllu').generate,
-  conllu: require('./formats/conllu').generate,
-  'notatrix serial': require('./formats/notatrix-serial').generate,
-  notatrixSerial: require('./formats/notatrix-serial').generate,
-  Params: require('./formats/params').generate,
-  params: require('./formats/params').generate,
-  'plain text': require('./formats/plain-text').generate,
-  plainText: require('./formats/plain-text').generate,
-  SD: require('./formats/sd').generate,
-  sd: require('./formats/sd').generate
+  "apertium stream": require("./formats/apertium-stream").generate,
+  apertiumStream: require("./formats/apertium-stream").generate,
+  Brackets: require("./formats/brackets").generate,
+  brackets: require("./formats/brackets").generate,
+  CG3: require("./formats/cg3").generate,
+  cg3: require("./formats/cg3").generate,
+  "CoNLL-U": require("./formats/conllu").generate,
+  conllu: require("./formats/conllu").generate,
+  "notatrix serial": require("./formats/notatrix-serial").generate,
+  notatrixSerial: require("./formats/notatrix-serial").generate,
+  Params: require("./formats/params").generate,
+  params: require("./formats/params").generate,
+  "plain text": require("./formats/plain-text").generate,
+  plainText: require("./formats/plain-text").generate,
+  SD: require("./formats/sd").generate,
+  sd: require("./formats/sd").generate
 
 };
 
 module.exports = as;
 
 },{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],74:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
-var nx = require('./nx');
-var errors = require('./utils/errors');
+var _ = require("underscore");
+var nx = require("./nx");
+var errors = require("./utils/errors");
 
 module.exports = _.extend({
 
-  constants: require('./utils/constants'),
-  formats: require('./formats'),
-  funcs: require('./utils/funcs'),
-  regex: require('./utils/regex'),
-  data: require('../data'),
+  constants: require("./utils/constants"),
+  formats: require("./formats"),
+  funcs: require("./utils/funcs"),
+  regex: require("./utils/regex"),
+  data: require("../data"),
 
-  detect: require('./detector'),
-  generate: require('./generator'),
-  parse: require('./parser'),
-  split: require('./splitter'),
-  convert: require('./converter')
+  detect: require("./detector"),
+  generate: require("./generator"),
+  parse: require("./parser"),
+  split: require("./splitter"),
+  convert: require("./converter")
 
 }, nx, errors);
 
 },{"../data":6,"./converter":18,"./detector":19,"./formats":45,"./generator":73,"./nx":80,"./parser":89,"./splitter":90,"./utils/constants":91,"./utils/errors":92,"./utils/funcs":93,"./utils/regex":95,"underscore":14}],75:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5177,12 +5030,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
+var utils = require("../utils");
 var NxError = utils.NxError;
-var NxBaseClass = require('./base-class');
-var SubToken = require('./sub-token');
+var NxBaseClass = require("./base-class");
+var SubToken = require("./sub-token");
 
 /**
  * Abstraction over a CG3 analysis.  Most sentences have just one of these for
@@ -5195,17 +5048,16 @@ var Analysis = function (_NxBaseClass) {
   function Analysis(sent, serial) {
     _classCallCheck(this, Analysis);
 
-    var _this = _possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this, sent, 'Analysis'));
+    var _this = _possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this, sent, "Analysis"));
 
     _this._subTokens = (serial.subTokens || []).map(function (sub) {
       return new SubToken(sent, sub);
     });
-
     return _this;
   }
 
   _createClass(Analysis, [{
-    key: 'subTokens',
+    key: "subTokens",
     get: function get() {
       return this._subTokens;
     }
@@ -5232,7 +5084,7 @@ var NxBaseClass = function NxBaseClass(name) {
 module.exports = NxBaseClass;
 
 },{}],77:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5242,13 +5094,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
-var uuid = require('uuid/v4');
+var _ = require("underscore");
+var uuid = require("uuid/v4");
 
-var utils = require('../utils');
+var utils = require("../utils");
 var NxError = utils.NxError;
-var NxBaseClass = require('./base-class');
-var RelationSet = require('./relation-set');
+var NxBaseClass = require("./base-class");
+var RelationSet = require("./relation-set");
 
 /**
  * Ancestor of Token, SubToken, SuperToken.  Implements methods common
@@ -5280,8 +5132,8 @@ var BaseToken = function (_NxBaseClass) {
     _this.misc = serial.misc;
 
     _this._heads = serial.heads;
-    _this.heads = new RelationSet(_this, 'dependents');
-    _this.dependents = new RelationSet(_this, 'heads');
+    _this.heads = new RelationSet(_this, "dependents");
+    _this.dependents = new RelationSet(_this, "heads");
 
     _this.indices = {
       conllu: null,
@@ -5301,14 +5153,13 @@ var BaseToken = function (_NxBaseClass) {
 
 
   _createClass(BaseToken, [{
-    key: 'addHead',
+    key: "addHead",
     value: function addHead(head, deprel) {
+      if (!(head instanceof BaseToken)) throw new NxError("cannot add head unless it is a token");
 
-      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
+      if (head === this) throw new NxError("token cannot be its own head");
 
-      if (head === this) throw new NxError('token cannot be its own head');
-
-      if (typeof deprel !== 'string' && deprel != null) throw new NxError('deprel must be a string, null, or undefined');
+      if (typeof deprel !== "string" && deprel != null) throw new NxError("deprel must be a string, null, or undefined");
 
       // if we're not enhanced, only can have 1 head at a time
       if (!this.sent.options.enhanced) this.heads.clear();
@@ -5324,12 +5175,11 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'modifyHead',
+    key: "modifyHead",
     value: function modifyHead(head, deprel) {
+      if (!(head instanceof BaseToken)) throw new NxError("cannot add head unless it is a token");
 
-      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
-
-      if (typeof deprel !== 'string' && deprel != null) throw new NxError('deprel must be a string, null, or undefined');
+      if (typeof deprel !== "string" && deprel != null) throw new NxError("deprel must be a string, null, or undefined");
 
       return this.heads.modify(head, deprel);
     }
@@ -5341,10 +5191,9 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'removeHead',
+    key: "removeHead",
     value: function removeHead(head) {
-
-      if (!(head instanceof BaseToken)) throw new NxError('cannot add head unless it is a token');
+      if (!(head instanceof BaseToken)) throw new NxError("cannot add head unless it is a token");
 
       return this.heads.remove(head);
     }
@@ -5354,7 +5203,7 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'removeAllHeads',
+    key: "removeAllHeads",
     value: function removeAllHeads() {
       return this.heads.clear();
     }
@@ -5364,10 +5213,9 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'mapHeads',
+    key: "mapHeads",
     value: function mapHeads(callback) {
-
-      //if (this.sent.options.enhanced) {
+      // if (this.sent.options.enhanced) {
       return this.heads.map(callback);
       /*} else {
         return this.heads.first
@@ -5381,9 +5229,8 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'mapDependents',
+    key: "mapDependents",
     value: function mapDependents(callback) {
-
       return this.dependents.map(callback);
     }
 
@@ -5395,33 +5242,30 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'getHead',
+    key: "getHead",
     value: function getHead(format) {
-
       if (!this.heads.length) return null;
 
-      if (format === 'CoNLL-U') return '' + this.heads.first.token.indices.conllu;
+      if (format === "CoNLL-U") return "" + this.heads.first.token.indices.conllu;
 
-      if (format === 'CG3') return '' + this.heads.first.token.indices.cg3;
+      if (format === "CG3") return "" + this.heads.first.token.indices.cg3;
 
-      return '' + this.heads.first.token.indices.absolute;
+      return "" + this.heads.first.token.indices.absolute;
     }
   }, {
-    key: '_getDeprel',
+    key: "_getDeprel",
     value: function _getDeprel() {
-
       if (!this.heads.length) return null;
 
       return this.heads.first.deprel;
     }
   }, {
-    key: '_getDeps',
+    key: "_getDeps",
     value: function _getDeps(format) {
-
       function getIndex(token) {
-        if (format === 'CoNLL-U') return token.indices.conllu;
+        if (format === "CoNLL-U") return token.indices.conllu;
 
-        if (format === 'CG3') return token.indices.cg3;
+        if (format === "CG3") return token.indices.cg3;
 
         return token.indices.absolute;
       }
@@ -5429,16 +5273,26 @@ var BaseToken = function (_NxBaseClass) {
       if (!this.heads.length || !this.sent.options.enhanced) return [];
 
       return this.mapHeads(utils.noop).sort(function (x, y) {
-
         if (getIndex(x.token) < getIndex(y.token)) return -1;
 
         if (getIndex(x.token) > getIndex(y.token)) return 1;
 
         return 0;
       }).map(function (head) {
-
-        return head.deprel ? getIndex(head.token) + ':' + head.deprel : '' + getIndex(head.token);
+        return head.deprel ? getIndex(head.token) + ":" + head.deprel : "" + getIndex(head.token);
       });
+    }
+
+    /**
+     * Mark this token as "empty" (aka "null")
+     *
+     * @param {boolean} isEmpty
+     */
+
+  }, {
+    key: "setEmpty",
+    value: function setEmpty(isEmpty) {
+      this.isEmpty = isEmpty;
     }
 
     /**
@@ -5448,7 +5302,7 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'walk',
+    key: "walk",
     value: function walk(callback) {
       var i = 0;
       if (this._analyses) return this._analyses.map(function (analysis) {
@@ -5468,7 +5322,7 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'hashFields',
+    key: "hashFields",
     value: function hashFields() {
       var _this2 = this;
 
@@ -5478,23 +5332,23 @@ var BaseToken = function (_NxBaseClass) {
 
       fields = _.flatten(fields);
 
-      var hash = _.intersection(fields, ['form', 'lemma', 'upostag', 'xpostag', 'feats', 'deprel', 'misc', 'isEmpty', 'semicolon']).map(function (field) {
-        return '<' + (_this2[field] || field) + '>';
-      }).join('|');
+      var hash = _.intersection(fields, ["form", "lemma", "upostag", "xpostag", "feats", "deprel", "misc", "isEmpty", "semicolon"]).map(function (field) {
+        return "<" + (_this2[field] || field) + ">";
+      }).join("|");
 
-      if (fields.indexOf('indices') > -1) hash += '|' + _.map(this.indices, function (index) {
-        return '{' + index + '}';
-      }).join('');
+      if (fields.indexOf("indices") > -1) hash += "|" + _.map(this.indices, function (index) {
+        return "{" + index + "}";
+      }).join("");
 
-      if (fields.indexOf('head') > -1) hash += '|(h:' + this.head.token.indices.absolute + ':' + h.deprel + ')';
+      if (fields.indexOf("head") > -1) hash += "|(h:" + this.head.token.indices.absolute + ":" + h.deprel + ")";
 
-      if (fields.indexOf('deps') > -1) hash += '|(d:' + (this.mapDeps(function (d) {
-        return d.token.indices.absolute + ':' + d.deprel;
-      }).join('|') || '') + ')';
+      if (fields.indexOf("deps") > -1) hash += "|(d:" + (this.mapDeps(function (d) {
+        return d.token.indices.absolute + ":" + d.deprel;
+      }).join("|") || "") + ")";
 
-      if (fields.indexOf('analyses') > -1 || fields.indexOf('subTokens') > -1) hash += '|[s:' + (this.walk(function (t) {
+      if (fields.indexOf("analyses") > -1 || fields.indexOf("subTokens") > -1) hash += "|[s:" + (this.walk(function (t) {
         return t.hashFields(fields);
-      }) || '') + ']';
+      }) || "") + "]";
 
       return hash;
     }
@@ -5504,7 +5358,7 @@ var BaseToken = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       var serial = {
 
@@ -5542,21 +5396,21 @@ var BaseToken = function (_NxBaseClass) {
       return serial;
     }
   }, {
-    key: 'isSuperToken',
+    key: "isSuperToken",
     get: function get() {
       return !!(this._analyses || []).reduce(function (total, analysis) {
         return total += analysis._subTokens.length;
       }, 0);
     }
   }, {
-    key: 'value',
+    key: "value",
     get: function get() {
       return this.form || this.lemma;
     }
   }, {
-    key: 'feats',
+    key: "feats",
     get: function get() {
-      return this._feats_init ? this._feats.length ? this._feats.join('|') : null : undefined;
+      return this._feats_init ? this._feats.length ? this._feats.join("|") : null : undefined;
     },
     set: function set(feats) {
       if (feats === undefined) return;
@@ -5565,23 +5419,24 @@ var BaseToken = function (_NxBaseClass) {
       this._feats = feats || [];
     }
   }, {
-    key: 'misc',
+    key: "misc",
     get: function get() {
-      return this._misc_init ? this._misc.length ? this._misc.join('|') : null : undefined;
+      return this._misc_init ? this._misc.length ? this._misc.join("|") : null : undefined;
     },
     set: function set(misc) {
-      // [(serial.misc || ''), (serial.other || []).join('|')].join('|');
+      // [(serial.misc || ''), (serial.other ||
+      // []).join('|')].join('|');
       if (misc === undefined) return;
 
       this._misc_init = true;
       this._misc = misc || [];
     }
   }, {
-    key: 'other',
+    key: "other",
     set: function set(other) {
       if (other === undefined) return;
 
-      if (typeof other === 'string') other = [other];
+      if (typeof other === "string") other = [other];
 
       this._misc_init = true;
       this._misc = (other || []).filter(utils.thin);
@@ -5594,7 +5449,7 @@ var BaseToken = function (_NxBaseClass) {
 module.exports = BaseToken;
 
 },{"../utils":94,"./base-class":76,"./relation-set":83,"underscore":14,"uuid/v4":17}],78:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5604,11 +5459,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var NxBaseClass = require('./base-class');
-var Label = require('./label');
+var utils = require("../utils");
+var NxBaseClass = require("./base-class");
+var Label = require("./label");
 
 /**
  * Abstraction over a CoNLL-U or CG3 comment, allows us to extract and then
@@ -5621,33 +5476,31 @@ var Comment = function (_NxBaseClass) {
   function Comment(sent, body) {
     _classCallCheck(this, Comment);
 
-    var _this = _possibleConstructorReturn(this, (Comment.__proto__ || Object.getPrototypeOf(Comment)).call(this, sent, 'Comment'));
+    var _this = _possibleConstructorReturn(this, (Comment.__proto__ || Object.getPrototypeOf(Comment)).call(this, sent, "Comment"));
 
-    _this.type = 'normal';
+    _this.type = "normal";
     _this.body = body;
 
     var label = body.match(utils.re.commentLabel),
         sentId = body.match(utils.re.commentSentId);
 
     if (label) {
-
       var labels = [];
       label[3].split(/\s/).forEach(function (label) {
         if (label && labels.indexOf(label) === -1) labels.push(label);
       });
 
-      _this.type = 'label';
+      _this.type = "label";
       _this.labels = labels;
     } else if (sentId) {
-
-      _this.type = 'sent-id';
+      _this.type = "sent-id";
       _this.id = sentId[2];
     }
     return _this;
   }
 
   _createClass(Comment, [{
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       return this.body;
     }
@@ -5659,7 +5512,7 @@ var Comment = function (_NxBaseClass) {
 module.exports = Comment;
 
 },{"../utils":94,"./base-class":76,"./label":81,"underscore":14}],79:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5669,23 +5522,23 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
-var fs = require('fs');
-var path = require('path');
-var uuid = require('uuid/v4');
+var _ = require("underscore");
+var fs = require("fs");
+var path = require("path");
+var uuid = require("uuid/v4");
 
-var utils = require('../utils');
+var utils = require("../utils");
 var NxError = utils.NxError;
 
-var split = require('../splitter');
-var detect = require('../detector');
-var parse = require('../parser');
-var generate = require('../generator');
-var convert = require('../converter');
+var split = require("../splitter");
+var detect = require("../detector");
+var parse = require("../parser");
+var generate = require("../generator");
+var convert = require("../converter");
 
-var NxBaseClass = require('./base-class');
-var Labeler = require('./labeler');
-var Sentence = require('./sentence');
+var NxBaseClass = require("./base-class");
+var Labeler = require("./labeler");
+var Sentence = require("./sentence");
 
 /**
  * Abstraction over a collection of Sentences.  NOTE: this class is
@@ -5698,7 +5551,7 @@ var Corpus = function (_NxBaseClass) {
   function Corpus(options) {
     _classCallCheck(this, Corpus);
 
-    var _this = _possibleConstructorReturn(this, (Corpus.__proto__ || Object.getPrototypeOf(Corpus)).call(this, 'Corpus'));
+    var _this = _possibleConstructorReturn(this, (Corpus.__proto__ || Object.getPrototypeOf(Corpus)).call(this, "Corpus"));
 
     _this.treebank_id = uuid();
 
@@ -5714,12 +5567,11 @@ var Corpus = function (_NxBaseClass) {
     _this._index = -1;
     _this._meta = {};
     _this._filterIndex = -1;
-
     return _this;
   }
 
   _createClass(Corpus, [{
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       var _this2 = this;
 
@@ -5735,23 +5587,21 @@ var Corpus = function (_NxBaseClass) {
       };
     }
   }, {
-    key: 'reindex',
+    key: "reindex",
     value: function reindex() {
       this._sentences.forEach(function (sent, i) {
         sent._index = i;
       });
     }
   }, {
-    key: 'first',
+    key: "first",
     value: function first() {
-
       this.index = this.length ? 0 : -1;
       return this;
     }
   }, {
-    key: 'prev',
+    key: "prev",
     value: function prev() {
-
       if (!this.length) return null;
 
       var filtered = this.filtered;
@@ -5763,9 +5613,8 @@ var Corpus = function (_NxBaseClass) {
       return this;
     }
   }, {
-    key: 'next',
+    key: "next",
     value: function next() {
-
       if (!this.length) return null;
 
       var filtered = this.filtered;
@@ -5778,18 +5627,16 @@ var Corpus = function (_NxBaseClass) {
       return this;
     }
   }, {
-    key: 'last',
+    key: "last",
     value: function last() {
-
       var filtered = this.filtered;
       this.index = filtered.length ? filtered.length - 1 : this.length - 1;
 
       return this;
     }
   }, {
-    key: 'getSentence',
+    key: "getSentence",
     value: function getSentence(index) {
-
       if (index == undefined) index = this.index;
 
       if (0 > index || index > this.length - 1) return null;
@@ -5797,17 +5644,16 @@ var Corpus = function (_NxBaseClass) {
       return this._sentences[index] || null;
     }
   }, {
-    key: 'setSentence',
+    key: "setSentence",
     value: function setSentence(index, text) {
-
       if (text === null || text === undefined) {
         // if only passed 1 arg
-        text = index || '';
+        text = index || "";
         index = this.index;
       }
 
       index = parseInt(index);
-      if (isNaN(index) || this.getSentence(index) === null) throw new NxError('cannot set sentence at index ' + index);
+      if (isNaN(index) || this.getSentence(index) === null) throw new NxError("cannot set sentence at index " + index);
 
       this._labeler.onRemove(this.getSentence(index));
       var sent = new Sentence(text, this.options);
@@ -5820,17 +5666,16 @@ var Corpus = function (_NxBaseClass) {
       return sent;
     }
   }, {
-    key: 'insertSentence',
+    key: "insertSentence",
     value: function insertSentence(index, text) {
-
       if (text === null || text === undefined) {
         // if only passed 1 arg
-        text = index || '';
+        text = index || "";
         index = this.index + 1;
       }
 
       index = parseFloat(index);
-      if (isNaN(index)) throw new NxError('cannot insert sentence at index ' + index);
+      if (isNaN(index)) throw new NxError("cannot insert sentence at index " + index);
 
       index = index < 0 ? 0 : index > this.length ? this.length : parseInt(index);
 
@@ -5845,16 +5690,15 @@ var Corpus = function (_NxBaseClass) {
       return sent;
     }
   }, {
-    key: 'removeSentence',
+    key: "removeSentence",
     value: function removeSentence(index) {
-
       if (!this.length) return null;
 
       if (index === undefined) // if not passed args
         index = this.index;
 
       index = parseFloat(index);
-      if (isNaN(index)) throw new NxError('cannot remove sentence at index ' + index);
+      if (isNaN(index)) throw new NxError("cannot remove sentence at index " + index);
 
       index = index < 0 ? 0 : index > this.length - 1 ? this.length - 1 : parseInt(index);
 
@@ -5868,17 +5712,17 @@ var Corpus = function (_NxBaseClass) {
       return removed;
     }
   }, {
-    key: 'pushSentence',
+    key: "pushSentence",
     value: function pushSentence(text) {
       return this.insertSentence(Infinity, text);
     }
   }, {
-    key: 'popSentence',
+    key: "popSentence",
     value: function popSentence(text) {
       return this.removeSentence(Infinity);
     }
   }, {
-    key: 'parse',
+    key: "parse",
     value: function parse(string) {
       var _this3 = this;
 
@@ -5886,19 +5730,19 @@ var Corpus = function (_NxBaseClass) {
       var index = this.index || 0;
 
       splitted.forEach(function (split, i) {
-        //console.log(i, split);
+        // console.log(i, split);
         _this3.insertSentence(index + i, split, false);
       });
 
       return this;
     }
   }, {
-    key: 'readFile',
+    key: "readFile",
     value: function readFile(filepath, next) {
       var _this4 = this;
 
       fs.exists(filepath, function (exists) {
-        if (!exists) throw new NxError('cannot read file: cannot find path ' + filepath);
+        if (!exists) throw new NxError("cannot read file: cannot find path " + filepath);
 
         fs.readFile(filepath, function (err, data) {
           if (err) throw err;
@@ -5913,9 +5757,8 @@ var Corpus = function (_NxBaseClass) {
       });
     }
   }, {
-    key: 'writeFile',
+    key: "writeFile",
     value: function writeFile(format, filepath) {
-
       filepath = this.getWritePath(filepath);
 
       var contents = this.serialize();
@@ -5926,16 +5769,15 @@ var Corpus = function (_NxBaseClass) {
       return this;
     }
   }, {
-    key: 'getWritePath',
+    key: "getWritePath",
     value: function getWritePath(filepath) {
-
       if (filepath) return filepath;
 
       var lastSource = this.sources.slice(-1)[0];
-      return (lastSource || 'export') + '.nxcorpus';
+      return (lastSource || "export") + ".nxcorpus";
     }
   }, {
-    key: 'snapshot',
+    key: "snapshot",
     get: function get() {
       return {
         filename: this.filename,
@@ -5945,29 +5787,29 @@ var Corpus = function (_NxBaseClass) {
       };
     }
   }, {
-    key: 'length',
+    key: "length",
     get: function get() {
       return this._sentences.length;
     }
   }, {
-    key: 'errors',
+    key: "errors",
     get: function get() {
       return this._sentences.filter(function (sent) {
         if (!sent.isParsed) return sent;
       });
     }
   }, {
-    key: 'topLabels',
+    key: "topLabels",
     get: function get() {
       return this._labeler.top;
     }
   }, {
-    key: 'sentence',
+    key: "sentence",
     get: function get() {
       return this.index < 0 ? null : this._sentences[this.index];
     }
   }, {
-    key: 'filtered',
+    key: "filtered",
     get: function get() {
       var _this5 = this;
 
@@ -5976,12 +5818,11 @@ var Corpus = function (_NxBaseClass) {
       }) : [];
     }
   }, {
-    key: 'index',
+    key: "index",
     get: function get() {
       return this._index;
     },
     set: function set(index) {
-
       var filtered = this.filtered,
           total = filtered.length || this.length;
 
@@ -6005,15 +5846,13 @@ var Corpus = function (_NxBaseClass) {
       return this.index;
     }
   }], [{
-    key: 'deserialize',
+    key: "deserialize",
     value: function deserialize(serial) {
-
       var corpus = new Corpus(serial.options);
       corpus.filename = serial.filename || null;
       corpus._meta = serial.meta;
       corpus._labeler = Labeler.deserialize(corpus, serial.labeler);
       corpus._sentences = serial.sentences.map(function (s) {
-
         var sent = new Sentence(s, _.defaults(s.options, serial.options));
         sent._meta = s.meta;
 
@@ -6028,17 +5867,15 @@ var Corpus = function (_NxBaseClass) {
       return corpus;
     }
   }, {
-    key: 'fromString',
+    key: "fromString",
     value: function fromString(string, options) {
-
       var corpus = new Corpus(options);
       corpus.parse(string);
       return corpus;
     }
   }, {
-    key: 'fromFile',
+    key: "fromFile",
     value: function fromFile(filepath, options, next) {
-
       if (next === undefined) {
         next = options;
         options = {};
@@ -6056,26 +5893,26 @@ var Corpus = function (_NxBaseClass) {
 module.exports = Corpus;
 
 },{"../converter":18,"../detector":19,"../generator":73,"../parser":89,"../splitter":90,"../utils":94,"./base-class":76,"./labeler":82,"./sentence":85,"fs":11,"path":12,"underscore":14,"uuid/v4":17}],80:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  NxBaseClass: require('./base-class'),
-  Corpus: require('./corpus'),
-  Labeler: require('./labeler'),
-  Sentence: require('./sentence'),
-  Comment: require('./comment'),
-  BaseToken: require('./base-token'),
-  RootToken: require('./root-token'),
-  Token: require('./token'),
-  Analysis: require('./analysis'),
-  SubToken: require('./sub-token'),
-  RelationSet: require('./relation-set')
+  NxBaseClass: require("./base-class"),
+  Corpus: require("./corpus"),
+  Labeler: require("./labeler"),
+  Sentence: require("./sentence"),
+  Comment: require("./comment"),
+  BaseToken: require("./base-token"),
+  RootToken: require("./root-token"),
+  Token: require("./token"),
+  Analysis: require("./analysis"),
+  SubToken: require("./sub-token"),
+  RelationSet: require("./relation-set")
 
 };
 
 },{"./analysis":75,"./base-class":76,"./base-token":77,"./comment":78,"./corpus":79,"./labeler":82,"./relation-set":83,"./root-token":84,"./sentence":85,"./sub-token":86,"./token":87}],81:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6085,10 +5922,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var NxBaseClass = require('./base-class');
+var utils = require("../utils");
+var NxBaseClass = require("./base-class");
 
 /**
  * Allows us to extract labels from "field = value"-type comments, so that
@@ -6102,18 +5939,17 @@ var Label = function (_NxBaseClass) {
   function Label(name) {
     _classCallCheck(this, Label);
 
-    var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, 'Label'));
+    var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, "Label"));
 
     _this.name = name;
     _this.bColor = utils.hashStringToHex(name);
     _this.tColor = utils.getContrastingColor(_this.bColor);
-    _this.desc = '';
-
+    _this.desc = "";
     return _this;
   }
 
   _createClass(Label, [{
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       return {
         name: this.name,
@@ -6123,9 +5959,8 @@ var Label = function (_NxBaseClass) {
       };
     }
   }], [{
-    key: 'deserialize',
+    key: "deserialize",
     value: function deserialize(serial) {
-
       var label = new Label(serial.name);
       label.desc = serial.desc;
       label.bColor = serial.bColor;
@@ -6140,11 +5975,13 @@ var Label = function (_NxBaseClass) {
         throw new DeserializationError(`cannot set name to "${state.name}"`);
        state.desc = state.desc || '';
       if (typeof state.desc !== 'string')
-        throw new DeserializationError(`cannot set description to non-string value`);
+        throw new DeserializationError(`cannot set description to non-string
+    value`);
        this.name = state.name;
       this.desc = state.desc;
        if (!this.changeColor(state.bColor))
-        throw new DeserializationError(`cannot set background color to "${state.bColor}"`);
+        throw new DeserializationError(`cannot set background color to
+    "${state.bColor}"`);
     }
      render(labeler) {
        const inComments = labeler.has(this.name),
@@ -6260,7 +6097,7 @@ var Label = function (_NxBaseClass) {
 module.exports = Label;
 
 },{"../utils":94,"./base-class":76,"underscore":14}],82:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6272,11 +6109,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var NxBaseClass = require('./base-class');
-var Label = require('./label');
+var utils = require("../utils");
+var NxBaseClass = require("./base-class");
+var Label = require("./label");
 
 /**
  * Abstraction to hold a mapping of String => Label pairs, as well as some
@@ -6289,13 +6126,12 @@ var Labeler = function (_NxBaseClass) {
   function Labeler(corpus) {
     _classCallCheck(this, Labeler);
 
-    var _this = _possibleConstructorReturn(this, (Labeler.__proto__ || Object.getPrototypeOf(Labeler)).call(this, 'Labeler'));
+    var _this = _possibleConstructorReturn(this, (Labeler.__proto__ || Object.getPrototypeOf(Labeler)).call(this, "Labeler"));
 
     _this.corpus = corpus;
 
     _this._labels = {};
     _this._filter = new Set();
-
     return _this;
   }
 
@@ -6313,7 +6149,7 @@ var Labeler = function (_NxBaseClass) {
 
 
   _createClass(Labeler, [{
-    key: 'sort',
+    key: "sort",
     value: function sort() {
       var _this2 = this;
 
@@ -6322,14 +6158,12 @@ var Labeler = function (_NxBaseClass) {
       };
 
       return Object.keys(this._labels).sort(function (x, y) {
-
         if (size(x) < size(y)) return 1;
 
         if (size(x) > size(y)) return -1;
 
         return 0;
       }).map(function (name) {
-
         return {
           name: name,
           size: _this2._labels[name]._sents.size
@@ -6337,7 +6171,7 @@ var Labeler = function (_NxBaseClass) {
       });
     }
   }, {
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       return {
         labels: _.map(this._labels, function (label) {
@@ -6347,7 +6181,7 @@ var Labeler = function (_NxBaseClass) {
       };
     }
   }, {
-    key: 'get',
+    key: "get",
 
 
     /**
@@ -6368,7 +6202,7 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'count',
+    key: "count",
     value: function count(name) {
       return this._labels[name] ? this._labels[name]._sents.size : 0;
     }
@@ -6382,12 +6216,11 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'sentenceHasLabel',
+    key: "sentenceHasLabel",
     value: function sentenceHasLabel(sent, searching) {
-
       var hasLabel = false;
       sent.comments.forEach(function (comment) {
-        if (comment.type === 'label') {
+        if (comment.type === "label") {
           comment.labels.forEach(function (name) {
             if (name === searching) hasLabel = true;
           });
@@ -6405,13 +6238,13 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'sentenceInFilter',
+    key: "sentenceInFilter",
     value: function sentenceInFilter(sent) {
       var _this3 = this;
 
       var inFilter = false;
       sent.comments.forEach(function (comment) {
-        if (comment.type === 'label') {
+        if (comment.type === "label") {
           comment.labels.forEach(function (name) {
             if (_this3._filter.has(name)) inFilter = true;
           });
@@ -6428,7 +6261,7 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'addToFilter',
+    key: "addToFilter",
     value: function addToFilter(name) {
       if (this.get(name)) return this._filter.add(name);
     }
@@ -6440,7 +6273,7 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'removeFromFilter',
+    key: "removeFromFilter",
     value: function removeFromFilter(name) {
       return this._filter.delete(name);
     }
@@ -6452,14 +6285,13 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'onAdd',
+    key: "onAdd",
     value: function onAdd(sent) {
       var _this4 = this;
 
       sent.comments.forEach(function (comment) {
-        if (comment.type === 'label') {
+        if (comment.type === "label") {
           comment.labels.forEach(function (name) {
-
             _this4.addLabel(name, [sent]);
           });
         }
@@ -6473,14 +6305,13 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'onRemove',
+    key: "onRemove",
     value: function onRemove(sent) {
       var _this5 = this;
 
       sent.comments.forEach(function (comment) {
-        if (comment.type === 'label') {
+        if (comment.type === "label") {
           comment.labels.forEach(function (name) {
-
             _this5.removeLabel(name, [sent]);
           });
         }
@@ -6496,10 +6327,9 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'addLabel',
+    key: "addLabel",
     value: function addLabel(name) {
       var sents = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
 
       var label = this.get(name);
       if (label) {
@@ -6507,7 +6337,6 @@ var Labeler = function (_NxBaseClass) {
 
         (_label$_sents = label._sents).add.apply(_label$_sents, _toConsumableArray(sents));
       } else {
-
         label = {
           _label: new Label(name),
           _sents: new Set()
@@ -6517,8 +6346,7 @@ var Labeler = function (_NxBaseClass) {
 
       sents.forEach(function (sent) {
         sent.comments.forEach(function (comment) {
-          if (comment.type === 'label') {
-
+          if (comment.type === "label") {
             comment.labels.push(name);
             label._sents.add(sent);
           }
@@ -6537,16 +6365,14 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'removeLabel',
+    key: "removeLabel",
     value: function removeLabel(name, sents) {
-
       var label = this.get(name);
       if (!label) return false;
 
       (sents || label._sents).forEach(function (sent) {
         sent.comments.forEach(function (comment) {
-          if (comment.type === 'label') {
-
+          if (comment.type === "label") {
             var index = comment.labels.indexOf(name);
             comment.labels.splice(index, 1);
           }
@@ -6567,9 +6393,8 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'changeLabelName',
+    key: "changeLabelName",
     value: function changeLabelName(oldName, newName) {
-
       if (this.get(newName)) return false; // already exists
 
       var oldLabel = this.removeLabel(oldName);
@@ -6592,14 +6417,12 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'changeLabelColor',
+    key: "changeLabelColor",
     value: function changeLabelColor(name, color) {
-
       var label = this.get(name);
       if (!label) return false;
 
       if (color) {
-
         color = (color.match(utils.re.hexColorSixDigit) || [])[1];
         var int = parseInt(color, 16);
         if (isNaN(int) || int < 0 || int > magic) return false; // out of bounds
@@ -6622,21 +6445,19 @@ var Labeler = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'changeLabelDesc',
+    key: "changeLabelDesc",
     value: function changeLabelDesc(name, desc) {
-
       var label = this.get(name);
       if (!label) return false;
 
-      if (typeof desc !== 'string') return false;
+      if (typeof desc !== "string") return false;
 
       label._label.desc = desc;
       return true;
     }
   }], [{
-    key: 'deserialize',
+    key: "deserialize",
     value: function deserialize(corpus, serial) {
-
       var labeler = new Labeler(corpus);
       serial.labels.forEach(function (label) {
         return labeler.addLabel(label.name);
@@ -6653,7 +6474,7 @@ var Labeler = function (_NxBaseClass) {
 module.exports = Labeler;
 
 },{"../utils":94,"./base-class":76,"./label":81,"underscore":14}],83:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6663,10 +6484,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var NxBaseClass = require('./base-class');
+var utils = require("../utils");
+var NxBaseClass = require("./base-class");
 
 var RelationSet = function (_NxBaseClass) {
   _inherits(RelationSet, _NxBaseClass);
@@ -6674,24 +6495,22 @@ var RelationSet = function (_NxBaseClass) {
   function RelationSet(token, partner) {
     _classCallCheck(this, RelationSet);
 
-    var _this = _possibleConstructorReturn(this, (RelationSet.__proto__ || Object.getPrototypeOf(RelationSet)).call(this, 'RelationSet'));
+    var _this = _possibleConstructorReturn(this, (RelationSet.__proto__ || Object.getPrototypeOf(RelationSet)).call(this, "RelationSet"));
 
     _this.token = token;
     _this.partner = partner;
     _this._items = [];
-
     return _this;
   }
 
   _createClass(RelationSet, [{
-    key: 'map',
+    key: "map",
     value: function map(callback) {
       return this._items.map(callback);
     }
   }, {
-    key: 'has',
+    key: "has",
     value: function has(token) {
-
       var has = false;
       this.map(function (item) {
         if (item.token === token) has = true;
@@ -6700,10 +6519,9 @@ var RelationSet = function (_NxBaseClass) {
       return has;
     }
   }, {
-    key: 'add',
+    key: "add",
     value: function add(token, deprel) {
       var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
 
       if (this.has(token)) {
         this.modify(token, deprel);
@@ -6720,10 +6538,9 @@ var RelationSet = function (_NxBaseClass) {
       return true;
     }
   }, {
-    key: 'modify',
+    key: "modify",
     value: function modify(token, deprel) {
       var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
 
       if (!this.has(token)) return false;
 
@@ -6740,10 +6557,9 @@ var RelationSet = function (_NxBaseClass) {
       return ret;
     }
   }, {
-    key: 'remove',
+    key: "remove",
     value: function remove(token) {
       var origin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
 
       var at = -1;
 
@@ -6760,12 +6576,11 @@ var RelationSet = function (_NxBaseClass) {
       return removed || null;
     }
   }, {
-    key: 'clear',
+    key: "clear",
     value: function clear() {
       var _this2 = this;
 
       var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
 
       this.map(function (item) {
         if (origin) item.token[_this2.partner].remove(_this2.token);
@@ -6773,12 +6588,12 @@ var RelationSet = function (_NxBaseClass) {
       this._items = [];
     }
   }, {
-    key: 'length',
+    key: "length",
     get: function get() {
       return this._items.length;
     }
   }, {
-    key: 'first',
+    key: "first",
     get: function get() {
       return this._items[0] || null;
     }
@@ -6790,7 +6605,7 @@ var RelationSet = function (_NxBaseClass) {
 module.exports = RelationSet;
 
 },{"../utils":94,"./base-class":76,"underscore":14}],84:[function(require,module,exports){
-'use strict';
+"use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6798,10 +6613,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var BaseToken = require('./base-token');
+var utils = require("../utils");
+var BaseToken = require("./base-token");
 
 var RootToken = function (_BaseToken) {
   _inherits(RootToken, _BaseToken);
@@ -6809,9 +6624,9 @@ var RootToken = function (_BaseToken) {
   function RootToken(sent) {
     _classCallCheck(this, RootToken);
 
-    var _this = _possibleConstructorReturn(this, (RootToken.__proto__ || Object.getPrototypeOf(RootToken)).call(this, sent, 'RootToken'));
+    var _this = _possibleConstructorReturn(this, (RootToken.__proto__ || Object.getPrototypeOf(RootToken)).call(this, sent, "RootToken"));
 
-    _this.form = 'ROOT';
+    _this.form = "ROOT";
     _this.indices = {
       absolute: 0,
       conllu: 0,
@@ -6827,7 +6642,7 @@ var RootToken = function (_BaseToken) {
 module.exports = RootToken;
 
 },{"../utils":94,"./base-token":77,"underscore":14}],85:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6837,22 +6652,22 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
+var utils = require("../utils");
 var NxError = utils.NxError;
 var ToolError = utils.ToolError;
-var parse = require('../parser');
-var generate = require('../generator');
+var parse = require("../parser");
+var generate = require("../generator");
 
-var NxBaseClass = require('./base-class');
-var Comment = require('./comment');
-var BaseToken = require('./base-token');
-var Token = require('./token');
-var RootToken = require('./root-token');
-var update = require('./update');
-var Analysis = require('./analysis');
-var SubToken = require('./sub-token');
+var NxBaseClass = require("./base-class");
+var Comment = require("./comment");
+var BaseToken = require("./base-token");
+var Token = require("./token");
+var RootToken = require("./root-token");
+var update = require("./update");
+var Analysis = require("./analysis");
+var SubToken = require("./sub-token");
 
 /**
  * Abstraction over a Sentence.  Holds an array of comments and of tokens,
@@ -6865,11 +6680,11 @@ var Sentence = function (_NxBaseClass) {
   function Sentence(serial, options) {
     _classCallCheck(this, Sentence);
 
-    var _this = _possibleConstructorReturn(this, (Sentence.__proto__ || Object.getPrototypeOf(Sentence)).call(this, 'Sentence'));
+    var _this = _possibleConstructorReturn(this, (Sentence.__proto__ || Object.getPrototypeOf(Sentence)).call(this, "Sentence"));
 
     _this._meta = {};
 
-    serial = serial || '';
+    serial = serial || "";
     options = options || {};
     options = _.defaults(options, {
       interpretAs: null,
@@ -6886,26 +6701,23 @@ var Sentence = function (_NxBaseClass) {
     _this.Error = null;
 
     try {
-
       if (options.interpretAs) {
-
         // interpret as a particular format if passed option
         serial = parse.as[options.interpretAs](serial, options);
       } else {
-
         // otherwise, get an array of possible interpretations
         serial = parse(serial, options);
 
         // choose one of them if possible
         if (serial.length === 0) {
-          throw new NxError('Unable to parse: unrecognized format', _this);
+          throw new NxError("Unable to parse: unrecognized format", _this);
         } else if (serial.length === 1) {
           serial = serial[0];
         } else {
-          throw new NxError('Unable to parse: ambiguous format (' + serial.join(', ') + ')', _this);
+          throw new NxError("Unable to parse: ambiguous format (" + serial.join(", ") + ")", _this);
         }
 
-        if (serial.isParsed === false) throw new NxError('Cannot parse explicitly unparsed serial');
+        if (serial.isParsed === false) throw new NxError("Cannot parse explicitly unparsed serial");
       }
 
       _this.options = serial.options;
@@ -6921,9 +6733,7 @@ var Sentence = function (_NxBaseClass) {
       _this.attach();
       _this.isParsed = true;
     } catch (e) {
-
       if (e instanceof NxError || e instanceof ToolError) {
-
         _this.options = serial.options || options;
         _this.comments = [];
         _this.tokens = [];
@@ -6944,7 +6754,7 @@ var Sentence = function (_NxBaseClass) {
 
 
   _createClass(Sentence, [{
-    key: 'to',
+    key: "to",
     value: function to(format, options) {
       return generate[format](this, options);
     }
@@ -6954,7 +6764,7 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'serialize',
+    key: "serialize",
     value: function serialize() {
       var master = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -6979,16 +6789,14 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'iterate',
+    key: "iterate",
     value: function iterate(callback) {
       for (var i = 0; i < this.tokens.length; i++) {
-
         var token = this.tokens[i];
         callback(token, i, null, null);
 
         for (var j = 0; j < token._analyses.length; j++) {
           for (var k = 0; k < token._analyses[j]._subTokens.length; k++) {
-
             var subToken = token._analyses[j]._subTokens[k];
             callback(subToken, i, j, k);
           }
@@ -7001,9 +6809,8 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'query',
+    key: "query",
     value: function query(predicate) {
-
       var matches = [];
       this.iterate(function (token) {
         if (predicate(token)) matches.push(token);
@@ -7012,9 +6819,8 @@ var Sentence = function (_NxBaseClass) {
       return matches;
     }
   }, {
-    key: 'index',
+    key: "index",
     value: function index() {
-
       var absolute = 0,
           majorToken = null,
           superToken = null,
@@ -7024,7 +6830,6 @@ var Sentence = function (_NxBaseClass) {
           cytoscape = -1;
 
       this.iterate(function (token, i, j, k) {
-
         token.indices.sup = i;
         token.indices.ana = j;
         token.indices.sub = k;
@@ -7037,11 +6842,10 @@ var Sentence = function (_NxBaseClass) {
         if (token.subTokens && token.subTokens.length === 0) token.indices.cytoscape = ++cytoscape;
 
         if (j === null || k === null) {
-
           majorToken = token;
 
           if (superToken) {
-            superToken.token.indices.conllu = superToken.start + '-' + superToken.stop;
+            superToken.token.indices.conllu = superToken.start + "-" + superToken.stop;
             superToken = null;
           }
 
@@ -7053,7 +6857,6 @@ var Sentence = function (_NxBaseClass) {
               analysis: token._i
             };
           } else {
-
             if (token.isEmpty) {
               empty += 1;
             } else {
@@ -7061,12 +6864,10 @@ var Sentence = function (_NxBaseClass) {
               conllu += 1;
             }
 
-            token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+            token.indices.conllu = empty ? conllu + "." + empty : conllu;
           }
         } else {
-
           if (majorToken._i === j) {
-
             if (token.isEmpty) {
               empty += 1;
             } else {
@@ -7074,21 +6875,21 @@ var Sentence = function (_NxBaseClass) {
               conllu += 1;
             }
 
-            token.indices.conllu = empty ? conllu + '.' + empty : conllu;
+            token.indices.conllu = empty ? conllu + "." + empty : conllu;
           }
 
           if (superToken) {
             if (superToken.start === null) {
-              superToken.start = empty ? conllu + '.' + empty : conllu;
+              superToken.start = empty ? conllu + "." + empty : conllu;
             } else {
-              superToken.stop = empty ? conllu + '.' + empty : conllu;
+              superToken.stop = empty ? conllu + "." + empty : conllu;
             }
           }
         }
       });
 
       if (superToken) {
-        superToken.token.indices.conllu = superToken.start + '-' + superToken.stop;
+        superToken.token.indices.conllu = superToken.start + "-" + superToken.stop;
         superToken = null;
       }
 
@@ -7096,25 +6897,21 @@ var Sentence = function (_NxBaseClass) {
       return this;
     }
   }, {
-    key: 'attach',
+    key: "attach",
     value: function attach() {
-
       this.iterate(function (token) {
         (token._heads || []).forEach(function (dependency, i) {
-
           if (i) token.sent.options.enhanced = true;
 
-          if (dependency.index == '0') {
-
-            token.addHead(token.sent.root, 'root');
+          if (dependency.index == "0") {
+            token.addHead(token.sent.root, "root");
           } else {
-
             var query = token.sent.query(function (token) {
               return token.indices.serial === dependency.index;
             });
             if (query.length !== 1) {
-              //console.log(token)
-              throw new NxError('cannot locate token with serial index "' + dependency.index + '"');
+              // console.log(token)
+              throw new NxError("cannot locate token with serial index \"" + dependency.index + "\"");
             }
 
             token.addHead(query[0], dependency.deprel);
@@ -7143,7 +6940,7 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'enhance',
+    key: "enhance",
     value: function enhance() {
       this.options.enhanced = true;
 
@@ -7161,7 +6958,7 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'unenhance',
+    key: "unenhance",
     value: function unenhance() {
       this.options.enhanced = false;
       return this;
@@ -7175,9 +6972,8 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'getSuperToken',
+    key: "getSuperToken",
     value: function getSuperToken(token) {
-
       var superToken = null;
 
       this.iterate(function (tok) {
@@ -7203,21 +6999,20 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'merge',
+    key: "merge",
     value: function merge(src, tar) {
+      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError("unable to merge: src and tar must both be tokens");
 
-      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError('unable to merge: src and tar must both be tokens');
+      if (src.isSuperToken || tar.isSuperToken) throw new NxError("unable to merge: cannot merge superTokens");
 
-      if (src.isSuperToken || tar.isSuperToken) throw new NxError('unable to merge: cannot merge superTokens');
+      if (src.name === "SubToken" || tar.name === "SuperToken") throw new NxError("unable to merge: cannot merge subTokens");
 
-      if (src.name === 'SubToken' || tar.name === 'SuperToken') throw new NxError('unable to merge: cannot merge subTokens');
-
-      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError('unable to merge: tokens too far apart');
+      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError("unable to merge: tokens too far apart");
 
       // basic copying
       src.semicolon = src.semicolon || tar.semicolon;
       src.isEmpty = src.isEmpty || tar.isEmpty;
-      src.form = (src.form || '') + (tar.form || '') || null;
+      src.form = (src.form || "") + (tar.form || "") || null;
       src.lemma = src.lemma || tar.lemma;
       src.upostag = src.upostag || tar.upostag;
       src.xpostag = src.xpostag || tar.xpostag;
@@ -7255,16 +7050,15 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'combine',
+    key: "combine",
     value: function combine(src, tar) {
+      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError("unable to combine: src and tar must both be tokens");
 
-      if (!(src instanceof BaseToken) || !(tar instanceof BaseToken)) throw new NxError('unable to combine: src and tar must both be tokens');
+      if (src.isSuperToken || tar.isSuperToken) throw new NxError("unable to combine: cannot combine superTokens");
 
-      if (src.isSuperToken || tar.isSuperToken) throw new NxError('unable to combine: cannot combine superTokens');
+      if (src.name === "SubToken" || tar.name === "SuperToken") throw new NxError("unable to combine: cannot combine subTokens");
 
-      if (src.name === 'SubToken' || tar.name === 'SuperToken') throw new NxError('unable to combine: cannot combine subTokens');
-
-      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError('unable to combine: tokens too far apart');
+      if (Math.abs(tar.indices.absolute - src.indices.absolute) > 1) throw new NxError("unable to combine: tokens too far apart");
 
       // get a new token to put things into
       var superToken = new Token(this, {});
@@ -7272,7 +7066,7 @@ var Sentence = function (_NxBaseClass) {
       superToken._i = 0;
 
       // get the new superToken form from the subTokens
-      superToken.form = (src.form || '') + (tar.form || '') || null;
+      superToken.form = (src.form || "") + (tar.form || "") || null;
 
       // make new subToken objects from src and tar
       var _src = new SubToken(this, {});
@@ -7309,10 +7103,8 @@ var Sentence = function (_NxBaseClass) {
       _tar._misc = _tar._misc_init ? tar._misc.slice() : undefined;
 
       if (src.indices.absolute < tar.indices.absolute) {
-
         superToken.analysis._subTokens.push(_src, _tar);
       } else {
-
         superToken.analysis._subTokens.push(_tar, _src);
       }
 
@@ -7361,16 +7153,14 @@ var Sentence = function (_NxBaseClass) {
      */
 
   }, {
-    key: 'split',
+    key: "split",
     value: function split(src, splitAtIndex) {
       var _this2 = this;
 
-      if (!(src instanceof BaseToken)) throw new NxError('unable to split: src must be a token');
+      if (!(src instanceof BaseToken)) throw new NxError("unable to split: src must be a token");
 
       if (src.isSuperToken) {
-
         var tokens = src.subTokens.map(function (subToken) {
-
           var token = new Token(_this2, {});
 
           // basic copying
@@ -7408,15 +7198,14 @@ var Sentence = function (_NxBaseClass) {
 
         // insert the new tokens into its place
         this.tokens = this.tokens.slice(0, index).concat(tokens).concat(this.tokens.slice(index));
-      } else if (src.name === 'SubToken') {
-
+      } else if (src.name === "SubToken") {
         splitAtIndex = parseInt(splitAtIndex);
-        if (isNaN(splitAtIndex)) throw new NxError('unable to split: cannot split at index ' + splitAtIndex);
+        if (isNaN(splitAtIndex)) throw new NxError("unable to split: cannot split at index " + splitAtIndex);
 
         var subToken = new SubToken(this, {});
 
-        var beginning = (src.form || '').slice(0, splitAtIndex) || '_';
-        var ending = (src.form || '').slice(splitAtIndex) || '_';
+        var beginning = (src.form || "").slice(0, splitAtIndex) || "_";
+        var ending = (src.form || "").slice(splitAtIndex) || "_";
 
         src.form = beginning;
         subToken.form = ending;
@@ -7428,14 +7217,13 @@ var Sentence = function (_NxBaseClass) {
         // insert the new subToken after it
         superToken._analyses[src.indices.ana]._subTokens = subTokens.slice(0, _index + 1).concat(subToken).concat(subTokens.slice(_index + 1));
       } else {
-
         splitAtIndex = parseInt(splitAtIndex);
-        if (isNaN(splitAtIndex)) throw new NxError('unable to split: cannot split at index ' + splitAtIndex);
+        if (isNaN(splitAtIndex)) throw new NxError("unable to split: cannot split at index " + splitAtIndex);
 
         var token = new Token(this, {});
 
-        var _beginning = (src.form || '').slice(0, splitAtIndex) || '_';
-        var _ending = (src.form || '').slice(splitAtIndex) || '_';
+        var _beginning = (src.form || "").slice(0, splitAtIndex) || "_";
+        var _ending = (src.form || "").slice(splitAtIndex) || "_";
 
         src.form = _beginning;
         token.form = _ending;
@@ -7456,7 +7244,7 @@ var Sentence = function (_NxBaseClass) {
 module.exports = Sentence;
 
 },{"../generator":73,"../parser":89,"../utils":94,"./analysis":75,"./base-class":76,"./base-token":77,"./comment":78,"./root-token":84,"./sub-token":86,"./token":87,"./update":88,"underscore":14}],86:[function(require,module,exports){
-'use strict';
+"use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7464,10 +7252,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var BaseToken = require('./base-token');
+var utils = require("../utils");
+var BaseToken = require("./base-token");
 
 var SubToken = function (_BaseToken) {
   _inherits(SubToken, _BaseToken);
@@ -7475,7 +7263,7 @@ var SubToken = function (_BaseToken) {
   function SubToken(sent, serial) {
     _classCallCheck(this, SubToken);
 
-    return _possibleConstructorReturn(this, (SubToken.__proto__ || Object.getPrototypeOf(SubToken)).call(this, sent, 'SubToken', serial));
+    return _possibleConstructorReturn(this, (SubToken.__proto__ || Object.getPrototypeOf(SubToken)).call(this, sent, "SubToken", serial));
   }
 
   return SubToken;
@@ -7484,7 +7272,7 @@ var SubToken = function (_BaseToken) {
 module.exports = SubToken;
 
 },{"../utils":94,"./base-token":77,"underscore":14}],87:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -7494,11 +7282,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
-var BaseToken = require('./base-token');
-var Analysis = require('./analysis');
+var utils = require("../utils");
+var BaseToken = require("./base-token");
+var Analysis = require("./analysis");
 
 var Token = function (_BaseToken) {
   _inherits(Token, _BaseToken);
@@ -7506,25 +7294,24 @@ var Token = function (_BaseToken) {
   function Token(sent, serial) {
     _classCallCheck(this, Token);
 
-    var _this = _possibleConstructorReturn(this, (Token.__proto__ || Object.getPrototypeOf(Token)).call(this, sent, 'Token', serial));
+    var _this = _possibleConstructorReturn(this, (Token.__proto__ || Object.getPrototypeOf(Token)).call(this, sent, "Token", serial));
 
     _this._analyses = (serial.analyses || []).map(function (ana) {
       return new Analysis(sent, ana);
     });
     _this._i = _this._analyses.length ? 0 : null;
-
     return _this;
   }
 
   _createClass(Token, [{
-    key: 'analysis',
+    key: "analysis",
     get: function get() {
       if (this._i === null) return null;
 
       return this._analyses[this._i];
     }
   }, {
-    key: 'subTokens',
+    key: "subTokens",
     get: function get() {
       return this.analysis ? this.analysis.subTokens : [];
     }
@@ -7536,14 +7323,14 @@ var Token = function (_BaseToken) {
 module.exports = Token;
 
 },{"../utils":94,"./analysis":75,"./base-token":77,"underscore":14}],88:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('../utils');
+var utils = require("../utils");
 var NxError = utils.NxError;
-var formats = require('../formats');
-var detect = require('../detector');
+var formats = require("../formats");
+var detect = require("../detector");
 
 function debug(show) {
   var _console;
@@ -7552,11 +7339,11 @@ function debug(show) {
     args[_key - 1] = arguments[_key];
   }
 
-  if (show) (_console = console).log.apply(_console, ['d>'].concat(args));
+  if (show) (_console = console).log.apply(_console, ["d>"].concat(args));
 }
 
 function compareFields(fields, t1, t2, maxDistance) {
-  debug(false, 'comparing fields at maxDistance: ' + maxDistance);
+  debug(false, "comparing fields at maxDistance: " + maxDistance);
 
   /*
   const compare = field => {
@@ -7576,9 +7363,11 @@ function compareFields(fields, t1, t2, maxDistance) {
         t2.mapHeads((h2, d2) => {
          });
       });
-       console.log('head', t1._heads.toString('serial', 'dep'), t2._heads.toString('serial', 'dep'));
+       console.log('head', t1._heads.toString('serial', 'dep'),
+  t2._heads.toString('serial', 'dep'));
      } else if (field === 'deps') {
-       console.log('deps', t1._deps.toString('serial', 'dep'), t2._deps.toString('serial', 'dep'));
+       console.log('deps', t1._deps.toString('serial', 'dep'),
+  t2._deps.toString('serial', 'dep'));
      } else if (t1[field] !== t2[field]) {
       if (field === 'analyses') {
          console.log(t1.analyses, t2.analyses)
@@ -7602,67 +7391,63 @@ function compareFields(fields, t1, t2, maxDistance) {
 
   console.log(fields, utils.combine(fields, fields.length - maxDistance));
 
-  var h1 = t1.hashFields(fields, 'indices'),
-      h2 = t2.hashFields(fields, 'indices');
+  var h1 = t1.hashFields(fields, "indices"),
+      h2 = t2.hashFields(fields, "indices");
 
   if (h1 === h2) return true;
 
   console.log();
-  console.log('h1', h1);
-  console.log('h2', h2);
+  console.log("h1", h1);
+  console.log("h2", h2);
   console.log();
   return false;
 
-  debug(false, 'distance: ' + distance);
+  debug(false, "distance: " + distance);
   return distance <= maxDistance;
 }
 
 function compareIndices(_arg, t1, t2, maxDistance) {
-  debug(false, 'comparing fields at maxDistance: ' + maxDistance);
+  debug(false, "comparing fields at maxDistance: " + maxDistance);
 
   var distance = 0;
-  ['conllu', 'cg3', 'cytoscape', 'absolute'].forEach(function (indexName) {
-
-    debug(false, 'comparing "' + indexName + '" (' + t1.indices[indexName] + ', ' + t2.indices[indexName] + ')');
+  ["conllu", "cg3", "cytoscape", "absolute"].forEach(function (indexName) {
+    debug(false, "comparing \"" + indexName + "\" (" + t1.indices[indexName] + ", " + t2.indices[indexName] + ")");
     if (t1.indices[indexName] !== t2.indices[indexName]) distance += 1;
   });
 
-  debug(false, 'distance: ' + distance);
+  debug(false, "distance: " + distance);
   return distance <= maxDistance;
 }
 
 function updateToken(fields, t1, t2) {
-  debug(false, 'updating');
+  debug(false, "updating");
 
   fields.forEach(function (field) {
-    debug(false, 'trying to update "' + field + '"');
+    debug(false, "trying to update \"" + field + "\"");
 
     switch (field) {
-      case 'subTokens':
+      case "subTokens":
         if (t1.subTokens.length || t2.subTokens.length) {
-          throw new Error('not implemented');
+          throw new Error("not implemented");
         } else {
           // pass
         }
         break;
 
       default:
-        debug(false, 'updating (' + t1[field] + ' => ' + t2[field] + ')');
+        debug(false, "updating (" + t1[field] + " => " + t2[field] + ")");
         t1[field] = t2[field];
     }
   });
 }
 
 function getDistance(fields, t1, t2) {
-
   fields = fields.filter(function (field) {
     return t1[field] !== undefined;
   });
   for (var dist = 0; dist < fields.length; dist++) {
-
     var match = false;
     utils.combine(fields, fields.length - dist).forEach(function (comb) {
-
       var hash1 = t1.hashFields(comb),
           hash2 = t2.hashFields(comb);
 
@@ -7682,31 +7467,28 @@ function getMatches(s, t) {
   fields = _.flatten(fields);
 
   var s_unmatched = new Set(s.map(function (token) {
-    return '' + token.indices.absolute;
+    return "" + token.indices.absolute;
   }));
   var t_unmatched = new Set(t.map(function (token) {
-    return '' + token.indices.absolute;
+    return "" + token.indices.absolute;
   }));
 
   // build distances between nodes
   var rawDistances = {};
   s.forEach(function (t1) {
-
     var i1 = t1.indices.absolute;
     rawDistances[i1] = {};
 
     t.forEach(function (t2) {
-
       var i2 = t2.indices.absolute;
       rawDistances[i1][i2] = getDistance(fields, t1, t2);
     });
   });
 
-  //console.log(rawDistances);
+  // console.log(rawDistances);
 
   var neighbors = {};
   _.each(rawDistances, function (targets, source) {
-
     neighbors[source] = [];
 
     var min = Infinity;
@@ -7718,20 +7500,19 @@ function getMatches(s, t) {
     });
   });
 
-  //console.log(neighbors);
+  // console.log(neighbors);
 
   var lookup = function lookup(prefix, index) {
-    return key[prefix + '_' + index];
+    return key[prefix + "_" + index];
   };
 
   var matches = new Set();
 
   _.each(neighbors, function (neighbors, index) {
     if (neighbors.length === 1) {
-
-      matches.add(['' + index, '' + neighbors[0]]);
-      s_unmatched.delete('' + index);
-      t_unmatched.delete('' + neighbors[0]);
+      matches.add(["" + index, "" + neighbors[0]]);
+      s_unmatched.delete("" + index);
+      t_unmatched.delete("" + neighbors[0]);
     }
   });
 
@@ -7743,19 +7524,16 @@ function getMatches(s, t) {
 }
 
 function updateMatches(s_key, t_key, matches, fields) {
-
   matches.forEach(function (match) {
-
     var s_token = s_key[match[0]];
     var t_token = t_key[match[1]];
-    //console.log('updating', match[0], match[1]);
+    // console.log('updating', match[0], match[1]);
 
     fields.forEach(function (field) {
-
       switch (field) {
-        case 'analyses':
+        case "analyses":
 
-          //console.log('begin analyses evaluations');
+          // console.log('begin analyses evaluations');
           if (s_token._analyses === undefined || t_token.analyses === undefined) break;
 
           var s_analyses = s_token._analyses.slice();
@@ -7763,25 +7541,26 @@ function updateMatches(s_key, t_key, matches, fields) {
 
           for (var i = 0; i < s_analyses.length; i++) {
             matchAndUpdate(s_key, s_analyses[i]._subTokens, t_key, t_analyses[i]._subTokens, fields);
-          } //console.log('end anlyses evaluations');
+          } // console.log('end anlyses evaluations');
 
           break;
 
-        case 'subTokens':
+        case "subTokens":
 
-          //console.log('begin subToken evaluations');
+          // console.log('begin subToken evaluations');
           if (s_token._analyses === undefined || t_token.analyses === undefined) break;
 
           var s = s_token.subTokens.slice();
           var t = t_token.subTokens.slice();
           matchAndUpdate(s_key, s, t_key, t, fields);
-          //console.log('end subToken evaluations');
+          // console.log('end subToken evaluations');
 
           break;
 
         default:
-          //if (s_token[field] !== t_token[field])
-          //console.log('change!!!', field, s_token[field], t_token[field]);
+          // if (s_token[field] !== t_token[field])
+          // console.log('change!!!', field, s_token[field],
+          // t_token[field]);
           s_token[field] = t_token[field];
       }
     });
@@ -7789,14 +7568,12 @@ function updateMatches(s_key, t_key, matches, fields) {
 }
 
 function matchAndUpdate(s_key, s, t_key, t, fields) {
-
-  //console.log('matching on fields');
+  // console.log('matching on fields');
   var m = getMatches(s, t, fields);
-  //console.log(m);
+  // console.log(m);
   updateMatches(s_key, t_key, m.matches, fields);
 
   if (m.s_unmatched.size || m.t_unmatched.size) {
-
     var _s = [],
         _t = [];
 
@@ -7807,28 +7584,26 @@ function matchAndUpdate(s_key, s, t_key, t, fields) {
       return _t.push(t_key[i]);
     });
 
-    //console.log('matching on fields and indices')
-    var m2 = getMatches(_s, _t, fields, 'indices');
-    //console.log(m2);
+    // console.log('matching on fields and indices')
+    var m2 = getMatches(_s, _t, fields, "indices");
+    // console.log(m2);
     updateMatches(s_key, t_key, m2.matches, fields);
 
     if (m2.s_unmatched.size || m2.t_unmatched.size) {
-
-      throw new Error('unable to find match');
+      throw new Error("unable to find match");
     }
   }
 }
 
 module.exports = function (original, update, options) {
-
-  debug(false, 'original input:', original.input);
-  debug(false, 'update input:', update.input);
+  debug(false, "original input:", original.input);
+  debug(false, "update input:", update.input);
 
   // the input format of the new guy
   var format = detect(update.input, _.extend({
     requireOneFormat: true
   }, options));
-  debug(false, 'detected update as format:', format);
+  debug(false, "detected update as format:", format);
   format = formats[format];
 
   /*
@@ -7843,12 +7618,11 @@ module.exports = function (original, update, options) {
   */
 
   if (format.hasComments) {
-    debug(false, '\n\ncomparing comments\n');
+    debug(false, "\n\ncomparing comments\n");
     var i = 0,
         j = 0;
     while (data.comments.new.unmatched.size) {
-
-      throw new Error('not implemented');
+      throw new Error("not implemented");
 
       /*
       const s1Comment = this.comments[i];
@@ -7861,7 +7635,7 @@ module.exports = function (original, update, options) {
       */
     }
   } else {
-    debug(false, 'using original comments');
+    debug(false, "using original comments");
     // don't change anything
   }
 
@@ -7872,12 +7646,10 @@ module.exports = function (original, update, options) {
       t = [];
 
   original.iterate(function (token) {
-
     s_key[token.indices.absolute] = token;
     s.push(token);
   });
   update.iterate(function (token) {
-
     t_key[token.indices.absolute] = token;
     t.push(token);
   });
@@ -7963,8 +7735,8 @@ module.exports = function (original, update, options) {
     for (let i=0; i<data.old.tokens.length; i++) {
       for (let j=0; j<data.new.tokens.length; j++) {
 
-        if (data.tokens.old.unmatched.has(i) && data.tokens.new.unmatched.has(j))
-          if (compareFields(data, i, j, distance)) {
+        if (data.tokens.old.unmatched.has(i) &&
+data.tokens.new.unmatched.has(j)) if (compareFields(data, i, j, distance)) {
             debug('same');
 
             data.tokens.old.unmatched.delete(i);
@@ -8081,160 +7853,156 @@ while (i1 < numTokens && i2 < numTokens) {
 */
 
 },{"../detector":19,"../formats":45,"../utils":94,"underscore":14}],89:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('./utils');
+var utils = require("./utils");
 var ParserError = utils.ParserError;
 
 var as = {
 
-	'apertium stream': require('./formats/apertium-stream').parse,
-	apertiumStream: require('./formats/apertium-stream').parse,
-	Brackets: require('./formats/brackets').parse,
-	brackets: require('./formats/brackets').parse,
-	CG3: require('./formats/cg3').parse,
-	cg3: require('./formats/cg3').parse,
-	'CoNLL-U': require('./formats/conllu').parse,
-	conllu: require('./formats/conllu').parse,
-	'notatrix serial': require('./formats/notatrix-serial').parse,
-	notatrixSerial: require('./formats/notatrix-serial').parse,
-	Params: require('./formats/params').parse,
-	params: require('./formats/params').parse,
-	'plain text': require('./formats/plain-text').parse,
-	plainText: require('./formats/plain-text').parse,
-	SD: require('./formats/sd').parse,
-	sd: require('./formats/sd').parse
+  "apertium stream": require("./formats/apertium-stream").parse,
+  apertiumStream: require("./formats/apertium-stream").parse,
+  Brackets: require("./formats/brackets").parse,
+  brackets: require("./formats/brackets").parse,
+  CG3: require("./formats/cg3").parse,
+  cg3: require("./formats/cg3").parse,
+  "CoNLL-U": require("./formats/conllu").parse,
+  conllu: require("./formats/conllu").parse,
+  "notatrix serial": require("./formats/notatrix-serial").parse,
+  notatrixSerial: require("./formats/notatrix-serial").parse,
+  Params: require("./formats/params").parse,
+  params: require("./formats/params").parse,
+  "plain text": require("./formats/plain-text").parse,
+  plainText: require("./formats/plain-text").parse,
+  SD: require("./formats/sd").parse,
+  sd: require("./formats/sd").parse
 
 };
 
 module.exports = function (text, options) {
+  options = _.defaults(options, {
+    suppressDetectorErrors: true,
+    suppressParserErrors: true,
+    returnAllPossibilities: true,
+    requireOne: false
+  });
 
-	options = _.defaults(options, {
-		suppressDetectorErrors: true,
-		suppressParserErrors: true,
-		returnAllPossibilities: true,
-		requireOne: false
-	});
+  var possibilities = utils.formats.map(function (format) {
+    try {
+      return as[format](text, options);
+    } catch (e) {
+      if (e instanceof ParserError && options.suppressParserErrors) return;
 
-	var possibilities = utils.formats.map(function (format) {
+      throw e;
+    }
+  }).filter(utils.thin);
 
-		try {
-			return as[format](text, options);
-		} catch (e) {
+  if (!possibilities.length && !options.suppressDetectorErrors) throw new ParserError("Unable to detect format", text, options);
 
-			if (e instanceof ParserError && options.suppressParserErrors) return;
+  if (options.requireOne && possibilities.length > 1) throw new ParserError("Unable to detect, ambiguous input");
 
-			throw e;
-		}
-	}).filter(utils.thin);
-
-	if (!possibilities.length && !options.suppressDetectorErrors) throw new ParserError('Unable to detect format', text, options);
-
-	if (options.requireOne && possibilities.length > 1) throw new ParserError('Unable to detect, ambiguous input');
-
-	return options.returnAllPossibilities ? possibilities : possibilities[0];
+  return options.returnAllPossibilities ? possibilities : possibilities[0];
 };
 module.exports.as = as;
 
 },{"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],90:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var utils = require('./utils');
-var defaultSplitter = require('./formats/default-splitter');
-var detector = require('./detector');
+var utils = require("./utils");
+var defaultSplitter = require("./formats/default-splitter");
+var detector = require("./detector");
 var SplitterError = utils.SplitterError;
 
 var as = {
 
-	'apertium stream': require('./formats/apertium-stream').split,
-	apertiumStream: require('./formats/apertium-stream').split,
-	Brackets: require('./formats/brackets').split,
-	brackets: require('./formats/brackets').split,
-	CG3: require('./formats/cg3').split,
-	cg3: require('./formats/cg3').split,
-	'CoNLL-U': require('./formats/conllu').split,
-	conllu: require('./formats/conllu').split,
-	'notatrix serial': require('./formats/notatrix-serial').split,
-	notatrixSerial: require('./formats/notatrix-serial').split,
-	Params: require('./formats/params').split,
-	params: require('./formats/params').split,
-	'plain text': require('./formats/plain-text').split,
-	plainText: require('./formats/plain-text').split,
-	SD: require('./formats/sd').split,
-	sd: require('./formats/sd').split
+  "apertium stream": require("./formats/apertium-stream").split,
+  apertiumStream: require("./formats/apertium-stream").split,
+  Brackets: require("./formats/brackets").split,
+  brackets: require("./formats/brackets").split,
+  CG3: require("./formats/cg3").split,
+  cg3: require("./formats/cg3").split,
+  "CoNLL-U": require("./formats/conllu").split,
+  conllu: require("./formats/conllu").split,
+  "notatrix serial": require("./formats/notatrix-serial").split,
+  notatrixSerial: require("./formats/notatrix-serial").split,
+  Params: require("./formats/params").split,
+  params: require("./formats/params").split,
+  "plain text": require("./formats/plain-text").split,
+  plainText: require("./formats/plain-text").split,
+  SD: require("./formats/sd").split,
+  sd: require("./formats/sd").split
 
 };
 
 module.exports = function (text, options) {
+  var fromDefault = new Set();
+  var splitAsDefault = defaultSplitter(text, options);
+  splitAsDefault.forEach(function (line) {
+    detector(line, options).forEach(function (format) {
+      return fromDefault.add(format);
+    });
+  });
 
-	var fromDefault = new Set();
-	var splitAsDefault = defaultSplitter(text, options);
-	splitAsDefault.forEach(function (line) {
-		detector(line, options).forEach(function (format) {
-			return fromDefault.add(format);
-		});
-	});
+  var fromPlainText = new Set();
+  var splitAsPlainText = as.plainText(text, options);
+  splitAsPlainText.forEach(function (line) {
+    detector(line, options).forEach(function (format) {
+      return fromPlainText.add(format);
+    });
+  });
 
-	var fromPlainText = new Set();
-	var splitAsPlainText = as.plainText(text, options);
-	splitAsPlainText.forEach(function (line) {
-		detector(line, options).forEach(function (format) {
-			return fromPlainText.add(format);
-		});
-	});
+  if (fromDefault.size !== 1 && fromPlainText.size === 1 && fromPlainText.has("plain text")) return splitAsPlainText;
 
-	if (fromDefault.size !== 1 && fromPlainText.size === 1 && fromPlainText.has('plain text')) return splitAsPlainText;
-
-	return splitAsDefault;
+  return splitAsDefault;
 };
 module.exports.as = as;
-module.exports.onNewlines = require('./formats/default-splitter');
+module.exports.onNewlines = require("./formats/default-splitter");
 
 },{"./detector":19,"./formats/apertium-stream":23,"./formats/brackets":30,"./formats/cg3":36,"./formats/conllu":42,"./formats/default-splitter":44,"./formats/notatrix-serial":50,"./formats/params":57,"./formats/plain-text":64,"./formats/sd":71,"./utils":94,"underscore":14}],91:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 
-  fields: ['index', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc'],
+  fields: ["index", "form", "lemma", "upostag", "xpostag", "feats", "head", "deprel", "deps", "misc"],
 
   formats: [
   //'apertium stream',
-  'Brackets', 'CG3', 'CoNLL-U', 'notatrix serial', 'Params', 'plain text', 'SD'],
+  "Brackets", "CG3", "CoNLL-U", "notatrix serial", "Params", "plain text", "SD"],
 
   nxSentenceFields: {
-    input: 'string',
-    options: 'object',
-    comments: 'array',
-    tokens: 'array'
+    input: "string",
+    options: "object",
+    comments: "array",
+    tokens: "array"
   },
 
   nxSentenceTokensFields: {
-    semicolon: 'boolean',
-    isEmpty: 'boolean',
-    index: 'number',
-    form: 'string*',
-    lemma: 'string*',
-    upostag: 'string*',
-    xpostag: 'string*',
-    feats: 'array',
-    heads: 'array',
-    analyses: 'array'
+    semicolon: "boolean",
+    isEmpty: "boolean",
+    index: "number",
+    form: "string*",
+    lemma: "string*",
+    upostag: "string*",
+    xpostag: "string*",
+    feats: "array",
+    heads: "array",
+    analyses: "array"
   },
 
   nxAllOptions: {},
 
-  fallback: '_',
+  fallback: "_",
 
   hexConstant: 16777215 // = 0xffffff
 
 };
 
 },{}],92:[function(require,module,exports){
-'use strict';
+"use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8278,7 +8046,7 @@ var SplitterError = function (_ToolError) {
 
     var _this3 = _possibleConstructorReturn(this, (SplitterError.__proto__ || Object.getPrototypeOf(SplitterError)).call(this, message));
 
-    _this3.name = 'SplitterError';
+    _this3.name = "SplitterError";
     _this3.text = text;
     _this3.options = options;
     return _this3;
@@ -8295,7 +8063,7 @@ var DetectorError = function (_ToolError2) {
 
     var _this4 = _possibleConstructorReturn(this, (DetectorError.__proto__ || Object.getPrototypeOf(DetectorError)).call(this, message));
 
-    _this4.name = 'DetectorError';
+    _this4.name = "DetectorError";
     _this4.text = text;
     _this4.options = options;
     return _this4;
@@ -8312,7 +8080,7 @@ var ParserError = function (_ToolError3) {
 
     var _this5 = _possibleConstructorReturn(this, (ParserError.__proto__ || Object.getPrototypeOf(ParserError)).call(this, message));
 
-    _this5.name = 'ParserError';
+    _this5.name = "ParserError";
     _this5.text = text;
     _this5.options = options;
     return _this5;
@@ -8329,7 +8097,7 @@ var GeneratorError = function (_ToolError4) {
 
     var _this6 = _possibleConstructorReturn(this, (GeneratorError.__proto__ || Object.getPrototypeOf(GeneratorError)).call(this, message));
 
-    _this6.name = 'GeneratorError';
+    _this6.name = "GeneratorError";
     _this6.nx = nx;
     _this6.options = options;
     return _this6;
@@ -8346,7 +8114,7 @@ var ConverterError = function (_ToolError5) {
 
     var _this7 = _possibleConstructorReturn(this, (ConverterError.__proto__ || Object.getPrototypeOf(ConverterError)).call(this, message));
 
-    _this7.name = 'ConverterError';
+    _this7.name = "ConverterError";
     return _this7;
   }
 
@@ -8367,7 +8135,7 @@ var NxError = function (_NotatrixError2) {
 
     var _this8 = _possibleConstructorReturn(this, (_ref = NxError.__proto__ || Object.getPrototypeOf(NxError)).call.apply(_ref, [this].concat(args)));
 
-    _this8.name = 'NxError';
+    _this8.name = "NxError";
     return _this8;
   }
 
@@ -8405,16 +8173,15 @@ module.exports = {
 };
 
 },{}],93:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _ = require('underscore');
-var constants = require('./constants');
-var re = require('./regex');
+var _ = require("underscore");
+var constants = require("./constants");
+var re = require("./regex");
 
 function combine(arr, k) {
-
   if (k > arr.length || k <= 0) return [];
 
   if (k === arr.length) return [arr];
@@ -8426,7 +8193,6 @@ function combine(arr, k) {
   var combs = [];
 
   var _loop = function _loop(i) {
-
     var head = arr.slice(i, i + 1);
     var tailCombs = combine(arr.slice(i + 1), k - 1);
     tailCombs.forEach(function (tailComb) {
@@ -8449,16 +8215,13 @@ function hexToRGB(hex) {
 module.exports = {
 
   isJSONSerializable: function isJSONSerializable(obj) {
-
-    if (typeof obj === 'string') {
-
+    if (typeof obj === "string") {
       try {
         JSON.parse(obj);
       } catch (e) {
         return false;
       }
     } else {
-
       try {
         JSON.stringify(obj);
       } catch (e) {
@@ -8484,7 +8247,6 @@ module.exports = {
   },
 
   dedup: function dedup(master, slave) {
-
     var dedup = {};
 
     _.each(slave, function (value, key) {
@@ -8500,17 +8262,16 @@ module.exports = {
       hash = string.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    var hex = '';
+    var hex = "";
     for (var _i = 0; _i < 3; _i++) {
       var value = hash >> _i * 8 & 0xFF;
-      hex += ('00' + value.toString(16)).substr(-2);
+      hex += ("00" + value.toString(16)).substr(-2);
     }
     return hex;
   },
 
   getRandomHexColor: function getRandomHexColor() {
-
-    var color = '';
+    var color = "";
     do {
       color = Math.floor(Math.random() * constants.hexConstant).toString(16);
     } while (color.length !== 7);
@@ -8521,8 +8282,7 @@ module.exports = {
   hexToRGB: hexToRGB,
 
   getContrastingColor: function getContrastingColor(background) {
-
-    var color = 'ffffff';
+    var color = "ffffff";
 
     var rgb = hexToRGB(background);
     if (!rgb) return color;
@@ -8532,7 +8292,7 @@ module.exports = {
         g = _rgb[1],
         b = _rgb[2];
 
-    if (Math.pow(r, 2) + Math.pow(g, 2) + Math.pow(b, 2) > Math.pow(255 - r, 2) + Math.pow(255 - g, 2) + Math.pow(255 - b, 2)) color = '000000';
+    if (Math.pow(r, 2) + Math.pow(g, 2) + Math.pow(b, 2) > Math.pow(255 - r, 2) + Math.pow(255 - g, 2) + Math.pow(255 - b, 2)) color = "000000";
 
     return color;
   }
@@ -8540,14 +8300,14 @@ module.exports = {
 };
 
 },{"./constants":91,"./regex":95,"underscore":14}],94:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _ = require('underscore');
+var _ = require("underscore");
 
-var constants = require('./constants');
-var errors = require('./errors');
-var funcs = require('./funcs');
-var regex = require('./regex');
+var constants = require("./constants");
+var errors = require("./errors");
+var funcs = require("./funcs");
+var regex = require("./regex");
 
 module.exports = _.extend({ re: regex }, errors, constants, funcs);
 

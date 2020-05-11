@@ -62,6 +62,7 @@ Ancestor of Token, SubToken, SuperToken.  Implements methods common
     * [.mapHeads()](#BaseToken+mapHeads)
     * [.mapDependents()](#BaseToken+mapDependents)
     * [.getHead(format)](#BaseToken+getHead) ⇒ <code>String</code>
+    * [.setEmpty(isEmpty)](#BaseToken+setEmpty)
     * [.walk(callback)](#BaseToken+walk)
     * [.hashFields(...fields)](#BaseToken+hashFields) ⇒ <code>String</code>
     * [.serialize()](#BaseToken+serialize)
@@ -130,6 +131,17 @@ Get the head index for a given format
 | --- | --- |
 | format | <code>String</code> | 
 
+<a name="BaseToken+setEmpty"></a>
+
+### baseToken.setEmpty(isEmpty)
+Mark this token as "empty" (aka "null")
+
+**Kind**: instance method of [<code>BaseToken</code>](#BaseToken)  
+
+| Param | Type |
+| --- | --- |
+| isEmpty | <code>boolean</code> | 
+
 <a name="BaseToken+walk"></a>
 
 ### baseToken.walk(callback)
@@ -150,7 +162,7 @@ Hash a list of fields to a string
 
 | Param | Type |
 | --- | --- |
-| ...fields | <code>Array.&lt;String&gt;</code> | 
+| ...fields | <code>[ &#x27;Array&#x27; ].&lt;String&gt;</code> | 
 
 <a name="BaseToken+serialize"></a>
 
@@ -310,7 +322,7 @@ Add new Label with the given name (if it doesn't already exist) and
 | Param | Type | Default |
 | --- | --- | --- |
 | name | <code>String</code> |  | 
-| [sents] | [<code>Array.&lt;Sentence&gt;</code>](#Sentence) | <code>[]</code> | 
+| [sents] | [<code>[ &#x27;Array&#x27; ].&lt;Sentence&gt;</code>](#Sentence) | <code>[]</code> | 
 
 <a name="Labeler+removeLabel"></a>
 
@@ -323,7 +335,7 @@ Remove a Label by name (if it exists) from a set of Sentences (can
 | Param | Type |
 | --- | --- |
 | name | <code>String</code> | 
-| sents | [<code>Array.&lt;Sentence&gt;</code>](#Sentence) | 
+| sents | [<code>[ &#x27;Array&#x27; ].&lt;Sentence&gt;</code>](#Sentence) | 
 
 <a name="Labeler+changeLabelName"></a>
 
