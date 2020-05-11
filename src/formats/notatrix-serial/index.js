@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 module.exports = {
 
-  name: 'notatrix serial',
-  fields: require('./fields'),
-  split: require('./splitter'),
-  detect: require('./detector'),
-  parse: require('./parser'),
-  generate: require('./generator'),
+  name: "notatrix serial",
+  fields: require("./fields"),
+  split: require("./splitter"),
+  detect: require("./detector"),
+  parse: require("./parser"),
+  generate: require("./generator"),
 
 };
 

@@ -1,50 +1,50 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const ParserError = utils.ParserError;
-const detect = require('./detector');
+const detect = require("./detector");
 
 module.exports = (text, options) => {
-
   function assertNext(supStr, subStr) {
-
     function parseIndex(str) {
-
-      const match = (str || '').match(utils.re.conlluEmptyIndex);
+      const match = (str || "").match(utils.re.conlluEmptyIndex);
       if (!match)
         return null;
 
-      return match[2]
-        ? {
-            major: parseInt(match[1]),
-            minor: parseInt(match[2]),
-          }
-        : {
-            major: parseInt(match[1]),
-            minor: null,
-          };
+      return match[2] ? {
+        major: parseInt(match[1]),
+        minor: parseInt(match[2]),
+      }
+                      : {
+                          major: parseInt(match[1]),
+                          minor: null,
+                        };
     }
 
     if (supStr === null)
       return;
 
-    const sup = parseIndex(supStr),
-      sub = parseIndex(subStr);
+    const sup = parseIndex(supStr), sub = parseIndex(subStr);
 
     if (sub.minor === null) {
       if (sub.major - sup.major !== 1)
-        throw new ParserError(`unexpected token index (at: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor}, got: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor})`);
+        throw new ParserError(`unexpected token index (at: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor}, got: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor})`);
 
     } else if (sup.minor === null) {
       if (sub.minor !== 1)
-        throw new ParserError(`unexpected token index (at: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor}, got: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor})`);
+        throw new ParserError(`unexpected token index (at: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor}, got: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor})`);
 
     } else {
       if (sub.minor - sup.minor !== 1)
-        throw new ParserError(`unexpected token index (at: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor}, got: ${sup.major}${sup.minor === null ? '' : '.' + sup.minor})`);
-
+        throw new ParserError(`unexpected token index (at: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor}, got: ${sup.major}${
+            sup.minor === null ? "" : "." + sup.minor})`);
     }
   }
 
@@ -64,60 +64,49 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   // "tokenize" into chunks
   let i = 0, chunks = [];
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const tokenRegex = options.requireTenParams
-    ? utils.re.conlluTokenLineTenParams
-    : utils.re.conlluTokenLine;
+                         ? utils.re.conlluTokenLineTenParams
+                         : utils.re.conlluTokenLine;
 
   lines.forEach(line => {
     const whiteline = line.match(utils.re.whiteline),
-      comment = line.match(utils.re.comment),
-      tokenLine = line.match(tokenRegex);
+          comment = line.match(utils.re.comment),
+          tokenLine = line.match(tokenRegex);
 
     if (whiteline) {
-
     } else if (comment) {
-
-      chunks.push({
-        type: 'comment',
-        body: comment[2]
-      });
+      chunks.push({type: "comment", body: comment[2]});
 
     } else if (tokenLine) {
-
       let token;
 
       let fields = tokenLine[7];
       if (/(\t|[ ]{2,})/g.test(fields)) {
-
-        fields = fields.replace(/[ ]{2,}/g, '\t').split(/\t/g).filter(utils.thin);
+        fields =
+            fields.replace(/[ ]{2,}/g, "\t").split(/\t/g).filter(utils.thin);
 
       } else {
-
         fields = fields.split(/[\t ]+/g).filter(utils.thin);
-
       }
 
       if (tokenLine[4]) {
-
         token = {
-        	type: 'super-token',
+          type: "super-token",
           index: tokenLine[1],
-        	startIndex: tokenLine[2],
-        	stopIndex: tokenLine[5],
-        	form: utils.re.fallback.test(fields[0]) ? null : fields[0],
-        	misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split('|'),
+          startIndex: tokenLine[2],
+          stopIndex: tokenLine[5],
+          form: utils.re.fallback.test(fields[0]) ? null : fields[0],
+          misc: utils.re.fallback.test(fields[8]) ? null : fields[8].split("|"),
         };
 
       } else {
-
         function getHeads(isEmpty, head, deprel, deps) {
-
           head = utils.re.fallback.test(head) ? null : head;
           deprel = utils.re.fallback.test(deprel) ? null : deprel;
           deps = utils.re.fallback.test(deps) ? null : deps;
@@ -134,9 +123,8 @@ module.exports = (text, options) => {
           }
 
           if (deps) {
-            deps.split('|').forEach(dep => {
-
-              dep = dep.split(':');
+            deps.split("|").forEach(dep => {
+              dep = dep.split(":");
 
               if (!seen.has(dep[0]))
                 heads.push({
@@ -148,7 +136,8 @@ module.exports = (text, options) => {
             });
           } else if (isEmpty) {
             // FIXME: Add this as a "strict mode" requirement?
-            //throw new ParserError(`Missing "deps" for empty node: ${line}`, text, options);
+            // throw new ParserError(`Missing "deps" for empty node:
+            // ${line}`, text, options);
           }
 
           return heads.length ? heads : null;
@@ -160,106 +149,90 @@ module.exports = (text, options) => {
         }
 
         token = {
-        	type: 'token',
+          type: "token",
           index: tokenLine[1],
-        	isEmpty: isEmpty,
-        	form: !fields[0] || utils.re.fallback.test(fields[0])
-            ? null
-            : fields[0],
-        	lemma: !fields[1] || utils.re.fallback.test(fields[1])
-            ? null
-            : fields[1],
-        	upostag: !fields[2] || utils.re.fallback.test(fields[2])
-            ? null
-            : fields[2],
-        	xpostag: !fields[3] || utils.re.fallback.test(fields[3])
-            ? null
-            : fields[3],
-        	feats: !fields[4] || utils.re.fallback.test(fields[4])
-            ? null
-            : fields[4].split('|'),
+          isEmpty: isEmpty,
+          form: !fields[0] || utils.re.fallback.test(fields[0]) ? null
+                                                                : fields[0],
+          lemma: !fields[1] || utils.re.fallback.test(fields[1]) ? null
+                                                                 : fields[1],
+          upostag: !fields[2] || utils.re.fallback.test(fields[2]) ? null
+                                                                   : fields[2],
+          xpostag: !fields[3] || utils.re.fallback.test(fields[3]) ? null
+                                                                   : fields[3],
+          feats: !fields[4] || utils.re.fallback.test(fields[4])
+                     ? null
+                     : fields[4].split("|"),
           heads: getHeads(isEmpty, fields[5], fields[6], fields[7]),
-        	misc: !fields[8] || utils.re.fallback.test(fields[8])
-            ? null
-            : fields[8].split('|'),
+          misc: !fields[8] || utils.re.fallback.test(fields[8])
+                    ? null
+                    : fields[8].split("|"),
         };
-
       }
       chunks.push(token);
 
     } else {
       throw new ParserError(`unable to match line: ${line}`, text, options);
-
     }
-
   });
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   let tokens = [];
   let comments = [];
-  let expecting = ['comment', 'super-token', 'token'];
+  let expecting = ["comment", "super-token", "token"];
   let superToken = null;
 
   chunks.filter(utils.thin).forEach(chunk => {
-
     if (expecting.indexOf(chunk.type) === -1)
-      throw new ParserError(`expecting ${expecting.join('|')}, got ${chunk.type}`, text, options);
+      throw new ParserError(
+          `expecting ${expecting.join("|")}, got ${chunk.type}`, text, options);
 
-    if (chunk.type === 'comment') {
-
+    if (chunk.type === "comment") {
       comments.push(chunk.body);
-      expecting = ['comment', 'super-token', 'token'];
+      expecting = ["comment", "super-token", "token"];
 
-    } else if (chunk.type === 'super-token') {
-
+    } else if (chunk.type === "super-token") {
       superToken = {
         form: chunk.form,
         misc: chunk.misc,
-        analyses: [{
-          subTokens: []
-        }],
+        analyses: [{subTokens: []}],
         index: chunk.index,
         currentIndex: null,
         stopIndex: chunk.stopIndex
       };
 
-      expecting = ['token'];
+      expecting = ["token"];
 
-    } else if (chunk.type === 'token') {
-
+    } else if (chunk.type === "token") {
       if (superToken) {
-
         assertNext(superToken.currentIndex, chunk.index);
         superToken.currentIndex = chunk.index;
 
-        superToken.analyses[0].subTokens.push(_.omit(chunk, ['type']));
+        superToken.analyses[0].subTokens.push(_.omit(chunk, ["type"]));
 
         if (superToken.currentIndex === superToken.stopIndex) {
-
-          tokens.push(_.omit(superToken, ['currentIndex', 'stopIndex']));
+          tokens.push(_.omit(superToken, ["currentIndex", "stopIndex"]));
           superToken = null;
-          expecting = ['super-token', 'token'];
+          expecting = ["super-token", "token"];
 
         } else {
-          expecting = ['token'];
+          expecting = ["token"];
         }
 
       } else {
-
-        tokens.push(_.omit(chunk, ['type']));
-        expecting = ['super-token', 'token'];
-
+        tokens.push(_.omit(chunk, ["type"]));
+        expecting = ["super-token", "token"];
       }
 
     } else {
-      throw new ParserError(`unrecognized chunk type: ${chunk.type}`, text, options);
-
+      throw new ParserError(`unrecognized chunk type: ${chunk.type}`, text,
+                            options);
     }
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,

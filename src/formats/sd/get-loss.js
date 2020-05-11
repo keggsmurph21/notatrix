@@ -1,41 +1,39 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
-const fields = require('./fields');
+const utils = require("../../utils");
+const fields = require("./fields");
 
 module.exports = sent => {
-
   const serial = sent.serialize();
   let losses = new Set();
 
   serial.tokens.forEach(token => {
     if (token.heads && token.heads.length > 1)
-      losses.add('enhanced dependencies');
-      
+      losses.add("enhanced dependencies");
+
     Object.keys(_.omit(token, fields)).forEach(field => {
       switch (field) {
-        case ('uuid'):
-        case ('index'):
-        case ('deps'):
-          break;
+      case ("uuid"):
+      case ("index"):
+      case ("deps"):
+        break;
 
-        case ('heads'):
-          if (token.heads.length > 1)
-            losses.add(field);
-          break;
+      case ("heads"):
+        if (token.heads.length > 1)
+          losses.add(field);
+        break;
 
+      case ("feats"):
+      case ("misc"):
+        if (token[field] && token[field].length)
+          losses.add(field);
+        break;
 
-        case ('feats'):
-        case ('misc'):
-          if (token[field] && token[field].length)
-            losses.add(field);
-          break;
-
-        default:
-          if (token[field])
-            losses.add(field);
+      default:
+        if (token[field])
+          losses.add(field);
       }
     })
   });

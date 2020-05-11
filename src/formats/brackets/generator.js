@@ -1,33 +1,34 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const GeneratorError = utils.GeneratorError;
-const getLoss = require('./get-loss')
+const getLoss = require("./get-loss")
 
 module.exports = (sent, options) => {
-
   if (!sent.isParsed)
     return {
       output: null,
       loss: undefined,
     };
 
-  if (!sent || sent.name !== 'Sentence')
-    throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
+  if (!sent || sent.name !== "Sentence")
+    throw new GeneratorError(`Unable to generate, input not a Sentence`, sent,
+                             options);
 
-  options = _.defaults(options, sent.options, {
+  options = _.defaults(options, sent.options,
+                       {
 
-  });
+                       });
 
   sent.index();
 
   if (!sent.root)
-    throw new GeneratorError('Unable to generate, could not find root');
+    throw new GeneratorError("Unable to generate, could not find root");
 
   // build the tree structure
-  let seen = new Set([ sent.root ]);
+  let seen = new Set([sent.root]);
   let root = {
     token: sent.root,
     deprel: null,
@@ -36,53 +37,51 @@ module.exports = (sent, options) => {
 
   const visit = node => {
     node.token.mapDependents(dep => {
-
       if (seen.has(dep.token))
-        throw new GeneratorError('Unable to generate, dependency structure non-linear');
+        throw new GeneratorError(
+            "Unable to generate, dependency structure non-linear");
 
       dep.deps = [];
       node.deps.push(dep);
       seen.add(dep.token);
       visit(dep);
-
     });
-  }
+  };
   visit(root);
 
-  //console.log(root);
+  // console.log(root);
 
   if (seen.size < sent.size + 1)
-    throw new GeneratorError('Unable to generate, sentence not fully connected');
+    throw new GeneratorError(
+        "Unable to generate, sentence not fully connected");
 
   // parse the tree into a string
-  let output = '';
+  let output = "";
   const walk = node => {
-
-    output += '[' + (node.deprel || '_') + ' ';
+    output += "[" + (node.deprel || "_") + " ";
 
     node.deps.forEach(dep => {
       if (dep.token.indices.absolute < node.token.indices.absolute)
         walk(dep);
     });
 
-    output += ' ' + node.token.form + ' ';
+    output += " " + node.token.form + " ";
 
     node.deps.forEach(dep => {
       if (dep.token.indices.absolute > node.token.indices.absolute)
         walk(dep);
     });
 
-    output += ' ] ';
-  }
+    output += " ] ";
+  };
   root.deps.forEach(dep => walk(dep));
 
   // clean up the output
-  output = output
-    .replace(/\s+/g, ' ')
-    .replace(/ \]/g, ']')
-    .replace(/\[ /g, '[')
-    .replace(/(\w)_(\w)/, '$1 $2')
-    .trim();
+  output = output.replace(/\s+/g, " ")
+               .replace(/ \]/g, "]")
+               .replace(/\[ /g, "[")
+               .replace(/(\w)_(\w)/, "$1 $2")
+               .trim();
 
   // console.log(output);
 

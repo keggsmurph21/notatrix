@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const DetectorError = utils.DetectorError;
 
 module.exports = (text, options) => {
-
   options = _.defaults(options, {
     allowEmptyString: false,
     allowLeadingWhitespace: true,
@@ -23,8 +22,8 @@ module.exports = (text, options) => {
 
   // be more or less strict about whitespace
   const dependencyRegex = options.allowBookendWhitespace
-    ? utils.re.sdDependency
-    : utils.re.sdDependencyNoWhitespace;
+                              ? utils.re.sdDependency
+                              : utils.re.sdDependencyNoWhitespace;
 
   // internal stuff
   let parsingDeps = false;
@@ -33,41 +32,38 @@ module.exports = (text, options) => {
 
   const lines = text.split(/\n/);
   lines.forEach((line, i) => {
-
     if (utils.re.whiteline.test(line)) {
       if (parsingDeps) {
         if (!options.allowTrailingWhitespace)
-          throw new DetectorError(`Illegal SD: contains trailing whitespace`, text, options);
+          throw new DetectorError(`Illegal SD: contains trailing whitespace`,
+                                  text, options);
 
       } else {
         if (!options.allowLeadingWhitespace)
-          throw new DetectorError(`Illegal SD: contains leading whitespace`, text, options);
-
+          throw new DetectorError(`Illegal SD: contains leading whitespace`,
+                                  text, options);
       }
     }
 
     if (utils.re.comment.test(line)) {
-
     } else if (!parsingDeps) {
-
       if (dependencyRegex.test(line))
         throw new DetectorError(`Illegal SD: missing text line`, text, options);
 
       parsingDeps = true;
 
     } else if (!dependencyRegex.test(line)) {
-
-      throw new DetectorError(`Illegal SD: expected dependency line`, text, options);
+      throw new DetectorError(`Illegal SD: expected dependency line`, text,
+                              options);
 
     } else {
-
       parsedDeps += 1;
-
     }
   });
 
   if (parsedDeps === 0 && !options.allowNoDependencies)
-    throw new DetectorError(`Illegal SD: contains no dependencies`, text, options);
+    throw new DetectorError(`Illegal SD: contains no dependencies`, text,
+                            options);
 
-  return 'SD';
+  return "SD";
 };

@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const ParserError = utils.ParserError;
-const detect = require('./detector');
+const detect = require("./detector");
 
 module.exports = (obj, options) => {
-
   try {
     detect(obj, options);
   } catch (e) {

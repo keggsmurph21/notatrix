@@ -1,4 +1,4 @@
 module.exports = [
-  'form',
+  "form",
 ];
 module.exports.hasComments = false;

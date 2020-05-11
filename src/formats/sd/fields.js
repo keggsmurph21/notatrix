@@ -1,5 +1,5 @@
 module.exports = [
-  'form',
-  'heads',
+  "form",
+  "heads",
 ];
 module.exports.hasComments = true;

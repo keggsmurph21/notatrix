@@ -1,6 +1,3 @@
 module.exports = {
-	0: [
-		{ form: 'hello' },
-		{ form: 'world' }
-	]
+  0: [{form: "hello"}, {form: "world"}]
 };

@@ -1,20 +1,19 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
-const uuid = require('uuid/v4');
+const _ = require("underscore");
+const uuid = require("uuid/v4");
 
-const utils = require('../utils');
+const utils = require("../utils");
 const NxError = utils.NxError;
-const NxBaseClass = require('./base-class');
-const RelationSet = require('./relation-set');
+const NxBaseClass = require("./base-class");
+const RelationSet = require("./relation-set");
 
 /**
  * Ancestor of Token, SubToken, SuperToken.  Implements methods common
  *  to all three of them.
  */
 class BaseToken extends NxBaseClass {
-  constructor(sent, name, serial={}) {
-
+  constructor(sent, name, serial = {}) {
     super(name);
 
     this.sent = sent;
@@ -32,8 +31,8 @@ class BaseToken extends NxBaseClass {
     this.misc = serial.misc;
 
     this._heads = serial.heads;
-    this.heads = new RelationSet(this, 'dependents');
-    this.dependents = new RelationSet(this, 'heads');
+    this.heads = new RelationSet(this, "dependents");
+    this.dependents = new RelationSet(this, "heads");
 
     this.indices = {
       conllu: null,
@@ -50,22 +49,20 @@ class BaseToken extends NxBaseClass {
    * @param {String} deprel
    */
   addHead(head, deprel) {
-
     if (!(head instanceof BaseToken))
-      throw new NxError('cannot add head unless it is a token');
+      throw new NxError("cannot add head unless it is a token");
 
     if (head === this)
-      throw new NxError('token cannot be its own head');
+      throw new NxError("token cannot be its own head");
 
-    if (typeof deprel !== 'string' && deprel != null)
-      throw new NxError('deprel must be a string, null, or undefined');
+    if (typeof deprel !== "string" && deprel != null)
+      throw new NxError("deprel must be a string, null, or undefined");
 
     // if we're not enhanced, only can have 1 head at a time
     if (!this.sent.options.enhanced)
       this.heads.clear();
 
     return this.heads.add(head, deprel);
-
   }
 
   /**
@@ -75,15 +72,13 @@ class BaseToken extends NxBaseClass {
    * @param {String} deprel
    */
   modifyHead(head, deprel) {
-
     if (!(head instanceof BaseToken))
-      throw new NxError('cannot add head unless it is a token');
+      throw new NxError("cannot add head unless it is a token");
 
-    if (typeof deprel !== 'string' && deprel != null)
-      throw new NxError('deprel must be a string, null, or undefined');
+    if (typeof deprel !== "string" && deprel != null)
+      throw new NxError("deprel must be a string, null, or undefined");
 
     return this.heads.modify(head, deprel);
-
   }
 
   /**
@@ -92,44 +87,34 @@ class BaseToken extends NxBaseClass {
    * @param {BaseToken} head
    */
   removeHead(head) {
-
     if (!(head instanceof BaseToken))
-      throw new NxError('cannot add head unless it is a token');
+      throw new NxError("cannot add head unless it is a token");
 
     return this.heads.remove(head);
-
   }
 
   /**
    * Remove all heads
    */
-  removeAllHeads() {
-    return this.heads.clear();
-  }
+  removeAllHeads() { return this.heads.clear(); }
 
   /**
    * Apply a callback to each of a token's heads
    */
   mapHeads(callback) {
-
-    //if (this.sent.options.enhanced) {
-      return this.heads.map(callback);
+    // if (this.sent.options.enhanced) {
+    return this.heads.map(callback);
     /*} else {
       return this.heads.first
         ? [ this.heads.first ].map(callback)
         : [].map(callback);
     }*/
-
   }
 
   /**
    * Apply a callback to each of token's dependents
    */
-  mapDependents(callback) {
-
-    return this.dependents.map(callback);
-
-  }
+  mapDependents(callback) { return this.dependents.map(callback); }
 
   /**
    * Get the head index for a given format
@@ -138,21 +123,19 @@ class BaseToken extends NxBaseClass {
    * @return {String}
    */
   getHead(format) {
-
     if (!this.heads.length)
       return null;
 
-    if (format === 'CoNLL-U')
+    if (format === "CoNLL-U")
       return `${this.heads.first.token.indices.conllu}`;
 
-    if (format === 'CG3')
+    if (format === "CG3")
       return `${this.heads.first.token.indices.cg3}`;
 
     return `${this.heads.first.token.indices.absolute}`;
   }
 
   _getDeprel() {
-
     if (!this.heads.length)
       return null;
 
@@ -160,12 +143,11 @@ class BaseToken extends NxBaseClass {
   }
 
   _getDeps(format) {
-
     function getIndex(token) {
-      if (format === 'CoNLL-U')
+      if (format === "CoNLL-U")
         return token.indices.conllu;
 
-      if (format === 'CG3')
+      if (format === "CG3")
         return token.indices.cg3;
 
       return token.indices.absolute;
@@ -174,23 +156,20 @@ class BaseToken extends NxBaseClass {
     if (!this.heads.length || !this.sent.options.enhanced)
       return [];
 
-    return this.mapHeads(utils.noop).sort((x,y) => {
+    return this.mapHeads(utils.noop)
+        .sort((x, y) => {
+          if (getIndex(x.token) < getIndex(y.token))
+            return -1;
 
-      if (getIndex(x.token) < getIndex(y.token))
-        return -1;
+          if (getIndex(x.token) > getIndex(y.token))
+            return 1;
 
-      if (getIndex(x.token) > getIndex(y.token))
-        return 1;
-
-      return 0;
-
-    }).map(head => {
-
-      return head.deprel
-        ? `${getIndex(head.token)}:${head.deprel}`
-        : `${getIndex(head.token)}`;
-
-    });
+          return 0;
+        })
+        .map(head => {
+          return head.deprel ? `${getIndex(head.token)}:${head.deprel}`
+                             : `${getIndex(head.token)}`;
+        });
   }
 
   /**
@@ -202,9 +181,8 @@ class BaseToken extends NxBaseClass {
     let i = 0;
     if (this._analyses)
       return this._analyses.map(analysis => {
-        return analysis._subTokens.map(subToken => {
-          return callback(subToken, ++i);
-        });
+        return analysis._subTokens.map(
+            subToken => { return callback(subToken, ++i); });
       });
 
     return null;
@@ -217,32 +195,37 @@ class BaseToken extends NxBaseClass {
    * @return {String}
    */
   hashFields(...fields) {
-
     fields = _.flatten(fields);
 
-    let hash = _.intersection(fields, [
-      'form',
-      'lemma',
-      'upostag',
-      'xpostag',
-      'feats',
-      'deprel',
-      'misc',
-      'isEmpty',
-      'semicolon',
-    ]).map(field => `<${this[field] || field}>`).join('|');
+    let hash = _.intersection(fields,
+                              [
+                                "form",
+                                "lemma",
+                                "upostag",
+                                "xpostag",
+                                "feats",
+                                "deprel",
+                                "misc",
+                                "isEmpty",
+                                "semicolon",
+                              ])
+                   .map(field => `<${this[field] || field}>`)
+                   .join("|");
 
-    if (fields.indexOf('indices') > -1)
-      hash += `|${_.map(this.indices, index => `{${index}}`).join('')}`;
+    if (fields.indexOf("indices") > -1)
+      hash += `|${_.map(this.indices, index => `{${index}}`).join("")}`;
 
-    if (fields.indexOf('head') > -1)
+    if (fields.indexOf("head") > -1)
       hash += `|(h:${this.head.token.indices.absolute}:${h.deprel})`;
 
-    if (fields.indexOf('deps') > -1)
-      hash += `|(d:${this.mapDeps(d => `${d.token.indices.absolute}:${d.deprel}`).join('|') || ''})`;
+    if (fields.indexOf("deps") > -1)
+      hash += `|(d:${
+          this.mapDeps(d => `${d.token.indices.absolute}:${d.deprel}`)
+              .join("|") ||
+          ""})`;
 
-    if (fields.indexOf('analyses') > -1 || fields.indexOf('subTokens') > -1)
-      hash += `|[s:${this.walk(t => t.hashFields(fields)) || ''}]`;
+    if (fields.indexOf("analyses") > -1 || fields.indexOf("subTokens") > -1)
+      hash += `|[s:${this.walk(t => t.hashFields(fields)) || ""}]`;
 
     return hash;
   }
@@ -290,16 +273,11 @@ class BaseToken extends NxBaseClass {
     }, 0);
   }
 
-  get value() {
-    return this.form || this.lemma;
-  }
+  get value() { return this.form || this.lemma; }
 
   get feats() {
-    return this._feats_init
-      ? this._feats.length
-        ? this._feats.join('|')
-        : null
-      : undefined;
+    return this._feats_init ? this._feats.length ? this._feats.join("|") : null
+                            : undefined;
   }
 
   set feats(feats) {
@@ -311,14 +289,12 @@ class BaseToken extends NxBaseClass {
   }
 
   get misc() {
-    return this._misc_init
-      ? this._misc.length
-        ? this._misc.join('|')
-        : null
-      : undefined;
+    return this._misc_init ? this._misc.length ? this._misc.join("|") : null
+                           : undefined;
   }
 
-  set misc(misc) { // [(serial.misc || ''), (serial.other || []).join('|')].join('|');
+  set misc(misc) { // [(serial.misc || ''), (serial.other ||
+    // []).join('|')].join('|');
     if (misc === undefined)
       return;
 
@@ -330,7 +306,7 @@ class BaseToken extends NxBaseClass {
     if (other === undefined)
       return;
 
-    if (typeof other === 'string')
+    if (typeof other === "string")
       other = [other];
 
     this._misc_init = true;

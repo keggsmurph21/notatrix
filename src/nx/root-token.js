@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../utils');
-const BaseToken = require('./base-token');
+const utils = require("../utils");
+const BaseToken = require("./base-token");
 
 class RootToken extends BaseToken {
   constructor(sent) {
+    super(sent, "RootToken");
 
-    super(sent, 'RootToken');
-
-    this.form = 'ROOT';
+    this.form = "ROOT";
     this.indices = {
       absolute: 0,
       conllu: 0,

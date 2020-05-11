@@ -1,11 +1,10 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
-const constants = require('./constants');
-const re = require('./regex');
+const _ = require("underscore");
+const constants = require("./constants");
+const re = require("./regex");
 
 function combine(arr, k) {
-
   if (k > arr.length || k <= 0)
     return [];
 
@@ -17,13 +16,9 @@ function combine(arr, k) {
 
   let combs = [];
   for (let i = 0; i < arr.length - k + 1; i++) {
-
-    const head = arr.slice(i, i+1);
-    const tailCombs = combine(arr.slice(i+1), k-1);
-    tailCombs.forEach(tailComb => {
-      combs.push(head.concat(tailComb));
-    });
-
+    const head = arr.slice(i, i + 1);
+    const tailCombs = combine(arr.slice(i + 1), k - 1);
+    tailCombs.forEach(tailComb => { combs.push(head.concat(tailComb)); });
   }
   return combs;
 }
@@ -33,18 +28,14 @@ function hexToRGB(hex) {
 
   if (match)
     return [
-      parseInt(match[1], 16),
-      parseInt(match[2], 16),
-      parseInt(match[3], 16)
+      parseInt(match[1], 16), parseInt(match[2], 16), parseInt(match[3], 16)
     ];
 }
 
 module.exports = {
 
   isJSONSerializable: obj => {
-
-    if (typeof obj === 'string') {
-
+    if (typeof obj === "string") {
       try {
         JSON.parse(obj);
       } catch (e) {
@@ -52,13 +43,11 @@ module.exports = {
       }
 
     } else {
-
       try {
         JSON.stringify(obj);
       } catch (e) {
         return false;
       }
-
     }
 
     return true;
@@ -73,7 +62,6 @@ module.exports = {
   guessDeprel: (dependent, head, context) => undefined,
 
   dedup: (master, slave) => {
-
     let dedup = {};
 
     _.each(slave, (value, key) => {
@@ -86,23 +74,22 @@ module.exports = {
 
   hashStringToHex: string => {
     let hash = 0;
-    for (let i=0; i<string.length; i++) {
+    for (let i = 0; i < string.length; i++) {
       hash = string.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    let hex = '';
-    for (let i=0; i<3; i++) {
-      const value = (hash >> (i*8)) & 0xFF;
-      hex += ('00' + value.toString(16)).substr(-2);
+    let hex = "";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      hex += ("00" + value.toString(16)).substr(-2);
     }
     return hex;
   },
 
   getRandomHexColor: () => {
-
-    let color = '';
+    let color = "";
     do {
-      color = Math.floor(Math.random()*constants.hexConstant).toString(16);
+      color = Math.floor(Math.random() * constants.hexConstant).toString(16);
     } while (color.length !== 7);
 
     return color;
@@ -111,16 +98,16 @@ module.exports = {
   hexToRGB,
 
   getContrastingColor: background => {
-
-    let color = 'ffffff';
+    let color = "ffffff";
 
     const rgb = hexToRGB(background);
     if (!rgb)
       return color;
 
     const [r, g, b] = rgb;
-    if ((r**2 + g**2 + b**2) > ((255-r)**2 + (255-g)**2 + (255-b)**2))
-      color = '000000';
+    if ((r ** 2 + g ** 2 + b ** 2) >
+        ((255 - r) ** 2 + (255 - g) ** 2 + (255 - b) ** 2))
+      color = "000000";
 
     return color;
   },

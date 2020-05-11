@@ -1,18 +1,17 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const ParserError = utils.ParserError;
-const detect = require('./detector');
+const detect = require("./detector");
 
 module.exports = (text, options) => {
-
   options = _.defaults(options, {
     allowEmptyString: true,
   });
 
-  text = text || '';
+  text = text || "";
 
   try {
     detect(text, options);
@@ -23,36 +22,32 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   let chunks = [];
-  let word = '';
+  let word = "";
 
   _.each(text, (char, i) => {
-
     if (utils.re.whitespace.test(char)) {
-
       chunks.push(word);
-      word = '';
+      word = "";
 
     } else if (utils.re.punctuation.test(char)) {
-
       if (!utils.re.allPunctuation.test(word)) {
         chunks.push(word);
-        word = '';
+        word = "";
       }
       word += char;
 
     } else {
       word += char;
-
     }
   });
 
   chunks.push(word);
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   let tokens = chunks.filter(utils.thin).map((chunk, i) => {
     return {
@@ -61,8 +56,8 @@ module.exports = (text, options) => {
     };
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,

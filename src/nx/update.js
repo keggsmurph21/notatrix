@@ -1,20 +1,19 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../utils');
+const utils = require("../utils");
 const NxError = utils.NxError;
-const formats = require('../formats');
-const detect = require('../detector');
+const formats = require("../formats");
+const detect = require("../detector");
 
 function debug(show, ...args) {
   if (show)
-    console.log('d>', ...args);
+    console.log("d>", ...args);
 }
 
 function compareFields(fields, t1, t2, maxDistance) {
   debug(false, `comparing fields at maxDistance: ${maxDistance}`);
-
 
   /*
   const compare = field => {
@@ -40,11 +39,13 @@ function compareFields(fields, t1, t2, maxDistance) {
         });
       });
 
-      console.log('head', t1._heads.toString('serial', 'dep'), t2._heads.toString('serial', 'dep'));
+      console.log('head', t1._heads.toString('serial', 'dep'),
+  t2._heads.toString('serial', 'dep'));
 
     } else if (field === 'deps') {
 
-      console.log('deps', t1._deps.toString('serial', 'dep'), t2._deps.toString('serial', 'dep'));
+      console.log('deps', t1._deps.toString('serial', 'dep'),
+  t2._deps.toString('serial', 'dep'));
 
     } else if (t1[field] !== t2[field]) {
       if (field === 'analyses') {
@@ -65,21 +66,21 @@ function compareFields(fields, t1, t2, maxDistance) {
 
   [].forEach(combination => {
 
-  });
+             });
 
   return distance;
 
   console.log(fields, utils.combine(fields, fields.length - maxDistance));
 
-  const h1 = t1.hashFields(fields, 'indices'),
-    h2 = t2.hashFields(fields, 'indices');
+  const h1 = t1.hashFields(fields, "indices"),
+        h2 = t2.hashFields(fields, "indices");
 
   if (h1 === h2)
     return true;
 
   console.log();
-  console.log('h1', h1);
-  console.log('h2', h2);
+  console.log("h1", h1);
+  console.log("h2", h2);
   console.log();
   return false;
 
@@ -91,12 +92,11 @@ function compareIndices(_arg, t1, t2, maxDistance) {
   debug(false, `comparing fields at maxDistance: ${maxDistance}`);
 
   let distance = 0;
-  ['conllu', 'cg3', 'cytoscape', 'absolute'].forEach(indexName => {
-
-    debug(false, `comparing "${indexName}" (${t1.indices[indexName]}, ${t2.indices[indexName]})`);
+  ["conllu", "cg3", "cytoscape", "absolute"].forEach(indexName => {
+    debug(false, `comparing "${indexName}" (${t1.indices[indexName]}, ${
+                     t2.indices[indexName]})`);
     if (t1.indices[indexName] !== t2.indices[indexName])
       distance += 1;
-
   });
 
   debug(false, `distance: ${distance}`)
@@ -110,58 +110,27 @@ function updateToken(fields, t1, t2) {
     debug(false, `trying to update "${field}"`);
 
     switch (field) {
-      case ('subTokens'):
-        if (t1.subTokens.length || t2.subTokens.length) {
-          throw new Error('not implemented');
-        } else {
-          // pass
-        }
-        break;
+    case ("subTokens"):
+      if (t1.subTokens.length || t2.subTokens.length) {
+        throw new Error("not implemented");
+      } else {
+        // pass
+      }
+      break;
 
-      default:
-        debug(false, `updating (${t1[field]} => ${t2[field]})`);
-        t1[field] = t2[field];
+    default:
+      debug(false, `updating (${t1[field]} => ${t2[field]})`);
+      t1[field] = t2[field];
     }
   });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function getDistance(fields, t1, t2) {
-
   fields = fields.filter(field => t1[field] !== undefined);
-  for (let dist=0; dist<fields.length; dist++) {
-
+  for (let dist = 0; dist < fields.length; dist++) {
     let match = false;
     utils.combine(fields, fields.length - dist).forEach(comb => {
-
-      const hash1 = t1.hashFields(comb),
-        hash2 = t2.hashFields(comb);
+      const hash1 = t1.hashFields(comb), hash2 = t2.hashFields(comb);
 
       if (hash1 === hash2)
         match = true;
@@ -174,7 +143,6 @@ function getDistance(fields, t1, t2) {
 }
 
 function getMatches(s, t, ...fields) {
-
   fields = _.flatten(fields);
 
   let s_unmatched = new Set((s.map(token => `${token.indices.absolute}`)));
@@ -183,38 +151,31 @@ function getMatches(s, t, ...fields) {
   // build distances between nodes
   let rawDistances = {};
   s.forEach(t1 => {
-
     const i1 = t1.indices.absolute;
     rawDistances[i1] = {};
 
     t.forEach(t2 => {
-
       const i2 = t2.indices.absolute;
       rawDistances[i1][i2] = getDistance(fields, t1, t2);
-
     });
   });
 
-  //console.log(rawDistances);
+  // console.log(rawDistances);
 
   let neighbors = {};
   _.each(rawDistances, (targets, source) => {
-
     neighbors[source] = [];
 
     let min = Infinity;
-    _.each(targets, distance => {
-      min = Math.min(distance, min);
-    });
+    _.each(targets, distance => { min = Math.min(distance, min); });
     if (min < Infinity)
       _.each(targets, (distance, target) => {
         if (distance === min)
           neighbors[source].push(target);
       });
-
   });
 
-  //console.log(neighbors);
+  // console.log(neighbors);
 
   const lookup = (prefix, index) => key[`${prefix}_${index}`];
 
@@ -222,11 +183,9 @@ function getMatches(s, t, ...fields) {
 
   _.each(neighbors, (neighbors, index) => {
     if (neighbors.length === 1) {
-
       matches.add([`${index}`, `${neighbors[0]}`]);
       s_unmatched.delete(`${index}`);
       t_unmatched.delete(`${neighbors[0]}`);
-
     }
   });
 
@@ -238,95 +197,85 @@ function getMatches(s, t, ...fields) {
 }
 
 function updateMatches(s_key, t_key, matches, fields) {
-
   matches.forEach(match => {
-
     const s_token = s_key[match[0]];
     const t_token = t_key[match[1]];
-    //console.log('updating', match[0], match[1]);
+    // console.log('updating', match[0], match[1]);
 
     fields.forEach(field => {
-
       switch (field) {
-        case ('analyses'):
+      case ("analyses"):
 
-          //console.log('begin analyses evaluations');
-          if (s_token._analyses === undefined || t_token.analyses === undefined)
-            break;
-
-          let s_analyses = s_token._analyses.slice();
-          let t_analyses = t_token._analyses.slice();
-
-          for (let i = 0; i<s_analyses.length; i++)
-            matchAndUpdate(
-              s_key,
-              s_analyses[i]._subTokens,
-              t_key,
-              t_analyses[i]._subTokens,
-              fields);
-          //console.log('end anlyses evaluations');
-
+        // console.log('begin analyses evaluations');
+        if (s_token._analyses === undefined || t_token.analyses === undefined)
           break;
 
-        case ('subTokens'):
+        let s_analyses = s_token._analyses.slice();
+        let t_analyses = t_token._analyses.slice();
 
-          //console.log('begin subToken evaluations');
-          if (s_token._analyses === undefined || t_token.analyses === undefined)
-            break;
+        for (let i = 0; i < s_analyses.length; i++)
+          matchAndUpdate(s_key, s_analyses[i]._subTokens, t_key,
+                         t_analyses[i]._subTokens, fields);
+        // console.log('end anlyses evaluations');
 
-          let s = s_token.subTokens.slice();
-          let t = t_token.subTokens.slice();
-          matchAndUpdate(s_key, s, t_key, t, fields);
-          //console.log('end subToken evaluations');
+        break;
 
+      case ("subTokens"):
+
+        // console.log('begin subToken evaluations');
+        if (s_token._analyses === undefined || t_token.analyses === undefined)
           break;
 
-        default:
-          //if (s_token[field] !== t_token[field])
-            //console.log('change!!!', field, s_token[field], t_token[field]);
-          s_token[field] = t_token[field];
+        let s = s_token.subTokens.slice();
+        let t = t_token.subTokens.slice();
+        matchAndUpdate(s_key, s, t_key, t, fields);
+        // console.log('end subToken evaluations');
+
+        break;
+
+      default:
+        // if (s_token[field] !== t_token[field])
+        // console.log('change!!!', field, s_token[field],
+        // t_token[field]);
+        s_token[field] = t_token[field];
       }
     });
   });
 }
 
 function matchAndUpdate(s_key, s, t_key, t, fields) {
-
-  //console.log('matching on fields');
+  // console.log('matching on fields');
   let m = getMatches(s, t, fields);
-  //console.log(m);
+  // console.log(m);
   updateMatches(s_key, t_key, m.matches, fields);
 
   if (m.s_unmatched.size || m.t_unmatched.size) {
-
     let s = [], t = [];
 
     m.s_unmatched.forEach(i => s.push(s_key[i]));
     m.t_unmatched.forEach(i => t.push(t_key[i]));
 
-    //console.log('matching on fields and indices')
-    const m2 = getMatches(s, t, fields, 'indices');
-    //console.log(m2);
+    // console.log('matching on fields and indices')
+    const m2 = getMatches(s, t, fields, "indices");
+    // console.log(m2);
     updateMatches(s_key, t_key, m2.matches, fields);
 
     if (m2.s_unmatched.size || m2.t_unmatched.size) {
-
-      throw new Error('unable to find match')
-
+      throw new Error("unable to find match")
     }
   }
 }
 
 module.exports = (original, update, options) => {
-
-  debug(false, 'original input:', original.input);
-  debug(false, 'update input:', update.input);
+  debug(false, "original input:", original.input);
+  debug(false, "update input:", update.input);
 
   // the input format of the new guy
   let format = detect(update.input, _.extend({
     requireOneFormat: true,
-  }, options));
-  debug(false, 'detected update as format:', format);
+  },
+                                             options));
+  debug(false, "detected update as format:", format);
   format = formats[format];
 
   /*
@@ -341,11 +290,10 @@ module.exports = (original, update, options) => {
   */
 
   if (format.hasComments) {
-    debug(false, '\n\ncomparing comments\n');
+    debug(false, "\n\ncomparing comments\n");
     let i = 0, j = 0;
     while (data.comments.new.unmatched.size) {
-
-      throw new Error('not implemented');
+      throw new Error("not implemented");
 
       /*
       const s1Comment = this.comments[i];
@@ -359,50 +307,27 @@ module.exports = (original, update, options) => {
       */
     }
   } else {
-    debug(false, 'using original comments');
+    debug(false, "using original comments");
     // don't change anything
   }
-
-
-
-
-
-
-
-
 
   // build a hash table and a list of tokens for each sentence
   let s_key = {}, s = [], t_key = {}, t = [];
 
   original.iterate(token => {
-
     s_key[token.indices.absolute] = token;
     s.push(token);
-
   });
   update.iterate(token => {
-
     t_key[token.indices.absolute] = token;
     t.push(token)
-
   });
 
   // try to find matches between the items
   matchAndUpdate(s_key, s, t_key, t, format.fields);
 
   return;
-
-
 };
-
-
-
-
-
-
-
-
-
 
 /*
 
@@ -479,8 +404,8 @@ module.exports = (original, update, options) => {
     for (let i=0; i<data.old.tokens.length; i++) {
       for (let j=0; j<data.new.tokens.length; j++) {
 
-        if (data.tokens.old.unmatched.has(i) && data.tokens.new.unmatched.has(j))
-          if (compareFields(data, i, j, distance)) {
+        if (data.tokens.old.unmatched.has(i) &&
+data.tokens.new.unmatched.has(j)) if (compareFields(data, i, j, distance)) {
             debug('same');
 
             data.tokens.old.unmatched.delete(i);

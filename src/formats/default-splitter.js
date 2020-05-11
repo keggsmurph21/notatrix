@@ -1,19 +1,18 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
-const utils = require('../utils');
+const _ = require("underscore");
+const utils = require("../utils");
 
-module.exports = (text, options={}) => {
+module.exports = (text, options = {}) => {
+  options = _.defaults(options, {trimChunks: true});
 
-  options = _.defaults(options, {
-    trimChunks: true
-  });
-
-  return text.split(utils.re.multiNewlines).map(chunk => {
-    if (options.trimChunks) {
-      return chunk.trim();
-    } else {
-      return chunk;
-    }
-  }).filter(utils.thin);
+  return text.split(utils.re.multiNewlines)
+      .map(chunk => {
+        if (options.trimChunks) {
+          return chunk.trim();
+        } else {
+          return chunk;
+        }
+      })
+      .filter(utils.thin);
 };

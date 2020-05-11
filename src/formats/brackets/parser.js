@@ -1,15 +1,14 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const ParserError = utils.ParserError;
-const detect = require('./detector');
+const detect = require("./detector");
 
 module.exports = (text, options) => {
-
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   options = _.defaults(options, {
     allowEmptyString: false,
@@ -34,7 +33,6 @@ module.exports = (text, options) => {
     }
 
     serialize() {
-
       this.root.index(0);
 
       return {
@@ -45,9 +43,7 @@ module.exports = (text, options) => {
       };
     }
 
-    push(token) {
-      this.root = token;
-    }
+    push(token) { this.root = token; }
   }
 
   class Token {
@@ -56,39 +52,32 @@ module.exports = (text, options) => {
 
       this.deprel = null;
       this.before = [];
-      this.words  = [];
-      this.after  = [];
+      this.words = [];
+      this.after = [];
     }
 
     eachBefore(callback) {
-      for (let i=0; i<this.before.length; i++) {
+      for (let i = 0; i < this.before.length; i++) {
         callback(this.before[i], i);
       }
     }
 
     eachAfter(callback) {
-      for (let i=0; i<this.after.length; i++) {
+      for (let i = 0; i < this.after.length; i++) {
         callback(this.after[i], i);
       }
     }
 
     index(num) {
-      this.eachBefore(before => {
-        num = before.index(num);
-      });
+      this.eachBefore(before => { num = before.index(num); });
       this.num = ++num;
-      this.eachAfter(after => {
-        num = after.index(num)
-      });
+      this.eachAfter(after => {num = after.index(num)});
 
       return num;
     }
 
     serialize(tokens) {
-
-      this.eachBefore(before => {
-        before.serialize(tokens);
-      });
+      this.eachBefore(before => { before.serialize(tokens); });
 
       tokens.push({
         form: this.form,
@@ -99,16 +88,12 @@ module.exports = (text, options) => {
         index: this.num,
       });
 
-      this.eachAfter(after => {
-        after.serialize(tokens);
-      });
+      this.eachAfter(after => { after.serialize(tokens); });
 
       return tokens;
     }
 
-    get form() {
-      return this.words.join('_');
-    }
+    get form() { return this.words.join("_"); }
 
     push(token) {
       if (this.words.length) {
@@ -130,41 +115,39 @@ module.exports = (text, options) => {
     }
   }
 
-  let sent = new Sentence(text, options),
-    parsing = sent,
-    parent = null,
-    word = '';
+  let sent = new Sentence(text, options), parsing = sent, parent = null,
+      word = "";
 
   _.each(text, char => {
     switch (char) {
-      case ('['):
-        parent = parsing;
-        parsing = new Token(parent);
-        if (parent && parent.push)
-          parent.push(parsing)
-        word = '';
-        break;
+    case ("["):
+      parent = parsing;
+      parsing = new Token(parent);
+      if (parent && parent.push)
+        parent.push(parsing)
+        word = "";
+      break;
 
-      case (']'):
-        if (parsing.addWord)
-          parsing.addWord(word);
-        parsing = parsing.parent;
-        parent = parsing.parent;
-        word = '';
-        break;
+    case ("]"):
+      if (parsing.addWord)
+        parsing.addWord(word);
+      parsing = parsing.parent;
+      parent = parsing.parent;
+      word = "";
+      break;
 
-      case (' '):
-        if (parsing.addWord)
-          parsing.addWord(word);
-        word = '';
-        break;
+    case (" "):
+      if (parsing.addWord)
+        parsing.addWord(word);
+      word = "";
+      break;
 
-      default:
-        word += char;
-        break;
+    default:
+      word += char;
+      break;
     }
   });
 
-  //console.log(sent.serialize())
+  // console.log(sent.serialize())
   return sent.serialize();
 };

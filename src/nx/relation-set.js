@@ -1,35 +1,25 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../utils');
-const NxBaseClass = require('./base-class');
-
+const utils = require("../utils");
+const NxBaseClass = require("./base-class");
 
 class RelationSet extends NxBaseClass {
   constructor(token, partner) {
-
-    super('RelationSet');
+    super("RelationSet");
     this.token = token;
     this.partner = partner;
     this._items = [];
-
   }
 
-  get length() {
-    return this._items.length;
-  }
+  get length() { return this._items.length; }
 
-  get first() {
-    return this._items[0] || null;
-  }
+  get first() { return this._items[0] || null; }
 
-  map(callback) {
-    return this._items.map(callback);
-  }
+  map(callback) { return this._items.map(callback); }
 
   has(token) {
-
     let has = false;
     this.map(item => {
       if (item.token === token)
@@ -39,8 +29,7 @@ class RelationSet extends NxBaseClass {
     return has;
   }
 
-  add(token, deprel, origin=true) {
-
+  add(token, deprel, origin = true) {
     if (this.has(token)) {
       this.modify(token, deprel);
       return false;
@@ -57,8 +46,7 @@ class RelationSet extends NxBaseClass {
     return true;
   }
 
-  modify(token, deprel, origin=true) {
-
+  modify(token, deprel, origin = true) {
     if (!this.has(token))
       return false;
 
@@ -76,8 +64,7 @@ class RelationSet extends NxBaseClass {
     return ret;
   }
 
-  remove(token, origin=true) {
-
+  remove(token, origin = true) {
     let at = -1;
 
     this.map((item, i) => {
@@ -96,15 +83,13 @@ class RelationSet extends NxBaseClass {
     return removed || null;
   }
 
-  clear(origin=true) {
-
+  clear(origin = true) {
     this.map(item => {
       if (origin)
         item.token[this.partner].remove(this.token)
-    })
+    });
     this._items = [];
   }
 }
-
 
 module.exports = RelationSet;

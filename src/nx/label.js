@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../utils');
-const NxBaseClass = require('./base-class');
+const utils = require("../utils");
+const NxBaseClass = require("./base-class");
 
 /**
  * Allows us to extract labels from "field = value"-type comments, so that
@@ -12,13 +12,11 @@ const NxBaseClass = require('./base-class');
  */
 class Label extends NxBaseClass {
   constructor(name) {
-
-    super('Label');
+    super("Label");
     this.name = name;
     this.bColor = utils.hashStringToHex(name);
     this.tColor = utils.getContrastingColor(this.bColor);
-    this.desc = '';
-
+    this.desc = "";
   }
 
   serialize() {
@@ -31,7 +29,6 @@ class Label extends NxBaseClass {
   }
 
   static deserialize(serial) {
-
     const label = new Label(serial.name);
     label.desc = serial.desc;
     label.bColor = serial.bColor;
@@ -39,7 +36,6 @@ class Label extends NxBaseClass {
 
     return label;
   }
-
 
   /*
 
@@ -49,13 +45,15 @@ class Label extends NxBaseClass {
 
     state.desc = state.desc || '';
     if (typeof state.desc !== 'string')
-      throw new DeserializationError(`cannot set description to non-string value`);
+      throw new DeserializationError(`cannot set description to non-string
+  value`);
 
     this.name = state.name;
     this.desc = state.desc;
 
     if (!this.changeColor(state.bColor))
-      throw new DeserializationError(`cannot set background color to "${state.bColor}"`);
+      throw new DeserializationError(`cannot set background color to
+  "${state.bColor}"`);
   }
 
   render(labeler) {
@@ -166,6 +164,5 @@ class Label extends NxBaseClass {
   }
   */
 }
-
 
 module.exports = Label;

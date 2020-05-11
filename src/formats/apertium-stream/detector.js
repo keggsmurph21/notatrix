@@ -1,8 +1,7 @@
-'use strict';
+"use strict";
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const DetectorError = utils.DetectorError;
 
-module.exports = (text, options) => {
-  throw new DetectorError('not implemented');
-};
+module.exports =
+    (text, options) => { throw new DetectorError("not implemented"); };

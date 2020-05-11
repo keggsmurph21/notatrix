@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const ParserError = utils.ParserError;
-const detect = require('./detector');
-const parseText = require('../plain-text').parse;
+const detect = require("./detector");
+const parseText = require("../plain-text").parse;
 
 module.exports = (text, options) => {
-
   function getTokenIndexFromString(tokens, token) {
-    for (let i=0; i<tokens.length; i++) {
+    for (let i = 0; i < tokens.length; i++) {
       if (tokens[i].form.toLowerCase() === token.toLowerCase())
         return i;
     }
@@ -18,8 +17,8 @@ module.exports = (text, options) => {
     return null;
   }
 
-  //console.log();
-  //console.log(text);
+  // console.log();
+  // console.log(text);
 
   options = _.defaults(options, {
     allowEmptyString: false,
@@ -36,88 +35,71 @@ module.exports = (text, options) => {
     throw e;
   }
 
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const depRegex = options.allowBookendWhitespace
-    ? utils.re.sdDependencyNoWhitespace
-    : utils.re.sdDependency;
+                       ? utils.re.sdDependencyNoWhitespace
+                       : utils.re.sdDependency;
 
   let chunks = [];
   lines.forEach(line => {
-
     const whiteline = line.match(utils.re.whiteline),
-      comment = line.match(utils.re.comment),
-      dep = line.match(depRegex);
+          comment = line.match(utils.re.comment), dep = line.match(depRegex);
 
     if (whiteline) {
-
     } else if (comment) {
-
-      chunks.push({
-        type: 'comment',
-        body: comment[2]
-      });
+      chunks.push({type: "comment", body: comment[2]});
 
     } else if (dep) {
-
-      chunks.push({
-        type: 'dependency',
-        deprel: dep[1],
-        head: dep[2],
-        dep: dep[3]
-      });
+      chunks.push(
+          {type: "dependency", deprel: dep[1], head: dep[2], dep: dep[3]});
 
     } else {
-
       chunks.push({
-        type: 'text',
+        type: "text",
         body: line,
       });
-
     }
-
   });
 
-  //console.log(chunks);
+  // console.log(chunks);
 
   let tokens;
   let comments = [];
-  let expecting = ['comment', 'text'];
+  let expecting = ["comment", "text"];
 
   chunks.forEach(chunk => {
-
     if (expecting.indexOf(chunk.type) === -1)
-      throw new ParserError(`expecting ${expecting.join('|')}, got ${chunk.type}`, text, options);
+      throw new ParserError(
+          `expecting ${expecting.join("|")}, got ${chunk.type}`, text, options);
 
-    if (chunk.type === 'comment') {
-
+    if (chunk.type === "comment") {
       comments.push(chunk.body);
-      expecting = ['comment', 'text'];
+      expecting = ["comment", "text"];
 
-    } else if (chunk.type === 'text') {
-
+    } else if (chunk.type === "text") {
       tokens = parseText(chunk.body).tokens;
-      expecting = ['dependency'];
+      expecting = ["dependency"];
 
-    } else if (chunk.type === 'dependency') {
-
+    } else if (chunk.type === "dependency") {
       let index = getTokenIndexFromString(tokens, chunk.dep);
       if (index === null)
-        throw new ParserError(`unable to find token with form ${chunk.dep}`, text, options);
+        throw new ParserError(`unable to find token with form ${chunk.dep}`,
+                              text, options);
 
       tokens[index].heads = [{
         index: getTokenIndexFromString(tokens, chunk.head),
         deprel: chunk.deprel,
       }];
-      expecting = ['dependency'];
+      expecting = ["dependency"];
 
     } else {
-      throw new ParserError(`unrecognized chunk type: ${chunk.type}`, text, options);
-
+      throw new ParserError(`unrecognized chunk type: ${chunk.type}`, text,
+                            options);
     }
   });
 
-  //console.log(comments);
-  //console.log(tokens);
+  // console.log(comments);
+  // console.log(tokens);
 
   return {
     input: text,

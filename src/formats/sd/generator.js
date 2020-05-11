@@ -1,42 +1,40 @@
-'use strict';
+"use strict";
 
-const _ = require('underscore');
+const _ = require("underscore");
 
-const utils = require('../../utils');
+const utils = require("../../utils");
 const GeneratorError = utils.GeneratorError;
-const generateText = require('../plain-text').generate;
-const getLoss = require('./get-loss')
+const generateText = require("../plain-text").generate;
+const getLoss = require("./get-loss")
 
 module.exports = (sent, options) => {
-
   if (!sent.isParsed)
     return {
       output: null,
       loss: undefined,
     };
 
-  if (!sent || sent.name !== 'Sentence')
-    throw new GeneratorError(`Unable to generate, input not a Sentence`, sent, options);
+  if (!sent || sent.name !== "Sentence")
+    throw new GeneratorError(`Unable to generate, input not a Sentence`, sent,
+                             options);
 
-  options = _.defaults(options, sent.options, {
+  options = _.defaults(options, sent.options,
+                       {
 
-  });
+                       });
 
   sent.index();
 
   let lines = [];
-  sent.comments.forEach(comment => {
-    lines.push('# ' + comment.body);
-  });
+  sent.comments.forEach(comment => { lines.push("# " + comment.body); });
 
   lines.push(generateText(sent).output);
 
   [sent.root].concat(sent.tokens).forEach(token => {
-
     token.mapDependents(dependent => {
-      lines.push(`${dependent.deprel || '_'}(${token.form}, ${dependent.token.form})`);
+      lines.push(
+          `${dependent.deprel || "_"}(${token.form}, ${dependent.token.form})`);
     });
-
   });
 
   /*
@@ -53,7 +51,7 @@ module.exports = (sent, options) => {
   */
 
   return {
-    output: lines.join('\n'),
+    output: lines.join("\n"),
     loss: getLoss(sent),
   };
 };
