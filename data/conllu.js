@@ -461,5 +461,24 @@ module.exports = {
 9	нывинрэтигым	винрэтык	VERB	_	_	6	parataxis	6:parataxis	Gloss=ST-помогать-NP.1SG
 10	нырычвантойгым	_	VERB	_	_	6	parataxis	6:parataxis	Gloss=ST-личинка-вынимать-NP.1SG	
 10.1	рычва	рычва	NOUN	_	_	_	_	10:obj	Gloss=личинка
-11	.	.	PUNCT	_	_	6	punct	6:punct	_			`
+11	.	.	PUNCT	_	_	6	punct	6:punct	_			`,
+
+  notatrix_issue_17: `# sent_id = Money:12
+# text = Ну ӄэԓюӄъым ытԓыгэ нэнаманэԓпынрыӄэнатэ амъянра наӄам.
+# text[phon] = ну qeɬuqʔəm ətɬəɣe nenamaneɬpənrəqenate amjanra naqam
+# text[rus] = Ну конечно, отец дал денег, причём каждому отдельно.
+# text[eng] = Well, of course, their father gave them money, and each of them separately.
+# labels = complete-dep anno-fran
+1	Ну	_	X	_	Foreign=Yes	5	discourse	5:discourse	Gloss=
+2-3	ӄэԓюӄъым	_	_	_	_	_	_	_	_
+2	ӄэԓюӄ	ӄэԓюӄъым	ADV	_	_	5	advmod	5:advmod	Gloss=конечно-=EMPH
+3	ъым	ъм	PART	_	_	2	discourse	2:discourse	_
+4	ытԓыгэ	ытԓыгын	NOUN	_	Animacy=Anim|Case=Ins	5	nsubj	5:nsubj	Gloss=отец-INS
+5-6	нэнаманэԓпынрыӄэнатэ	_	_	_	_	_	_	_	_
+5	нэнаманэԓпынрыӄэнат	_	VERB	_	Incorporated[obj]=Yes	0	root	0:root	Gloss=ST-INV-деньги-давать-ST.3SG-PL-=PTCL
+5.1	манэ	манэман	NOUN	_	Incorporated=Yes	_	_	5:obj	Gloss=деньги
+6	э	а	PART	_	_	5	discourse	5:discourse	_
+7	амъянра	_	ADV	_	_	5	advmod	5:advmod	Gloss=RESTR-отдельно
+8	наӄам	наӄам	ADV	_	_	5	advmod	5:advmod	Gloss=однако
+9	.	.	PUNCT	_	_	5	punct	5:punct	_`,
 };

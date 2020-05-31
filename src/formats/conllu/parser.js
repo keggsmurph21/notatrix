@@ -15,7 +15,7 @@ module.exports = (text, options) => {
 
       return match[2] ? {
         major: parseInt(match[1]),
-        minor: parseInt(match[2]),
+        minor: parseInt(match[2].slice(1)),
       }
                       : {
                           major: parseInt(match[1]),
