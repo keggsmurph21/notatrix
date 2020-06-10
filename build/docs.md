@@ -162,7 +162,7 @@ Hash a list of fields to a string
 
 | Param | Type |
 | --- | --- |
-| ...fields | <code>[ &#x27;Array&#x27; ].&lt;String&gt;</code> | 
+| ...fields | <code>Array.&lt;String&gt;</code> | 
 
 <a name="BaseToken+serialize"></a>
 
@@ -201,7 +201,7 @@ Abstraction to hold a mapping of String => Label pairs, as well as some
 **Kind**: global class  
 
 * [Labeler](#Labeler)
-    * [.sort()](#Labeler+sort) ⇒ [<code>Labeler\_SortReturnT</code>](#Labeler_SortReturnT)
+    * [.sort()](#Labeler+sort) ⇒ [<code>Labeler_SortReturnT</code>](#Labeler_SortReturnT)
     * [.get(name)](#Labeler+get) ⇒ [<code>Label</code>](#Label)
     * [.count(name)](#Labeler+count) ⇒ <code>Number</code>
     * [.sentenceHasLabel(sent, searching)](#Labeler+sentenceHasLabel) ⇒ <code>Boolean</code>
@@ -218,7 +218,7 @@ Abstraction to hold a mapping of String => Label pairs, as well as some
 
 <a name="Labeler+sort"></a>
 
-### labeler.sort() ⇒ [<code>Labeler\_SortReturnT</code>](#Labeler_SortReturnT)
+### labeler.sort() ⇒ [<code>Labeler_SortReturnT</code>](#Labeler_SortReturnT)
 Sort all labels in Corpus by number of Sentences with that label
 
 **Kind**: instance method of [<code>Labeler</code>](#Labeler)  
@@ -322,7 +322,7 @@ Add new Label with the given name (if it doesn't already exist) and
 | Param | Type | Default |
 | --- | --- | --- |
 | name | <code>String</code> |  | 
-| [sents] | [<code>[ &#x27;Array&#x27; ].&lt;Sentence&gt;</code>](#Sentence) | <code>[]</code> | 
+| [sents] | [<code>Array.&lt;Sentence&gt;</code>](#Sentence) | <code>[]</code> | 
 
 <a name="Labeler+removeLabel"></a>
 
@@ -335,7 +335,7 @@ Remove a Label by name (if it exists) from a set of Sentences (can
 | Param | Type |
 | --- | --- |
 | name | <code>String</code> | 
-| sents | [<code>[ &#x27;Array&#x27; ].&lt;Sentence&gt;</code>](#Sentence) | 
+| sents | [<code>Array.&lt;Sentence&gt;</code>](#Sentence) | 
 
 <a name="Labeler+changeLabelName"></a>
 
@@ -494,7 +494,7 @@ Split a given token into two tokens.  If the given token is a
 
 <a name="Labeler_SortReturnT"></a>
 
-## Labeler\_SortReturnT
+## Labeler_SortReturnT
 **Kind**: global typedef  
 **Properties**
 

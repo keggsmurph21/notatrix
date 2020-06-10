@@ -13,7 +13,6 @@ const Comment = require("./comment");
 const BaseToken = require("./base-token");
 const Token = require("./token");
 const RootToken = require("./root-token");
-const update = require("./update");
 const Analysis = require("./analysis");
 const SubToken = require("./sub-token");
 
@@ -247,21 +246,6 @@ class Sentence extends NxBaseClass {
 
     return this.index();
   }
-
-  /*update(serial, options) {
-    try {
-
-      const sent = new Sentence(serial, options);
-      update(this, sent, options);
-
-    } catch(e) {
-
-      if (e instanceof utils.ToolError || utils.NxError)
-        throw new NxError('Unable to update: ' + e.message);
-
-      throw e;
-    }
-  }*/
 
   /**
    * Tell Sentence to output in enhanced dependency format
