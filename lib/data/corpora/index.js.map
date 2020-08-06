@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"/public/js/","sources":["data/corpora/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;AAAA,yCAA6B;AAEhB,QAAA,QAAQ,GAAG,IAAI,CAAC,IAAI,CAAC,SAAS,EAAE,iBAAiB,CAAC,CAAC;AACnD,QAAA,WAAW,GAAG,IAAI,CAAC,IAAI,CAAC,SAAS,EAAE,wBAAwB,CAAC,CAAC;AAC7D,QAAA,aAAa,GAAG,IAAI,CAAC,IAAI,CAAC,SAAS,EAAE,wBAAwB,CAAC,CAAC"}

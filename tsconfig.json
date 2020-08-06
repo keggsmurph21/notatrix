@@ -1,0 +1,26 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "baseUrl": "src",
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "lib": ["ESNext", "ES5"],
+        "module": "CommonJS",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "outDir": "lib",
+        "removeComments": true,
+        "rootDir": "src",
+        "sourceMap": true,
+        "sourceRoot": "/public/js",
+        "target": "ES5"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "diff": true,
+    "extension": [
+        "ts"
+    ],
+    "file": [
+        "test/splitter.ts"
+    ],
+    "require": [
+        "ts-node/register"
+    ]
+}
