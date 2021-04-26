@@ -1,3 +1,7 @@
+# THIS PROJECT HAS MOVED
+
+Development of this project has moved to [jonorthwash/ud-annotatrix](https://github.com/jonorthwash/ud-annotatrix) in the `notatrix/` folder.  Please file any issues against this project __in that repository__.  See https://github.com/jonorthwash/ud-annotatrix/pull/436 for more details.
+
 # Notatrix
 [![CircleCI](https://circleci.com/gh/keggsmurph21/notatrix/tree/master.svg?style=svg)](https://circleci.com/gh/keggsmurph21/notatrix/tree/master)
 
